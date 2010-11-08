@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="yuma-annotation-server" default="create-war" basedir=".">	
+	<property name="src.dir" location="src" />
+	<property name="test.dir" location="test" />
+	<property name="report.dir" location="report" />
+	<property name="resources.dir" location="resources" />	
+	<property name="classes.dir" location="WEB-INF/classes" />
+	<property name="lib.dir" location="WEB-INF/lib" />
+	<property name="web.xml" location="WEB-INF/web.xml" />
+	<property name="metainf.dir" location="${resources.dir}/META-INF" />
+	<property name="classes.metainf.dir" location="${classes.dir}/META-INF" />
+					
+	<target name="clean">
+		<delete dir="${classes.dir}"/>
+	</target>
+	
+	<target name="compile-java" depends="clean">		
+		<mkdir dir="${classes.dir}"/>			
+		<javac destdir="${classes.dir}" includes="**/*.*" fork="true" debug="true">
+		 	<src path="${src.dir}" />
+		 	<src path="${test.dir}" />			 				
+		 	<classpath>
+		 	    <fileset dir="${lib.dir}">
+     					<include name="**/*.jar" />
+   				</fileset>
+		 	</classpath>
+		</javac>
+	 	<copy todir="${classes.dir}">
+	    	<fileset dir="${src.dir}">
+	      		<exclude name="**/*.java"/>
+	    	</fileset>
+	  </copy>
+	</target>
+	
+	<target name="compile-scala" depends="compile-java">
+		<taskdef resource="scala/tools/ant/antlib.xml">
+			<classpath>
+				<pathelement location="${lib.dir}/scala-compiler.jar" />
+				<pathelement location="${lib.dir}/scala-library.jar" />
+			</classpath>
+		</taskdef>
+		
+		<scalac srcdir="${src.dir}" destdir="${classes.dir}" addparams="-g:vars">
+			<classpath>
+		 	    <fileset dir="${lib.dir}">
+     					<include name="**/*.jar" />
+   				</fileset>
+		 	</classpath>
+			<include name="**/*.scala" />
+		</scalac>
+	</target>
+	
+	<target name="test" depends="compile-scala">		
+		<mkdir dir="${report.dir}"/>				
+		<junit printsummary="yes" haltonfailure="yes" fork="yes" showoutput="yes">
+			<classpath>
+				<pathelement location="${resources.dir}" />								
+				<pathelement location="${src.dir}" />
+				<pathelement location="${classes.dir}" />						
+				<fileset dir="${lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+			<batchtest todir="${report.dir}">
+				<formatter type="xml" />
+				<fileset dir="${test.dir}">
+					<include name="**/*Test.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	<target name="create-war" depends="test">
+		<copy todir="${classes.metainf.dir}">
+    		<fileset dir="${metainf.dir}"/>
+  		</copy>		
+		<war destfile="annotation-middleware.war" webxml="${web.xml}">
+			<lib dir="${lib.dir}" />
+			<classes dir="${classes.dir}" />			
+		</war>
+	</target>
+</project>
