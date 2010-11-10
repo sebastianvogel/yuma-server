@@ -5,6 +5,7 @@
 	xmlns:image="http://lemo.mminf.univie.ac.at/annotation-image#"
 	xmlns:video="http://lemo.mminf.univie.ac.at/annotation-video#"
 	xmlns:rel="http://lemo.mminf.univie.ac.at/ann-relationship#"
+	xmlns:geonames="http://www.geonames.org/ontology#"
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
 	xmlns:h="http://www.w3.org/1999/xx/http#"
 	xmlns:tr="http://www.w3.org/2001/03/thread#"
