@@ -186,7 +186,7 @@ public class Config {
 		AnnotationDatabaseLockManager lockManager = null;
 		try {
 			if(lockManagerImpl.isEmpty()) return lockManager;
-			Class annotationDbLockImplClass = Class.forName(lockManagerImpl);
+			Class<?> annotationDbLockImplClass = Class.forName(lockManagerImpl);
 			Object obj = annotationDbLockImplClass.newInstance();
 			if (obj instanceof AnnotationDatabaseLockManager) {
 				lockManager = (AnnotationDatabaseLockManager) obj;
@@ -205,7 +205,7 @@ public class Config {
 	public AnnotationDatabase getAnnotationDatabase() throws AnnotationDatabaseException {
 		AnnotationDatabase annotationDb = null;
 		try {
-			Class annotationDbImplClass = Class.forName(dbImpl);
+			Class<?> annotationDbImplClass = Class.forName(dbImpl);
 			Object obj = annotationDbImplClass.newInstance();
 			if (obj instanceof AnnotationDatabase) {
 				annotationDb = (AnnotationDatabase) obj;

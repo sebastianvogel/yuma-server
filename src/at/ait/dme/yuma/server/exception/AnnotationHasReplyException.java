@@ -7,22 +7,22 @@ package at.ait.dme.yuma.server.exception;
  * @author Christian Sadilek
  *
  */
-public class AnnotationAlreadyReferencedException extends Exception {
+public class AnnotationHasReplyException extends Exception {
 	private static final long serialVersionUID = 3843311695698544428L;
 
-	public AnnotationAlreadyReferencedException() {		
+	public AnnotationHasReplyException() {		
 		super("annotation already referenced");
 	}
 
-	public AnnotationAlreadyReferencedException(String message, Throwable cause) {
+	public AnnotationHasReplyException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public AnnotationAlreadyReferencedException(String message) {
+	public AnnotationHasReplyException(String message) {
 		super(message);
 	}
 
-	public AnnotationAlreadyReferencedException(Throwable cause) {
+	public AnnotationHasReplyException(Throwable cause) {
 		super(cause);
 	}
 }

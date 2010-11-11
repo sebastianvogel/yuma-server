@@ -75,7 +75,7 @@
 		<copy todir="${classes.metainf.dir}">
     		<fileset dir="${metainf.dir}"/>
   		</copy>		
-		<war destfile="annotation-middleware.war" webxml="${web.xml}">
+		<war destfile="yuma-server.war" webxml="${web.xml}">
 			<lib dir="${lib.dir}" />
 			<classes dir="${classes.dir}" />			
 		</war>

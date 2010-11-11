@@ -4,53 +4,52 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationLockedException;
 
 /**
- * Used by annotation databases to implement optimistic locking on a per annotation base.
+ * Used by annotation databases to implement optimistic locking on
+ * a per annotation base.
  * 
  * @author Christian Sadilek
  */
 public interface AnnotationDatabaseLockManager {
 	
 	/**
-	 * acquire lock for the given annotation
-	 * 
-	 * @param annotationId
-	 * @param timeout in ms
-	 * @return the locked annotation id
-	 * @throws AnnotationDatabaseException in case of an unexpected error
-	 * @throws AnnotationLockedException in case annotation lock could not be acquired within
-	 * 	the given time.
+	 * Acquire lock for the given annotation
+	 * @param annotationId the annotation ID
+	 * @param timeout timeout in milliseconds
+	 * @return the locked annotation ID
+	 * @throws AnnotationDatabaseException if anything goes wrong
+	 * @throws AnnotationLockedException if the lock could not be acquired within the given time
 	 */
-	public String acquireLock(String annotationId, long timeout) throws AnnotationDatabaseException, 
-			AnnotationLockedException;
+	public String acquireLock(String annotationId, long timeout)
+		throws AnnotationDatabaseException, AnnotationLockedException;
 	
 	/**
-	 * acquire lock for the given annotation
-	 * 
-	 * @param annotationId
-	 * @return true in case lock was created, otherwise false
+	 * Acquire lock for the given annotation
+	 * @param annotationId the annotation ID
+	 * @return true in case lock was created, false otherwise
 	 */	
 	public boolean tryAcquireLock(String annotationId);
 		
 	/**
-	 * release lock for the given annotation
-	 * 
-	 * @param annotationId
-	 * @throws AnnotationDatabaseException 
+	 * Release lock for the given annotation
+	 * @param annotationId the annotation ID
+	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public void releaseLock(String annotationId) throws AnnotationDatabaseException;
+	public void releaseLock(String annotationId)
+		throws AnnotationDatabaseException;
 	
 	/**
-	 * set the connection this instance is working on.
-	 * 
-	 * @param connection
-	 * @throws AnnotationDatanaseException
+	 * Set the connection this instance is working on
+	 * @param connection the connection
+	 * @throws AnnotationDatanaseException if anything goes wrong
 	 */
-	public void setConnection(Object connection) throws AnnotationDatabaseException;
+	public void setConnection(Object connection)
+		throws AnnotationDatabaseException;
 	
 	/**
-	 * close the underlying connection
-	 * 
-	 * @throws AnnotationDatabaseException
+	 * Close the underlying connection
+	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public void closeConnection() throws AnnotationDatabaseException;
+	public void closeConnection()
+		throws AnnotationDatabaseException;
+	
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <web-app>
-	<display-name>Archetype Created Web Application</display-name>
+	<display-name>YUMA Annotation Server</display-name>
 	<context-param>
 		<param-name>resteasy.scan</param-name>
 		<param-value>true</param-value>
@@ -85,7 +85,7 @@
 	<!--  SESAME ANNOTATION DATABASE -->	
 	<context-param>
 		<param-name>annotation.db.impl</param-name>
-		<param-value>at.researchstudio.dme.annotation.db.sesame.SesameAnnotationDatabase</param-value>
+		<param-value>at.ait.dme.yuma.server.db.sesame.SesameAnnotationDatabase</param-value>
 	</context-param>
 	
 	<context-param>
@@ -125,7 +125,7 @@
 		
 	<context-param>
 		<param-name>annotation.db.lock.manager</param-name>
-		<param-value>at.researchstudio.dme.annotation.db.RdbmsAnnotationLockManager</param-value>
+		<param-value>at.ait.dme.yuma.server.db.RdbmsAnnotationLockManager</param-value>
 	</context-param>
 	
 	<context-param>
@@ -137,62 +137,6 @@
 		<param-name>annotation.db.driver.protocol</param-name>
 		<param-value>jdbc:postgresql</param-value>
 	</context-param>	
-	
-	<!--  FAST ANNOTATION DATABASE -->	
-	<!-- context-param>
-		<param-name>annotation.db.impl</param-name>
-		<param-value>at.researchstudio.dme.annotation.db.fast.FastAnnotationDatabase</param-value>
-	</context-param>
-	
-	<context-param>
-		<param-name>annotation.db.host</param-name>
-		<param-value>http://svrims.dei.unipd.it</param-value>
-	</context-param>
-	
-	<context-param>
-		<param-name>annotation.db.port</param-name>
-		<param-value>8080</param-value>
-	</context-param>
-	
-	<context-param>
-		<param-name>annotation.db.name</param-name>
-		<param-value>fast</param-value>
-	</context-param>
-
-	<context-param>
-		<param-name>annotation.db.user</param-name>
-		<param-value>telplus;http://www.theeuropeanlibrary.org/telplus/</param-value>
-	</context-param>
-
-	<context-param>
-		<param-name>annotation.db.pass</param-name>
-		<param-value>dummypwd</param-value>
-	</context-param>
-	
-	<context-param>
-		<param-name>annotation.db.lock.manager</param-name>
-		<param-value></param-value>
-	</context-param>
-	
-	<context-param>
-		<param-name>annotation.db.dir</param-name>
-		<param-value></param-value>
-	</context-param>
-
-	<context-param>
-		<param-name>annotation.db.flags</param-name>
-		<param-value></param-value>
-	</context-param>		
-	
-	<context-param>
-		<param-name>annotation.db.driver</param-name>
-		<param-value></param-value>
-	</context-param>
-	
-	<context-param>
-		<param-name>annotation.db.driver.protocol</param-name>
-		<param-value></param-value>
-	</context-param-->	
 			
 	<listener>
 		<listener-class>
@@ -214,7 +158,7 @@
 	
 	<servlet>
 		<servlet-name>ConfigServlet</servlet-name>
-		<servlet-class>at.researchstudio.dme.annotation.config.ConfigServlet</servlet-class>
+		<servlet-class>at.ait.dme.yuma.server.config.ConfigServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 </web-app>

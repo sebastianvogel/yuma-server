@@ -1,14 +1,14 @@
 package at.ait.dme.yuma.server.db;
 
-import java.net.URI;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import at.ait.dme.yuma.server.exception.AnnotationAlreadyReferencedException;
+import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
-import at.ait.dme.yuma.server.exception.AnnotationException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
+import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 
 /**
  * Base class for annotation databases.
@@ -21,16 +21,18 @@ import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
  * consider this to be a problem since the most recent update would be effective.
  * <p>
  * What we do have to handle is annotation creation with interfering/concurrent
- * updates/removals. If a user creates an annotation with an reference to
+ * updates/removals. If a user creates an annotation with a reference to
  * another annotation it has to be ensured that the referenced annotation has
  * not been changed in the time between the last read (see {@link AnnotationModifiedException}). 
  * Further, on update and delete it has to be ensured that the corresponding annotation 
- * is still unreferenced (see {@link AnnotationAlreadyReferencedException}). A referenced
+ * is still unreferenced (see {@link AnnotationHasReplyException}). A referenced
  * annotation cannot be updated or deleted.
  *
  * @author Christian Sadilek
+ * @author Rainer Simon
  */
 public abstract class AnnotationDatabase {	
+	
 	protected static final String UNEXPECTED_RESPONSE = "unexpected response";		
 	protected static final String FAILED_TO_READ_ANNOTATION = "failed to read annotation";	
 	protected static final String FAILED_TO_SAVE_ANNOTATION = "failed to save annotation";
@@ -40,189 +42,145 @@ public abstract class AnnotationDatabase {
 	private boolean autoCommit = true;
 	
 	/**
-	 * check if auto commit is on
-	 * 
-	 * @return true if auto commit is on, otherwise false
+	 * Check if auto commit is on
+	 * @return true if auto commit is on
 	 */
 	public boolean isAutoCommit() {
 		return autoCommit;
 	}
 	
 	/**
-	 * set the auto commit mode
-	 * 
-	 * @param autoCommit
+	 * Set the auto commit mode
+	 * @param autoCommit auto commit mode
 	 */
 	public void setAutoCommit(boolean autoCommit) {
 		this.autoCommit = autoCommit;
 	}
 	
 	/**
-	 * initialize 
-	 *  
-	 * @throws AnnotationDabaseException
+	 * Initialize 
+	 * @throws AnnotationDabaseException if anything goes wrong
 	 */
-	public abstract void init() throws AnnotationDatabaseException;
+	public abstract void init()
+		throws AnnotationDatabaseException;
 	
 	/**
-	 * shutdown 
-	 *  
+	 * Shutdown 
 	 */
 	public abstract void shutdown();
 	
 	/**
-	 * connect to the db
-	 * 
-	 * @throws AnnotationDatabaseException
+	 * Connect to the DB
+	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public void connect() throws AnnotationDatabaseException {
+	public void connect()
+		throws AnnotationDatabaseException {
+		
 		connect(null);
 	}
 
 	/**
-	 * connect to the db and provide a request object to access
+	 * Connect to the DB and provide a request object to access
 	 * parameters, cookies, etc.
-	 * 
-	 * @throws AnnotationDatabaseException
+	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract void connect(HttpServletRequest request) throws AnnotationDatabaseException;
+	public abstract void connect(HttpServletRequest request)
+		throws AnnotationDatabaseException;
 	
 	/**
-	 * disconnect from the db 
-	 * 
-	 * @throws AnnotationDatabaseException
+	 * Disconnect the DB 
+	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
 	public abstract void disconnect();
 
 	/**
-	 * commit all changes
-	 * 
-	 * @throws AnnotationDatabaseException
+	 * Commit all changes
+	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract void commit() throws AnnotationDatabaseException;
+	public abstract void commit()
+		throws AnnotationDatabaseException;
 	
 	/**
-	 * roll back all changes
-	 * 
-	 * @throws AnnotationDatabaseException
+	 * Roll back all changes
+	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract void rollback() throws AnnotationDatabaseException;
+	public abstract void rollback()
+		throws AnnotationDatabaseException;
 	
 	/**
-	 * creates a new annotation
-	 * 
-	 * @param annotation representation
-	 * @return id (URI) of the new annotation
-	 * @throws AnnotationDatabaseException, AnnotationException, 
-	 * 	AnnotationModifiedException
+	 * Create a new annotation
+	 * @param annotation the annotation
+	 * @return the ID of the new annotation
+	 * @throws AnnotationDatabaseException if anything goes wrong
+	 * @throws AnnotationModifiedException if the parent annotation was modified in the mean time
 	 */
-	public abstract URI createAnnotation(String annotation) 
-			throws AnnotationDatabaseException, AnnotationException, AnnotationModifiedException;
+	public abstract String createAnnotation(Annotation annotation) 
+			throws AnnotationDatabaseException, AnnotationModifiedException;
 
 	/**
-	 * updates an annotation
-	 * 
-	 * @param id of the annotation
-	 * @param annotation representation
-	 * @return id (URI) of updated annotation. a back-end implementation might decide to change the 
-	 * URI of an annotation when it is updated.
-	 * @throws AnnotationDatabaseException, AnnotationException, 
-	 * 	AnnotationAlreadyReferencedException
+	 * Update an annotation
+	 * @param annotationId the ID of the annotation
+	 * @param annotation the annotation
+	 * @return the (new) annotation ID after the update (may change depending on DB implementation!)
+	 * @throws AnnotationDatabaseException if anything goes wrong
+	 * @throws AnnotationHasReplyException if this annotation has already been replied to
 	 */
-	public abstract URI updateAnnotation(String id, String annotation)
-			throws AnnotationDatabaseException, AnnotationException,
-			AnnotationAlreadyReferencedException;
+	public abstract String updateAnnotation(String annotationId, Annotation annotation)
+		throws AnnotationDatabaseException, AnnotationHasReplyException;
 
 	/**
-	 * delete an annotation
-	 * 
-	 * @param id of the annotation to delete
-	 * @throws AnnotationDatabaseException, AnnotationException, 
-	 * 	AnnotationAlreadyReferencedException;
+	 * Delete an annotation
+	 * @param annotationId the annotation ID
+	 * @throws AnnotationDatabaseException  if anything goes wrong
+	 * @throws AnnotationHasReplyException if this annotation has already been replied to
 	 */
-	public abstract void deleteAnnotation(String id) throws AnnotationDatabaseException,
-			AnnotationException, AnnotationAlreadyReferencedException;
+	public abstract void deleteAnnotation(String annotationId)
+		throws AnnotationDatabaseException, AnnotationHasReplyException;
 
 	/**
-	 * lists all annotations for a given object id
-	 * 
-	 * @param objectId
-	 * @return representation of the corresponding annotations
-	 * @throws AnnotationDatabaseException, AnnotationException
+	 * Lists all annotations for a given object
+	 * @param objectId the object ID
+	 * @return the annotations
+	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract String listAnnotations(String objectId) throws AnnotationDatabaseException, 
-			AnnotationException;
+	public abstract List<Annotation> listAnnotations(String objectId)
+		throws AnnotationDatabaseException;
 
 	/**
-	 * retrieves the number of annotations for the given object id
-	 * 
-	 * @param objectId
-	 * @return number of annotations
-	 * @throws AnnotationDatabaseException, AnnotationException
+	 * Retrieves the number of annotations for the given object
+	 * @param objectId the object ID
+	 * @return the number of annotations for this object
+	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract int countAnnotations(String objectId) throws AnnotationDatabaseException, 
-			AnnotationException;
+	public abstract int countAnnotations(String objectId)
+		throws AnnotationDatabaseException; 
 	
 	/**
-	 * lists all replies (the whole subtree) for the given root annotation
-	 * 
-	 * @param id annotation id
-	 * @return representation of the corresponding annotations (replies)
-	 * @throws AnnotationDatabaseException, AnnotationException
+	 * List all replies for a given annotation
+	 * @param annotationId the annotation ID 
+	 * @return the list of replies
+	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract String listAnnotationReplies(String id) throws AnnotationDatabaseException, 
-			AnnotationException;
-
-	/**
-	 * list all linked annotations to the given object
-	 * 
-	 * @param linkedObjectId
-	 * @return representation of the linked annotation
-	 * @throws AnnotationDatabaseException
-	 * @throws AnnotationException
-	 */
-	public abstract String listLinkedAnnotations(String linkedObjectId)
-			throws AnnotationDatabaseException, AnnotationException;
+	public abstract List<Annotation> listAnnotationReplies(String annotationId)
+		throws AnnotationDatabaseException; 
 	
 	/**
-	 * returns the number of all linked annotations to the given object
-	 * 
-	 * @param linkedObjectId
-	 * @return number of annotations
-	 * @throws AnnotationDatabaseException
-	 * @throws AnnotationException
+	 * Retrieve an annotation by ID
+	 * @param annotationId the annotation ID
+	 * @return the annotation
+	 * @throws AnnotationDatabaseException if anything goes wrong
+	 * @throws AnnotationNotFoundException if the annotation was not found
 	 */
-	public abstract int countLinkedAnnotations(String linkedObjectId) 
-			throws AnnotationDatabaseException, AnnotationException;
+	public abstract Annotation findAnnotationById(String annotationId)
+		throws AnnotationDatabaseException, AnnotationNotFoundException;
 	
 	/**
-	 * find an annotation by id
-	 * 
-	 * @param id
-	 * @return representation of the corresponding annotation or null if not found
-	 * @throws AnnotationDatabaseException, AnnotationException
+	 * Find annotations that match the given search term
+	 * @param query the query term
+	 * @return the list of matching annotations
+	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract String findAnnotationById(String id) throws AnnotationDatabaseException, 
-			AnnotationNotFoundException, AnnotationException;
-
-	/**
-	 * find an annotation body by id
-	 * 
-	 * @param id
-	 * @return representation of the corresponding annotation body or null if not found
-	 * @throws AnnotationDatabaseException, AnnotationException
-	 */
-	public abstract String findAnnotationBodyById(String id) throws AnnotationDatabaseException, 
-			AnnotationNotFoundException, AnnotationException;
-	
-	/**
-	 * find annotations that match the given search term
-	 * 
-	 * @param search term
-	 * @return representation of the found annotations
-	 * @throws AnnotationDatabaseException
-	 */
-	public abstract String findAnnotations(String term) throws AnnotationDatabaseException,
-			AnnotationException;
+	public abstract List<Annotation> findAnnotations(String query) 
+		throws AnnotationDatabaseException;
 
 }

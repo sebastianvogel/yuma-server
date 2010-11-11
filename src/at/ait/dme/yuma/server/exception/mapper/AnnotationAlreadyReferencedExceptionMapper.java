@@ -5,14 +5,14 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import at.ait.dme.yuma.server.exception.AnnotationAlreadyReferencedException;
+import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 
 @Provider
 public class AnnotationAlreadyReferencedExceptionMapper 
-	implements ExceptionMapper<AnnotationAlreadyReferencedException> {
+	implements ExceptionMapper<AnnotationHasReplyException> {
 
 	@Override
-	public Response toResponse(AnnotationAlreadyReferencedException aare) {
+	public Response toResponse(AnnotationHasReplyException aare) {
 		return Response.status(Status.CONFLICT).entity(aare.getMessage()).build();
 	}
 }

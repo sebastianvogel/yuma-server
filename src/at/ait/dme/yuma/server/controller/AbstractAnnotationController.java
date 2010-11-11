@@ -1,315 +1,232 @@
 package at.ait.dme.yuma.server.controller;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
+
 import java.net.URLDecoder;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
+import com.mongodb.util.JSON;
+
+import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.config.Config;
+import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.db.AnnotationDatabase;
-import at.ait.dme.yuma.server.exception.AnnotationAlreadyReferencedException;
+import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
-import at.ait.dme.yuma.server.exception.AnnotationException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
-
+import at.ait.dme.yuma.server.exception.AnnotationFormatException;
 /**
- * This class contains the default annotation controller logic. Annotations are
- * expected to be represented as RDF/XML based on Annotea. Sub classes will
- * expose these methods through HTTP and may offer different representation
- * formats and may also change the response status codes.
+ * This class contains the default annotation controller logic.
  * 
  * @author Christian Sadilek
- * 
- * TODO use OPTIONS to return the supported operations. the supported operations
- * depend on the chosen annotation database e.g. FAST does not support update
- * and delete.
- * 
+ * @author Rainer Simon 
  */
 public abstract class AbstractAnnotationController {
+	
 	protected static final String URL_ENCODING = "UTF-8";
 	
 	@Context
 	protected HttpServletRequest request;
 
 	/**
-	 * create a new annotation
-	 * 
-	 * @param annotation representation
+	 * Create a new annotation
+	 * @param annotation the JSON representation of the annotation
 	 * @return status code 201 and new annotation representation
 	 * @throws AnnotationDatabaseException (500)
-	 * @throws AnnotationException (415)
+	 * @throws AnnotationFormatException (415)
 	 * @throws AnnotationModifiedException (409)
 	 */
-	protected Response createAnnotation(String annotation) throws AnnotationDatabaseException,
-			AnnotationException, AnnotationModifiedException {
+	protected Response createAnnotation(String annotation)
+		throws AnnotationDatabaseException, AnnotationFormatException, AnnotationModifiedException {
 		
-		AnnotationDatabase aDb = null;
-		URI annotationId = null;
+		AnnotationDatabase db = null;
+		String annotationId = null;
+		
 		try {
-			aDb = Config.getInstance().getAnnotationDatabase();
-			aDb.connect(request);
-			annotationId = aDb.createAnnotation(annotation);
-			annotation = aDb.findAnnotationById(annotationId.toString());
-		} catch(AnnotationNotFoundException anfe) {
-			throw new AnnotationDatabaseException(anfe);
+			db = Config.getInstance().getAnnotationDatabase();
+			db.connect(request);
+			annotationId = db.createAnnotation(new Annotation(annotation));
+			annotation = db.findAnnotationById(annotationId).toString();
+		} catch(AnnotationNotFoundException e) {
+			throw new AnnotationDatabaseException(e);
 		} finally {
-			if(aDb!=null) aDb.disconnect();
+			if (db != null) db.disconnect();
 		}
-		return Response.created(annotationId).entity(annotation).build();
+		return Response.created(URIBuilder.toURI(annotationId)).entity(annotation).build();
 	}
 	
 	/**
-	 * update an existing annotation
-	 * 
-	 * @param id
-	 * @param annotation representation
+	 * Update an existing annotation
+	 * @param annotationId the annotation ID 
+	 * @param annotation the JSON representation of the annotation
 	 * @return status code 200 and updated annotation representation
 	 * @throws AnnotationDatabaseException (500)
-	 * @throws AnnotationException (415)
+	 * @throws AnnotationFormatException (415)
+	 * @throws AnnotationHasReplyException (409)
 	 * @throws UnsupportedEncodingException (500)
-	 * @throws AnnotationAlreadyReferencedException (409)
 	 */
-	protected Response updateAnnotation(String id, String annotation)
-			throws AnnotationDatabaseException, AnnotationException,
-			AnnotationAlreadyReferencedException, UnsupportedEncodingException {
+	protected Response updateAnnotation(String annotationId, String annotation)
+			throws AnnotationDatabaseException, AnnotationFormatException, AnnotationHasReplyException, UnsupportedEncodingException {
 		
-		AnnotationDatabase aDb = null;
-		URI annotationId = null;
+		AnnotationDatabase db = null;
+		
 		try {
-			aDb = Config.getInstance().getAnnotationDatabase();
-			aDb.connect(request);
-			annotationId=aDb.updateAnnotation(URLDecoder.decode(id,URL_ENCODING), annotation);
-			annotation=aDb.findAnnotationById(annotationId.toString());
+			db = Config.getInstance().getAnnotationDatabase();
+			db.connect(request);
+			annotationId = db.updateAnnotation(URLDecoder.decode(annotationId, URL_ENCODING), new Annotation(annotation));
+			annotation = db.findAnnotationById(annotationId).toString();
 		} catch(AnnotationNotFoundException anfe) {
 			throw new AnnotationDatabaseException(anfe);
 		} finally {
-			if(aDb!=null) aDb.disconnect();
+			if(db != null) db.disconnect();
 		}	
-		return Response.ok().entity(annotation).header("Location",annotationId.toString()).build(); 
+		return Response.ok().entity(annotation).header("Location", annotationId).build(); 
 	}
 	
 	/**
-	 * delete an annotation
-	 * 
-	 * @param id
+	 * Delete an annotation
+	 * @param annotationId the annotation ID
 	 * @return status code 204
 	 * @throws AnnotationDatabaseException (500)
-	 * @throws AnnotationException (415)
 	 * @throws UnsupportedEncodingException (500)
-	 * @throws AnnotationAlreadyReferencedException (409)
+	 * @throws AnnotationHasReplyException (409)
 	 */
-	protected Response deleteAnnotation(String id) throws AnnotationDatabaseException,
-			AnnotationException, AnnotationAlreadyReferencedException, 
-			UnsupportedEncodingException {
+	protected Response deleteAnnotation(String annotationId)
+		throws AnnotationDatabaseException, AnnotationHasReplyException, UnsupportedEncodingException {
 		
-		AnnotationDatabase aDb = null;
+		AnnotationDatabase db = null;
 		try {			
-			aDb = Config.getInstance().getAnnotationDatabase();
-			aDb.connect(request);
-			aDb.deleteAnnotation(URLDecoder.decode(id,URL_ENCODING));
+			db = Config.getInstance().getAnnotationDatabase();
+			db.connect(request);
+			db.deleteAnnotation(URLDecoder.decode(annotationId, URL_ENCODING));
 		} finally {
-			if(aDb!=null) aDb.disconnect();
-		}			
+			if(db != null) db.disconnect();
+		}	
+		
 		// response to DELETE without a body should return 204 NO CONTENT see 
 		// http://www.w3.org/Protocols/rfc2616/rfc2616.html
 		return Response.noContent().build(); 
 	}
 	
 	/**
-	 * list annotations for the given object
-	 * 
-	 * @param objectId
-	 * @return status code 200 and representation of the found annotations
+	 * List annotations for the given object
+	 * @param objectId the object ID
+	 * @return status code 200 and the representation of the found annotations
 	 * @throws AnnotationDatabaseException (500)
-	 * @throws AnnotationException (415)
+	 * @throws AnnotationFormatException (415)
 	 * @throws UnsupportedEncodingException (500)
 	 */
-	protected Response listAnnotations(String objectId) throws AnnotationDatabaseException,
-			AnnotationException, UnsupportedEncodingException {
+	protected Response listAnnotations(String objectId)
+		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		AnnotationDatabase aDb = null;
-		String annotations = null;
+		AnnotationDatabase db = null;
+		List<Annotation> annotations = null;
 		
 		try {
-			aDb = Config.getInstance().getAnnotationDatabase();
-			aDb.connect(request);
-			annotations = aDb.listAnnotations(URLDecoder.decode(objectId,URL_ENCODING));
+			db = Config.getInstance().getAnnotationDatabase();
+			db.connect(request);
+			annotations = db.listAnnotations(URLDecoder.decode(objectId, URL_ENCODING));
 		} finally {
-			if(aDb!=null) aDb.disconnect();
+			if(db != null) db.disconnect();
 		}
-		return Response.ok().entity(annotations).build();
+		return Response.ok().entity(JSON.serialize(annotations)).build();
 	}
 	
 	/**
-	 * count annotations for the given object
-	 * 
-	 * @param objectId
-	 * @return Response - status code and count representation
+	 * Count annotations for the given object
+	 * @param objectId the object ID
+	 * @return status code and count representation
 	 * @throws AnnotationDatabaseException (500)
-	 * @throws AnnotationException (415)
 	 * @throws UnsupportedEncodingException (500
 	 */
-	protected Response countAnnotations(String objectId) throws AnnotationDatabaseException,
-			AnnotationException, UnsupportedEncodingException {
+	protected Response countAnnotations(String objectId)
+		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		AnnotationDatabase aDb = null;
+		AnnotationDatabase db = null;
 		int count = 0;
+		
 		try {
-			aDb = Config.getInstance().getAnnotationDatabase();
-			aDb.connect(request);
-			count = aDb.countAnnotations(URLDecoder.decode(objectId,URL_ENCODING));
+			db = Config.getInstance().getAnnotationDatabase();
+			db.connect(request);
+			count = db.countAnnotations(URLDecoder.decode(objectId, URL_ENCODING));
 		} finally {
-			if(aDb!=null) aDb.disconnect();
+			if(db != null) db.disconnect();
 		}
 		return Response.ok().entity(count).build();
 	}
 	
 	/**
-	 * list replies of the given annotation
-	 * 
-	 * @param annotation id
-	 * @return status code 200 and representation of the found annotations (replies)
+	 * List replies of the given annotation
+	 * @param annotationId the annotation ID
+	 * @return status code 200 and representation of the found replies
 	 * @throws AnnotationDatabaseException (500)
-	 * @throws AnnotationException (415)
+	 * @throws AnnotationFormatException (415)
 	 * @throws UnsupportedEncodingException (500
 	 */
-	protected Response listAnnotationReplies(String id) throws AnnotationDatabaseException,
-			AnnotationException, UnsupportedEncodingException {
+	protected Response listAnnotationReplies(String annotationId)
+		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		AnnotationDatabase aDb = null;
-		String annotations = null;
+		AnnotationDatabase db = null;
+		List<Annotation> annotations = null;
 		try {
-			aDb = Config.getInstance().getAnnotationDatabase();
-			aDb.connect(request);
-			annotations = aDb.listAnnotationReplies(URLDecoder.decode(id,URL_ENCODING));
+			db = Config.getInstance().getAnnotationDatabase();
+			db.connect(request);
+			annotations = db.listAnnotationReplies(URLDecoder.decode(annotationId, URL_ENCODING));
 		} finally {
-			if(aDb!=null) aDb.disconnect();
+			if(db != null) db.disconnect();
 		}
 		return Response.ok().entity(annotations).build();
 	}
 	
 	/**
-	 * list linked annotation to the given objectId
-	 * 
-	 * @param objectId
-	 * @return status code 200 and representation of the found annotations
-	 * @throws AnnotationDatabaseException (500)
-	 * @throws AnnotationException (415)
-	 * @throws UnsupportedEncodingException (500
-	 */
-	protected Response listLinkedAnnotations(String objectId) 
-			throws AnnotationDatabaseException, AnnotationException, UnsupportedEncodingException {
-		
-		AnnotationDatabase aDb = null;
-		String annotations = null;
-		try {
-			aDb = Config.getInstance().getAnnotationDatabase();
-			aDb.connect(request);
-			annotations = aDb.listLinkedAnnotations(URLDecoder.decode(objectId,URL_ENCODING));
-		} finally {
-			if(aDb!=null) aDb.disconnect();
-		}
-		return Response.ok().entity(annotations).build();
-	}
-	
-	/**
-	 * count linked annotations for the given object
-	 * 
-	 * @param objectId
-	 * @return status code 200 and count representation
-	 * @throws AnnotationDatabaseException (500)
-	 * @throws AnnotationException (415)
-	 * @throws UnsupportedEncodingException (500
-	 */
-	protected Response countLinkedAnnotations(String objectId) 
-			throws AnnotationDatabaseException, AnnotationException, UnsupportedEncodingException {
-		
-		AnnotationDatabase aDb = null;
-		int count = 0;
-		try {
-			aDb = Config.getInstance().getAnnotationDatabase();
-			aDb.connect(request);
-			count = aDb.countLinkedAnnotations(URLDecoder.decode(objectId,URL_ENCODING));
-		} finally {
-			if(aDb!=null) aDb.disconnect();
-		}
-		return Response.ok().entity(count).build();
-	}
-	
-	/**
-	 * find annotation by its id
-	 * 
-	 * @param id
+	 * Find an annotation by its ID
+	 * @param annotationId the annotation ID
 	 * @return status code 200 and found annotation
 	 * @throws AnnotationDatabaseException (500)
-	 * @throws AnnotationException (415)
 	 * @throws UnsupportedEncodingException (500
 	 */
-	protected Response findAnnotationById(String id) throws AnnotationDatabaseException,
-			AnnotationNotFoundException, AnnotationException, UnsupportedEncodingException {
+	protected Response findAnnotationById(String annotationId)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
-		AnnotationDatabase aDb = null;
-		String annotation = null;
-		try {
-			aDb = Config.getInstance().getAnnotationDatabase();
-			aDb.connect(request);
-			annotation = aDb.findAnnotationById(URLDecoder.decode(id, URL_ENCODING));
-		} finally {
-			if(aDb!=null) aDb.disconnect();
-		}
-		return Response.ok(annotation).build();
-	}
-	
-	/**
-	 * find annotation body by annotation id
-	 * 
-	 * @param annotationId
-	 * @return status code 200 and annotation body if found
-	 * @throws AnnotationDatabaseException (500)
-	 * @throws AnnotationException (415)
-	 * @throws UnsupportedEncodingException (500
-	 */
-	protected Response findAnnotationBodyById(String annotationId)
-				throws AnnotationDatabaseException, AnnotationNotFoundException, 
-				AnnotationException, UnsupportedEncodingException {
+		AnnotationDatabase db = null;
+		Annotation annotation = null;
 		
-		AnnotationDatabase aDb = null;
-		String annotation = null;
 		try {
-			aDb = Config.getInstance().getAnnotationDatabase();
-			aDb.connect(request);
-			annotation = aDb.findAnnotationBodyById(URLDecoder.decode(annotationId, URL_ENCODING));
+			db = Config.getInstance().getAnnotationDatabase();
+			db.connect(request);
+			annotation = db.findAnnotationById(URLDecoder.decode(annotationId, URL_ENCODING));
 		} finally {
-			if(aDb!=null) aDb.disconnect();
+			if(db != null) db.disconnect();
 		}
 		return Response.ok(annotation).build();
 	}
 		
 	/**
-	 * find annotations that match the given search term
-	 * 
-	 * @param query
+	 * Find annotations that match the given search term
+	 * @param query the query term
 	 * @return status code 200 and found annotations
 	 * @throws AnnotationDatabaseException (500)
-	 * @throws AnnotationException (415)
 	 * @throws UnsupportedEncodingException (500
 	 */
-	protected Response findAnnotations(String query) throws AnnotationDatabaseException,
-			AnnotationException, UnsupportedEncodingException {
+	protected Response findAnnotations(String query)
+		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		AnnotationDatabase aDb = null;
-		String annotation = null;		
+		AnnotationDatabase db = null;
+		List<Annotation> annotations = null;		
+		
 		try {
-			aDb = Config.getInstance().getAnnotationDatabase();
-			aDb.connect(request);
-			annotation = aDb.findAnnotations(URLDecoder.decode(query, URL_ENCODING));
+			db = Config.getInstance().getAnnotationDatabase();
+			db.connect(request);
+			annotations = db.findAnnotations(URLDecoder.decode(query, URL_ENCODING));
 		} finally {
-			if(aDb!=null) aDb.disconnect();
+			if(db != null) db.disconnect();
 		}
-		return Response.ok(annotation).build();
+		return Response.ok(annotations).build();
 	}
 }

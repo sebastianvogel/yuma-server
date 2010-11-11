@@ -2,14 +2,14 @@ package at.ait.dme.yuma.server.db.concurrent;
 
 import static org.junit.Assert.fail;
 
-import java.net.URI;
 import java.util.concurrent.CountDownLatch;
 
 import at.ait.dme.yuma.server.Data;
-import at.ait.dme.yuma.server.Setup;
 import at.ait.dme.yuma.server.config.Config;
-import at.ait.dme.yuma.server.db.sesame.SesameAnnotationDatabase;
+import at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
+import at.ait.dme.yuma.server.model.Annotation;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,13 +19,14 @@ import org.junit.Test;
 * Test for concurrent access to the annotation database
 *  
 * @author Christian Sadilek
+* @author Rainer Simon
 */
 public class ConcurrentTest {
 	private static final int THREADS = 25;
 
 	@BeforeClass
 	public static void setUp() throws Exception {
-        Setup.buildSesameNativeConfiguration();
+
 	}
 
 	@AfterClass
@@ -45,28 +46,28 @@ public class ConcurrentTest {
 				public void run() {
 					try {
 						startGate.await();						
-						SesameAnnotationDatabase sad = new SesameAnnotationDatabase();						
+						MongoAnnotationDB db = new MongoAnnotationDB();						
 						try {
 							long start = System.currentTimeMillis();
-							sad.connect();						
-							URI uri=sad.createAnnotation(Data.LEMO_ANNOTATION);
-							sad.disconnect();
-							System.out.println("CREATE TIME for:"+index +"="+(System.currentTimeMillis()- start)+" ms" + " ID:"+uri.toString());														
+							db.connect();						
+							String id = db.createAnnotation(new Annotation(Data.JSON_ANNOTATION));
+							db.disconnect();
+							System.out.println("CREATE TIME for:"+index +"="+(System.currentTimeMillis()- start)+" ms" + " ID:"+ id);														
 
 							start = System.currentTimeMillis();
-							sad.connect();																											
-							uri=sad.updateAnnotation(uri.toString(),Data.LEMO_ANNOTATION);
-							sad.disconnect();
+							db.connect();																											
+							id = db.updateAnnotation(id, new Annotation(Data.JSON_ANNOTATION));
+							db.disconnect();
 							System.out.println("UPDATE TIME for:"+index +"="+(System.currentTimeMillis()- start)+" ms");
 					
 							start = System.currentTimeMillis();																																			
-							sad.connect();
-							sad.deleteAnnotation(uri.toString());							
-							sad.disconnect();
+							db.connect();
+							db.deleteAnnotation(id);							
+							db.disconnect();
 							System.out.println("DELETE TIME for:"+index +"="+(System.currentTimeMillis()- start)+" ms");
 						} finally {
 							endGate.countDown();
-							sad.disconnect();
+							db.disconnect();
 						}
 					} catch (Exception e) {
 						throw new RuntimeException(e);
@@ -83,30 +84,30 @@ public class ConcurrentTest {
 	
 	@Test
 	public void testReadCommited() throws Exception {
-		SesameAnnotationDatabase sad1 = new SesameAnnotationDatabase();
-		SesameAnnotationDatabase sad2 = new SesameAnnotationDatabase();
+		MongoAnnotationDB db1 = new MongoAnnotationDB();
+		MongoAnnotationDB db2 = new MongoAnnotationDB();
 		
-		sad1.setAutoCommit(false);
-		URI id = null;
+		db1.setAutoCommit(false);
+		String id = null;
 		try {			
-			sad1.connect();
-			id = sad1.createAnnotation(Data.LEMO_ANNOTATION);
-			sad2.connect();
+			db1.connect();
+			id = db1.createAnnotation(new Annotation(Data.JSON_ANNOTATION));
+			db2.connect();
 			try {
-				sad2.findAnnotationById(id.toString());
+				db2.findAnnotationById(id.toString());
 				fail("AnnotationNotFoundException expected");
 			} catch(AnnotationNotFoundException anfe) {
 				/*expected */
 			}
-			sad1.commit();
-			sad2.findAnnotationById(id.toString());			
+			db1.commit();
+			db2.findAnnotationById(id.toString());			
 		} finally {
 			if(id!=null) {
-				sad1.deleteAnnotation(id.toString());
-				sad1.commit();
+				db1.deleteAnnotation(id.toString());
+				db1.commit();
 			}
-			sad1.disconnect();
-			sad2.disconnect();			
+			db1.disconnect();
+			db2.disconnect();			
 		}
 		
 	}

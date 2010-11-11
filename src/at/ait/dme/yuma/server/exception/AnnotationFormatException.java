@@ -5,22 +5,23 @@ package at.ait.dme.yuma.server.exception;
  * 
  * @author Christian Sadilek
  */
-public class AnnotationException extends Exception {
+public class AnnotationFormatException extends Exception {
+	
 	private static final long serialVersionUID = -6104005265727225396L;
 
-	public AnnotationException() {
+	public AnnotationFormatException() {
 		super();
 	}
 
-	public AnnotationException(String message, Throwable cause) {
+	public AnnotationFormatException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public AnnotationException(String message) {
+	public AnnotationFormatException(String message) {
 		super(message);
 	}
 
-	public AnnotationException(Throwable cause) {
+	public AnnotationFormatException(Throwable cause) {
 		super(cause);
 	}
 }
