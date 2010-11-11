@@ -17,7 +17,7 @@ import org.junit.Test;
 import at.ait.dme.yuma.server.Setup;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.AbstractLockManager;
-import at.ait.dme.yuma.server.db.hibernate.RdbmsAnnotationLockManager;
+import at.ait.dme.yuma.server.db.hibernate.RDBMSLockManager;
 import at.ait.dme.yuma.server.exception.AnnotationLockedException;
 
 /**
@@ -41,42 +41,42 @@ public class RdbmAnnotationLockManagerTest {
 	
 	@After
 	public void cleanUp() throws Exception {
-		AbstractLockManager lockMan = new RdbmsAnnotationLockManager(connect());
+		AbstractLockManager lockMan = new RDBMSLockManager(connect());
 		lockMan.releaseLock(LOCK_ANNOTATION_ID);
 		for (Connection c : openConnections) c.close();
 	}
 	
 	@Test
 	public void testInit() throws Exception {		
-		AbstractLockManager lockMan = new RdbmsAnnotationLockManager(connect());
-		lockMan = new RdbmsAnnotationLockManager(connect());		
+		AbstractLockManager lockMan = new RDBMSLockManager(connect());
+		lockMan = new RDBMSLockManager(connect());		
 	}
 	
 	
 	@Test
 	public void testAcquireReleaseLock() throws Exception {
-		AbstractLockManager lockMan = new RdbmsAnnotationLockManager(connect());		
+		AbstractLockManager lockMan = new RDBMSLockManager(connect());		
 		try {
 			lockMan.acquireLock(LOCK_ANNOTATION_ID,0);
-			lockMan = new RdbmsAnnotationLockManager(connect());
+			lockMan = new RDBMSLockManager(connect());
 			lockMan.acquireLock(LOCK_ANNOTATION_ID,0);
 			fail("AnnotationLockedException expected");
 		} catch(AnnotationLockedException ale) { /* expected */}
 		
-		lockMan = new RdbmsAnnotationLockManager(connect());
+		lockMan = new RDBMSLockManager(connect());
 		lockMan.releaseLock(LOCK_ANNOTATION_ID);
-		lockMan = new RdbmsAnnotationLockManager(connect());
+		lockMan = new RDBMSLockManager(connect());
 		lockMan.acquireLock(LOCK_ANNOTATION_ID,0);
-		lockMan = new RdbmsAnnotationLockManager(connect());
+		lockMan = new RDBMSLockManager(connect());
 		lockMan.releaseLock(LOCK_ANNOTATION_ID);
 		
 		lockMan.acquireLock(LOCK_ANNOTATION_ID,0);
-		lockMan = new RdbmsAnnotationLockManager(connect());
+		lockMan = new RDBMSLockManager(connect());
 		final String lockAcquired = null;
 		new Thread() {
 			public void run() {
 				try {
-					AbstractLockManager lockMan = new RdbmsAnnotationLockManager(connect());
+					AbstractLockManager lockMan = new RDBMSLockManager(connect());
 					lockMan.acquireLock(LOCK_ANNOTATION_ID,10000);
 				} catch (Exception e) {/*ignored*/}
 			}
@@ -91,16 +91,16 @@ public class RdbmAnnotationLockManagerTest {
 	
 	@Test
 	public void testTryAcquireReleaseLock() throws Exception {
-		AbstractLockManager lockMan = new RdbmsAnnotationLockManager(connect());		
+		AbstractLockManager lockMan = new RDBMSLockManager(connect());		
 		assertTrue(lockMan.tryAcquireLock(LOCK_ANNOTATION_ID));		
-		lockMan = new RdbmsAnnotationLockManager(connect());
+		lockMan = new RDBMSLockManager(connect());
 		assertFalse(lockMan.tryAcquireLock(LOCK_ANNOTATION_ID));
 		
-		lockMan = new RdbmsAnnotationLockManager(connect());
+		lockMan = new RDBMSLockManager(connect());
 		lockMan.releaseLock(LOCK_ANNOTATION_ID);
-		lockMan = new RdbmsAnnotationLockManager(connect());
+		lockMan = new RDBMSLockManager(connect());
 		assertTrue(lockMan.tryAcquireLock(LOCK_ANNOTATION_ID));
-		lockMan = new RdbmsAnnotationLockManager(connect());
+		lockMan = new RDBMSLockManager(connect());
 		lockMan.releaseLock(LOCK_ANNOTATION_ID);					
 	}
 	

@@ -17,8 +17,8 @@ import at.ait.dme.yuma.server.exception.AnnotationLockedException;
  * @author Christian Sadilek
  *
  */
-public class RdbmsAnnotationLockManager implements AbstractLockManager {
-	private static Logger logger = Logger.getLogger(RdbmsAnnotationLockManager.class);
+public class RDBMSLockManager implements AbstractLockManager {
+	private static Logger logger = Logger.getLogger(RDBMSLockManager.class);
 	
 	private static final long RETRY_INTERVAL = 250l;
 	
@@ -35,9 +35,9 @@ public class RdbmsAnnotationLockManager implements AbstractLockManager {
     
     private Connection connection = null;
     
-	public RdbmsAnnotationLockManager() {}
+	public RDBMSLockManager() {}
 
-	public RdbmsAnnotationLockManager(Connection connection) throws AnnotationDatabaseException {
+	public RDBMSLockManager(Connection connection) throws AnnotationDatabaseException {
 		this.connection = connection;
 		init();
 	}
