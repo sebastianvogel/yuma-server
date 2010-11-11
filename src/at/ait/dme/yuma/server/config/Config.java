@@ -27,7 +27,6 @@ public class Config {
 	private final String dbDir;
 	private final String dbFlags;	
 	private final String annotationBaseUrl;
-	private final String annotationBodyBaseUrl;
 	private final String lockManagerImpl;
 
 	private Config(Builder builder) {
@@ -39,7 +38,6 @@ public class Config {
 		this.dbDir = builder.dbDir;
 		this.dbFlags = builder.dbFlags;		
 		this.annotationBaseUrl = builder.annotationBaseUrl;
-		this.annotationBodyBaseUrl = builder.annotationBodyBaseUrl;
 		this.dbImpl = builder.dbImpl;
 		this.dbDriver = builder.dbDriver;
 		this.dbDriverProtocol = builder.dbDriverProtocol;
@@ -52,7 +50,6 @@ public class Config {
 		private String dbDriver = null;
 		private String dbDriverProtocol = null;		
 		private String annotationBaseUrl = null;
-		private String annotationBodyBaseUrl = null;
 		
 		private String dbHost = null;
 		private String dbPort = null;
@@ -62,11 +59,9 @@ public class Config {
 		private String dbDir = null;
 		private String dbFlags = null;	
 		
-		public Builder(String dbImpl, String annotationBaseUrl, 
-				String annotationBodyBaseUrl) {
+		public Builder(String dbImpl, String annotationBaseUrl) {
 			this.dbImpl = dbImpl;			
 			this.annotationBaseUrl = annotationBaseUrl;
-			this.annotationBodyBaseUrl = annotationBodyBaseUrl;
 		}
 		
 		public Builder dbDriver(String val) {
@@ -177,10 +172,6 @@ public class Config {
 	public String getAnnotationBaseUrl() {
 		return annotationBaseUrl;
 	}
-
-	public String getAnnotationBodyBaseUrl() {
-		return annotationBodyBaseUrl;
-	}	
 
 	public AbstractLockManager getLockManager() throws AnnotationDatabaseException {
 		AbstractLockManager lockManager = null;

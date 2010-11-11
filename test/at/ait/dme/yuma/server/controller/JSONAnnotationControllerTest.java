@@ -92,9 +92,7 @@ public class JSONAnnotationControllerTest {
 		findByIdMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
 		assertEquals(httpClient.executeMethod(findByIdMethod), HttpStatus.SC_OK);
 		
-		String createdAnnotationBodyUrl = createdAnnotationUrl.replace(
-				Config.getInstance().getAnnotationBaseUrl(), 
-				Config.getInstance().getAnnotationBodyBaseUrl());
+		String createdAnnotationBodyUrl = Config.getInstance().getAnnotationBaseUrl();
 		GetMethod findBodyByIdMethod = new GetMethod(createdAnnotationBodyUrl);
 		findBodyByIdMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
 		assertEquals(httpClient.executeMethod(findBodyByIdMethod), HttpStatus.SC_OK);

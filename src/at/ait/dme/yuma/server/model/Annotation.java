@@ -42,10 +42,14 @@ public class Annotation {
 		thisAnnotation.put(REPLIES, replies);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Annotation(String json) throws AnnotationFormatException {
+		this((Map<?, ?>) JSON.parse(json));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Annotation(Map<?, ?> map) throws AnnotationFormatException {
 		try {
-			thisAnnotation = (Map<String, Object>) JSON.parse(json);
+			thisAnnotation = (Map<String, Object>) map;
 			tags = (List<Map<String, String>>) thisAnnotation.get(SEMANTIC_TAGS);
 			replies = (List<String>) thisAnnotation.get(REPLIES);
 		} catch (Throwable t) {

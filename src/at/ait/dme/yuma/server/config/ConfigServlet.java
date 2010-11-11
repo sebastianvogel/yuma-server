@@ -26,10 +26,9 @@ public class ConfigServlet extends HttpServlet {
 	    String dbDir=readProperty("annotation.db.dir", application); 
 	    String dbFlags=readProperty("annotation.db.flags", application);
 	    String annotationBaseUrl=readProperty("annotation.base.url", application);
-	    String annotationBodyBaseUrl=readProperty("annotation.body.base.url", application);	   
 	    String lockManagerImpl=readProperty("annotation.db.lock.manager", application);
 	   
-	    new Config.Builder(dbImpl, annotationBaseUrl,annotationBodyBaseUrl).
+	    new Config.Builder(dbImpl, annotationBaseUrl).
 	    	dbDriver(dbDriver).dbDriverProtocol(dbDriverProtocol).dbHost(dbHost).
 	    	dbPort(dbPort).dbName(dbName).dbUser(dbUser).dbUser(dbUser).
 	    	dbPass(dbPass).dbDir(dbDir).dbFlags(dbFlags).lockManager(lockManagerImpl).
@@ -42,7 +41,6 @@ public class ConfigServlet extends HttpServlet {
 	    }
 	}
 	
-	
 	@Override
 	public void destroy() {
 	    try {
@@ -51,7 +49,6 @@ public class ConfigServlet extends HttpServlet {
 	    	logger.fatal("failed to shutdown annotation database", t);
 	    }
 	}
-
 
 	private String readProperty(String propertyName, ServletContext application) throws ServletException {			    		    
 		String propertyValue = application.getInitParameter(propertyName);

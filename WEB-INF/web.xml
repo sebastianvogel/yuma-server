@@ -24,11 +24,12 @@
 		<param-value>http://dme.arcs.ac.at/annotation-middleware/Annotation/body/</param-value>
 	</context-param>
 	
-	<!--  make sure your database supports UTF8 encoding -->
-	<!--  HIBERNATE ANNOTATION DATABASE -->	
-	<!-- context-param>
+	<!--  HIBERNATE  -->
+	<!--  Make sure your database supports UTF8 encoding! -->
+	<!-- 	
+	<context-param>
 		<param-name>annotation.db.impl</param-name>
-		<param-value>at.researchstudio.dme.annotation.db.hibernate.HibernateAnnotationDatabase</param-value>
+		<param-value>at.ait.dme.yuma.server.db.hibernate.HibernateAnnotationDB</param-value>
 	</context-param>
 	
 	<context-param>
@@ -79,13 +80,14 @@
 	<context-param>
 		<param-name>annotation.db.driver.protocol</param-name>
 		<param-value>jdbc:postgresql</param-value>
-	</context-param-->	
+	</context-param>
+	-->	
 	
-	<!--  make sure your database supports UTF8 encoding -->
-	<!--  SESAME ANNOTATION DATABASE -->	
+	<!--  MONGODB  -->
+	<!--  Make sure your database supports UTF8 encoding!  -->	
 	<context-param>
 		<param-name>annotation.db.impl</param-name>
-		<param-value>at.ait.dme.yuma.server.db.sesame.SesameAnnotationDatabase</param-value>
+		<param-value>at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB</param-value>
 	</context-param>
 	
 	<context-param>
@@ -95,27 +97,27 @@
 	
 	<context-param>
 		<param-name>annotation.db.port</param-name>
-		<param-value>5432</param-value>
+		<param-value>27017</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>annotation.db.name</param-name>
-		<param-value>postgres</param-value>
+		<param-value>annotations</param-value>
 	</context-param>
 
 	<context-param>
 		<param-name>annotation.db.user</param-name>
-		<param-value>postgres</param-value>
+		<param-value>mongodb</param-value>
 	</context-param>
 
 	<context-param>
 		<param-name>annotation.db.pass</param-name>
-		<param-value>postgres</param-value>
+		<param-value>mongodb</param-value>
 	</context-param>
 
 	<context-param>
 		<param-name>annotation.db.dir</param-name>
-		<param-value>c:\tmp\sesame</param-value>
+		<param-value></param-value>
 	</context-param>
 
 	<context-param>
@@ -125,17 +127,17 @@
 		
 	<context-param>
 		<param-name>annotation.db.lock.manager</param-name>
-		<param-value>at.ait.dme.yuma.server.db.RdbmsAnnotationLockManager</param-value>
+		<param-value></param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>annotation.db.driver</param-name>
-		<param-value>org.postgresql.Driver</param-value>
+		<param-value></param-value>
 	</context-param>	
 	
 	<context-param>
 		<param-name>annotation.db.driver.protocol</param-name>
-		<param-value>jdbc:postgresql</param-value>
+		<param-value></param-value>
 	</context-param>	
 			
 	<listener>

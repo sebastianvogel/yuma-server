@@ -2,14 +2,28 @@ package at.ait.dme.yuma.server.db.mongodb.test;
 
 import java.util.Date;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import at.ait.dme.yuma.server.Data;
+import at.ait.dme.yuma.server.Setup;
+import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.SemanticTag;
 
 public class MongoAnnotationDatabaseTest {
+	
+	@BeforeClass
+	public static void setUp() throws Exception {				
+		Setup.buildMongoDBConfiguration();
+	}
+
+	@AfterClass
+	public static void tearDown() throws Exception {
+		Config.getInstance().getAnnotationDatabase().shutdown();
+	}
 
 	@Test
 	public void testCreateUpdateDeleteAnnotation() throws Exception {
@@ -48,7 +62,6 @@ public class MongoAnnotationDatabaseTest {
 		MongoAnnotationDB db = new MongoAnnotationDB();
 		db.connect();
 		String id = db.createAnnotation(a);
-		db.findAnnotationById(id);
 	}
 	
 	@Test

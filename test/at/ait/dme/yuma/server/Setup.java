@@ -12,67 +12,14 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
  *
  * @author Gerald de Jong <geralddejong@gmail.com>
  * @author Christian Sadilek <christian.sadilek@gmail.com>
+ * @author Rainer Simon
  */
-
 public class Setup {
-
-    private static String databaseDir() {
-        String osName = System.getProperty("os.name");
-        if (osName.startsWith("Mac")) {
-            return "/tmp/sesametest";
-        }
-        else if (osName.startsWith("Win")) {
-            return "c:\\sesame\\test";
-        }
-        else {
-            throw new RuntimeException("Unrecognized OS Name");
-        }
-    }
-
-    public static void buildSesameNativeConfiguration() throws AnnotationDatabaseException {
-        new Config.Builder(
-                "at.ait.dme.yuma.server.db.sesame.SesameAnnotationDatabase",
-                "http://localhost:8081/annotation-middleware/Annotation/",
-                "http://localhost:8081/annotation-middleware/Annotation/body"
-        )
-                .dbDriver("org.postgresql.Driver")
-                .dbDriverProtocol("jdbc:postgresql")
-                .dbHost("localhost")
-                .dbPort("5432")
-                .dbName("postgres")
-                .dbUser("postgres")
-                .dbPass("postgres")
-                .dbFlags("native")
-                .dbDir(databaseDir())
-                .lockManager("at.ait.dme.yuma.server.db.RdbmsAnnotationLockManager")
-                .createInstance();
-        Config.getInstance().getAnnotationDatabase().init();
-    }
-
-    public static void buildSesameRdbmsConfiguration() throws AnnotationDatabaseException {
-        new Config.Builder(
-                "at.ait.dme.yuma.server.db.sesame.SesameAnnotationDatabase",
-                "http://localhost:8081/annotation-middleware/Annotation/",
-                "http://localhost:8081/annotation-middleware/Annotation/body/"
-        )
-                .dbDriver("org.postgresql.Driver")
-                .dbDriverProtocol("jdbc:postgresql")
-                .dbHost("localhost")
-                .dbPort("5432")
-                .dbName("postgres")
-                .dbUser("postgres")
-                .dbPass("postgres")                
-                .dbDir(databaseDir())
-                .lockManager("at.ait.dme.yuma.server.db.RdbmsAnnotationLockManager")
-                .createInstance();
-        Config.getInstance().getAnnotationDatabase().init();
-    }
        
     public static void buildHibernateConfiguration() throws AnnotationDatabaseException {
     	new Config.Builder(
     			"at.ait.dme.yuma.server.db.hibernate.HibernateAnnotationDatabase",				
-				"http://localhost:8888/annotation-middleware/annotations/annotation/",
-				"http://localhost:8888/annotation-middleware/annotations/annotation/body"
+				"http://localhost:8888/yuma-server/json/"
 		)    	
     			.dbDriver("org.postgresql.Driver")
     			.dbDriverProtocol("jdbc:postgresql").
@@ -85,6 +32,21 @@ public class Setup {
 		
 		Config.getInstance().getAnnotationDatabase().init();
     }
+    
+    public static void buildMongoDBConfiguration() throws AnnotationDatabaseException {
+    	new Config.Builder(
+    			"at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB",				
+				"http://localhost:8888/yuma-server/json/"
+		)    	
+				.dbHost("localhost")
+				.dbPort("27017")
+				.dbName("annotations")
+				.dbUser("mongodb")
+				.dbPass("mongodb").
+				createInstance();
+		
+		Config.getInstance().getAnnotationDatabase().init();
+    }   
     
     public static void startEmbeddedJaxrsServer(Class <?> clazz) {
         TJWSEmbeddedJaxrsServer tjws = new TJWSEmbeddedJaxrsServer();
