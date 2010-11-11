@@ -17,7 +17,7 @@ import org.junit.Test;
 import at.ait.dme.yuma.server.Setup;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.AbstractLockManager;
-import at.ait.dme.yuma.server.db.RdbmsAnnotationLockManager;
+import at.ait.dme.yuma.server.db.hibernate.RdbmsAnnotationLockManager;
 import at.ait.dme.yuma.server.exception.AnnotationLockedException;
 
 /**

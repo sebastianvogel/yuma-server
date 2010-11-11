@@ -12,7 +12,7 @@ public class AnnotationNotFoundExceptionMapper
 	implements ExceptionMapper<AnnotationNotFoundException> {
 
 	@Override
-	public Response toResponse(AnnotationNotFoundException anfe) {
-		return Response.status(Status.NOT_FOUND).entity(anfe.getMessage()).build();
+	public Response toResponse(AnnotationNotFoundException e) {
+		return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
 	}
 }

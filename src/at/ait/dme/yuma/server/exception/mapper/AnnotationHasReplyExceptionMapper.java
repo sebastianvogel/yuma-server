@@ -8,11 +8,11 @@ import javax.ws.rs.ext.Provider;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 
 @Provider
-public class AnnotationAlreadyReferencedExceptionMapper 
+public class AnnotationHasReplyExceptionMapper
 	implements ExceptionMapper<AnnotationHasReplyException> {
 
 	@Override
-	public Response toResponse(AnnotationHasReplyException aare) {
-		return Response.status(Status.CONFLICT).entity(aare.getMessage()).build();
+	public Response toResponse(AnnotationHasReplyException e) {
+		return Response.status(Status.CONFLICT).entity(e.getMessage()).build();
 	}
 }

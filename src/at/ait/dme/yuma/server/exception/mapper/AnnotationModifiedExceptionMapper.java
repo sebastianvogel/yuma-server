@@ -12,7 +12,7 @@ public class AnnotationModifiedExceptionMapper
 	implements ExceptionMapper<AnnotationModifiedException> {
 
 	@Override
-	public Response toResponse(AnnotationModifiedException ame) {
-		return Response.status(Status.CONFLICT).entity(ame.getMessage()).build();
+	public Response toResponse(AnnotationModifiedException e) {
+		return Response.status(Status.CONFLICT).entity(e.getMessage()).build();
 	}
 }

@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.db;
+package at.ait.dme.yuma.server.db.hibernate;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,6 +7,7 @@ import java.sql.Statement;
 
 import org.apache.log4j.Logger;
 
+import at.ait.dme.yuma.server.db.AbstractLockManager;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationLockedException;
 

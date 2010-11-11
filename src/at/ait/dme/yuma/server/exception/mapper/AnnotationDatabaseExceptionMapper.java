@@ -12,7 +12,7 @@ public class AnnotationDatabaseExceptionMapper
 	implements ExceptionMapper<AnnotationDatabaseException> {
 
 	@Override
-	public Response toResponse(AnnotationDatabaseException ade) {
-		return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ade.getMessage()).build();
+	public Response toResponse(AnnotationDatabaseException e) {
+		return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
 	}
 }

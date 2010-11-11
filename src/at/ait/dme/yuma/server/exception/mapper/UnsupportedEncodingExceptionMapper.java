@@ -12,7 +12,7 @@ public class UnsupportedEncodingExceptionMapper
 	implements ExceptionMapper<UnsupportedEncodingException> {
 
 	@Override
-	public Response toResponse(UnsupportedEncodingException uee) {
-		return Response.status(Status.INTERNAL_SERVER_ERROR).entity(uee.getMessage()).build();
+	public Response toResponse(UnsupportedEncodingException e) {
+		return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
 	}
 }
