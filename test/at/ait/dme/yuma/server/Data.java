@@ -324,12 +324,12 @@ public class Data {
 		"</rdf:RDF>";
 	
 	public static final String JSON_ANNOTATION =
-		"{ \"id\" : 123198553 , " +
-		  "\"tags\" : [ { \"title\" : \"tagA\"} , { \"title\" : \"tagB\"} , { \"title\" : \"tagC\"}] , "+
-		  "\"parent-id\" : 765423 , " +
-		  "\"root-id\" : 2345345 , " +
+		"{ \"tags\" : [ { \"title\" : \"tagA\"} , { \"title\" : \"tagB\"} , { \"title\" : \"tagC\"}] , "+
+		  "\"parent-id\" : \"765423\" , " +
+		  "\"root-id\" : \"2345345\" , " +
 		  "\"text\" : \"Just some random test annotation.\" ," +
 		  "\"title\" : \"Test Annotation\" , "+
+		  "\"scope\" : \"public\" , "+
 		  "\"last-modified\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} ,"+
 		  "\"created\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} , "+
 		  "\"replies\" : [ \"reply01\" , \"reply02\" , \"reply03\" , \"reply04\" , \"reply05\" , \"reply06\"] , "+

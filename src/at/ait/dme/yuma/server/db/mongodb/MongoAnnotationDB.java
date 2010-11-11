@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 
 import com.mongodb.DB;
 import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.DBCollection;
 import com.mongodb.BasicDBObject;
@@ -113,8 +114,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	@Override
 	public void deleteAnnotation(String annotationId)
 			throws AnnotationDatabaseException, AnnotationHasReplyException {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -125,10 +125,12 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public int countAnnotations(String objectId)
+	public long countAnnotations(String objectId)
 			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return 0;
+
+		BasicDBObject query = new BasicDBObject();
+		query.put(Annotation.OBJECT_ID, objectId);
+		return collection.count(query);
 	}
 
 	@Override
@@ -142,24 +144,14 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	public Annotation findAnnotationById(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 
-		BasicDBObject query = new BasicDBObject();
-		query.put(OID, new ObjectId(annotationId));
-		DBCursor cursor = collection.find(query);
-		
-		if (cursor.count() > 1)
+		try {
+			Annotation annotation = new Annotation(findDBObjectByOID(annotationId).toMap());
+			annotation.setAnnotationID(annotationId);
+			return annotation;
+		} catch (AnnotationFormatException e) {
 			// Should never happen
-			throw new AnnotationDatabaseException("More than one object for this ID");
-		
-		if (cursor.count() > 0) {
-			try {
-				return new Annotation(cursor.next().toString());
-			} catch (AnnotationFormatException e) {
-				// Should never happen
-				throw new AnnotationDatabaseException(e);
-			}
+			throw new AnnotationDatabaseException(e);
 		}
-		
-		throw new AnnotationNotFoundException();
 	}
 
 	@Override
@@ -167,6 +159,23 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 			throws AnnotationDatabaseException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private DBObject findDBObjectByOID(String oid)
+		throws AnnotationDatabaseException, AnnotationNotFoundException {
+		
+		BasicDBObject query = new BasicDBObject();
+		query.put(OID, new ObjectId(oid));
+		DBCursor cursor = collection.find(query);
+		
+		if (cursor.count() > 1)
+			// Should never happen
+			throw new AnnotationDatabaseException("More than one object for this ID");
+		
+		if (cursor.count() > 0)
+				return cursor.next();
+		
+		throw new AnnotationNotFoundException();
 	}
 
 }

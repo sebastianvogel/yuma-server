@@ -17,19 +17,19 @@ import com.mongodb.util.JSON;
  */
 public class Annotation {
 	
-	private static final String ANNOTATION_ID = "id";
-	private static final String ROOT_ID = "root-id";
-	private static final String PARENT_ID = "parent-id";
-	private static final String OBJECT_ID = "object-id";
-	private static final String CREATED = "created";
-	private static final String LAST_MODIFIED = "last-modified";
-	private static final String CREATED_BY = "created-by";
-	private static final String TITLE = "title";
-	private static final String TEXT = "text";
-	private static final String FRAGMENT = "fragment";
-	private static final String SCOPE = "scope";
-	private static final String SEMANTIC_TAGS = "tags";
-	private static final String REPLIES = "replies";
+	public static final String ANNOTATION_ID = "id";
+	public static final String ROOT_ID = "root-id";
+	public static final String PARENT_ID = "parent-id";
+	public static final String OBJECT_ID = "object-id";
+	public static final String CREATED = "created";
+	public static final String LAST_MODIFIED = "last-modified";
+	public static final String CREATED_BY = "created-by";
+	public static final String TITLE = "title";
+	public static final String TEXT = "text";
+	public static final String FRAGMENT = "fragment";
+	public static final String SCOPE = "scope";
+	public static final String SEMANTIC_TAGS = "tags";
+	public static final String REPLIES = "replies";
 
 	private Map<String, Object> thisAnnotation = new HashMap<String, Object>();
 	
@@ -57,28 +57,28 @@ public class Annotation {
 		}
 	}
 
-	public void setAnnotationID(Long annotationID) {
+	public void setAnnotationID(String annotationID) {
 		thisAnnotation.put(ANNOTATION_ID, annotationID);
 	}
 
-	public Long getAnnotationID() {
-		return (Long) thisAnnotation.get(ANNOTATION_ID);
+	public String getAnnotationID() {
+		return (String) thisAnnotation.get(ANNOTATION_ID);
 	}
 
-	public void setRootId(Long rootId) {
+	public void setRootId(String rootId) {
 		thisAnnotation.put(ROOT_ID, rootId);
 	}
 
-	public Long getRootId() {
-		return (Long) thisAnnotation.get(ROOT_ID);
+	public String getRootId() {
+		return (String) thisAnnotation.get(ROOT_ID);
 	}
 
-	public void setParentId(Long parentId) {
+	public void setParentId(String parentId) {
 		thisAnnotation.put(PARENT_ID, parentId);
 	}
 
-	public Long getParentId() {
-		return (Long) thisAnnotation.get(PARENT_ID);
+	public String getParentId() {
+		return (String) thisAnnotation.get(PARENT_ID);
 	}
 
 	public void setObjectID(String objectID) {
@@ -168,6 +168,50 @@ public class Annotation {
 	@Override
 	public String toString() {
 		return JSON.serialize(thisAnnotation);
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof Annotation))
+			return false;
+		
+		Annotation a = (Annotation) other;
+		
+		if (!a.getRootId().equals(this.getRootId()))
+			return false;
+		
+		if (!a.getParentId().equals(this.getParentId()))
+			return false;
+		
+		if (!a.getObjectID().equals(this.getObjectID()))
+			return false;
+		
+		if (!a.getCreated().equals(this.getCreated()))
+			return false;
+		
+		if (!a.getLastModified().equals(this.getLastModified()))
+			return false;
+		
+		if (!a.getCreatedBy().equals(this.getCreatedBy()))
+			return false;
+		
+		if (!a.getTitle().equals(this.getTitle()))
+			return false;
+		
+		if (!a.getText().equals(this.getText()))
+			return false;
+		
+		if (!a.getFragment().equals(this.getFragment()))
+			return false;
+		
+		if (!a.getScope().equals(this.getScope()))
+			return false;
+		
+		// TODO match semantic tags
+		
+		// TODO match replies
+		
+		return true;
 	}
 	
 }

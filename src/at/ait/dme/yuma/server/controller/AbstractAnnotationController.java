@@ -149,7 +149,7 @@ public abstract class AbstractAnnotationController {
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
-		int count = 0;
+		long count = 0;
 		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();

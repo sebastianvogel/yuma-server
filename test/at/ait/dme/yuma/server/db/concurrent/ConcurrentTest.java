@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 import java.util.concurrent.CountDownLatch;
 
 import at.ait.dme.yuma.server.Data;
+import at.ait.dme.yuma.server.Setup;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
@@ -26,7 +27,7 @@ public class ConcurrentTest {
 
 	@BeforeClass
 	public static void setUp() throws Exception {
-
+		Setup.buildMongoDBConfiguration();
 	}
 
 	@AfterClass

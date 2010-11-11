@@ -152,7 +152,7 @@ public abstract class AbstractAnnotationDB {
 	 * @return the number of annotations for this object
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract int countAnnotations(String objectId)
+	public abstract long countAnnotations(String objectId)
 		throws AnnotationDatabaseException; 
 	
 	/**
