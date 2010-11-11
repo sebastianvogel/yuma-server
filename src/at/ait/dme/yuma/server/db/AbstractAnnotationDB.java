@@ -31,7 +31,7 @@ import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
  * @author Christian Sadilek
  * @author Rainer Simon
  */
-public abstract class AnnotationDatabase {	
+public abstract class AbstractAnnotationDB {	
 	
 	protected static final String UNEXPECTED_RESPONSE = "unexpected response";		
 	protected static final String FAILED_TO_READ_ANNOTATION = "failed to read annotation";	

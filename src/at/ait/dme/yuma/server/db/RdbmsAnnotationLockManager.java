@@ -16,7 +16,7 @@ import at.ait.dme.yuma.server.exception.AnnotationLockedException;
  * @author Christian Sadilek
  *
  */
-public class RdbmsAnnotationLockManager implements AnnotationDatabaseLockManager {
+public class RdbmsAnnotationLockManager implements AbstractLockManager {
 	private static Logger logger = Logger.getLogger(RdbmsAnnotationLockManager.class);
 	
 	private static final long RETRY_INTERVAL = 250l;

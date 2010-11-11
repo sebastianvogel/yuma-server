@@ -9,7 +9,7 @@ import at.ait.dme.yuma.server.exception.AnnotationLockedException;
  * 
  * @author Christian Sadilek
  */
-public interface AnnotationDatabaseLockManager {
+public interface AbstractLockManager {
 	
 	/**
 	 * Acquire lock for the given annotation

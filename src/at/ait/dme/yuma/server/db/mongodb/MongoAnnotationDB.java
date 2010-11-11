@@ -11,14 +11,14 @@ import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 
-import at.ait.dme.yuma.server.db.AnnotationDatabase;
+import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.Annotation;
 
-public class MongoAnnotationDB extends AnnotationDatabase {
+public class MongoAnnotationDB extends AbstractAnnotationDB {
 	
 	private DBCollection collection = null;
 

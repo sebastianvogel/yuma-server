@@ -2,8 +2,8 @@ package at.ait.dme.yuma.server.config;
 
 import org.apache.log4j.Logger;
 
-import at.ait.dme.yuma.server.db.AnnotationDatabase;
-import at.ait.dme.yuma.server.db.AnnotationDatabaseLockManager;
+import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
+import at.ait.dme.yuma.server.db.AbstractLockManager;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 
 /**
@@ -182,14 +182,14 @@ public class Config {
 		return annotationBodyBaseUrl;
 	}	
 
-	public AnnotationDatabaseLockManager getLockManager() throws AnnotationDatabaseException {
-		AnnotationDatabaseLockManager lockManager = null;
+	public AbstractLockManager getLockManager() throws AnnotationDatabaseException {
+		AbstractLockManager lockManager = null;
 		try {
 			if(lockManagerImpl.isEmpty()) return lockManager;
 			Class<?> annotationDbLockImplClass = Class.forName(lockManagerImpl);
 			Object obj = annotationDbLockImplClass.newInstance();
-			if (obj instanceof AnnotationDatabaseLockManager) {
-				lockManager = (AnnotationDatabaseLockManager) obj;
+			if (obj instanceof AbstractLockManager) {
+				lockManager = (AbstractLockManager) obj;
 			} else {
 				logger.fatal("annotation lockmanager implementation class is invalid. "
 						+ "check inheritance");
@@ -202,13 +202,13 @@ public class Config {
 		return lockManager;
 	}
 	
-	public AnnotationDatabase getAnnotationDatabase() throws AnnotationDatabaseException {
-		AnnotationDatabase annotationDb = null;
+	public AbstractAnnotationDB getAnnotationDatabase() throws AnnotationDatabaseException {
+		AbstractAnnotationDB annotationDb = null;
 		try {
 			Class<?> annotationDbImplClass = Class.forName(dbImpl);
 			Object obj = annotationDbImplClass.newInstance();
-			if (obj instanceof AnnotationDatabase) {
-				annotationDb = (AnnotationDatabase) obj;
+			if (obj instanceof AbstractAnnotationDB) {
+				annotationDb = (AbstractAnnotationDB) obj;
 			} else {
 				logger.fatal("annotation database implementation class is invalid. "
 						+ "check inheritance");

@@ -15,7 +15,7 @@ import com.mongodb.util.JSON;
 import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.db.AnnotationDatabase;
+import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
@@ -45,7 +45,7 @@ public abstract class AbstractAnnotationController {
 	protected Response createAnnotation(String annotation)
 		throws AnnotationDatabaseException, AnnotationFormatException, AnnotationModifiedException {
 		
-		AnnotationDatabase db = null;
+		AbstractAnnotationDB db = null;
 		String annotationId = null;
 		
 		try {
@@ -74,7 +74,7 @@ public abstract class AbstractAnnotationController {
 	protected Response updateAnnotation(String annotationId, String annotation)
 			throws AnnotationDatabaseException, AnnotationFormatException, AnnotationHasReplyException, UnsupportedEncodingException {
 		
-		AnnotationDatabase db = null;
+		AbstractAnnotationDB db = null;
 		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
@@ -100,7 +100,7 @@ public abstract class AbstractAnnotationController {
 	protected Response deleteAnnotation(String annotationId)
 		throws AnnotationDatabaseException, AnnotationHasReplyException, UnsupportedEncodingException {
 		
-		AnnotationDatabase db = null;
+		AbstractAnnotationDB db = null;
 		try {			
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
@@ -125,7 +125,7 @@ public abstract class AbstractAnnotationController {
 	protected Response listAnnotations(String objectId)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		AnnotationDatabase db = null;
+		AbstractAnnotationDB db = null;
 		List<Annotation> annotations = null;
 		
 		try {
@@ -148,7 +148,7 @@ public abstract class AbstractAnnotationController {
 	protected Response countAnnotations(String objectId)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		AnnotationDatabase db = null;
+		AbstractAnnotationDB db = null;
 		int count = 0;
 		
 		try {
@@ -172,7 +172,7 @@ public abstract class AbstractAnnotationController {
 	protected Response listAnnotationReplies(String annotationId)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		AnnotationDatabase db = null;
+		AbstractAnnotationDB db = null;
 		List<Annotation> annotations = null;
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
@@ -194,7 +194,7 @@ public abstract class AbstractAnnotationController {
 	protected Response findAnnotationById(String annotationId)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
-		AnnotationDatabase db = null;
+		AbstractAnnotationDB db = null;
 		Annotation annotation = null;
 		
 		try {
@@ -217,7 +217,7 @@ public abstract class AbstractAnnotationController {
 	protected Response findAnnotations(String query)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		AnnotationDatabase db = null;
+		AbstractAnnotationDB db = null;
 		List<Annotation> annotations = null;		
 		
 		try {

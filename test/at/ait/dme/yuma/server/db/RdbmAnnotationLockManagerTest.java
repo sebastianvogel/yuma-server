@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import at.ait.dme.yuma.server.Setup;
 import at.ait.dme.yuma.server.config.Config;
-import at.ait.dme.yuma.server.db.AnnotationDatabaseLockManager;
+import at.ait.dme.yuma.server.db.AbstractLockManager;
 import at.ait.dme.yuma.server.db.RdbmsAnnotationLockManager;
 import at.ait.dme.yuma.server.exception.AnnotationLockedException;
 
@@ -41,21 +41,21 @@ public class RdbmAnnotationLockManagerTest {
 	
 	@After
 	public void cleanUp() throws Exception {
-		AnnotationDatabaseLockManager lockMan = new RdbmsAnnotationLockManager(connect());
+		AbstractLockManager lockMan = new RdbmsAnnotationLockManager(connect());
 		lockMan.releaseLock(LOCK_ANNOTATION_ID);
 		for (Connection c : openConnections) c.close();
 	}
 	
 	@Test
 	public void testInit() throws Exception {		
-		AnnotationDatabaseLockManager lockMan = new RdbmsAnnotationLockManager(connect());
+		AbstractLockManager lockMan = new RdbmsAnnotationLockManager(connect());
 		lockMan = new RdbmsAnnotationLockManager(connect());		
 	}
 	
 	
 	@Test
 	public void testAcquireReleaseLock() throws Exception {
-		AnnotationDatabaseLockManager lockMan = new RdbmsAnnotationLockManager(connect());		
+		AbstractLockManager lockMan = new RdbmsAnnotationLockManager(connect());		
 		try {
 			lockMan.acquireLock(LOCK_ANNOTATION_ID,0);
 			lockMan = new RdbmsAnnotationLockManager(connect());
@@ -76,7 +76,7 @@ public class RdbmAnnotationLockManagerTest {
 		new Thread() {
 			public void run() {
 				try {
-					AnnotationDatabaseLockManager lockMan = new RdbmsAnnotationLockManager(connect());
+					AbstractLockManager lockMan = new RdbmsAnnotationLockManager(connect());
 					lockMan.acquireLock(LOCK_ANNOTATION_ID,10000);
 				} catch (Exception e) {/*ignored*/}
 			}
@@ -91,7 +91,7 @@ public class RdbmAnnotationLockManagerTest {
 	
 	@Test
 	public void testTryAcquireReleaseLock() throws Exception {
-		AnnotationDatabaseLockManager lockMan = new RdbmsAnnotationLockManager(connect());		
+		AbstractLockManager lockMan = new RdbmsAnnotationLockManager(connect());		
 		assertTrue(lockMan.tryAcquireLock(LOCK_ANNOTATION_ID));		
 		lockMan = new RdbmsAnnotationLockManager(connect());
 		assertFalse(lockMan.tryAcquireLock(LOCK_ANNOTATION_ID));
