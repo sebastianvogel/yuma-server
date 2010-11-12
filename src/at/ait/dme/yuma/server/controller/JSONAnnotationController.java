@@ -6,6 +6,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -42,6 +43,16 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
 		return super.findAnnotationById(id);
+	}
+	
+	@PUT
+	@Consumes("application/json")
+	@Path("/{id}")
+	@Override
+	public Response updateAnnotation(@PathParam("id") String id, String annotation) 
+			throws AnnotationDatabaseException, AnnotationFormatException, AnnotationHasReplyException, UnsupportedEncodingException {
+		
+		return super.updateAnnotation(id, annotation);
 	}
 	
 	@DELETE

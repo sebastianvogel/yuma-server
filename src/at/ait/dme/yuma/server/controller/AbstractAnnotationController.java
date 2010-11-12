@@ -75,7 +75,6 @@ public abstract class AbstractAnnotationController {
 			throws AnnotationDatabaseException, AnnotationFormatException, AnnotationHasReplyException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
-		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
@@ -86,7 +85,7 @@ public abstract class AbstractAnnotationController {
 		} finally {
 			if(db != null) db.disconnect();
 		}	
-		return Response.ok().entity(annotation).header("Location", annotationId).build(); 
+		return Response.ok().entity(annotation.toString()).header("Location", URIBuilder.toURI(annotationId)).build(); 
 	}
 	
 	/**

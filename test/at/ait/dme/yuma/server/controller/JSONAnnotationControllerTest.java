@@ -45,7 +45,6 @@ public class JSONAnnotationControllerTest {
 		Config.getInstance().getAnnotationDatabase().shutdown();			
 	}
 		
-	/*
 	@Test
 	public void testCreateUpdateDeleteAnnotation() throws Exception {
 		HttpClient httpClient = new HttpClient();
@@ -59,25 +58,25 @@ public class JSONAnnotationControllerTest {
 		assertNotNull(createdAnnotationUrl);
 		
 		PutMethod updateMethod = new PutMethod(createdAnnotationUrl);
-		updateMethod.setRequestEntity(new StringRequestEntity(Data.JSON_ANNOTATION_01, 
+		updateMethod.setRequestEntity(new StringRequestEntity(Data.JSON_ANNOTATION_02, 
 				CONTENT_TYPE_JSON, ENCODING));						
-		assertEquals(httpClient.executeMethod(updateMethod), HttpStatus.SC_OK);
+		assertEquals(HttpStatus.SC_OK, httpClient.executeMethod(updateMethod));
 		location = updateMethod.getResponseHeader(LOCATION_HEADER);						
 		String updatedAnnotationUrl = location.getValue();
 		assertNotNull(updatedAnnotationUrl);
-	
+		
 		DeleteMethod deleteMethod = new DeleteMethod(updatedAnnotationUrl);
 		deleteMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
-		assertEquals(httpClient.executeMethod(deleteMethod), HttpStatus.SC_OK);
+		assertEquals(HttpStatus.SC_NO_CONTENT, httpClient.executeMethod(deleteMethod));
 		
-		// for clients that can't send put and delete
+		/* for clients that can't send put and delete
 		PostMethod postDeleteMethod = new PostMethod(createdAnnotationUrl);		
 		postDeleteMethod.setQueryString("_method=delete");	
 		postDeleteMethod.setRequestEntity(new StringRequestEntity("", 
 				CONTENT_TYPE_JSON, ENCODING));			
 		assertEquals(httpClient.executeMethod(postDeleteMethod), HttpStatus.SC_OK);
+		*/
 	}
-	*/
 	
 	@Test
 	public void testCreateFindDeleteAnnotation() throws Exception {
