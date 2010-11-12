@@ -322,8 +322,8 @@ public class Data {
 		"bridge was named Salazar Bridge.</a:label> " +
 		"</rdf:Description> " +
 		"</rdf:RDF>";
-	
-	public static final String JSON_ANNOTATION =
+
+	public static final String JSON_ANNOTATION_01 =
 		"{ \"tags\" : [ { \"title\" : \"tagA\"} , { \"title\" : \"tagB\"} , { \"title\" : \"tagC\"}] , "+
 		  "\"parent-id\" : \"765423\" , " +
 		  "\"root-id\" : \"2345345\" , " +
@@ -333,6 +333,36 @@ public class Data {
 		  "\"last-modified\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} ,"+
 		  "\"created\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} , "+
 		  "\"replies\" : [ \"reply01\" , \"reply02\" , \"reply03\" , \"reply04\" , \"reply05\" , \"reply06\"] , "+
+		  "\"created-by\" : \"guest\" , "+
+		  "\"fragment\" : \"<svg/>\" , "+
+		  "\"object-id\" : \"asdf23adsf\"" +
+		"}";
+	
+	public static final String JSON_ANNOTATION_NO_REPLIES_01 =
+		"{ \"tags\" : [ { \"title\" : \"tagA\"} , { \"title\" : \"tagB\"} , { \"title\" : \"tagC\"}] , "+
+		  "\"parent-id\" : \"765423\" , " +
+		  "\"root-id\" : \"2345345\" , " +
+		  "\"text\" : \"Just some random test annotation.\" ," +
+		  "\"title\" : \"Test Annotation\" , "+
+		  "\"scope\" : \"public\" , "+
+		  "\"last-modified\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} ,"+
+		  "\"created\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} , "+
+		  "\"replies\" : [ ] , "+
+		  "\"created-by\" : \"guest\" , "+
+		  "\"fragment\" : \"<svg/>\" , "+
+		  "\"object-id\" : \"asdf23adsf\"" +
+		"}";
+	
+	public static final String JSON_ANNOTATION_NO_REPLIES_02 =
+		"{ \"tags\" : [ { \"title\" : \"tagA\"} , { \"title\" : \"tagB\"} , { \"title\" : \"tagC\"}] , "+
+		  "\"parent-id\" : \"765423\" , " +
+		  "\"root-id\" : \"2345345\" , " +
+		  "\"text\" : \"Just another random test annotation.\" ," +
+		  "\"title\" : \"Test Annotation number 2\" , "+
+		  "\"scope\" : \"public\" , "+
+		  "\"last-modified\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} ,"+
+		  "\"created\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} , "+
+		  "\"replies\" : [ ] , "+
 		  "\"created-by\" : \"guest\" , "+
 		  "\"fragment\" : \"<svg/>\" , "+
 		  "\"object-id\" : \"asdf23adsf\"" +

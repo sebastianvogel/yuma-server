@@ -162,6 +162,10 @@ public class Annotation {
 		return replies;
 	}
 	
+	public boolean hasReplies() {
+		return (replies.size() > 0);
+	}
+	
 	public Map<String, Object> toMap() {
 		return thisAnnotation;
 	}

@@ -123,10 +123,11 @@ public abstract class AbstractAnnotationDB {
 	 * @param annotation the annotation
 	 * @return the (new) annotation ID after the update (may change depending on DB implementation!)
 	 * @throws AnnotationDatabaseException if anything goes wrong
+	 * @throws AnnotationNotFoundException if there is no annotation with the given ID
 	 * @throws AnnotationHasReplyException if this annotation has already been replied to
 	 */
 	public abstract String updateAnnotation(String annotationId, Annotation annotation)
-		throws AnnotationDatabaseException, AnnotationHasReplyException;
+		throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException;
 
 	/**
 	 * Delete an annotation

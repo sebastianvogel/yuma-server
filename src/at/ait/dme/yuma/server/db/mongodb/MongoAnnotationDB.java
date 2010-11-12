@@ -106,15 +106,46 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 
 	@Override
 	public String updateAnnotation(String annotationId, Annotation annotation)
-			throws AnnotationDatabaseException, AnnotationHasReplyException {
+			throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException {
 		
-		return null;
+		try {
+			DBObject before = findDBObjectByAnnotationID(annotationId);
+
+			// Check for replies
+			Annotation a = new Annotation(before.toMap());
+			if (a.hasReplies())
+				throw new AnnotationHasReplyException();
+			
+			BasicDBObject after = new BasicDBObject(annotation.toMap());
+			collection.update(before, after);
+
+			// Note: MongoDB does not change the ID on updates
+			return annotationId;
+		} catch (AnnotationFormatException e) {
+			// Should never happen 
+			throw new AnnotationDatabaseException(e);
+		}
 	}
 
 	@Override
 	public void deleteAnnotation(String annotationId)
 			throws AnnotationDatabaseException, AnnotationHasReplyException {
+		
+		try {
+			DBObject dbo = findDBObjectByAnnotationID(annotationId);
 
+			// Check for replies
+			Annotation a = new Annotation(dbo.toMap());
+			if (a.hasReplies())
+				throw new AnnotationHasReplyException();
+			
+			collection.remove(dbo);
+		} catch (AnnotationNotFoundException e) {
+			// Not found -> do nothing
+		} catch (AnnotationFormatException e) {
+			// Should never happen 
+			throw new AnnotationDatabaseException(e);
+		}
 	}
 
 	@Override
@@ -145,7 +176,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 
 		try {
-			Annotation annotation = new Annotation(findDBObjectByOID(annotationId).toMap());
+			Annotation annotation = new Annotation(findDBObjectByAnnotationID(annotationId).toMap());
 			annotation.setAnnotationID(annotationId);
 			return annotation;
 		} catch (AnnotationFormatException e) {
@@ -161,11 +192,11 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		return null;
 	}
 	
-	private DBObject findDBObjectByOID(String oid)
+	private DBObject findDBObjectByAnnotationID(String annotationId)
 		throws AnnotationDatabaseException, AnnotationNotFoundException {
 		
 		BasicDBObject query = new BasicDBObject();
-		query.put(OID, new ObjectId(oid));
+		query.put(OID, new ObjectId(annotationId));
 		DBCursor cursor = collection.find(query);
 		
 		if (cursor.count() > 1)

@@ -11,7 +11,7 @@ public class AnnotationHasReplyException extends Exception {
 	private static final long serialVersionUID = 3843311695698544428L;
 
 	public AnnotationHasReplyException() {		
-		super("annotation already referenced");
+		super("Annotation has replies");
 	}
 
 	public AnnotationHasReplyException(String message, Throwable cause) {
