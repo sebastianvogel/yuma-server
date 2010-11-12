@@ -31,14 +31,14 @@ public class MongoAnnotationDatabaseTest extends TestCase {
 		db.connect();
 		
 		// Create + Read
-		Annotation before = new Annotation(Data.JSON_ANNOTATION_NO_REPLIES_01);
+		Annotation before = new Annotation(Data.JSON_ANNOTATION_01);
 		String id = db.createAnnotation(before);
 		Annotation after = db.findAnnotationById(id);
 		assertEquals(before, after);
 		assertEquals(id, after.getAnnotationID());
 		
 		// Update
-		Annotation beforeUpdate = new Annotation(Data.JSON_ANNOTATION_NO_REPLIES_02);
+		Annotation beforeUpdate = new Annotation(Data.JSON_ANNOTATION_02);
 		id = db.updateAnnotation(id, beforeUpdate);
 		Annotation afterUpdate = db.findAnnotationById(id);
 		assertFalse(afterUpdate.equals(after));

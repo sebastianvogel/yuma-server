@@ -178,6 +178,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		try {
 			Annotation annotation = new Annotation(findDBObjectByAnnotationID(annotationId).toMap());
 			annotation.setAnnotationID(annotationId);
+			
 			return annotation;
 		} catch (AnnotationFormatException e) {
 			// Should never happen

@@ -95,7 +95,7 @@ public class ConcurrentTest {
 			id = db1.createAnnotation(new Annotation(Data.JSON_ANNOTATION_01));
 			db2.connect();
 			try {
-				db2.findAnnotationById(id.toString());
+				db2.findAnnotationById(id);
 				fail("AnnotationNotFoundException expected");
 			} catch(AnnotationNotFoundException anfe) {
 				/*expected */

@@ -19,7 +19,7 @@ public class Setup {
     public static void buildHibernateConfiguration() throws AnnotationDatabaseException {
     	new Config.Builder(
     			"at.ait.dme.yuma.server.db.hibernate.HibernateAnnotationDatabase",				
-				"http://localhost:8888/yuma-server/json/"
+				"http://localhost:8081/yuma-server/json/"
 		)    	
     			.dbDriver("org.postgresql.Driver")
     			.dbDriverProtocol("jdbc:postgresql").
@@ -36,7 +36,7 @@ public class Setup {
     public static void buildMongoDBConfiguration() throws AnnotationDatabaseException {
     	new Config.Builder(
     			"at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB",				
-				"http://localhost:8888/yuma-server/json/"
+				"http://localhost:8081/yuma-server/json/"
 		)    	
 				.dbHost("localhost")
 				.dbPort("27017")
@@ -44,14 +44,14 @@ public class Setup {
 				.dbUser("mongodb")
 				.dbPass("mongodb").
 				createInstance();
-		
+
 		Config.getInstance().getAnnotationDatabase().init();
     }   
     
     public static void startEmbeddedJaxrsServer(Class <?> clazz) {
         TJWSEmbeddedJaxrsServer tjws = new TJWSEmbeddedJaxrsServer();
 		tjws.setBindAddress("localhost");
-		tjws.setRootResourcePath("/annotation-middleware");
+		tjws.setRootResourcePath("/yuma-server");
 		tjws.setPort(8081);
 		tjws.getDeployment().setResourceClasses(Collections.singletonList(clazz.getName()));
 		tjws.start();

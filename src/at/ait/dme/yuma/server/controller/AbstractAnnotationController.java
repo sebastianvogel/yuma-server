@@ -204,7 +204,7 @@ public abstract class AbstractAnnotationController {
 		} finally {
 			if(db != null) db.disconnect();
 		}
-		return Response.ok(annotation).build();
+		return Response.ok(annotation.toString()).build();
 	}
 		
 	/**
