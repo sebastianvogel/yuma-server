@@ -25,7 +25,7 @@ public class MongoAnnotationDatabaseTest extends TestCase {
 	}
 	
 	@Test
-	public void testJSON() throws Exception {		
+	public void testMongoDBCRUD() throws Exception {		
 		MongoAnnotationDB db = new MongoAnnotationDB();
 		db.connect();
 		

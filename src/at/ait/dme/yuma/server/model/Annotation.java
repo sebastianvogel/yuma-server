@@ -17,7 +17,6 @@ import com.mongodb.util.JSON;
  */
 public class Annotation {
 	
-	public static final String ANNOTATION_ID = "id";
 	public static final String ROOT_ID = "root-id";
 	public static final String PARENT_ID = "parent-id";
 	public static final String OBJECT_ID = "object-id";
@@ -30,6 +29,8 @@ public class Annotation {
 	public static final String SCOPE = "scope";
 	public static final String SEMANTIC_TAGS = "tags";
 	public static final String REPLIES = "replies";
+	
+	private String annotationId;
 
 	private Map<String, Object> thisAnnotation = new HashMap<String, Object>();
 	
@@ -57,12 +58,12 @@ public class Annotation {
 		}
 	}
 
-	public void setAnnotationID(String annotationID) {
-		thisAnnotation.put(ANNOTATION_ID, annotationID);
+	public void setAnnotationID(String annotationId) {
+		this.annotationId = annotationId;
 	}
 
 	public String getAnnotationID() {
-		return (String) thisAnnotation.get(ANNOTATION_ID);
+		return annotationId;
 	}
 
 	public void setRootId(String rootId) {
