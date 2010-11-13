@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.model.AnnotationThread;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
@@ -141,10 +142,10 @@ public abstract class AbstractAnnotationDB {
 	/**
 	 * Lists all annotations for a given object
 	 * @param objectId the object ID
-	 * @return the annotations
+	 * @return the annotation threads
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract List<Annotation> listAnnotations(String objectId)
+	public abstract List<AnnotationThread> listAnnotationThreads(String objectId)
 		throws AnnotationDatabaseException;
 
 	/**
@@ -155,16 +156,7 @@ public abstract class AbstractAnnotationDB {
 	 */
 	public abstract long countAnnotations(String objectId)
 		throws AnnotationDatabaseException; 
-	
-	/**
-	 * List all replies for a given annotation
-	 * @param annotationId the annotation ID 
-	 * @return the list of replies
-	 * @throws AnnotationDatabaseException if anything goes wrong
-	 */
-	public abstract List<Annotation> listAnnotationReplies(String annotationId)
-		throws AnnotationDatabaseException; 
-	
+		
 	/**
 	 * Retrieve an annotation by ID
 	 * @param annotationId the annotation ID
@@ -176,6 +168,16 @@ public abstract class AbstractAnnotationDB {
 		throws AnnotationDatabaseException, AnnotationNotFoundException;
 	
 	/**
+	 * Retrieve the thread which contains the given annotation
+	 * @param annotationId the annotation ID
+	 * @return the annotation thread
+	 * @throws AnnotationDatabaseException if anything goes wrong
+	 * @throws AnnotationNotFoundException if the annotation was not found
+	 */
+	public abstract AnnotationThread findThreadForAnnotation(String annotationId)
+		throws AnnotationDatabaseException, AnnotationNotFoundException;
+
+	/**
 	 * Find annotations that match the given search term
 	 * @param query the query term
 	 * @return the list of matching annotations
@@ -183,5 +185,5 @@ public abstract class AbstractAnnotationDB {
 	 */
 	public abstract List<Annotation> findAnnotations(String query) 
 		throws AnnotationDatabaseException;
-
+	
 }

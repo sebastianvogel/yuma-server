@@ -15,6 +15,7 @@ import com.mongodb.util.JSON;
 import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.model.AnnotationThread;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
@@ -114,27 +115,27 @@ public abstract class AbstractAnnotationController {
 	}
 	
 	/**
-	 * List annotations for the given object
+	 * List annotation threads for the given object
 	 * @param objectId the object ID
 	 * @return status code 200 and the representation of the found annotations
 	 * @throws AnnotationDatabaseException (500)
 	 * @throws AnnotationFormatException (415)
 	 * @throws UnsupportedEncodingException (500)
 	 */
-	protected Response listAnnotations(String objectId)
+	protected Response listAnnotationThreads(String objectId)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
-		List<Annotation> annotations = null;
+		List<AnnotationThread> threads = null;
 		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			annotations = db.listAnnotations(URLDecoder.decode(objectId, URL_ENCODING));
+			threads = db.listAnnotationThreads(URLDecoder.decode(objectId, URL_ENCODING));
 		} finally {
 			if(db != null) db.disconnect();
 		}
-		return Response.ok().entity(JSON.serialize(annotations)).build();
+		return Response.ok().entity(JSON.serialize(threads)).build();
 	}
 	
 	/**
@@ -159,30 +160,7 @@ public abstract class AbstractAnnotationController {
 		}
 		return Response.ok().entity(count).build();
 	}
-	
-	/**
-	 * List replies of the given annotation
-	 * @param annotationId the annotation ID
-	 * @return status code 200 and representation of the found replies
-	 * @throws AnnotationDatabaseException (500)
-	 * @throws AnnotationFormatException (415)
-	 * @throws UnsupportedEncodingException (500
-	 */
-	protected Response listAnnotationReplies(String annotationId)
-		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		AbstractAnnotationDB db = null;
-		List<Annotation> annotations = null;
-		try {
-			db = Config.getInstance().getAnnotationDatabase();
-			db.connect(request);
-			annotations = db.listAnnotationReplies(URLDecoder.decode(annotationId, URL_ENCODING));
-		} finally {
-			if(db != null) db.disconnect();
-		}
-		return Response.ok().entity(annotations).build();
-	}
-	
 	/**
 	 * Find an annotation by its ID
 	 * @param annotationId the annotation ID
@@ -204,6 +182,28 @@ public abstract class AbstractAnnotationController {
 			if(db != null) db.disconnect();
 		}
 		return Response.ok(annotation.toString()).build();
+	}
+
+	/**
+	 * Retrieve the thread which contains the given annotation
+	 * @param annotationId the annotation ID
+	 * @return status code 200 and representation of the annotation thread
+	 * @throws AnnotationDatabaseException (500)
+	 * @throws UnsupportedEncodingException (500
+	 */
+	protected Response findThreadForAnnotation(String annotationId)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		AbstractAnnotationDB db = null;
+		AnnotationThread thread = null;
+		try {
+			db = Config.getInstance().getAnnotationDatabase();
+			db.connect(request);
+			thread = db.findThreadForAnnotation(URLDecoder.decode(annotationId, URL_ENCODING));
+		} finally {
+			if(db != null) db.disconnect();
+		}
+		return Response.ok().entity(thread.toString()).build();
 	}
 		
 	/**

@@ -23,6 +23,7 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.model.AnnotationThread;
 
 public class MongoAnnotationDB extends AbstractAnnotationDB {
 	
@@ -149,7 +150,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public List<Annotation> listAnnotations(String objectId)
+	public List<AnnotationThread> listAnnotationThreads(String objectId)
 			throws AnnotationDatabaseException {
 		// TODO Auto-generated method stub
 		return null;
@@ -165,13 +166,6 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public List<Annotation> listAnnotationReplies(String annotationId)
-			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Annotation findAnnotationById(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 
@@ -184,6 +178,13 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 			// Should never happen
 			throw new AnnotationDatabaseException(e);
 		}
+	}
+	
+	@Override
+	public AnnotationThread findThreadForAnnotation(String annotationId)
+			throws AnnotationDatabaseException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
