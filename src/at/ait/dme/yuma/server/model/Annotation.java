@@ -223,12 +223,14 @@ public class Annotation {
 		
 		// TODO match semantic tags
 		
-		if (a.getReplies().size() != this.getReplies().size())
+		if (a.getReplies().size() != replies.size())
 			return false;
 		
-		for (String reply : a.getReplies())
-			if (!replies.contains(reply))
+		for (int i=0; i<replies.size(); i++) {
+			// They're replies - order matters!
+			if (!replies.get(i).equals(a.getReplies().get(i)))
 				return false;
+		}
 		
 		return true;
 	}
