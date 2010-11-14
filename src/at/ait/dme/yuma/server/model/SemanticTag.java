@@ -11,8 +11,6 @@ import java.util.Set;
  * URI), plus various metadata about his resource (such as title,
  * alternative labels, description, etc.)
  * 
- * TODO implement this (re-using code from front-end)
- * 
  * @author Rainer Simon
  */
 public class SemanticTag {

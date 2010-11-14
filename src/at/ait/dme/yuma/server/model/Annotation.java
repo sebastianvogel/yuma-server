@@ -25,6 +25,7 @@ public class Annotation {
 	public static final String CREATED_BY = "created-by";
 	public static final String TITLE = "title";
 	public static final String TEXT = "text";
+	public static final String TYPE = "type";
 	public static final String FRAGMENT = "fragment";
 	public static final String SCOPE = "scope";
 	public static final String SEMANTIC_TAGS = "tags";
@@ -128,6 +129,14 @@ public class Annotation {
 
 	public String getText() {
 		return (String) thisAnnotation.get(TEXT);
+	}
+	
+	public void setType(AnnotationType type) {
+		thisAnnotation.put(TYPE, type.toString());
+	}
+	
+	public AnnotationType getType() {
+		return AnnotationType.fromString((String) thisAnnotation.get(TYPE));
 	}
 
 	public void setFragment(String fragment) {
