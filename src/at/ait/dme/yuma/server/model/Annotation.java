@@ -34,7 +34,7 @@ public class Annotation {
 
 	private Map<String, Object> thisAnnotation = new HashMap<String, Object>();
 	
-	private List<Map<String, String>> tags = new ArrayList<Map<String, String>>();
+	private List<Map<String, Object>> tags = new ArrayList<Map<String, Object>>();
 	
 	private List<String> replies = new ArrayList<String>();
 	
@@ -51,7 +51,7 @@ public class Annotation {
 	public Annotation(Map<?, ?> map) throws AnnotationFormatException {
 		try {
 			thisAnnotation = (Map<String, Object>) map;
-			tags = (List<Map<String, String>>) thisAnnotation.get(SEMANTIC_TAGS);
+			tags = (List<Map<String, Object>>) thisAnnotation.get(SEMANTIC_TAGS);
 			replies = (List<String>) thisAnnotation.get(REPLIES);
 		} catch (Throwable t) {
 			throw new AnnotationFormatException(t.getMessage());
