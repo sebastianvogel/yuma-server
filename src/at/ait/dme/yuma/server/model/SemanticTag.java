@@ -101,5 +101,11 @@ public class SemanticTag {
 	public Map<String, Object> toMap() {
 		return thisTag;
 	}
+	
+	@Override
+	public boolean equals(Object other) {
+		// implement this!
+		return true;
+	}
 
 }
