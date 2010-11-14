@@ -1,7 +1,8 @@
 package at.ait.dme.yuma.server.exception;
 
 /**
- * This exception indicates that an annotation is locked by another process
+ * This exception indicates that an annotation is locked by
+ * another process
  * 
  * @author Christian Sadilek
  *

@@ -2,7 +2,7 @@ package at.ait.dme.yuma.server.exception;
 
 /**
  * This exception indicates that an annotation cannot be changed because
- * it has already been referenced.
+ * it has already been replied to.
  * 
  * @author Christian Sadilek
  *

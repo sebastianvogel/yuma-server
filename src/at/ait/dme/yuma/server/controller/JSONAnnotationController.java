@@ -19,7 +19,9 @@ import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 
 /**
- * Annotation controller that works with JSON.
+ * The primary annotation controller which consumes and
+ * produces JSON representations of annotations and 
+ * annotation threads.
  *  
  * @author Rainer Simon
  */

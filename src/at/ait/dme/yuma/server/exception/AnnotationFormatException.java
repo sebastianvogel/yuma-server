@@ -1,7 +1,8 @@
 package at.ait.dme.yuma.server.exception;
 
 /**
- * This Exception indicates a problem when parsing/processing an annotation.
+ * This Exception indicates a problem when parsing/processing an 
+ * annotation.
  * 
  * @author Christian Sadilek
  */

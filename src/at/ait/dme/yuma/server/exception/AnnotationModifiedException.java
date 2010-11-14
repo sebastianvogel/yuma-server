@@ -1,13 +1,14 @@
 package at.ait.dme.yuma.server.exception;
 
 /**
- * This exception indicates that an annotation has been concurrently modified and
- * should be reread by the client.
+ * This exception indicates that an annotation has been 
+ * concurrently modified and should be reread by
+ * the client.
  * 
  * @author Christian Sadilek
- *
  */
 public class AnnotationModifiedException extends Exception {	
+	
 	private static final long serialVersionUID = 543957402328399775L;
 
 	public AnnotationModifiedException() {

@@ -22,6 +22,7 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.exception.AnnotationFormatException;
+
 /**
  * This class contains the default annotation controller logic.
  * 

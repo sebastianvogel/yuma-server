@@ -7,7 +7,7 @@ import at.ait.dme.yuma.server.db.AbstractLockManager;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 
 /**
- * Configuration settings for the annotation middleware
+ * Configuration settings for the annotation server.
  * 
  * @author Christian Sadilek
  */

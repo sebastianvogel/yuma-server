@@ -1,11 +1,12 @@
 package at.ait.dme.yuma.server.exception;
 
 /**
- * This Exception indicates that an annotation could not be found
+ * This Exception indicates that an annotation could not be found.
  * 
  * @author Christian Sadilek
  */
 public class AnnotationNotFoundException extends Exception {	
+	
 	private static final long serialVersionUID = 6008105430121710654L;
 
 	public AnnotationNotFoundException() {

@@ -5,6 +5,11 @@ import java.net.URISyntaxException;
 
 import at.ait.dme.yuma.server.config.Config;
 
+/**
+ * Utility class for building annotation URIs.
+ * 
+ * @author Rainer Simon
+ */
 public class URIBuilder {
 	
 	private static final String ERROR = "Could not build URI for ID ";

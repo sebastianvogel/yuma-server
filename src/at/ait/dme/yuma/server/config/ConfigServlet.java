@@ -7,6 +7,11 @@ import javax.servlet.http.HttpServlet;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Configuration servlet.
+ * 
+ * @author Christian Sadilek
+ */
 public class ConfigServlet extends HttpServlet {
 	private static Logger logger = Logger.getLogger(ConfigServlet.class);
 

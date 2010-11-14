@@ -25,12 +25,21 @@ import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationThread;
 
+/**
+ * Annotation DB implementation based on the 
+ * MongoDB key/value store.
+ * 
+ * @author Rainer Simon
+ */
 public class MongoAnnotationDB extends AbstractAnnotationDB {
 	
+	/**
+	 * DB object ID key
+	 */
 	private static final String OID = "_id";
 	
 	/**
-	 * Singleton MongoDB database connection
+	 * MongoDB database connection
 	 */
 	private static Mongo MONGO = null;
 	
