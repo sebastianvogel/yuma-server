@@ -118,23 +118,15 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	public String updateAnnotation(String annotationId, Annotation annotation)
 			throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException {
 		
-		try {
-			DBObject before = findDBObjectByAnnotationID(annotationId);
+		DBObject before = findDBObjectByAnnotationID(annotationId);
 
-			// Check for replies
-			Annotation a = new Annotation(before.toMap());
-			if (a.hasReplies())
-				throw new AnnotationHasReplyException();
-			
-			BasicDBObject after = new BasicDBObject(annotation.toMap());
-			collection.update(before, after);
+		// TODO Check for replies!
+		
+		BasicDBObject after = new BasicDBObject(annotation.toMap());
+		collection.update(before, after);
 
-			// Note: MongoDB does not change the ID on updates
-			return annotationId;
-		} catch (AnnotationFormatException e) {
-			// Should never happen 
-			throw new AnnotationDatabaseException(e);
-		}
+		// Note: MongoDB does not change the ID on updates
+		return annotationId;
 	}
 
 	@Override
@@ -144,17 +136,11 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		try {
 			DBObject dbo = findDBObjectByAnnotationID(annotationId);
 
-			// Check for replies
-			Annotation a = new Annotation(dbo.toMap());
-			if (a.hasReplies())
-				throw new AnnotationHasReplyException();
+			// TODO Check for replies
 			
 			collection.remove(dbo);
 		} catch (AnnotationNotFoundException e) {
 			// Not found -> do nothing
-		} catch (AnnotationFormatException e) {
-			// Should never happen 
-			throw new AnnotationDatabaseException(e);
 		}
 	}
 

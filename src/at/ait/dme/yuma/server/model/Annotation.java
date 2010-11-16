@@ -29,7 +29,6 @@ public class Annotation {
 	public static final String FRAGMENT = "fragment";
 	public static final String SCOPE = "scope";
 	public static final String SEMANTIC_TAGS = "tags";
-	public static final String REPLIES = "replies";
 	
 	private String annotationId;
 
@@ -37,11 +36,8 @@ public class Annotation {
 	
 	private List<Map<String, Object>> tags = new ArrayList<Map<String, Object>>();
 	
-	private List<String> replies = new ArrayList<String>();
-	
 	public Annotation() {
 		thisAnnotation.put(SEMANTIC_TAGS, tags);
-		thisAnnotation.put(REPLIES, replies);
 	}
 	
 	public Annotation(String json) throws AnnotationFormatException {
@@ -53,7 +49,6 @@ public class Annotation {
 		try {
 			thisAnnotation = (Map<String, Object>) map;
 			tags = (List<Map<String, Object>>) thisAnnotation.get(SEMANTIC_TAGS);
-			replies = (List<String>) thisAnnotation.get(REPLIES);
 		} catch (Throwable t) {
 			throw new AnnotationFormatException(t.getMessage());
 		}
@@ -162,18 +157,6 @@ public class Annotation {
 	public List<SemanticTag> getTags() {
 		return null;
 	}
-
-	public void addReply(String annotationID) {
-		replies.add(annotationID);
-	}
-
-	public List<String> getReplies() {
-		return replies;
-	}
-	
-	public boolean hasReplies() {
-		return (replies.size() > 0);
-	}
 	
 	public Map<String, Object> toMap() {
 		return thisAnnotation;
@@ -222,15 +205,6 @@ public class Annotation {
 			return false;
 		
 		// TODO match semantic tags
-		
-		if (a.getReplies().size() != replies.size())
-			return false;
-		
-		for (int i=0; i<replies.size(); i++) {
-			// They're replies - order matters!
-			if (!replies.get(i).equals(a.getReplies().get(i)))
-				return false;
-		}
 		
 		return true;
 	}
