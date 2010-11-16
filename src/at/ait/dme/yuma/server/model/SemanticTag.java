@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 
+import at.ait.dme.yuma.server.exception.AnnotationFormatException;
+
 /**
  * A semantic tag which is part of an annotation. A semantic
  * tag is a link to a data resource (denoted by a dereferencable
@@ -25,21 +27,32 @@ public class SemanticTag {
 	/**
 	 * Primary SemanticTag properties
 	 */
-	private HashMap<String, Object> thisTag = new HashMap<String, Object>();
+	private Map<String, Object> thisTag = new HashMap<String, Object>();
 	
 	/**
 	 *  Labels in alternative languages
 	 */
-	private HashMap<String, String> altLabels = new HashMap<String, String>();
+	private Map<String, String> altLabels = new HashMap<String, String>();
 	
 	/**
 	 * Descriptions in alternative languages 
 	 */
-	private HashMap<String, String> altDescriptions = new HashMap<String, String>();
+	private Map<String, String> altDescriptions = new HashMap<String, String>();
 		
 	public SemanticTag() {
 		thisTag.put(ALT_LABELS, altLabels);
 		thisTag.put(ALT_DESCRIPTIONS, altDescriptions);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public SemanticTag(Map<String, Object> map) throws AnnotationFormatException {
+		thisTag = map;
+		try {
+			altLabels = (Map<String, String>) map.get(ALT_LABELS);
+			altDescriptions = (Map<String, String>) map.get(ALT_DESCRIPTIONS);
+		} catch (Throwable t) {
+			throw new AnnotationFormatException(t.getMessage());
+		}
 	}
 	
 	public void setURI(URI uri) {
@@ -104,8 +117,48 @@ public class SemanticTag {
 	
 	@Override
 	public boolean equals(Object other) {
-		// implement this!
+		if (!(other instanceof SemanticTag))
+			return false;
+		
+		SemanticTag t = (SemanticTag) other;
+		
+		if (!t.getURI().equals(this.getURI()))
+			return false;
+		
+		if (!t.getPrimaryLanguage().equals(this.getPrimaryLanguage()))
+			return false;
+		
+		if (!t.getPrimaryLabel().equals(this.getPrimaryLabel()))
+			return false;
+		
+		if (!equals(t.altLabels, this.altLabels))
+			return false;
+		
+		if (!t.getPrimaryDescription().equals(this.getPrimaryDescription()))
+			return false;
+
+		if (!equals(t.altDescriptions, this.altDescriptions))
+			return false;
+
 		return true;
 	}
 
+	private boolean equals(Map<String, String> a, Map<String, String> b) {
+		if (a.size() != b.size())
+			return false;
+		
+		Set<String> aKeys = a.keySet();
+		Set<String> bKeys = b.keySet();
+		
+		if (!aKeys.containsAll(bKeys))
+			return false;
+		
+		for (String key : aKeys) {
+			if (!a.get(key).equals(b.get(key)))
+				return false;		
+		}
+		
+		return true;
+	}
+	
 }

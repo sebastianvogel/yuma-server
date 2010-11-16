@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import at.ait.dme.yuma.server.exception.AnnotationFormatException;
 
 import com.mongodb.util.JSON;
@@ -35,6 +37,8 @@ public class Annotation {
 	private Map<String, Object> thisAnnotation = new HashMap<String, Object>();
 	
 	private List<Map<String, Object>> tags = new ArrayList<Map<String, Object>>();
+	
+	private Logger log = Logger.getLogger(Annotation.class);
 	
 	public Annotation() {
 		thisAnnotation.put(SEMANTIC_TAGS, tags);
@@ -155,7 +159,16 @@ public class Annotation {
 	}
 
 	public List<SemanticTag> getTags() {
-		return null;
+		ArrayList<SemanticTag> tagList = new ArrayList<SemanticTag>();
+		for (int i=0; i<tags.size(); i++) {
+			try {
+				tagList.add(new SemanticTag(tags.get(i)));
+			} catch (AnnotationFormatException e) {
+				// Should never happen
+				log.warn("Could not deserialize semantic tag: " + tags.get(i) + " in annotation " + annotationId);
+			}
+		}
+		return tagList;
 	}
 	
 	public Map<String, Object> toMap() {
@@ -204,7 +217,16 @@ public class Annotation {
 		if (!a.getScope().equals(this.getScope()))
 			return false;
 		
-		// TODO match semantic tags
+		List<SemanticTag> myTags = this.getTags();
+		List<SemanticTag> othersTags = a.getTags();
+		if (myTags.size() != othersTags.size())
+			return false;
+	
+		if (!myTags.containsAll(othersTags))
+			return false;
+		
+		if (!othersTags.containsAll(myTags))
+			return false;
 		
 		return true;
 	}
