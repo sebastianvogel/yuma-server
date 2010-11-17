@@ -333,6 +333,7 @@ public class Data {
 		  "\"created\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} , "+
 		  "\"created-by\" : \"guest\" , "+
 		  "\"fragment\" : \"<svg/>\" , "+
+		  "\"type\" : \"image\" , "+
 		  "\"object-id\" : \"asdf23adsf\"" +
 		"}";
 	
@@ -346,6 +347,7 @@ public class Data {
 		  "\"created\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} , "+
 		  "\"created-by\" : \"guest\" , "+
 		  "\"fragment\" : \"<svg/>\" , "+
+		  "\"type\" : \"image\" , "+
 		  "\"object-id\" : \"asdf23adsf\"" +
 		"}";
 

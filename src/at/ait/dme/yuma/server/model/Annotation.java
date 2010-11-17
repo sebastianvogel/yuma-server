@@ -17,7 +17,7 @@ import com.mongodb.util.JSON;
  * 
  * @author Rainer Simon
  */
-public class Annotation {
+public class Annotation extends AbstractModelEntity {
 	
 	public static final String ROOT_ID = "root-id";
 	public static final String PARENT_ID = "parent-id";
@@ -52,10 +52,34 @@ public class Annotation {
 	public Annotation(Map<?, ?> map) throws AnnotationFormatException {
 		try {
 			thisAnnotation = (Map<String, Object>) map;
-			tags = (List<Map<String, Object>>) thisAnnotation.get(SEMANTIC_TAGS);
+			
+			if (thisAnnotation.get(SEMANTIC_TAGS) != null) {
+				tags = (List<Map<String, Object>>) thisAnnotation.get(SEMANTIC_TAGS);
+			} else {
+				thisAnnotation.put(SEMANTIC_TAGS, tags);
+			}
 		} catch (Throwable t) {
 			throw new AnnotationFormatException(t.getMessage());
 		}
+		
+		// Verify mandatory fields
+		if (this.getObjectID() == null)
+			throw new AnnotationFormatException("ObjectID may not be null");
+
+		if (this.getCreated() == null)
+			throw new AnnotationFormatException("Creation timestamp may not be null");
+		
+		if (this.getLastModified() == null)
+			throw new AnnotationFormatException("Last modification timestamp may not be null");
+		
+		if (this.getCreatedBy() == null)
+			throw new AnnotationFormatException("Creator user name may not be null");
+		
+		if (this.getType() == null)
+			throw new AnnotationFormatException("Annotation type may not be null");
+
+		if (this.getScope() == null)
+			throw new AnnotationFormatException("Annotation scope may not be null");	
 	}
 
 	public void setAnnotationID(String annotationId) {
@@ -189,15 +213,10 @@ public class Annotation {
 		
 		Annotation a = (Annotation) other;
 		
-		if (!a.getRootId().equals(this.getRootId()))
-			return false;
-		
-		if (!a.getParentId().equals(this.getParentId()))
-			return false;
-		
+		// Compare mandatory properties
 		if (!a.getObjectID().equals(this.getObjectID()))
 			return false;
-		
+
 		if (!a.getCreated().equals(this.getCreated()))
 			return false;
 		
@@ -207,17 +226,28 @@ public class Annotation {
 		if (!a.getCreatedBy().equals(this.getCreatedBy()))
 			return false;
 		
-		if (!a.getTitle().equals(this.getTitle()))
+		if (!a.getType().equals(this.getType()))
 			return false;
-		
-		if (!a.getText().equals(this.getText()))
-			return false;
-		
-		if (!a.getFragment().equals(this.getFragment()))
-			return false;
-		
+
 		if (!a.getScope().equals(this.getScope()))
 			return false;
+		
+		// Compare optional properties (may be null!)
+		if (!equalsNullable(a.getRootId(), this.getRootId()))
+			return false;
+	
+		if (!equalsNullable(a.getParentId(), this.getParentId()))
+			return false;
+						
+		if (!equalsNullable(a.getTitle(), this.getTitle()))
+			return false;
+		
+		if (!equalsNullable(a.getText(), this.getText()))
+			return false;
+		
+		if (!equalsNullable(a.getFragment(), this.getFragment()))
+			return false;
+				
 		
 		List<SemanticTag> myTags = this.getTags();
 		List<SemanticTag> othersTags = a.getTags();
@@ -233,5 +263,5 @@ public class Annotation {
 		
 		return true;
 	}
-	
+		
 }

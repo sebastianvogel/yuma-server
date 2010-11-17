@@ -15,7 +15,7 @@ import at.ait.dme.yuma.server.exception.AnnotationFormatException;
  * 
  * @author Rainer Simon
  */
-public class SemanticTag {
+public class SemanticTag extends AbstractModelEntity {
 
 	private static final String URI = "uri";
 	private static final String LANG = "lang";
@@ -48,11 +48,27 @@ public class SemanticTag {
 	public SemanticTag(Map<String, Object> map) throws AnnotationFormatException {
 		thisTag = map;
 		try {
-			altLabels = (Map<String, String>) map.get(ALT_LABELS);
-			altDescriptions = (Map<String, String>) map.get(ALT_DESCRIPTIONS);
+			if (map.get(ALT_LABELS) != null) {
+				altLabels = (Map<String, String>) map.get(ALT_LABELS);
+			} else {
+				thisTag.put(ALT_LABELS, altLabels);
+			}
+			
+			if (map.get(ALT_DESCRIPTIONS) != null) {
+				altDescriptions = (Map<String, String>) map.get(ALT_DESCRIPTIONS);
+			} else {
+				thisTag.put(ALT_DESCRIPTIONS, altDescriptions);
+			}
 		} catch (Throwable t) {
 			throw new AnnotationFormatException(t.getMessage());
 		}
+		
+		// Verify mandatory fields
+		if (this.getURI() == null)
+			throw new AnnotationFormatException("Semantic tag URI may not be null");
+
+		if (this.getPrimaryLabel() == null)
+			throw new AnnotationFormatException("Semantic tag label may not be null");
 	}
 	
 	public void setURI(URI uri) {
@@ -122,21 +138,23 @@ public class SemanticTag {
 		
 		SemanticTag t = (SemanticTag) other;
 	
-		if (!equalsNullable(t.getURI(), this.getURI()))
-			return false;
-		
-		if (!t.getPrimaryLanguage().equals(this.getPrimaryLanguage()))
+		// Compare mandatory properties
+		if (!t.getURI().equals(this.getURI()))
 			return false;
 		
 		if (!t.getPrimaryLabel().equals(this.getPrimaryLabel()))
 			return false;
 		
+		// Compare optional properties (may be null!)
+		if (!equalsNullable(t.getPrimaryLanguage(), this.getPrimaryLanguage()))
+			return false;
+			
+		if (!equalsNullable(t.getPrimaryDescription(), this.getPrimaryDescription()))
+			return false;
+		
 		if (!equals(t.altLabels, this.altLabels))
 			return false;
 		
-		if (!t.getPrimaryDescription().equals(this.getPrimaryDescription()))
-			return false;
-
 		if (!equals(t.altDescriptions, this.altDescriptions))
 			return false;
 
@@ -159,20 +177,6 @@ public class SemanticTag {
 		}
 		
 		return true;
-	}
-	
-	private boolean equalsNullable(Object a, Object b) {
-		if (a == null) {
-			if (b != null)
-				return false;
-		}
-		
-		if (b == null) {
-			if (a != null)
-				return false;
-		}
-			
-		return a.equals(b);
 	}
 	
 }

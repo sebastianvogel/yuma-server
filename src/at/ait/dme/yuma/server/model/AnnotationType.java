@@ -23,6 +23,9 @@ public enum AnnotationType {
 	}
 	
 	static AnnotationType fromString(String s) {
+		if (s == null)
+			return null;
+		
 		if (s.equals(IMAGE.s))
 			return IMAGE;
 			

@@ -21,9 +21,16 @@ public enum Scope {
 	}
 	
 	static Scope fromString(String s) {
+		if (s == null)
+			return null;
+		
 		if (s.equalsIgnoreCase("public"))
 			return PUBLIC;
 		
-		return PRIVATE; 
+		if (s.equalsIgnoreCase("private"))
+			return PRIVATE; 
+		
+		return null;
 	}
+	
 }
