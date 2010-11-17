@@ -1,6 +1,7 @@
 package at.ait.dme.yuma.server.db.mongodb;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +53,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	 * The annotations collection
 	 */
 	private DBCollection collection = null;
-
+	
 	@Override
 	public synchronized void init() throws AnnotationDatabaseException {
 		final Config config = Config.getInstance();
@@ -106,6 +107,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	@Override
 	public String createAnnotation(Annotation annotation) throws AnnotationDatabaseException, AnnotationModifiedException {
 		try {
+			// TODO check for consistency - if it's a reply it needs to have the same objectID etc.
 			BasicDBObject dbo = new BasicDBObject(annotation.toMap());
 			collection.insert(dbo);
 			return ((ObjectId) dbo.get(OID)).toString();
@@ -145,7 +147,24 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	@Override
 	public List<AnnotationThread> listAnnotationThreads(String objectId)
 			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
+		
+		// TODO implement
+		ArrayList<Annotation> rootAnnotations = new ArrayList<Annotation>();
+		
+		BasicDBObject query = new BasicDBObject();
+		query.put(Annotation.OBJECT_ID, objectId);
+		DBCursor cursor = collection.find(query);
+		
+		while (cursor.hasNext()) {
+			try {
+				rootAnnotations.add(new Annotation(cursor.next().toMap()));
+			} catch (AnnotationFormatException e) {
+				// Should never happen
+				throw new AnnotationDatabaseException(e);
+			}
+		}
+
+		System.out.println(rootAnnotations.size());
 		return null;
 	}
 
@@ -192,8 +211,22 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	@Override
 	public List<Annotation> findAnnotations(String query)
 			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return null;
+
+		// TODO implement correctly!
+		BasicDBObject dbo = new BasicDBObject();
+		dbo.put(Annotation.TITLE, query);
+		dbo.put(Annotation.TEXT, query);
+		
+		DBCursor cursor = collection.find(dbo);
+		ArrayList<Annotation> results = new ArrayList<Annotation>();
+		while(cursor.hasNext()) {
+			try {
+				results.add(new Annotation(cursor.next().toMap()));
+			} catch (AnnotationFormatException e) {
+				throw new AnnotationDatabaseException(e);
+			}
+		}
+		return results;
 	}
 	
 	private DBObject findDBObjectByAnnotationID(String annotationId)

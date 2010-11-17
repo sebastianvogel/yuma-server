@@ -327,7 +327,7 @@ public class Data {
 		"{ \"parent-id\" : \"765423\" , " +
 		  "\"root-id\" : \"\" , " +
 		  "\"text\" : \"Just some random test annotation.\" ," +
-		  "\"title\" : \"Test Annotation\" , "+
+		  "\"title\" : \"Annotation\" , "+
 		  "\"scope\" : \"public\" , "+
 		  "\"last-modified\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} ,"+
 		  "\"created\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} , "+
@@ -340,7 +340,7 @@ public class Data {
 	public static final String JSON_ANNOTATION_02 =
 		"{ \"parent-id\" : \"@rootId@\" , " +
 		  "\"root-id\" : \"@rootId@\" , " +
-		  "\"text\" : \"Just another random test annotation.\" ," +
+		  "\"text\" : \"Just another random annotation.\" ," +
 		  "\"title\" : \"Test Annotation number 2\" , "+
 		  "\"scope\" : \"public\" , "+
 		  "\"last-modified\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} ,"+

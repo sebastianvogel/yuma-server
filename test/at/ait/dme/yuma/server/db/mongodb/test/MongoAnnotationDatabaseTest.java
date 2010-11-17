@@ -61,6 +61,9 @@ public class MongoAnnotationDatabaseTest extends TestCase {
 		// Store reply
 		Annotation reply = new Annotation(Data.JSON_ANNOTATION_02.replace("@rootId@", rootId));
 		String replyId = db.createAnnotation(reply);
+
+		db.listAnnotationThreads(root.getObjectID());
+		assertTrue(db.countAnnotations(root.getObjectID()) == 2);
 		
 		// Try deleting root
 		try {

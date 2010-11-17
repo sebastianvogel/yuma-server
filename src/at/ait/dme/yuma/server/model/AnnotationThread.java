@@ -11,5 +11,6 @@ package at.ait.dme.yuma.server.model;
  * @author Rainer Simon
  */
 public class AnnotationThread {
+	
 
 }
