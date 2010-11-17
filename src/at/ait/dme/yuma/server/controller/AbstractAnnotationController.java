@@ -97,9 +97,10 @@ public abstract class AbstractAnnotationController {
 	 * @throws AnnotationDatabaseException (500)
 	 * @throws UnsupportedEncodingException (500)
 	 * @throws AnnotationHasReplyException (409)
+	 * @throws AnnotationNotFoundException (404)
 	 */
 	protected Response deleteAnnotation(String annotationId)
-		throws AnnotationDatabaseException, AnnotationHasReplyException, UnsupportedEncodingException {
+		throws AnnotationDatabaseException, AnnotationHasReplyException, UnsupportedEncodingException, AnnotationNotFoundException {
 		
 		AbstractAnnotationDB db = null;
 		try {			

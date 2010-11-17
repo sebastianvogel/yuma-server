@@ -120,7 +120,8 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		
 		DBObject before = findDBObjectByAnnotationID(annotationId);
 
-		// TODO Check for replies!
+		if (countReplies(annotationId) > 0)
+			throw new AnnotationHasReplyException();
 		
 		BasicDBObject after = new BasicDBObject(annotation.toMap());
 		collection.update(before, after);
@@ -131,17 +132,14 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 
 	@Override
 	public void deleteAnnotation(String annotationId)
-			throws AnnotationDatabaseException, AnnotationHasReplyException {
+			throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException {
 		
-		try {
-			DBObject dbo = findDBObjectByAnnotationID(annotationId);
+		DBObject dbo = findDBObjectByAnnotationID(annotationId);
 
-			// TODO Check for replies
-			
-			collection.remove(dbo);
-		} catch (AnnotationNotFoundException e) {
-			// Not found -> do nothing
-		}
+		if (countReplies(annotationId) > 0)
+			throw new AnnotationHasReplyException();
+		
+		collection.remove(dbo);
 	}
 
 	@Override
@@ -173,6 +171,15 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 			// Should never happen
 			throw new AnnotationDatabaseException(e);
 		}
+	}
+	
+	@Override
+	public long countReplies(String annotationId)
+		throws AnnotationDatabaseException, AnnotationNotFoundException {
+
+		BasicDBObject query = new BasicDBObject();
+		query.put(Annotation.PARENT_ID, annotationId);
+		return collection.count(query);
 	}
 	
 	@Override

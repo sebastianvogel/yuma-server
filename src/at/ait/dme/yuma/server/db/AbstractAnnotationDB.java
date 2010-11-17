@@ -134,10 +134,11 @@ public abstract class AbstractAnnotationDB {
 	 * Delete an annotation
 	 * @param annotationId the annotation ID
 	 * @throws AnnotationDatabaseException  if anything goes wrong
+	 * @throws AnnotationNotFoundException if the annotation does not exist in the DB
 	 * @throws AnnotationHasReplyException if this annotation has already been replied to
 	 */
 	public abstract void deleteAnnotation(String annotationId)
-		throws AnnotationDatabaseException, AnnotationHasReplyException;
+		throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException;
 
 	/**
 	 * Lists all annotations for a given object
@@ -165,6 +166,17 @@ public abstract class AbstractAnnotationDB {
 	 * @throws AnnotationNotFoundException if the annotation was not found
 	 */
 	public abstract Annotation findAnnotationById(String annotationId)
+		throws AnnotationDatabaseException, AnnotationNotFoundException;
+	
+	/**
+	 * Retrieves the number of replies that reference the
+	 * given annotation
+	 * @param annotationId the annotation ID
+	 * @return the number of replies
+	 * @throws AnnotationDatabaseException if anything goes wrong
+	 * @throws AnnotationNotFoundException if the annotation was not found
+	 */
+	public abstract long countReplies(String annotationId)
 		throws AnnotationDatabaseException, AnnotationNotFoundException;
 	
 	/**

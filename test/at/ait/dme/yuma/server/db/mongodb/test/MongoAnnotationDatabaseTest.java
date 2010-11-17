@@ -10,6 +10,7 @@ import at.ait.dme.yuma.server.Data;
 import at.ait.dme.yuma.server.Setup;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB;
+import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.Annotation;
 
@@ -52,6 +53,33 @@ public class MongoAnnotationDatabaseTest extends TestCase {
 		} catch (AnnotationNotFoundException e) {
 			// Expected exception
 		}
+		
+		// Store root annotation
+		Annotation root = new Annotation(Data.JSON_ANNOTATION_01);
+		String rootId = db.createAnnotation(root);
+		
+		// Store reply
+		Annotation reply = new Annotation(Data.JSON_ANNOTATION_02.replace("@rootId@", rootId));
+		String replyId = db.createAnnotation(reply);
+		
+		// Try deleting root
+		try {
+			db.deleteAnnotation(rootId);
+			fail("Annotation that has replies must not be deletable!");
+		} catch (AnnotationHasReplyException e) {
+			// Expected
+		}
+		
+		// Delete reply, then root
+		db.deleteAnnotation(replyId);
+		db.deleteAnnotation(rootId);
+		
+		try {
+			db.deleteAnnotation(rootId);
+			fail("Annotation was not deleted properly!");
+		} catch (AnnotationNotFoundException e) {
+			// Expected
+		}		
 	}
 	
 }

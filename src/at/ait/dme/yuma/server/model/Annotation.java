@@ -160,12 +160,14 @@ public class Annotation {
 
 	public List<SemanticTag> getTags() {
 		ArrayList<SemanticTag> tagList = new ArrayList<SemanticTag>();
-		for (int i=0; i<tags.size(); i++) {
-			try {
-				tagList.add(new SemanticTag(tags.get(i)));
-			} catch (AnnotationFormatException e) {
-				// Should never happen
-				log.warn("Could not deserialize semantic tag: " + tags.get(i) + " in annotation " + annotationId);
+		if (tags != null) {
+			for (int i=0; i<tags.size(); i++) {
+				try {
+					tagList.add(new SemanticTag(tags.get(i)));
+				} catch (AnnotationFormatException e) {
+					// Should never happen
+					log.warn("Could not deserialize semantic tag: " + tags.get(i) + " in annotation " + annotationId);
+				}
 			}
 		}
 		return tagList;
@@ -219,6 +221,7 @@ public class Annotation {
 		
 		List<SemanticTag> myTags = this.getTags();
 		List<SemanticTag> othersTags = a.getTags();
+		
 		if (myTags.size() != othersTags.size())
 			return false;
 	

@@ -121,8 +121,8 @@ public class SemanticTag {
 			return false;
 		
 		SemanticTag t = (SemanticTag) other;
-		
-		if (!t.getURI().equals(this.getURI()))
+	
+		if (!equalsNullable(t.getURI(), this.getURI()))
 			return false;
 		
 		if (!t.getPrimaryLanguage().equals(this.getPrimaryLanguage()))
@@ -159,6 +159,20 @@ public class SemanticTag {
 		}
 		
 		return true;
+	}
+	
+	private boolean equalsNullable(Object a, Object b) {
+		if (a == null) {
+			if (b != null)
+				return false;
+		}
+		
+		if (b == null) {
+			if (a != null)
+				return false;
+		}
+			
+		return a.equals(b);
 	}
 	
 }

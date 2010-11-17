@@ -61,7 +61,7 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 	@Path("/{id}")
 	@Override
 	public Response deleteAnnotation(@PathParam("id") String id) 
-			throws AnnotationDatabaseException, AnnotationHasReplyException, UnsupportedEncodingException {
+			throws AnnotationDatabaseException, AnnotationHasReplyException, UnsupportedEncodingException, AnnotationNotFoundException {
 		
 		return super.deleteAnnotation(id);
 	}
