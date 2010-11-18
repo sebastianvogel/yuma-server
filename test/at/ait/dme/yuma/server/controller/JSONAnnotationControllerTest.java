@@ -50,7 +50,7 @@ public class JSONAnnotationControllerTest {
 		HttpClient httpClient = new HttpClient();
 				
 		PostMethod createMethod = new PostMethod(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
-		createMethod.setRequestEntity(new StringRequestEntity(Data.JSON_ANNOTATION_01, 
+		createMethod.setRequestEntity(new StringRequestEntity(Data.ANNOTATION_JSON_ORIGINAL, 
 				CONTENT_TYPE_JSON, ENCODING));						
 		assertEquals(httpClient.executeMethod(createMethod), HttpStatus.SC_CREATED);
 		Header location = createMethod.getResponseHeader(LOCATION_HEADER);						
@@ -58,7 +58,7 @@ public class JSONAnnotationControllerTest {
 		assertNotNull(createdAnnotationUrl);
 		
 		PutMethod updateMethod = new PutMethod(createdAnnotationUrl);
-		updateMethod.setRequestEntity(new StringRequestEntity(Data.JSON_ANNOTATION_02, 
+		updateMethod.setRequestEntity(new StringRequestEntity(Data.ANNOTATION_JSON_UPDATE, 
 				CONTENT_TYPE_JSON, ENCODING));						
 		assertEquals(HttpStatus.SC_OK, httpClient.executeMethod(updateMethod));
 		location = updateMethod.getResponseHeader(LOCATION_HEADER);						
@@ -84,7 +84,7 @@ public class JSONAnnotationControllerTest {
 		
 		// Create
 		PostMethod createMethod = new PostMethod(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
-		createMethod.setRequestEntity(new StringRequestEntity(Data.JSON_ANNOTATION_01, 
+		createMethod.setRequestEntity(new StringRequestEntity(Data.ANNOTATION_JSON_ORIGINAL, 
 				CONTENT_TYPE_JSON, ENCODING));						
 		assertEquals(httpClient.executeMethod(createMethod), HttpStatus.SC_CREATED);
 		Header location = createMethod.getResponseHeader(LOCATION_HEADER);						

@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import at.ait.dme.yuma.server.exception.AnnotationFormatException;
+import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 
 import com.mongodb.util.JSON;
 
@@ -44,12 +44,12 @@ public class Annotation extends AbstractModelEntity {
 		thisAnnotation.put(SEMANTIC_TAGS, tags);
 	}
 	
-	public Annotation(String json) throws AnnotationFormatException {
+	public Annotation(String json) throws InvalidAnnotationException {
 		this((Map<?, ?>) JSON.parse(json));
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Annotation(Map<?, ?> map) throws AnnotationFormatException {
+	public Annotation(Map<?, ?> map) throws InvalidAnnotationException {
 		try {
 			thisAnnotation = (Map<String, Object>) map;
 			
@@ -59,27 +59,27 @@ public class Annotation extends AbstractModelEntity {
 				thisAnnotation.put(SEMANTIC_TAGS, tags);
 			}
 		} catch (Throwable t) {
-			throw new AnnotationFormatException(t.getMessage());
+			throw new InvalidAnnotationException(t.getMessage());
 		}
 		
 		// Verify mandatory fields
 		if (this.getObjectID() == null)
-			throw new AnnotationFormatException("ObjectID may not be null");
+			throw new InvalidAnnotationException("ObjectID may not be null");
 
 		if (this.getCreated() == null)
-			throw new AnnotationFormatException("Creation timestamp may not be null");
+			throw new InvalidAnnotationException("Creation timestamp may not be null");
 		
 		if (this.getLastModified() == null)
-			throw new AnnotationFormatException("Last modification timestamp may not be null");
+			throw new InvalidAnnotationException("Last modification timestamp may not be null");
 		
 		if (this.getCreatedBy() == null)
-			throw new AnnotationFormatException("Creator user name may not be null");
+			throw new InvalidAnnotationException("Creator user name may not be null");
 		
 		if (this.getType() == null)
-			throw new AnnotationFormatException("Annotation type may not be null");
+			throw new InvalidAnnotationException("Annotation type may not be null");
 
 		if (this.getScope() == null)
-			throw new AnnotationFormatException("Annotation scope may not be null");	
+			throw new InvalidAnnotationException("Annotation scope may not be null");
 	}
 
 	public void setAnnotationID(String annotationId) {
@@ -188,7 +188,7 @@ public class Annotation extends AbstractModelEntity {
 			for (int i=0; i<tags.size(); i++) {
 				try {
 					tagList.add(new SemanticTag(tags.get(i)));
-				} catch (AnnotationFormatException e) {
+				} catch (InvalidAnnotationException e) {
 					// Should never happen
 					log.warn("Could not deserialize semantic tag: " + tags.get(i) + " in annotation " + annotationId);
 				}

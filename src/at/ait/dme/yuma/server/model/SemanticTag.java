@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 
-import at.ait.dme.yuma.server.exception.AnnotationFormatException;
+import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 
 /**
  * A semantic tag which is part of an annotation. A semantic
@@ -45,7 +45,7 @@ public class SemanticTag extends AbstractModelEntity {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public SemanticTag(Map<String, Object> map) throws AnnotationFormatException {
+	public SemanticTag(Map<String, Object> map) throws InvalidAnnotationException {
 		thisTag = map;
 		try {
 			if (map.get(ALT_LABELS) != null) {
@@ -60,15 +60,15 @@ public class SemanticTag extends AbstractModelEntity {
 				thisTag.put(ALT_DESCRIPTIONS, altDescriptions);
 			}
 		} catch (Throwable t) {
-			throw new AnnotationFormatException(t.getMessage());
+			throw new InvalidAnnotationException(t.getMessage());
 		}
 		
 		// Verify mandatory fields
 		if (this.getURI() == null)
-			throw new AnnotationFormatException("Semantic tag URI may not be null");
+			throw new InvalidAnnotationException("Semantic tag URI may not be null");
 
 		if (this.getPrimaryLabel() == null)
-			throw new AnnotationFormatException("Semantic tag label may not be null");
+			throw new InvalidAnnotationException("Semantic tag label may not be null");
 	}
 	
 	public void setURI(URI uri) {

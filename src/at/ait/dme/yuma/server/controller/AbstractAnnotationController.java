@@ -21,7 +21,7 @@ import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
-import at.ait.dme.yuma.server.exception.AnnotationFormatException;
+import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 
 /**
  * This class contains the default annotation controller logic.
@@ -41,11 +41,11 @@ public abstract class AbstractAnnotationController {
 	 * @param annotation the JSON representation of the annotation
 	 * @return status code 201 and new annotation representation
 	 * @throws AnnotationDatabaseException (500)
-	 * @throws AnnotationFormatException (415)
+	 * @throws InvalidAnnotationException (415)
 	 * @throws AnnotationModifiedException (409)
 	 */
 	protected Response createAnnotation(String annotation)
-		throws AnnotationDatabaseException, AnnotationFormatException, AnnotationModifiedException {
+		throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationModifiedException {
 		
 		AbstractAnnotationDB db = null;
 		String annotationId = null;
@@ -69,12 +69,12 @@ public abstract class AbstractAnnotationController {
 	 * @param annotation the JSON representation of the annotation
 	 * @return status code 200 and updated annotation representation
 	 * @throws AnnotationDatabaseException (500)
-	 * @throws AnnotationFormatException (415)
+	 * @throws InvalidAnnotationException (415)
 	 * @throws AnnotationHasReplyException (409)
 	 * @throws UnsupportedEncodingException (500)
 	 */
 	protected Response updateAnnotation(String annotationId, String annotation)
-			throws AnnotationDatabaseException, AnnotationFormatException, AnnotationHasReplyException, UnsupportedEncodingException {
+			throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationHasReplyException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
 		try {
@@ -121,7 +121,7 @@ public abstract class AbstractAnnotationController {
 	 * @param objectId the object ID
 	 * @return status code 200 and the representation of the found annotations
 	 * @throws AnnotationDatabaseException (500)
-	 * @throws AnnotationFormatException (415)
+	 * @throws InvalidAnnotationException (415)
 	 * @throws UnsupportedEncodingException (500)
 	 */
 	protected Response listAnnotationThreads(String objectId)

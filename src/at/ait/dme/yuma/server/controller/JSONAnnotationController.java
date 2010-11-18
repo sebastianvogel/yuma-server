@@ -13,7 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
-import at.ait.dme.yuma.server.exception.AnnotationFormatException;
+import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
@@ -32,7 +32,7 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 	@Consumes("application/json")
 	@Override
 	public Response createAnnotation(String annotation)
-		throws AnnotationDatabaseException, AnnotationFormatException, AnnotationModifiedException {
+		throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationModifiedException {
 		
 		return super.createAnnotation(annotation);
 	}
@@ -52,7 +52,7 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 	@Path("/{id}")
 	@Override
 	public Response updateAnnotation(@PathParam("id") String id, String annotation) 
-			throws AnnotationDatabaseException, AnnotationFormatException, AnnotationHasReplyException, UnsupportedEncodingException {
+			throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationHasReplyException, UnsupportedEncodingException {
 		
 		return super.updateAnnotation(id, annotation);
 	}

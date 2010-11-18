@@ -18,7 +18,7 @@ import com.mongodb.MongoException;
 
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
-import at.ait.dme.yuma.server.exception.AnnotationFormatException;
+import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
@@ -158,7 +158,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		while (cursor.hasNext()) {
 			try {
 				rootAnnotations.add(new Annotation(cursor.next().toMap()));
-			} catch (AnnotationFormatException e) {
+			} catch (InvalidAnnotationException e) {
 				// Should never happen
 				throw new AnnotationDatabaseException(e);
 			}
@@ -186,7 +186,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 			annotation.setAnnotationID(annotationId);
 			
 			return annotation;
-		} catch (AnnotationFormatException e) {
+		} catch (InvalidAnnotationException e) {
 			// Should never happen
 			throw new AnnotationDatabaseException(e);
 		}
@@ -222,7 +222,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		while(cursor.hasNext()) {
 			try {
 				results.add(new Annotation(cursor.next().toMap()));
-			} catch (AnnotationFormatException e) {
+			} catch (InvalidAnnotationException e) {
 				throw new AnnotationDatabaseException(e);
 			}
 		}

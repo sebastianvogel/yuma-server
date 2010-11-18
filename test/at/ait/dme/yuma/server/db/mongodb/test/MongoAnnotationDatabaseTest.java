@@ -1,6 +1,8 @@
 package at.ait.dme.yuma.server.db.mongodb.test;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.fail;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -14,15 +16,15 @@ import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.Annotation;
 
-public class MongoAnnotationDatabaseTest extends TestCase {
+public class MongoAnnotationDatabaseTest {
 	
 	@BeforeClass
-	public void setUp() throws Exception {				
+	public static void setUp() throws Exception {		
 		Setup.buildMongoDBConfiguration();
 	}
 
 	@AfterClass
-	public void tearDown() throws Exception {
+	public static void tearDown() throws Exception {
 		Config.getInstance().getAnnotationDatabase().shutdown();
 	}
 	
@@ -32,14 +34,14 @@ public class MongoAnnotationDatabaseTest extends TestCase {
 		db.connect();
 		
 		// Create + Read
-		Annotation before = new Annotation(Data.JSON_ANNOTATION_01);
+		Annotation before = new Annotation(Data.ANNOTATION_JSON_ORIGINAL);
 		String id = db.createAnnotation(before);
 		Annotation after = db.findAnnotationById(id);
 		assertEquals(before, after);
 		assertEquals(id, after.getAnnotationID());
 		
 		// Update
-		Annotation beforeUpdate = new Annotation(Data.JSON_ANNOTATION_02);
+		Annotation beforeUpdate = new Annotation(Data.ANNOTATION_JSON_UPDATE);
 		id = db.updateAnnotation(id, beforeUpdate);
 		Annotation afterUpdate = db.findAnnotationById(id);
 		assertFalse(afterUpdate.equals(after));
@@ -52,22 +54,25 @@ public class MongoAnnotationDatabaseTest extends TestCase {
 			fail("Annotation was not deleted");
 		} catch (AnnotationNotFoundException e) {
 			// Expected exception
-		}
+		}	
+	}
+	
+	@Test
+	public void testReplies() throws Exception {
+		MongoAnnotationDB db = new MongoAnnotationDB();
+		db.connect();
 		
-		// Store root annotation
-		Annotation root = new Annotation(Data.JSON_ANNOTATION_01);
-		String rootId = db.createAnnotation(root);
+		// Store annotation
+		Annotation root = new Annotation(Data.ANNOTATION_JSON_ORIGINAL);
+		String parentId = db.createAnnotation(root);
 		
 		// Store reply
-		Annotation reply = new Annotation(Data.JSON_ANNOTATION_02.replace("@rootId@", rootId));
+		Annotation reply = new Annotation(Data.REPLY_JSON.replace("@parentId@", parentId));
 		String replyId = db.createAnnotation(reply);
-
-		db.listAnnotationThreads(root.getObjectID());
-		assertTrue(db.countAnnotations(root.getObjectID()) == 2);
 		
-		// Try deleting root
+		// Try delete root
 		try {
-			db.deleteAnnotation(rootId);
+			db.deleteAnnotation(parentId);
 			fail("Annotation that has replies must not be deletable!");
 		} catch (AnnotationHasReplyException e) {
 			// Expected
@@ -75,14 +80,7 @@ public class MongoAnnotationDatabaseTest extends TestCase {
 		
 		// Delete reply, then root
 		db.deleteAnnotation(replyId);
-		db.deleteAnnotation(rootId);
-		
-		try {
-			db.deleteAnnotation(rootId);
-			fail("Annotation was not deleted properly!");
-		} catch (AnnotationNotFoundException e) {
-			// Expected
-		}		
+		db.deleteAnnotation(parentId);
 	}
 	
 }
