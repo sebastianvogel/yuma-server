@@ -15,7 +15,7 @@ import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
  * 
  * @author Rainer Simon
  */
-public class SemanticTag extends AbstractModelEntity {
+public class SemanticTag {
 
 	private static final String URI = "uri";
 	private static final String LANG = "lang";
@@ -192,6 +192,16 @@ public class SemanticTag extends AbstractModelEntity {
 		}
 		
 		return true;
+	}
+	
+	private boolean equalsNullable(Object a, Object b) {
+		if (a == null)
+			return b == null;
+		
+		if (b == null)
+			return a == null;
+		
+		return a.equals(b);
 	}
 	
 }

@@ -17,7 +17,7 @@ import com.mongodb.util.JSON;
  * 
  * @author Rainer Simon
  */
-public class Annotation extends AbstractModelEntity {
+public class Annotation {
 	
 	public static final String ROOT_ID = "root-id";
 	public static final String PARENT_ID = "parent-id";
@@ -278,6 +278,16 @@ public class Annotation extends AbstractModelEntity {
 			return false;
 		
 		return true;
+	}
+	
+	private boolean equalsNullable(Object a, Object b) {
+		if (a == null)
+			return b == null;
+		
+		if (b == null)
+			return a == null;
+		
+		return a.equals(b);
 	}
 		
 }
