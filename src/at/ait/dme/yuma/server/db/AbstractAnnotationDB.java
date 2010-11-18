@@ -5,7 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationThread;
+import at.ait.dme.yuma.server.model.AnnotationTree;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
@@ -146,7 +146,7 @@ public abstract class AbstractAnnotationDB {
 	 * @return the annotation threads
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract List<AnnotationThread> listAnnotationThreads(String objectId)
+	public abstract AnnotationTree findAnnotationTreeForObject(String objectId)
 		throws AnnotationDatabaseException;
 
 	/**
@@ -186,7 +186,7 @@ public abstract class AbstractAnnotationDB {
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 * @throws AnnotationNotFoundException if the annotation was not found
 	 */
-	public abstract AnnotationThread findThreadForAnnotation(String annotationId)
+	public abstract AnnotationTree findThreadForAnnotation(String annotationId)
 		throws AnnotationDatabaseException, AnnotationNotFoundException;
 
 	/**

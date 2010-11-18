@@ -10,12 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import com.mongodb.util.JSON;
-
 import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationThread;
+import at.ait.dme.yuma.server.model.AnnotationTree;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
@@ -128,16 +126,16 @@ public abstract class AbstractAnnotationController {
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
-		List<AnnotationThread> threads = null;
+		AnnotationTree tree = null;
 		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			threads = db.listAnnotationThreads(URLDecoder.decode(objectId, URL_ENCODING));
+			tree = db.findAnnotationTreeForObject(URLDecoder.decode(objectId, URL_ENCODING));
 		} finally {
 			if(db != null) db.disconnect();
 		}
-		return Response.ok().entity(JSON.serialize(threads)).build();
+		return Response.ok().entity(tree.toString()).build();
 	}
 	
 	/**
@@ -197,7 +195,7 @@ public abstract class AbstractAnnotationController {
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
-		AnnotationThread thread = null;
+		AnnotationTree thread = null;
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);

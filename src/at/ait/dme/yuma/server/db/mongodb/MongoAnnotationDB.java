@@ -24,7 +24,7 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationThread;
+import at.ait.dme.yuma.server.model.AnnotationTree;
 
 /**
  * Annotation DB implementation based on the 
@@ -145,11 +145,10 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public List<AnnotationThread> listAnnotationThreads(String objectId)
+	public AnnotationTree findAnnotationTreeForObject(String objectId)
 			throws AnnotationDatabaseException {
 		
-		// TODO implement
-		ArrayList<Annotation> rootAnnotations = new ArrayList<Annotation>();
+		ArrayList<Annotation> annotations = new ArrayList<Annotation>();
 		
 		BasicDBObject query = new BasicDBObject();
 		query.put(Annotation.OBJECT_ID, objectId);
@@ -157,17 +156,16 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		
 		while (cursor.hasNext()) {
 			try {
-				rootAnnotations.add(new Annotation(cursor.next().toMap()));
+				annotations.add(new Annotation(cursor.next().toMap()));
 			} catch (InvalidAnnotationException e) {
 				// Should never happen
 				throw new AnnotationDatabaseException(e);
 			}
 		}
-
-		System.out.println(rootAnnotations.size());
-		return null;
+		
+		return new AnnotationTree(annotations);
 	}
-
+	
 	@Override
 	public long countAnnotations(String objectId)
 			throws AnnotationDatabaseException {
@@ -202,7 +200,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 	
 	@Override
-	public AnnotationThread findThreadForAnnotation(String annotationId)
+	public AnnotationTree findThreadForAnnotation(String annotationId)
 			throws AnnotationDatabaseException {
 		// TODO Auto-generated method stub
 		return null;

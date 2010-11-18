@@ -95,7 +95,15 @@ public class Annotation extends AbstractModelEntity {
 	}
 
 	public String getRootId() {
-		return (String) thisAnnotation.get(ROOT_ID);
+		if (thisAnnotation.get(ROOT_ID) != null) {
+			String rid = ((String) thisAnnotation.get(ROOT_ID)).trim();
+			if (rid.equals(""))
+				return null;
+			
+			return rid;
+		}
+		
+		return null;
 	}
 
 	public void setParentId(String parentId) {
@@ -103,7 +111,15 @@ public class Annotation extends AbstractModelEntity {
 	}
 
 	public String getParentId() {
-		return (String) thisAnnotation.get(PARENT_ID);
+		if (thisAnnotation.get(PARENT_ID) != null) {
+			String pid = ((String) thisAnnotation.get(PARENT_ID)).trim();
+			if (pid.equals(""))
+				return null;
+			
+			return pid;
+		}
+		
+		return null;
 	}
 
 	public void setObjectID(String objectID) {

@@ -1,7 +1,7 @@
 package at.ait.dme.yuma.server.controller.formatting;
 
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationThread;
+import at.ait.dme.yuma.server.model.AnnotationTree;
 
 /**
  * Utility class for transforming Annotations and AnnotationThreads
@@ -18,7 +18,7 @@ public class OACFormatter {
 		return null;
 	}
 	
-	public String toOAC(AnnotationThread t) {
+	public String toOAC(AnnotationTree t) {
 		// TODO implement this!
 		return null;
 	}

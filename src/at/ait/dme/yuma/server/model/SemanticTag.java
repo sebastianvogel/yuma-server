@@ -20,6 +20,7 @@ public class SemanticTag extends AbstractModelEntity {
 	private static final String URI = "uri";
 	private static final String LANG = "lang";
 	private static final String LABEL = "label";
+	private static final String TYPE = "type";
 	private static final String ALT_LABELS = "alt-labels";
 	private static final String DESCRIPTION = "description";
 	private static final String ALT_DESCRIPTIONS = "alt-descriptions";
@@ -69,6 +70,9 @@ public class SemanticTag extends AbstractModelEntity {
 
 		if (this.getPrimaryLabel() == null)
 			throw new InvalidAnnotationException("Semantic tag label may not be null");
+		
+		if (this.getType() == null)
+			throw new InvalidAnnotationException("Semantic tag type may not be null");
 	}
 	
 	public void setURI(URI uri) {
@@ -93,6 +97,14 @@ public class SemanticTag extends AbstractModelEntity {
 
 	public String getPrimaryLabel() {
 		return (String) thisTag.get(LABEL);
+	}
+	
+	public void setType(String type) {
+		thisTag.put(TYPE, type);
+	}
+	
+	public String getType() {
+		return (String) thisTag.get(TYPE);
 	}
 	
 	public void addAlternativeLabel(String label, String language) {
@@ -143,6 +155,9 @@ public class SemanticTag extends AbstractModelEntity {
 			return false;
 		
 		if (!t.getPrimaryLabel().equals(this.getPrimaryLabel()))
+			return false;
+		
+		if (!t.getType().equals(this.getType()))
 			return false;
 		
 		// Compare optional properties (may be null!)

@@ -1,7 +1,7 @@
 package at.ait.dme.yuma.server.controller.formatting;
 
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationThread;
+import at.ait.dme.yuma.server.model.AnnotationTree;
 
 /**
  * Utility class for transforming Annotations and AnnotationThreads
@@ -18,7 +18,7 @@ public class LEMOFormatter {
 		return null;
 	}
 	
-	public String toLEMO(AnnotationThread t) {
+	public String toLEMO(AnnotationTree t) {
 		// TODO implement this (re-using code from middleware/frontend)
 		return null;
 	}
