@@ -72,9 +72,9 @@ public class MongoAnnotationDatabaseTest {
 		String replyId = db.createAnnotation(reply);
 		
 		// Check stored annotations
-		long numberOfAnnotations = db.countAnnotations(root.getObjectID());
+		long numberOfAnnotations = db.countAnnotationsForObject(root.getObjectID());
 		assertEquals(2, numberOfAnnotations);
-		AnnotationTree annotationTree = db.findAnnotationTreeForObject(root.getObjectID());
+		AnnotationTree annotationTree = db.getAnnotationTreeForObject(root.getObjectID());
 		assertEquals(1, annotationTree.getChildren(null).size());
 		
 		// Try delete root

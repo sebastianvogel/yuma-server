@@ -115,14 +115,14 @@ public abstract class AbstractAnnotationController {
 	}
 	
 	/**
-	 * List annotation threads for the given object
+	 * Returns the entire tree of annotations for a given object
 	 * @param objectId the object ID
 	 * @return status code 200 and the representation of the found annotations
 	 * @throws AnnotationDatabaseException (500)
 	 * @throws InvalidAnnotationException (415)
 	 * @throws UnsupportedEncodingException (500)
 	 */
-	protected Response listAnnotationThreads(String objectId)
+	protected Response getAnnotationTreeForObject(String objectId)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
@@ -131,7 +131,7 @@ public abstract class AbstractAnnotationController {
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			tree = db.findAnnotationTreeForObject(URLDecoder.decode(objectId, URL_ENCODING));
+			tree = db.getAnnotationTreeForObject(URLDecoder.decode(objectId, URL_ENCODING));
 		} finally {
 			if(db != null) db.disconnect();
 		}
@@ -139,13 +139,13 @@ public abstract class AbstractAnnotationController {
 	}
 	
 	/**
-	 * Count annotations for the given object
+	 * Retrieves the number of annotations for the given object
 	 * @param objectId the object ID
 	 * @return status code and count representation
 	 * @throws AnnotationDatabaseException (500)
 	 * @throws UnsupportedEncodingException (500
 	 */
-	protected Response countAnnotations(String objectId)
+	protected Response countAnnotationsForObject(String objectId)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
@@ -154,7 +154,7 @@ public abstract class AbstractAnnotationController {
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			count = db.countAnnotations(URLDecoder.decode(objectId, URL_ENCODING));
+			count = db.countAnnotationsForObject(URLDecoder.decode(objectId, URL_ENCODING));
 		} finally {
 			if(db != null) db.disconnect();
 		}

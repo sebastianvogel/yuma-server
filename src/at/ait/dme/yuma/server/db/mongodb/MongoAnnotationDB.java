@@ -145,7 +145,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public AnnotationTree findAnnotationTreeForObject(String objectId)
+	public AnnotationTree getAnnotationTreeForObject(String objectId)
 			throws AnnotationDatabaseException {
 		
 		ArrayList<Annotation> annotations = new ArrayList<Annotation>();
@@ -167,7 +167,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 	
 	@Override
-	public long countAnnotations(String objectId)
+	public long countAnnotationsForObject(String objectId)
 			throws AnnotationDatabaseException {
 
 		BasicDBObject query = new BasicDBObject();

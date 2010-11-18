@@ -141,12 +141,12 @@ public abstract class AbstractAnnotationDB {
 		throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException;
 
 	/**
-	 * Lists all annotations for a given object
+	 * Returns the entire tree of annotations for a given object
 	 * @param objectId the object ID
-	 * @return the annotation threads
+	 * @return the annotation tree
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract AnnotationTree findAnnotationTreeForObject(String objectId)
+	public abstract AnnotationTree getAnnotationTreeForObject(String objectId)
 		throws AnnotationDatabaseException;
 
 	/**
@@ -155,7 +155,7 @@ public abstract class AbstractAnnotationDB {
 	 * @return the number of annotations for this object
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract long countAnnotations(String objectId)
+	public abstract long countAnnotationsForObject(String objectId)
 		throws AnnotationDatabaseException; 
 		
 	/**
@@ -169,8 +169,8 @@ public abstract class AbstractAnnotationDB {
 		throws AnnotationDatabaseException, AnnotationNotFoundException;
 	
 	/**
-	 * Retrieves the number of replies that reference the
-	 * given annotation
+	 * Retrieves the number of replies that exist for
+	 * the given annotation
 	 * @param annotationId the annotation ID
 	 * @return the number of replies
 	 * @throws AnnotationDatabaseException if anything goes wrong
@@ -180,7 +180,8 @@ public abstract class AbstractAnnotationDB {
 		throws AnnotationDatabaseException, AnnotationNotFoundException;
 	
 	/**
-	 * Retrieve the thread which contains the given annotation
+	 * Retrieve the thread which contains the given annotation; the
+	 * thread is delivered as a tree with a single root annotation
 	 * @param annotationId the annotation ID
 	 * @return the annotation thread
 	 * @throws AnnotationDatabaseException if anything goes wrong
