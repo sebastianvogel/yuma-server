@@ -11,6 +11,7 @@ import org.junit.Test;
 import at.ait.dme.yuma.server.Data;
 import at.ait.dme.yuma.server.Setup;
 import at.ait.dme.yuma.server.config.Config;
+import at.ait.dme.yuma.server.controller.formats.JSONFormatHandler;
 import at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
@@ -30,19 +31,21 @@ public class MongoAnnotationDatabaseTest {
 	}
 	
 	@Test
-	public void testMongoDBCRUD() throws Exception {		
+	public void testMongoDBCRUD() throws Exception {
+		JSONFormatHandler format = new JSONFormatHandler();
+		
 		MongoAnnotationDB db = new MongoAnnotationDB();
 		db.connect();
 		
 		// Create + Read
-		Annotation before = new Annotation(Data.ANNOTATION_JSON_ORIGINAL);
+		Annotation before = format.parse(Data.ANNOTATION_JSON_ORIGINAL);
 		String id = db.createAnnotation(before);
 		Annotation after = db.findAnnotationById(id);
 		assertEquals(before, after);
 		assertEquals(id, after.getAnnotationID());
 		
 		// Update
-		Annotation beforeUpdate = new Annotation(Data.ANNOTATION_JSON_UPDATE);
+		Annotation beforeUpdate = format.parse(Data.ANNOTATION_JSON_UPDATE);
 		id = db.updateAnnotation(id, beforeUpdate);
 		Annotation afterUpdate = db.findAnnotationById(id);
 		assertFalse(afterUpdate.equals(after));
@@ -60,15 +63,16 @@ public class MongoAnnotationDatabaseTest {
 	
 	@Test
 	public void testReplies() throws Exception {
+		JSONFormatHandler format = new JSONFormatHandler();
 		MongoAnnotationDB db = new MongoAnnotationDB();
 		db.connect();
 		
 		// Store annotation
-		Annotation root = new Annotation(Data.ANNOTATION_JSON_ORIGINAL);
+		Annotation root = format.parse(Data.ANNOTATION_JSON_ORIGINAL);
 		String parentId = db.createAnnotation(root);
 		
 		// Store reply
-		Annotation reply = new Annotation(Data.REPLY_JSON.replace("@parentId@", parentId));
+		Annotation reply = format.parse(Data.REPLY_JSON.replace("@parentId@", parentId));
 		String replyId = db.createAnnotation(reply);
 		
 		// Check stored annotations

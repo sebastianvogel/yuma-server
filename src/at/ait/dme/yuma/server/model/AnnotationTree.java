@@ -57,11 +57,5 @@ public class AnnotationTree {
 		
 		return replies.get(annotationId);
 	}
-	
-	@Override
-	public String toString() {
-		// TODO implement this!
-		return null;
-	}
 
 }

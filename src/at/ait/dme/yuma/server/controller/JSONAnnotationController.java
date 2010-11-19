@@ -12,6 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import at.ait.dme.yuma.server.controller.formats.JSONFormatHandler;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
@@ -30,36 +31,33 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 
 	@POST
 	@Consumes("application/json")
-	@Override
 	public Response createAnnotation(String annotation)
 		throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationModifiedException {
 		
-		return super.createAnnotation(annotation);
+		return super.createAnnotation(annotation, new JSONFormatHandler());
 	}
 	
 	@GET
 	@Produces("application/json")
 	@Path("/{id}")
-	@Override	
 	public Response findAnnotationById(@PathParam("id") String id)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
-		return super.findAnnotationById(id);
+		return super.findAnnotationById(id, new JSONFormatHandler());
 	}
 	
 	@PUT
 	@Consumes("application/json")
 	@Path("/{id}")
-	@Override
 	public Response updateAnnotation(@PathParam("id") String id, String annotation) 
 			throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationHasReplyException, UnsupportedEncodingException {
 		
-		return super.updateAnnotation(id, annotation);
+		return super.updateAnnotation(id, annotation, new JSONFormatHandler());
 	}
 	
 	@DELETE
 	@Path("/{id}")
-	@Override
+
 	public Response deleteAnnotation(@PathParam("id") String id) 
 			throws AnnotationDatabaseException, AnnotationHasReplyException, UnsupportedEncodingException, AnnotationNotFoundException {
 		

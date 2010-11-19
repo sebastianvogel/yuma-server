@@ -10,8 +10,6 @@ import org.apache.log4j.Logger;
 
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 
-import com.mongodb.util.JSON;
-
 /**
  * The annotation.
  * 
@@ -42,10 +40,6 @@ public class Annotation {
 	
 	public Annotation() {
 		thisAnnotation.put(SEMANTIC_TAGS, tags);
-	}
-	
-	public Annotation(String json) throws InvalidAnnotationException {
-		this((Map<?, ?>) JSON.parse(json));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -215,11 +209,6 @@ public class Annotation {
 	
 	public Map<String, Object> toMap() {
 		return thisAnnotation;
-	}
-	
-	@Override
-	public String toString() {
-		return JSON.serialize(thisAnnotation);
 	}
 	
 	@Override

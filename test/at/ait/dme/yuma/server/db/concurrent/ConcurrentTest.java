@@ -7,9 +7,9 @@ import java.util.concurrent.CountDownLatch;
 import at.ait.dme.yuma.server.Data;
 import at.ait.dme.yuma.server.Setup;
 import at.ait.dme.yuma.server.config.Config;
+import at.ait.dme.yuma.server.controller.formats.JSONFormatHandler;
 import at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
-import at.ait.dme.yuma.server.model.Annotation;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -46,18 +46,20 @@ public class ConcurrentTest {
 				@Override
 				public void run() {
 					try {
+						JSONFormatHandler format = new JSONFormatHandler();
+						
 						startGate.await();						
 						MongoAnnotationDB db = new MongoAnnotationDB();						
 						try {
 							long start = System.currentTimeMillis();
 							db.connect();						
-							String id = db.createAnnotation(new Annotation(Data.ANNOTATION_JSON_ORIGINAL));
+							String id = db.createAnnotation(format.parse(Data.ANNOTATION_JSON_ORIGINAL));
 							db.disconnect();
 							System.out.println("CREATE TIME for:"+index +"="+(System.currentTimeMillis()- start)+" ms" + " ID:"+ id);														
 
 							start = System.currentTimeMillis();
 							db.connect();																											
-							id = db.updateAnnotation(id, new Annotation(Data.ANNOTATION_JSON_ORIGINAL));
+							id = db.updateAnnotation(id, format.parse(Data.ANNOTATION_JSON_ORIGINAL));
 							db.disconnect();
 							System.out.println("UPDATE TIME for:"+index +"="+(System.currentTimeMillis()- start)+" ms");
 					
@@ -85,6 +87,8 @@ public class ConcurrentTest {
 	
 	@Test
 	public void testReadCommited() throws Exception {
+		JSONFormatHandler format = new JSONFormatHandler();
+		
 		MongoAnnotationDB db1 = new MongoAnnotationDB();
 		MongoAnnotationDB db2 = new MongoAnnotationDB();
 		
@@ -92,7 +96,7 @@ public class ConcurrentTest {
 		String id = null;
 		try {			
 			db1.connect();
-			id = db1.createAnnotation(new Annotation(Data.ANNOTATION_JSON_ORIGINAL));
+			id = db1.createAnnotation(format.parse(Data.ANNOTATION_JSON_ORIGINAL));
 			db2.connect();
 			try {
 				db2.findAnnotationById(id);

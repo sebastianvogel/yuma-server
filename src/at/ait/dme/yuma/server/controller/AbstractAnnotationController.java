@@ -4,16 +4,13 @@ import java.io.UnsupportedEncodingException;
 
 import java.net.URLDecoder;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.config.Config;
-import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationTree;
+import at.ait.dme.yuma.server.controller.formats.FormatHandler;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
@@ -42,7 +39,7 @@ public abstract class AbstractAnnotationController {
 	 * @throws InvalidAnnotationException (415)
 	 * @throws AnnotationModifiedException (409)
 	 */
-	protected Response createAnnotation(String annotation)
+	protected Response createAnnotation(String annotation, FormatHandler format)
 		throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationModifiedException {
 		
 		AbstractAnnotationDB db = null;
@@ -51,8 +48,8 @@ public abstract class AbstractAnnotationController {
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			annotationId = db.createAnnotation(new Annotation(annotation));
-			annotation = db.findAnnotationById(annotationId).toString();
+			annotationId = db.createAnnotation(format.parse(annotation));
+			annotation = format.serialize(db.findAnnotationById(annotationId));
 		} catch(AnnotationNotFoundException e) {
 			throw new AnnotationDatabaseException(e);
 		} finally {
@@ -71,15 +68,17 @@ public abstract class AbstractAnnotationController {
 	 * @throws AnnotationHasReplyException (409)
 	 * @throws UnsupportedEncodingException (500)
 	 */
-	protected Response updateAnnotation(String annotationId, String annotation)
+	protected Response updateAnnotation(String annotationId, String annotation, FormatHandler format)
 			throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationHasReplyException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			annotationId = db.updateAnnotation(URLDecoder.decode(annotationId, URL_ENCODING), new Annotation(annotation));
-			annotation = db.findAnnotationById(annotationId).toString();
+			annotationId = db.updateAnnotation(
+					URLDecoder.decode(annotationId, URL_ENCODING),
+					format.parse(annotation));
+			annotation = format.serialize(db.findAnnotationById(annotationId));
 		} catch(AnnotationNotFoundException anfe) {
 			throw new AnnotationDatabaseException(anfe);
 		} finally {
@@ -122,20 +121,20 @@ public abstract class AbstractAnnotationController {
 	 * @throws InvalidAnnotationException (415)
 	 * @throws UnsupportedEncodingException (500)
 	 */
-	protected Response getAnnotationTreeForObject(String objectId)
+	protected Response getAnnotationTreeForObject(String objectId, FormatHandler format)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
-		AnnotationTree tree = null;
+		String tree = null;
 		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			tree = db.getAnnotationTreeForObject(URLDecoder.decode(objectId, URL_ENCODING));
+			tree = format.serialize(db.getAnnotationTreeForObject(URLDecoder.decode(objectId, URL_ENCODING)));
 		} finally {
 			if(db != null) db.disconnect();
 		}
-		return Response.ok().entity(tree.toString()).build();
+		return Response.ok().entity(tree).build();
 	}
 	
 	/**
@@ -168,20 +167,20 @@ public abstract class AbstractAnnotationController {
 	 * @throws AnnotationDatabaseException (500)
 	 * @throws UnsupportedEncodingException (500
 	 */
-	protected Response findAnnotationById(String annotationId)
+	protected Response findAnnotationById(String annotationId, FormatHandler format)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
-		Annotation annotation = null;
+		String annotation = null;
 		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			annotation = db.findAnnotationById(URLDecoder.decode(annotationId, URL_ENCODING));
+			annotation = format.serialize(db.findAnnotationById(URLDecoder.decode(annotationId, URL_ENCODING)));
 		} finally {
 			if(db != null) db.disconnect();
 		}
-		return Response.ok(annotation.toString()).build();
+		return Response.ok(annotation).build();
 	}
 
 	/**
@@ -191,19 +190,19 @@ public abstract class AbstractAnnotationController {
 	 * @throws AnnotationDatabaseException (500)
 	 * @throws UnsupportedEncodingException (500
 	 */
-	protected Response findThreadForAnnotation(String annotationId)
+	protected Response findThreadForAnnotation(String annotationId, FormatHandler format)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
-		AnnotationTree thread = null;
+		String thread = null;
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			thread = db.findThreadForAnnotation(URLDecoder.decode(annotationId, URL_ENCODING));
+			thread = format.serialize(db.findThreadForAnnotation(URLDecoder.decode(annotationId, URL_ENCODING)));
 		} finally {
 			if(db != null) db.disconnect();
 		}
-		return Response.ok().entity(thread.toString()).build();
+		return Response.ok().entity(thread).build();
 	}
 		
 	/**
@@ -213,16 +212,16 @@ public abstract class AbstractAnnotationController {
 	 * @throws AnnotationDatabaseException (500)
 	 * @throws UnsupportedEncodingException (500
 	 */
-	protected Response findAnnotations(String query)
+	protected Response findAnnotations(String query, FormatHandler format)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
-		List<Annotation> annotations = null;		
+		String annotations = null;		
 		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			annotations = db.findAnnotations(URLDecoder.decode(query, URL_ENCODING));
+			annotations = format.serialize(db.findAnnotations(URLDecoder.decode(query, URL_ENCODING)));
 		} finally {
 			if(db != null) db.disconnect();
 		}
