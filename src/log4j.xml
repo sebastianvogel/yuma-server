@@ -3,10 +3,10 @@
 
 <log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
 
-	<!-- Create a daily rolling file appender called annotation-middleware-log -->
-	<appender name="annotation-middleware-log"
+	<!-- Create a daily rolling file appender called yuma-server-log -->
+	<appender name="yuma-server-log"
 		class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="${catalina.home}/logs/annotation-middleware.log" />
+		<param name="File" value="${catalina.home}/logs/yuma-server.log" />
 		<param name="Append" value="true" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -18,6 +18,6 @@
 	<!-- Configure the root appender -->
 	<root>
 		<priority value="info" />
-		<appender-ref ref="annotation-middleware-log" />
+		<appender-ref ref="yuma-server-log" />
 	</root>
 </log4j:configuration>
