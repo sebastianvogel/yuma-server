@@ -2,9 +2,11 @@ package at.ait.dme.yuma.server.exception;
 
 /**
  * This Exception indicates a problem when parsing/processing an 
- * annotation.
+ * annotation, or is thrown in case an annotation is internally
+ * inconsistent.
  * 
  * @author Christian Sadilek
+ * @author Rainer Simon
  */
 public class InvalidAnnotationException extends Exception {
 	

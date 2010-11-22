@@ -17,54 +17,70 @@ import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
  */
 public class SemanticTag {
 
-	private static final String URI = "uri";
-	private static final String LANG = "lang";
-	private static final String LABEL = "label";
-	private static final String TYPE = "type";
-	private static final String ALT_LABELS = "alt-labels";
-	private static final String DESCRIPTION = "description";
-	private static final String ALT_DESCRIPTIONS = "alt-descriptions";
+	/**
+	 * The tag URI
+	 */
+	private URI uri;
+
+	/**
+	 * The tag's primary label
+	 */
+	private String primaryLabel;
+
+	/**
+	 * The primary description/abstract of this tag
+	 */
+	private String primaryDescription;
 	
 	/**
-	 * Primary SemanticTag properties
+	 * The language of the primary label and description
 	 */
-	private Map<String, Object> thisTag = new HashMap<String, Object>();
+	private String primaryLang;
 	
 	/**
-	 *  Labels in alternative languages
+	 * The tag type (freely definable)
 	 */
-	private Map<String, String> altLabels = new HashMap<String, String>();
+	private String type;
 	
 	/**
-	 * Descriptions in alternative languages 
+	 * The typed relation between annotated item and tag
 	 */
-	private Map<String, String> altDescriptions = new HashMap<String, String>();
-		
-	public SemanticTag() {
-		thisTag.put(ALT_LABELS, altLabels);
-		thisTag.put(ALT_DESCRIPTIONS, altDescriptions);
-	}
+	private SemanticRelation relation;
+
+	/**
+	 * Alternative labels in other languages in the form <lang, label>
+	 */
+	private HashMap<String, String> altLabels;
 	
+	/**
+	 * Alternative descriptions in other languages in the form <lang, label>
+	 */
+	private HashMap<String, String> altDescriptions;
+	
+	/**
+	 * Creates a semantic tag with the specified properties.
+	 * @param map the semantic tag's properties
+	 */
 	@SuppressWarnings("unchecked")
 	public SemanticTag(Map<String, Object> map) throws InvalidAnnotationException {
-		thisTag = map;
 		try {
-			if (map.get(ALT_LABELS) != null) {
-				altLabels = (Map<String, String>) map.get(ALT_LABELS);
-			} else {
-				thisTag.put(ALT_LABELS, altLabels);
-			}
-			
-			if (map.get(ALT_DESCRIPTIONS) != null) {
-				altDescriptions = (Map<String, String>) map.get(ALT_DESCRIPTIONS);
-			} else {
-				thisTag.put(ALT_DESCRIPTIONS, altDescriptions);
-			}
+			this.uri = (URI) map.get(MapKeys.TAG_URI);
+			this.primaryLabel = (String) map.get(MapKeys.TAG_LABEL);
+			this.primaryDescription = (String) map.get(MapKeys.TAG_DESCRIPTION);
+			this.primaryLang = (String) map.get(MapKeys.TAG_LANG);
+			this.type = (String) map.get(MapKeys.TAG_TYPE);
+			this.relation = (SemanticRelation) map.get(MapKeys.TAG_RELATION);
+			this.altLabels = (HashMap<String, String>) map.get(MapKeys.TAG_ALT_LABELS);
+			if (this.altLabels == null)
+				this.altLabels = new HashMap<String, String>();
+			this.altDescriptions = (HashMap<String, String>) map.get(MapKeys.TAG_ALT_DESCRIPTIONS);
+			if (this.altDescriptions == null)
+				this.altDescriptions = new HashMap<String, String>();
 		} catch (Throwable t) {
 			throw new InvalidAnnotationException(t.getMessage());
 		}
 		
-		// Verify mandatory fields
+		// Verify mandatory properties are set
 		if (this.getURI() == null)
 			throw new InvalidAnnotationException("Semantic tag URI may not be null");
 
@@ -74,43 +90,31 @@ public class SemanticTag {
 		if (this.getType() == null)
 			throw new InvalidAnnotationException("Semantic tag type may not be null");
 	}
-	
-	public void setURI(URI uri) {
-		thisTag.put(URI, uri);
-	}
-	
+		
 	public URI getURI() {
-		return (URI) thisTag.get(URI);
-	}
-	
-	public void setPrimaryLanguage(String language) {
-		thisTag.put(LANG, language);
-	}
-	
-	public String getPrimaryLanguage() {
-		return (String) thisTag.get(LANG);
-	}
-	
-	public void setPrimaryLabel(String label) {
-		thisTag.put(LABEL, label);
+		return uri;
 	}
 
 	public String getPrimaryLabel() {
-		return (String) thisTag.get(LABEL);
+		return primaryLabel;
+	}
+
+	public String getPrimaryDescription() {
+		return primaryDescription;
 	}
 	
-	public void setType(String type) {
-		thisTag.put(TYPE, type);
+	public String getPrimaryLanguage() {
+		return primaryLang;
 	}
 	
 	public String getType() {
-		return (String) thisTag.get(TYPE);
+		return type;
 	}
 	
-	public void addAlternativeLabel(String label, String language) {
-		altLabels.put(language, label);
+	public SemanticRelation getRelation() {
+		return relation;
 	}
-	
+		
 	public String getAlternativeLabel(String language) {
 		return altLabels.get(language);
 	}
@@ -118,19 +122,7 @@ public class SemanticTag {
 	public Set<String> getAlternativeLabelLanguages() {
 		return altLabels.keySet();
 	}
-	
-	public void setPrimaryDescription(String description) {
-		thisTag.put(DESCRIPTION, description);
-	}
-	
-	public String getPrimaryDescription() {
-		return (String) thisTag.get(DESCRIPTION);
-	}
-	
-	public void addAlternativeDescription(String description, String language) {
-		altDescriptions.put(language, description);
-	}
-	
+		
 	public String getAlternativeDescription(String language) {
 		return altDescriptions.get(language);
 	}
@@ -139,12 +131,9 @@ public class SemanticTag {
 		return altDescriptions.keySet();
 	}
 
-	public Map<String, Object> toMap() {
-		return thisTag;
-	}
-	
 	@Override
 	public boolean equals(Object other) {
+		// TODO revise!
 		if (!(other instanceof SemanticTag))
 			return false;
 		

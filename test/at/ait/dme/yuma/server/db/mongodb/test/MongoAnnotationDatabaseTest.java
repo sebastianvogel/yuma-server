@@ -16,7 +16,6 @@ import at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationTree;
 
 public class MongoAnnotationDatabaseTest {
 	
@@ -75,11 +74,9 @@ public class MongoAnnotationDatabaseTest {
 		Annotation reply = format.parse(Data.REPLY_JSON.replace("@parentId@", parentId));
 		String replyId = db.createAnnotation(reply);
 		
-		// Check stored annotations
-		long numberOfAnnotations = db.countAnnotationsForObject(root.getObjectID());
-		assertEquals(2, numberOfAnnotations);
-		AnnotationTree annotationTree = db.getAnnotationTreeForObject(root.getObjectID());
-		assertEquals(1, annotationTree.getChildren(null).size());
+		// Some checks on stored annotations
+		assertEquals(2, db.countAnnotationsForObject(root.getObjectID()));
+		assertEquals(1, db.countReplies(parentId));
 		
 		// Try delete root
 		try {

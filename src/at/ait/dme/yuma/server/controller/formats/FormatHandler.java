@@ -3,7 +3,6 @@ package at.ait.dme.yuma.server.controller.formats;
 import java.util.List;
 
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationTree;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 
 /**
@@ -34,19 +33,9 @@ public interface FormatHandler {
 	 */
 	public String serialize(Annotation annotation)
 		throws UnsupportedOperationException;
-
-	/**
-	 * Serializes an annotation tree to a representation in the given format.
-	 * @param tree the annotation tree
-	 * @return the serialized representation
-	 * @throws UnsupportedOperationException if this implementation does not support serialization
-	 */
-	public String serialize(AnnotationTree tree)
-		throws UnsupportedOperationException;
 	
 	/**
-	 * Serializes a flat list of annotations (e.g. search result) into
-	 * the given format.
+	 * Serializes a list of annotations into the given format.
 	 * @param annotations the list of annotations
 	 * @return the serialized representation
 	 * @throws UnsupportedOperationException

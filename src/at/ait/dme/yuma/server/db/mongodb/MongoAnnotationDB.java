@@ -2,7 +2,9 @@ package at.ait.dme.yuma.server.db.mongodb;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,10 +23,9 @@ import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
-import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationTree;
+import at.ait.dme.yuma.server.model.MapKeys;
 
 /**
  * Annotation DB implementation based on the 
@@ -105,20 +106,18 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public String createAnnotation(Annotation annotation) throws AnnotationDatabaseException, AnnotationModifiedException {
-		try {
-			// TODO check for consistency - if it's a reply it needs to have the same objectID etc.
-			BasicDBObject dbo = new BasicDBObject(annotation.toMap());
-			collection.insert(dbo);
-			return ((ObjectId) dbo.get(OID)).toString();
-		} catch (MongoException e) {
-			throw new AnnotationDatabaseException(e);
-		}
+	public String createAnnotation(Annotation annotation) throws InvalidAnnotationException  {
+		checkIntegrity(annotation);
+		BasicDBObject dbo = new BasicDBObject(annotation.toMap());
+		collection.insert(dbo);
+		return ((ObjectId) dbo.get(OID)).toString();
 	}
 
 	@Override
 	public String updateAnnotation(String annotationId, Annotation annotation)
-			throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException {
+			throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException, InvalidAnnotationException {
+		
+		checkIntegrity(annotation);
 		
 		DBObject before = findDBObjectByAnnotationID(annotationId);
 
@@ -145,25 +144,25 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public AnnotationTree getAnnotationTreeForObject(String objectId)
+	public List<Annotation> getAnnotationsForObject(String objectId)
 			throws AnnotationDatabaseException {
 		
 		ArrayList<Annotation> annotations = new ArrayList<Annotation>();
 		
 		BasicDBObject query = new BasicDBObject();
-		query.put(Annotation.OBJECT_ID, objectId);
+		query.put(MapKeys.ANNOTATION_OBJECT_ID, objectId);
 		DBCursor cursor = collection.find(query);
 		
 		while (cursor.hasNext()) {
 			try {
-				annotations.add(new Annotation(cursor.next().toMap()));
+				annotations.add(toAnnotation(cursor.next()));
 			} catch (InvalidAnnotationException e) {
 				// Should never happen
 				throw new AnnotationDatabaseException(e);
 			}
 		}
 		
-		return new AnnotationTree(annotations);
+		return annotations;
 	}
 	
 	@Override
@@ -171,7 +170,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 			throws AnnotationDatabaseException {
 
 		BasicDBObject query = new BasicDBObject();
-		query.put(Annotation.OBJECT_ID, objectId);
+		query.put(MapKeys.ANNOTATION_OBJECT_ID, objectId);
 		return collection.count(query);
 	}
 
@@ -180,10 +179,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 
 		try {
-			Annotation annotation = new Annotation(findDBObjectByAnnotationID(annotationId).toMap());
-			annotation.setAnnotationID(annotationId);
-			
-			return annotation;
+			return toAnnotation(findDBObjectByAnnotationID(annotationId));
 		} catch (InvalidAnnotationException e) {
 			// Should never happen
 			throw new AnnotationDatabaseException(e);
@@ -195,15 +191,31 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		throws AnnotationDatabaseException, AnnotationNotFoundException {
 
 		BasicDBObject query = new BasicDBObject();
-		query.put(Annotation.PARENT_ID, annotationId);
+		query.put(MapKeys.ANNOTATION_PARENT_ID, annotationId);
 		return collection.count(query);
 	}
 	
 	@Override
-	public AnnotationTree findThreadForAnnotation(String annotationId)
-			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Annotation> findThreadForAnnotation(String annotationId)
+			throws AnnotationDatabaseException, AnnotationNotFoundException {
+		
+		String rootId = findAnnotationById(annotationId).getRootId();		
+		ArrayList<Annotation> annotations = new ArrayList<Annotation>();
+		
+		BasicDBObject query = new BasicDBObject();
+		query.put(MapKeys.ANNOTATION_ROOT_ID, rootId);
+		DBCursor cursor = collection.find(query);
+		
+		while (cursor.hasNext()) {
+			try {
+				annotations.add(toAnnotation(cursor.next()));
+			} catch (InvalidAnnotationException e) {
+				// Should never happen
+				throw new AnnotationDatabaseException(e);
+			}
+		}
+		
+		return annotations;
 	}
 
 	@Override
@@ -212,14 +224,14 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 
 		// TODO implement correctly!
 		BasicDBObject dbo = new BasicDBObject();
-		dbo.put(Annotation.TITLE, query);
-		dbo.put(Annotation.TEXT, query);
+		dbo.put(MapKeys.ANNOTATION_TITLE, query);
+		dbo.put(MapKeys.ANNOTATION_TEXT, query);
 		
 		DBCursor cursor = collection.find(dbo);
 		ArrayList<Annotation> results = new ArrayList<Annotation>();
 		while(cursor.hasNext()) {
 			try {
-				results.add(new Annotation(cursor.next().toMap()));
+				results.add(toAnnotation(cursor.next()));
 			} catch (InvalidAnnotationException e) {
 				throw new AnnotationDatabaseException(e);
 			}
@@ -242,6 +254,24 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 				return cursor.next();
 		
 		throw new AnnotationNotFoundException();
+	}
+	
+	/**
+	 * Performs a number of consistency checks on the annotation
+	 * @param annotation the annotation
+	 */
+	private void checkIntegrity(Annotation annotation) throws InvalidAnnotationException {
+		// TODO check for consistency - if it's a reply it needs to have the same objectID etc.
+	}
+	
+	private Annotation toAnnotation(DBObject dbo) throws InvalidAnnotationException {
+		HashMap<String, Object> map = new HashMap<String, Object>((Map<String, Object>) dbo.toMap());
+		map.remove("_id");
+		
+		Annotation a = new Annotation(map);
+		// a.setAnnotationID(dbo.get(OID).toString());
+		map.put("id", a.getAnnotationID());
+		return a;
 	}
 
 }

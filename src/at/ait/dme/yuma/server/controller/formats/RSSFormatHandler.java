@@ -3,7 +3,6 @@ package at.ait.dme.yuma.server.controller.formats;
 import java.util.List;
 
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationTree;
 
 /**
  * Format handler for RSS (serialization only)
@@ -21,12 +20,6 @@ public class RSSFormatHandler implements FormatHandler {
 
 	@Override
 	public String serialize(Annotation annotation) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String serialize(AnnotationTree tree) {
 		// TODO Auto-generated method stub
 		return null;
 	}

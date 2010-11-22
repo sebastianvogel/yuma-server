@@ -5,11 +5,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationTree;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
+import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 
 /**
  * Base class for annotation databases.
@@ -116,7 +116,7 @@ public abstract class AbstractAnnotationDB {
 	 * @throws AnnotationModifiedException if the parent annotation was modified in the mean time
 	 */
 	public abstract String createAnnotation(Annotation annotation) 
-			throws AnnotationDatabaseException, AnnotationModifiedException;
+			throws AnnotationDatabaseException, AnnotationModifiedException, InvalidAnnotationException;
 
 	/**
 	 * Update an annotation
@@ -128,7 +128,7 @@ public abstract class AbstractAnnotationDB {
 	 * @throws AnnotationHasReplyException if this annotation has already been replied to
 	 */
 	public abstract String updateAnnotation(String annotationId, Annotation annotation)
-		throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException;
+		throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException, InvalidAnnotationException;
 
 	/**
 	 * Delete an annotation
@@ -141,12 +141,12 @@ public abstract class AbstractAnnotationDB {
 		throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException;
 
 	/**
-	 * Returns the entire tree of annotations for a given object
+	 * Returns all annotations for a given object
 	 * @param objectId the object ID
-	 * @return the annotation tree
+	 * @return the annotations
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract AnnotationTree getAnnotationTreeForObject(String objectId)
+	public abstract List<Annotation> getAnnotationsForObject(String objectId)
 		throws AnnotationDatabaseException;
 
 	/**
@@ -180,14 +180,13 @@ public abstract class AbstractAnnotationDB {
 		throws AnnotationDatabaseException, AnnotationNotFoundException;
 	
 	/**
-	 * Retrieve the thread which contains the given annotation; the
-	 * thread is delivered as a tree with a single root annotation
+	 * Retrieve the thread which contains the given annotation
 	 * @param annotationId the annotation ID
-	 * @return the annotation thread
+	 * @return the annotations in the thread
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 * @throws AnnotationNotFoundException if the annotation was not found
 	 */
-	public abstract AnnotationTree findThreadForAnnotation(String annotationId)
+	public abstract List<Annotation> findThreadForAnnotation(String annotationId)
 		throws AnnotationDatabaseException, AnnotationNotFoundException;
 
 	/**

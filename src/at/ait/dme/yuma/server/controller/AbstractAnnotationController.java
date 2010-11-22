@@ -130,7 +130,7 @@ public abstract class AbstractAnnotationController {
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			tree = format.serialize(db.getAnnotationTreeForObject(URLDecoder.decode(objectId, URL_ENCODING)));
+			tree = format.serialize(db.getAnnotationsForObject(URLDecoder.decode(objectId, URL_ENCODING)));
 		} finally {
 			if(db != null) db.disconnect();
 		}
