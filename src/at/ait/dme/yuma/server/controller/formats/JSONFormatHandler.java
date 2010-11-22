@@ -3,7 +3,6 @@ package at.ait.dme.yuma.server.controller.formats;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,10 +41,10 @@ public class JSONFormatHandler implements FormatHandler {
 				map.put(MapKeys.ANNOTATION_SCOPE, Scope.fromString(scope));
 			
 			@SuppressWarnings("unchecked")
-			List<HashMap<String, Object>> tags =
-				(List<HashMap<String, Object>>) map.get(MapKeys.ANNOTATION_SEMANTIC_TAGS);
+			List<Map<String, Object>> tags =
+				(List<Map<String, Object>>) map.get(MapKeys.ANNOTATION_SEMANTIC_TAGS);
 			if (tags != null) {
-				map.put(MapKeys.ANNOTATION_SEMANTIC_TAGS, toAnnotationFormat(tags));
+				map.put(MapKeys.ANNOTATION_SEMANTIC_TAGS, toSemanticTags(tags));
 			}
 			
 			return new Annotation(map);
@@ -54,10 +53,10 @@ public class JSONFormatHandler implements FormatHandler {
 		}
 	}
 
-	private List<SemanticTag> toAnnotationFormat(List<HashMap<String, Object>> jsonFormat) throws InvalidAnnotationException {
+	private List<SemanticTag> toSemanticTags(List<Map<String, Object>> jsonFormat) throws InvalidAnnotationException {
 		ArrayList<SemanticTag> tags = new ArrayList<SemanticTag>();
 		
-		for (HashMap<String, Object> map : jsonFormat) {
+		for (Map<String, Object> map : jsonFormat) {
 			String uri = (String) map.get(MapKeys.TAG_URI);
 			if (uri != null) {
 				try {
@@ -98,15 +97,9 @@ public class JSONFormatHandler implements FormatHandler {
 	private Map<String, Object> toJSONFormat(Annotation annotation) {
 		Map<String, Object> map = annotation.toMap();
 		
-		AnnotationType type = (AnnotationType) map.get(MapKeys.ANNOTATION_TYPE);
-		map.put(MapKeys.ANNOTATION_TYPE, type.toString());
-
-		Scope scope = (Scope) map.get(MapKeys.ANNOTATION_SCOPE);
-		map.put(MapKeys.ANNOTATION_SCOPE, scope.toString());
-
-		@SuppressWarnings("unchecked")
-		List<SemanticTag> tags = (List<SemanticTag>) map.get(MapKeys.ANNOTATION_SEMANTIC_TAGS);
-		map.put(MapKeys.ANNOTATION_SEMANTIC_TAGS, toJSONFormat(tags));
+		map.put(MapKeys.ANNOTATION_TYPE, annotation.getType().toString());
+		map.put(MapKeys.ANNOTATION_SCOPE, annotation.getScope().toString());
+		map.put(MapKeys.ANNOTATION_SEMANTIC_TAGS, toJSONFormat(annotation.getTags()));
 		
 		return map;
 	}
@@ -116,13 +109,13 @@ public class JSONFormatHandler implements FormatHandler {
 		
 		for (SemanticTag tag : tags) {
 			Map<String, Object> map = tag.toMap();
+			map.put(MapKeys.TAG_URI, tag.getURI().toString());
 			
-			URI uri = (URI) map.get(MapKeys.TAG_URI);
-			map.put(MapKeys.TAG_URI, uri.toString());
-			
-			SemanticRelation relation = (SemanticRelation) map.get(MapKeys.TAG_RELATION);
+			SemanticRelation relation = tag.getRelation();
 			if (relation != null)
 				map.put(MapKeys.TAG_RELATION, relation.toMap());
+			
+			maps.add(map);
 		}
 		
 		return maps;

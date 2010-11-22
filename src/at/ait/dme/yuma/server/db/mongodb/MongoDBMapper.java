@@ -1,5 +1,8 @@
 package at.ait.dme.yuma.server.db.mongodb;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +13,7 @@ import com.mongodb.DBObject;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.MapKeys;
+import at.ait.dme.yuma.server.model.SemanticRelation;
 import at.ait.dme.yuma.server.model.SemanticTag;
 import at.ait.dme.yuma.server.model.AnnotationType;
 import at.ait.dme.yuma.server.model.Scope;
@@ -28,18 +32,9 @@ public class MongoDBMapper {
 	 * @return the map
 	 */
 	public DBObject toDBObject(Annotation annotation) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = annotation.toMap();
 
-		map.put(MapKeys.ANNOTATION_ROOT_ID, annotation.getRootId());
-		map.put(MapKeys.ANNOTATION_PARENT_ID, annotation.getParentId());
-		map.put(MapKeys.ANNOTATION_OBJECT_ID, annotation.getObjectID());
-		map.put(MapKeys.ANNOTATION_CREATED, annotation.getCreated());
-		map.put(MapKeys.ANNOTATION_LAST_MODIFIED, annotation.getLastModified());
-		map.put(MapKeys.ANNOTATION_CREATED_BY, annotation.getCreatedBy());
-		map.put(MapKeys.ANNOTATION_TITLE, annotation.getTitle());
-		map.put(MapKeys.ANNOTATION_TEXT, annotation.getText());
 		map.put(MapKeys.ANNOTATION_TYPE, annotation.getType().toString());
-		map.put(MapKeys.ANNOTATION_FRAGMENT, annotation.getFragment());
 		map.put(MapKeys.ANNOTATION_SCOPE, annotation.getScope().toString());
 		map.put(MapKeys.ANNOTATION_SEMANTIC_TAGS, toMap(annotation.getTags()));
 
@@ -52,7 +47,20 @@ public class MongoDBMapper {
 	 * @return the map
 	 */
 	private List<Map<String, Object>> toMap(List<SemanticTag> tags) {
-		return null;
+		ArrayList<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
+		
+		for (SemanticTag tag : tags) {
+			Map<String, Object> map = tag.toMap();
+			map.put(MapKeys.TAG_URI, tag.getURI().toString());
+			
+			SemanticRelation relation = tag.getRelation();
+			if (relation != null)
+				map.put(MapKeys.TAG_RELATION, relation.toMap());
+			
+			maps.add(map);
+		}
+		
+		return maps;
 	}
 	
 	/**
@@ -76,11 +84,40 @@ public class MongoDBMapper {
 			String scope = (String) map.get(MapKeys.ANNOTATION_SCOPE);
 			if (scope != null)
 				map.put(MapKeys.ANNOTATION_SCOPE, Scope.fromString(scope));
-			
+
+			@SuppressWarnings("unchecked")
+			List<Map<String, Object>> tags = (List<Map<String, Object>>) map.get(MapKeys.ANNOTATION_SEMANTIC_TAGS);
+			if (tags != null)
+				map.put(MapKeys.ANNOTATION_SEMANTIC_TAGS, toSemanticTags(tags));
+				
 			return new Annotation(map);
 		} catch (Throwable t) {
 			throw new InvalidAnnotationException(t);
 		}
+	}	
+	
+	private List<SemanticTag> toSemanticTags(List<Map<String, Object>> jsonFormat) throws InvalidAnnotationException {
+		ArrayList<SemanticTag> tags = new ArrayList<SemanticTag>();
+		
+		for (Map<String, Object> map : jsonFormat) {
+			String uri = (String) map.get(MapKeys.TAG_URI);
+			if (uri != null) {
+				try {
+					map.put(MapKeys.TAG_URI, new URI(uri));
+				} catch (URISyntaxException e) {
+					throw new InvalidAnnotationException(e);
+				}
+			}
+
+			@SuppressWarnings("unchecked")
+			Map<String, String> relation = (Map<String, String>) map.get(MapKeys.TAG_RELATION);
+			if (relation != null)
+				map.put(MapKeys.TAG_RELATION, new SemanticRelation(relation));
+			
+			tags.add(new SemanticTag(map));
+		}
+		
+		return tags;
 	}	
 	
 }
