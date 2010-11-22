@@ -2,7 +2,7 @@ package at.ait.dme.yuma.server.model;
 
 /**
  * When creating annotations from maps, these
- * are the keys to use in the map!
+ * are the keys to use!
  * 
  * @author Rainer Simon
  */

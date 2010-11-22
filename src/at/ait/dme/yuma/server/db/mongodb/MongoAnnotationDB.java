@@ -3,6 +3,7 @@ package at.ait.dme.yuma.server.db.mongodb;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,6 +18,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.MongoException;
 
 import at.ait.dme.yuma.server.config.Config;
+import at.ait.dme.yuma.server.controller.formats.JSONFormatHandler;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
@@ -52,6 +54,11 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	 * The annotations collection
 	 */
 	private DBCollection collection = null;
+
+	/**
+	 * JSON format handler to perform translations JSON<->Annotation
+	 */
+	private JSONFormatHandler format = new JSONFormatHandler();
 	
 	@Override
 	public synchronized void init() throws AnnotationDatabaseException {
@@ -106,7 +113,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	@Override
 	public String createAnnotation(Annotation annotation) throws InvalidAnnotationException  {
 		checkIntegrity(annotation);
-		DBObject dbo = new MongoDBMapper().toDBObject(annotation);
+		DBObject dbo = toDBObject(annotation);
 		collection.insert(dbo);
 		return ((ObjectId) dbo.get(OID)).toString();
 	}
@@ -122,7 +129,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		if (countReplies(annotationId) > 0)
 			throw new AnnotationHasReplyException();
 		
-		DBObject after = new MongoDBMapper().toDBObject(annotation);
+		DBObject after = toDBObject(annotation);
 		collection.update(before, after);
 
 		// Note: MongoDB does not change the ID on updates
@@ -153,7 +160,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		
 		while (cursor.hasNext()) {
 			try {
-				annotations.add(new MongoDBMapper().toAnnotation(cursor.next()));
+				annotations.add(toAnnotation(cursor.next()));
 			} catch (InvalidAnnotationException e) {
 				// Should never happen
 				throw new AnnotationDatabaseException(e);
@@ -177,7 +184,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 
 		try {
-			return new MongoDBMapper().toAnnotation((findDBObjectByAnnotationID(annotationId)));
+			return toAnnotation((findDBObjectByAnnotationID(annotationId)));
 		} catch (InvalidAnnotationException e) {
 			// Should never happen
 			throw new AnnotationDatabaseException(e);
@@ -206,7 +213,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		
 		while (cursor.hasNext()) {
 			try {
-				annotations.add(new MongoDBMapper().toAnnotation(cursor.next()));
+				annotations.add(toAnnotation(cursor.next()));
 			} catch (InvalidAnnotationException e) {
 				// Should never happen
 				throw new AnnotationDatabaseException(e);
@@ -229,7 +236,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		ArrayList<Annotation> results = new ArrayList<Annotation>();
 		while(cursor.hasNext()) {
 			try {
-				results.add(new MongoDBMapper().toAnnotation(cursor.next()));
+				results.add(toAnnotation(cursor.next()));
 			} catch (InvalidAnnotationException e) {
 				throw new AnnotationDatabaseException(e);
 			}
@@ -260,6 +267,33 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	 */
 	private void checkIntegrity(Annotation annotation) throws InvalidAnnotationException {
 		// TODO check for consistency - if it's a reply it needs to have the same objectID etc.
+	}
+	
+	/**
+	 * Turns an annotation into a map suitable for storage inside MongoDB
+	 * @param annotation the annotation
+	 * @return the map
+	 */
+	private DBObject toDBObject(Annotation annotation) {
+		return new BasicDBObject(format.toJSONFormat(annotation));
+	}
+	
+	/**
+	 * Creates an annotation from a map retrieved from MongoDB.
+	 * @param map the map
+	 * @return the annotation
+	 * @throws InvalidAnnotationException if something is wrong with the annotation
+	 */
+	private Annotation toAnnotation(DBObject dbo) throws InvalidAnnotationException {
+		try {
+			@SuppressWarnings("unchecked")
+			Map<String, Object> map = (Map<String, Object>) dbo.toMap();
+			map.put(MapKeys.ANNOTATION_ID, dbo.get(MongoAnnotationDB.OID).toString());
+			map.remove(MongoAnnotationDB.OID);
+			return format.toAnnotation(map);	
+		} catch (Throwable t) {
+			throw new InvalidAnnotationException(t);
+		}
 	}
 
 }

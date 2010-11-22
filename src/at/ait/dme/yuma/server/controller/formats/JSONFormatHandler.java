@@ -30,33 +30,39 @@ public class JSONFormatHandler implements FormatHandler {
 		try {
 			@SuppressWarnings("unchecked")
 			Map<String, Object> map = (Map<String, Object>) JSON.parse(serialized);
-			
-			// Convert map from JSON to annotation format
-			String type = (String) map.get(MapKeys.ANNOTATION_TYPE);
-			if (type != null)
-				map.put(MapKeys.ANNOTATION_TYPE, AnnotationType.fromString(type));
-
-			String scope = (String) map.get(MapKeys.ANNOTATION_SCOPE);
-			if (scope != null)
-				map.put(MapKeys.ANNOTATION_SCOPE, Scope.fromString(scope));
-			
-			@SuppressWarnings("unchecked")
-			List<Map<String, Object>> tags =
-				(List<Map<String, Object>>) map.get(MapKeys.ANNOTATION_SEMANTIC_TAGS);
-			if (tags != null) {
-				map.put(MapKeys.ANNOTATION_SEMANTIC_TAGS, toSemanticTags(tags));
-			}
-			
-			return new Annotation(map);
+			return toAnnotation(map);
 		} catch (Throwable t) {
-			throw new InvalidAnnotationException();
+			throw new InvalidAnnotationException(t);
 		}
 	}
 
-	private List<SemanticTag> toSemanticTags(List<Map<String, Object>> jsonFormat) throws InvalidAnnotationException {
+	/**
+	 * Converts a JSON-formatted map to an annotation.
+	 * @param map the JSON-formatted map
+	 * @return the annotation
+	 * @throws InvalidAnnotationException if the map does not contain valid annotation data
+	 */
+	public Annotation toAnnotation(Map<String, Object> map) throws InvalidAnnotationException {
+		String type = (String) map.get(MapKeys.ANNOTATION_TYPE);
+		if (type != null)
+			map.put(MapKeys.ANNOTATION_TYPE, AnnotationType.fromString(type));
+		
+		String scope = (String) map.get(MapKeys.ANNOTATION_SCOPE);
+		if (scope != null)
+			map.put(MapKeys.ANNOTATION_SCOPE, Scope.fromString(scope));
+
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> tags = (List<Map<String, Object>>) map.get(MapKeys.ANNOTATION_SEMANTIC_TAGS);
+		if (tags != null)
+			map.put(MapKeys.ANNOTATION_SEMANTIC_TAGS, new JSONFormatHandler().toSemanticTags(tags));
+			
+		return new Annotation(map);
+	}	
+
+	private List<SemanticTag> toSemanticTags(List<Map<String, Object>> maps) throws InvalidAnnotationException {
 		ArrayList<SemanticTag> tags = new ArrayList<SemanticTag>();
 		
-		for (Map<String, Object> map : jsonFormat) {
+		for (Map<String, Object> map : maps) {
 			String uri = (String) map.get(MapKeys.TAG_URI);
 			if (uri != null) {
 				try {
@@ -76,7 +82,6 @@ public class JSONFormatHandler implements FormatHandler {
 		
 		return tags;
 	}
-
 	
 	@Override
 	public String serialize(Annotation annotation) {
@@ -94,7 +99,7 @@ public class JSONFormatHandler implements FormatHandler {
 		return JSON.serialize(maps);
 	}
 	
-	private Map<String, Object> toJSONFormat(Annotation annotation) {
+	public Map<String, Object> toJSONFormat(Annotation annotation) {
 		Map<String, Object> map = annotation.toMap();
 		
 		map.put(MapKeys.ANNOTATION_TYPE, annotation.getType().toString());
