@@ -22,7 +22,7 @@ public enum AnnotationType {
 		return s;
 	}
 	
-	static AnnotationType fromString(String s) {
+	public static AnnotationType fromString(String s) {
 		if (s == null)
 			return null;
 		

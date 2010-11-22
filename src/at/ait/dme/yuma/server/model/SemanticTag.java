@@ -130,6 +130,21 @@ public class SemanticTag {
 	public Set<String> getAlternativeDescriptionLanguages() {
 		return altDescriptions.keySet();
 	}
+	
+	public Map<String, Object> toMap() {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+
+		map.put(MapKeys.TAG_URI, uri);
+		map.put(MapKeys.TAG_LABEL, primaryLabel);
+		map.put(MapKeys.TAG_DESCRIPTION, primaryDescription);
+		map.put(MapKeys.TAG_LANG, primaryLang);
+		map.put(MapKeys.TAG_TYPE, type);
+		map.put(MapKeys.TAG_RELATION, relation);
+		map.put(MapKeys.TAG_ALT_LABELS, altLabels);
+		map.put(MapKeys.TAG_ALT_DESCRIPTIONS, altDescriptions);
+		
+		return map;
+	}
 
 	@Override
 	public boolean equals(Object other) {

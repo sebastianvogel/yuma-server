@@ -2,9 +2,7 @@ package at.ait.dme.yuma.server.db.mongodb;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,7 +36,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	/**
 	 * DB object ID key
 	 */
-	private static final String OID = "_id";
+	static final String OID = "_id";
 	
 	/**
 	 * MongoDB database connection
@@ -108,7 +106,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	@Override
 	public String createAnnotation(Annotation annotation) throws InvalidAnnotationException  {
 		checkIntegrity(annotation);
-		BasicDBObject dbo = new BasicDBObject(annotation.toMap());
+		DBObject dbo = new MongoDBMapper().toDBObject(annotation);
 		collection.insert(dbo);
 		return ((ObjectId) dbo.get(OID)).toString();
 	}
@@ -124,7 +122,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		if (countReplies(annotationId) > 0)
 			throw new AnnotationHasReplyException();
 		
-		BasicDBObject after = new BasicDBObject(annotation.toMap());
+		DBObject after = new MongoDBMapper().toDBObject(annotation);
 		collection.update(before, after);
 
 		// Note: MongoDB does not change the ID on updates
@@ -155,7 +153,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		
 		while (cursor.hasNext()) {
 			try {
-				annotations.add(toAnnotation(cursor.next()));
+				annotations.add(new MongoDBMapper().toAnnotation(cursor.next()));
 			} catch (InvalidAnnotationException e) {
 				// Should never happen
 				throw new AnnotationDatabaseException(e);
@@ -179,7 +177,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 
 		try {
-			return toAnnotation(findDBObjectByAnnotationID(annotationId));
+			return new MongoDBMapper().toAnnotation((findDBObjectByAnnotationID(annotationId)));
 		} catch (InvalidAnnotationException e) {
 			// Should never happen
 			throw new AnnotationDatabaseException(e);
@@ -208,7 +206,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		
 		while (cursor.hasNext()) {
 			try {
-				annotations.add(toAnnotation(cursor.next()));
+				annotations.add(new MongoDBMapper().toAnnotation(cursor.next()));
 			} catch (InvalidAnnotationException e) {
 				// Should never happen
 				throw new AnnotationDatabaseException(e);
@@ -231,7 +229,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		ArrayList<Annotation> results = new ArrayList<Annotation>();
 		while(cursor.hasNext()) {
 			try {
-				results.add(toAnnotation(cursor.next()));
+				results.add(new MongoDBMapper().toAnnotation(cursor.next()));
 			} catch (InvalidAnnotationException e) {
 				throw new AnnotationDatabaseException(e);
 			}
@@ -251,7 +249,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 			throw new AnnotationDatabaseException("More than one object for this ID");
 		
 		if (cursor.count() > 0)
-				return cursor.next();
+			return cursor.next();
 		
 		throw new AnnotationNotFoundException();
 	}
@@ -262,16 +260,6 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	 */
 	private void checkIntegrity(Annotation annotation) throws InvalidAnnotationException {
 		// TODO check for consistency - if it's a reply it needs to have the same objectID etc.
-	}
-	
-	private Annotation toAnnotation(DBObject dbo) throws InvalidAnnotationException {
-		HashMap<String, Object> map = new HashMap<String, Object>((Map<String, Object>) dbo.toMap());
-		map.remove("_id");
-		
-		Annotation a = new Annotation(map);
-		// a.setAnnotationID(dbo.get(OID).toString());
-		map.put("id", a.getAnnotationID());
-		return a;
 	}
 
 }

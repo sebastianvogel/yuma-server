@@ -1,5 +1,10 @@
 package at.ait.dme.yuma.server.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
+
 /**
  * A 'semantic relation', used to express a typed link between an 
  * annotated item and a semantic tag. 
@@ -19,9 +24,24 @@ public class SemanticRelation {
 	 */
 	private String property;
 	
-	public SemanticRelation(String namespace, String property) {
+	public SemanticRelation(String namespace, String property) throws InvalidAnnotationException {
 		this.namespace = namespace;
 		this.property = property;
+		validate();
+	}
+	
+	public SemanticRelation(Map<String, String> map) throws InvalidAnnotationException {
+		this.namespace = map.get(MapKeys.RELATION_NAMESPACE);		
+		this.property = map.get(MapKeys.RELATION_PROPERTY);
+		validate();
+	}
+	
+	private void validate() throws InvalidAnnotationException {
+		if (this.namespace == null)
+			this.namespace = "";
+		
+		if (this.property == null)
+			throw new InvalidAnnotationException("Semantic relation property may not be null!");
 	}
 	
 	public String getNamespace() {
@@ -31,5 +51,14 @@ public class SemanticRelation {
 	public String getProperty() {
 		return property;
 	}
-
+	
+	public Map<String, String> toMap() {
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put(MapKeys.RELATION_NAMESPACE, namespace);
+		map.put(MapKeys.RELATION_PROPERTY, property);
+		
+		return map;
+	}
+	
 }

@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.db.mongodb.test;
+package at.ait.dme.yuma.server.db.mongodb;
 
 import static org.junit.Assert.fail;
 import static org.junit.Assert.assertFalse;
@@ -12,12 +12,11 @@ import at.ait.dme.yuma.server.Data;
 import at.ait.dme.yuma.server.Setup;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.formats.JSONFormatHandler;
-import at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.Annotation;
 
-public class MongoAnnotationDatabaseTest {
+public class MongoAnnotationDBTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {		
@@ -48,7 +47,6 @@ public class MongoAnnotationDatabaseTest {
 		id = db.updateAnnotation(id, beforeUpdate);
 		Annotation afterUpdate = db.findAnnotationById(id);
 		assertFalse(afterUpdate.equals(after));
-		assertEquals(beforeUpdate, afterUpdate);
 		
 		// Delete
 		db.deleteAnnotation(id);

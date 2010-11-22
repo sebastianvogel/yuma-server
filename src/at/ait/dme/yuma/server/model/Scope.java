@@ -20,7 +20,7 @@ public enum Scope {
 		return s;
 	}
 	
-	static Scope fromString(String s) {
+	public static Scope fromString(String s) {
 		if (s == null)
 			return null;
 		

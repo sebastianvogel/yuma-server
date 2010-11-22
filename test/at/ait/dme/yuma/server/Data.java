@@ -56,7 +56,7 @@ public class Data {
 			"</svg:svg> " +
 		  "\" , "+
 		  "\"type\" : \"image\" , "+
-		  "\"object-id\" : \"http://upload.wikimedia.org/wikipedia/commons/7/77/Lissabon.jpg\"" +
+		  "\"object-id\" : \"http://upload.wikimedia.org/wikipedia/commons/7/77/Lissabon.jpg\", " +
 		  "\"tags\" : [ " +
 		    "{ \"alt-labels\" : { } , \"label\" : \"Lisbon\" , \"type\" : \"place\" , \"alt-descriptions\" : { } , \"lang\" : \"en\" , \"uri\" : \"http://uri.com/tag01\"} ," +
 		    "{ \"alt-labels\" : { } , \"label\" : \"Portugal\" , \"type\" : \"place\" , \"alt-descriptions\" : { } , \"lang\" : \"en\" , \"uri\" : \"http://uri.com/tag02\"} " +

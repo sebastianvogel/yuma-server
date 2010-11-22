@@ -30,5 +30,8 @@ public class MapKeys {
 	public static final String TAG_ALT_LABELS = "alt-labels";
 	public static final String TAG_DESCRIPTION = "description";
 	public static final String TAG_ALT_DESCRIPTIONS = "alt-descriptions";
+	
+	public static final String RELATION_NAMESPACE = "namespace";
+	public static final String RELATION_PROPERTY = "property";
 
 }

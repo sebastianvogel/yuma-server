@@ -2,6 +2,7 @@ package at.ait.dme.yuma.server.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -209,8 +210,26 @@ public class Annotation {
 	}
 	
 	public Map<String, Object> toMap() {
-		// TODO implement
-		return null;
+		// TODO optimize! might make more sense to store all this in a map
+		// right from the start; deep cloning might be a problem then, though
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+
+		map.put(MapKeys.ANNOTATION_ID, annotationId);
+		map.put(MapKeys.ANNOTATION_ROOT_ID, rootId);
+		map.put(MapKeys.ANNOTATION_PARENT_ID, parentId);
+		map.put(MapKeys.ANNOTATION_OBJECT_ID, objectId);
+		map.put(MapKeys.ANNOTATION_CREATED, created);
+		map.put(MapKeys.ANNOTATION_LAST_MODIFIED, lastModified);
+		map.put(MapKeys.ANNOTATION_CREATED_BY, createdBy);
+		map.put(MapKeys.ANNOTATION_TITLE, title);
+		map.put(MapKeys.ANNOTATION_TEXT, text);
+		map.put(MapKeys.ANNOTATION_TYPE, type);
+		map.put(MapKeys.ANNOTATION_FRAGMENT, fragment);
+		map.put(MapKeys.ANNOTATION_SCOPE, scope);
+		map.put(MapKeys.ANNOTATION_SEMANTIC_TAGS, tags);
+		
+		return map;
 	}
 	
 	@Override
@@ -282,5 +301,5 @@ public class Annotation {
 		
 		return a.equals(b);
 	}
-		
+	
 }
