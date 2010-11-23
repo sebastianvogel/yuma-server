@@ -99,6 +99,11 @@ public class JSONFormatHandler implements FormatHandler {
 		return JSON.serialize(maps);
 	}
 	
+	/**
+	 * Converts an annotation to a JSON-formatted map
+	 * @param annotation the annotation
+	 * @return the JSON-formatted map
+	 */
 	public Map<String, Object> toJSONFormat(Annotation annotation) {
 		Map<String, Object> map = annotation.toMap();
 		

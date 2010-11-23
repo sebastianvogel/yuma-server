@@ -23,7 +23,7 @@ public class Data {
 				"</svg:polygon> " +
 				"</svg:symbol> " +
 			  "</svg:defs>" +
-			"</svg:svg> " +
+			"</svg:svg>" +
 		  "\" , "+
 		  "\"type\" : \"image\" , "+
 		  "\"object-id\" : \"http://upload.wikimedia.org/wikipedia/commons/7/77/Lissabon.jpg\"" +
@@ -53,13 +53,13 @@ public class Data {
 				"</svg:polygon> " +
 				"</svg:symbol> " +
 			  "</svg:defs>" +
-			"</svg:svg> " +
+			"</svg:svg>" +
 		  "\" , "+
 		  "\"type\" : \"image\" , "+
 		  "\"object-id\" : \"http://upload.wikimedia.org/wikipedia/commons/7/77/Lissabon.jpg\", " +
 		  "\"tags\" : [ " +
-		    "{ \"alt-labels\" : { } , \"label\" : \"Lisbon\" , \"type\" : \"place\" , \"alt-descriptions\" : { } , \"lang\" : \"en\" , \"uri\" : \"http://uri.com/tag01\"} ," +
-		    "{ \"alt-labels\" : { } , \"label\" : \"Portugal\" , \"type\" : \"place\" , \"alt-descriptions\" : { } , \"lang\" : \"en\" , \"uri\" : \"http://uri.com/tag02\"} " +
+		    "{ \"alt-labels\" : { } , \"label\" : \"Lisbon\" , \"type\" : \"place\" , \"relation\" : { \"namespace\" : \"\" , \"property\" : \"spatiallyContains\" } , \"alt-descriptions\" : { } , \"lang\" : \"en\" , \"uri\" : \"http://www.geonames.org/2267057/\"} ," +
+		    "{ \"alt-labels\" : { } , \"label\" : \"Portugal\" , \"type\" : \"place\" , \"relation\" : { \"namespace\" : \"\" , \"property\" : \"spatiallyContains\" } , \"alt-descriptions\" : { } , \"lang\" : \"en\" , \"uri\" : \"http://www.geonames.org/2264397/\"} " +
 		  "]" +
 		"}";
 	
