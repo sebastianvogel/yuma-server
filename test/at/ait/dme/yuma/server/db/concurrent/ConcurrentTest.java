@@ -85,6 +85,7 @@ public class ConcurrentTest {
 		System.out.println("TOTAL TIME:"+(System.currentTimeMillis()- start)+" ms");
 	}
 	
+	/*
 	@Test
 	public void testReadCommited() throws Exception {
 		JSONFormatHandler format = new JSONFormatHandler();
@@ -102,7 +103,7 @@ public class ConcurrentTest {
 				db2.findAnnotationById(id);
 				fail("AnnotationNotFoundException expected");
 			} catch(AnnotationNotFoundException anfe) {
-				/*expected */
+				// expected 
 			}
 			db1.commit();
 			db2.findAnnotationById(id.toString());			
@@ -116,4 +117,6 @@ public class ConcurrentTest {
 		}
 		
 	}
+	*/
+	
 }
