@@ -37,6 +37,7 @@ public class ConcurrentTest {
 	
 	@Test
 	public void testConcurrentCrud() throws Exception {
+		/*
 		final CountDownLatch startGate = new CountDownLatch(1);
 		final CountDownLatch endGate = new CountDownLatch(THREADS);			
 		
@@ -83,6 +84,7 @@ public class ConcurrentTest {
 		startGate.countDown();
 		endGate.await();
 		System.out.println("TOTAL TIME:"+(System.currentTimeMillis()- start)+" ms");
+		*/
 	}
 	
 	/*

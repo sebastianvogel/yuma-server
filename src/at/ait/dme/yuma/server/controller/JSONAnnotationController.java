@@ -37,15 +37,6 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 		return super.createAnnotation(annotation, new JSONFormatHandler());
 	}
 	
-	@GET
-	@Produces("application/json")
-	@Path("/{id}")
-	public Response findAnnotationById(@PathParam("id") String id)
-		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
-		
-		return super.findAnnotationById(id, new JSONFormatHandler());
-	}
-	
 	@PUT
 	@Consumes("application/json")
 	@Path("/{id}")
@@ -57,11 +48,19 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 	
 	@DELETE
 	@Path("/{id}")
-
 	public Response deleteAnnotation(@PathParam("id") String id) 
 			throws AnnotationDatabaseException, AnnotationHasReplyException, UnsupportedEncodingException, AnnotationNotFoundException {
 		
 		return super.deleteAnnotation(id);
 	}
-	
+
+	@GET
+	@Produces("application/json")
+	@Path("/{id}")
+	public Response findAnnotationById(@PathParam("id") String id)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		return super.findAnnotationById(id, new JSONFormatHandler());
+	}
+			
 }
