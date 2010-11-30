@@ -16,12 +16,7 @@
 
 	<context-param>
 		<param-name>annotation.base.url</param-name>
-		<param-value>http://dme.arcs.ac.at/annotation-middleware/Annotation/</param-value>
-	</context-param>
-
-	<context-param>
-		<param-name>annotation.body.base.url</param-name>
-		<param-value>http://dme.arcs.ac.at/annotation-middleware/Annotation/body/</param-value>
+		<param-value>http://localhost:8089/yuma-server/json/</param-value>
 	</context-param>
 	
 	<!--  HIBERNATE  -->

@@ -1,15 +1,7 @@
 package at.ait.dme.yuma.server.db.concurrent;
 
-import static org.junit.Assert.fail;
-
-import java.util.concurrent.CountDownLatch;
-
-import at.ait.dme.yuma.server.Data;
 import at.ait.dme.yuma.server.Setup;
 import at.ait.dme.yuma.server.config.Config;
-import at.ait.dme.yuma.server.controller.formats.JSONFormatHandler;
-import at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB;
-import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -23,7 +15,8 @@ import org.junit.Test;
 * @author Rainer Simon
 */
 public class ConcurrentTest {
-	private static final int THREADS = 25;
+	
+	// private static final int THREADS = 25;
 
 	@BeforeClass
 	public static void setUp() throws Exception {
