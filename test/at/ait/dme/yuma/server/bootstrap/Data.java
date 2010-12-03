@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server;
+package at.ait.dme.yuma.server.bootstrap;
 
 public class Data {
 	

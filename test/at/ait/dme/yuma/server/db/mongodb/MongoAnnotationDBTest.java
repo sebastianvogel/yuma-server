@@ -8,8 +8,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import at.ait.dme.yuma.server.Data;
-import at.ait.dme.yuma.server.Setup;
+import at.ait.dme.yuma.server.bootstrap.Data;
+import at.ait.dme.yuma.server.bootstrap.Setup;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.formats.JSONFormatHandler;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;

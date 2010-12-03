@@ -15,8 +15,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import at.ait.dme.yuma.server.Data;
-import at.ait.dme.yuma.server.Setup;
+import at.ait.dme.yuma.server.bootstrap.Data;
+import at.ait.dme.yuma.server.bootstrap.Setup;
 import at.ait.dme.yuma.server.config.Config;
 
 /**
@@ -27,7 +27,7 @@ import at.ait.dme.yuma.server.config.Config;
  */
 public class JSONAnnotationControllerTest {
 	private static final String JSON_ANNOTATION_CONTROLLER_BASE_URL = 
-		"http://localhost:8081/yuma-server/json";
+		"http://localhost:8081/yuma-server/annotation";
 
 	private static final String ACCEPT_HEADER = "Accept";
 	private static final String LOCATION_HEADER = "Location";
@@ -48,7 +48,8 @@ public class JSONAnnotationControllerTest {
 	@Test
 	public void testCreateUpdateDeleteAnnotation() throws Exception {
 		HttpClient httpClient = new HttpClient();
-				
+			
+		// Create
 		PostMethod createMethod = new PostMethod(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
 		createMethod.setRequestEntity(new StringRequestEntity(Data.ANNOTATION_JSON_ORIGINAL, 
 				CONTENT_TYPE_JSON, ENCODING));						
@@ -57,6 +58,12 @@ public class JSONAnnotationControllerTest {
 		String createdAnnotationUrl = location.getValue();
 		assertNotNull(createdAnnotationUrl);
 		
+		// Read
+		GetMethod findByIdMethod = new GetMethod(createdAnnotationUrl);
+		findByIdMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
+		assertEquals(HttpStatus.SC_OK, httpClient.executeMethod(findByIdMethod));
+		
+		// Update
 		PutMethod updateMethod = new PutMethod(createdAnnotationUrl);
 		updateMethod.setRequestEntity(new StringRequestEntity(Data.ANNOTATION_JSON_UPDATE, 
 				CONTENT_TYPE_JSON, ENCODING));						
@@ -65,6 +72,7 @@ public class JSONAnnotationControllerTest {
 		String updatedAnnotationUrl = location.getValue();
 		assertNotNull(updatedAnnotationUrl);
 		
+		// Delete
 		DeleteMethod deleteMethod = new DeleteMethod(updatedAnnotationUrl);
 		deleteMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
 		assertEquals(HttpStatus.SC_NO_CONTENT, httpClient.executeMethod(deleteMethod));
@@ -76,38 +84,6 @@ public class JSONAnnotationControllerTest {
 				CONTENT_TYPE_JSON, ENCODING));			
 		assertEquals(httpClient.executeMethod(postDeleteMethod), HttpStatus.SC_OK);
 		*/
-	}
-	
-	@Test
-	public void testCreateFindDeleteAnnotation() throws Exception {
-		HttpClient httpClient = new HttpClient();
-		
-		// Create
-		PostMethod createMethod = new PostMethod(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
-		createMethod.setRequestEntity(new StringRequestEntity(Data.ANNOTATION_JSON_ORIGINAL, 
-				CONTENT_TYPE_JSON, ENCODING));						
-		assertEquals(httpClient.executeMethod(createMethod), HttpStatus.SC_CREATED);
-		Header location = createMethod.getResponseHeader(LOCATION_HEADER);						
-		String createdAnnotationUrl = location.getValue();
-		assertNotNull(createdAnnotationUrl);
-
-		// Read
-		GetMethod findByIdMethod = new GetMethod(createdAnnotationUrl);
-		findByIdMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
-		assertEquals(HttpStatus.SC_OK, httpClient.executeMethod(findByIdMethod));
-		
-		/*		
-		GetMethod listAnnMethod = new GetMethod(JSON_ANNOTATION_CONTROLLER_BASE_URL);
-		listAnnMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
-		listAnnMethod.setQueryString("w3c_annotates=" +
-				"http://upload.wikimedia.org/wikipedia/commons/7/77/Lissabon.jpg");	
-		assertEquals(httpClient.executeMethod(listAnnMethod), HttpStatus.SC_OK);	
-		*/
-		
-		// Delete
-		DeleteMethod deleteMethod = new DeleteMethod(createdAnnotationUrl);
-		deleteMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
-		assertEquals(HttpStatus.SC_NO_CONTENT, httpClient.executeMethod(deleteMethod));
 	}
 	
 }

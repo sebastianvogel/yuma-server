@@ -17,13 +17,15 @@ import org.junit.Test;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.webapp.WebAppContext;
 
+import at.ait.dme.yuma.server.bootstrap.Data;
+
 /**
  * Conducts tests against the built .war file deployed in an embedded 
  * Web server.
  * 
  * @author Rainer Simon
  */
-public class IntegrationTest {
+public class EndToEndTest {
 	
 	private static final String ACCEPT_HEADER = "Accept";
 	private static final String CONTENT_TYPE_JSON = "application/json";
@@ -37,7 +39,7 @@ public class IntegrationTest {
 	
 	private static final String BASE_PATH = "http://localhost:" + 
 								SERVER_PORT + 
-								CONTEXT_PATH + "/json";
+								CONTEXT_PATH + "/annotation";
 	
 	@Before
 	public void setUp() throws Exception {
@@ -46,7 +48,6 @@ public class IntegrationTest {
 		server.setStopAtShutdown(true);
 		server.start();
 	}
-	
 	
 	@Test
 	public void testCRUD() throws Exception {

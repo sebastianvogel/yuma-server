@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server;
+package at.ait.dme.yuma.server.bootstrap;
 
 import java.util.Collections;
 
@@ -19,13 +19,13 @@ public class Setup {
     public static void buildHibernateConfiguration() throws AnnotationDatabaseException {
     	new Config.Builder(
     			"at.ait.dme.yuma.server.db.hibernate.HibernateAnnotationDatabase",				
-				"http://localhost:8081/yuma-server/json/"
+				"http://localhost:8081/yuma-server/annotation/"
 		)    	
     			.dbDriver("org.postgresql.Driver")
     			.dbDriverProtocol("jdbc:postgresql").
 				dbHost("localhost")
 				.dbPort("5432")
-				.dbName("postgres")
+				.dbName("ait")
 				.dbUser("postgres")
 				.dbPass("postgres").
 				createInstance();
@@ -36,11 +36,11 @@ public class Setup {
     public static void buildMongoDBConfiguration() throws AnnotationDatabaseException {
     	new Config.Builder(
     			"at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB",				
-				"http://localhost:8081/yuma-server/json/"
+				"http://localhost:8081/yuma-server/annotation/"
 		)    	
 				.dbHost("localhost")
 				.dbPort("27017")
-				.dbName("annotations")
+				.dbName("ait")
 				.dbUser("mongodb")
 				.dbPass("mongodb").
 				createInstance();

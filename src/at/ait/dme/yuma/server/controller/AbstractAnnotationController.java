@@ -59,6 +59,29 @@ public abstract class AbstractAnnotationController {
 	}
 	
 	/**
+	 * Find an annotation by its ID
+	 * @param annotationId the annotation ID
+	 * @return status code 200 and found annotation
+	 * @throws AnnotationDatabaseException (500)
+	 * @throws UnsupportedEncodingException (500
+	 */
+	protected Response findAnnotationById(String annotationId, FormatHandler format)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		AbstractAnnotationDB db = null;
+		String annotation = null;
+		
+		try {
+			db = Config.getInstance().getAnnotationDatabase();
+			db.connect(request);
+			annotation = format.serialize(db.findAnnotationById(URLDecoder.decode(annotationId, URL_ENCODING)));
+		} finally {
+			if(db != null) db.disconnect();
+		}
+		return Response.ok(annotation).build();
+	}
+	
+	/**
 	 * Update an existing annotation
 	 * @param annotationId the annotation ID 
 	 * @param annotation the JSON representation of the annotation
@@ -114,6 +137,28 @@ public abstract class AbstractAnnotationController {
 	}
 	
 	/**
+	 * Retrieve the thread which contains the given annotation
+	 * @param annotationId the annotation ID
+	 * @return status code 200 and representation of the annotation thread
+	 * @throws AnnotationDatabaseException (500)
+	 * @throws UnsupportedEncodingException (500
+	 */
+	protected Response findAnnotationThreadForAnnotation(String annotationId, FormatHandler format)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		AbstractAnnotationDB db = null;
+		String thread = null;
+		try {
+			db = Config.getInstance().getAnnotationDatabase();
+			db.connect(request);
+			thread = format.serialize(db.findThreadForAnnotation(URLDecoder.decode(annotationId, URL_ENCODING)));
+		} finally {
+			if(db != null) db.disconnect();
+		}
+		return Response.ok().entity(thread).build();
+	}
+	
+	/**
 	 * Returns the entire tree of annotations for a given object
 	 * @param objectId the object ID
 	 * @return status code 200 and the representation of the found annotations
@@ -121,7 +166,7 @@ public abstract class AbstractAnnotationController {
 	 * @throws InvalidAnnotationException (415)
 	 * @throws UnsupportedEncodingException (500)
 	 */
-	protected Response getAnnotationTreeForObject(String objectId, FormatHandler format)
+	protected Response findAnnotationTreeForObject(String objectId, FormatHandler format)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
@@ -159,52 +204,7 @@ public abstract class AbstractAnnotationController {
 		}
 		return Response.ok().entity(count).build();
 	}
-		
-	/**
-	 * Find an annotation by its ID
-	 * @param annotationId the annotation ID
-	 * @return status code 200 and found annotation
-	 * @throws AnnotationDatabaseException (500)
-	 * @throws UnsupportedEncodingException (500
-	 */
-	protected Response findAnnotationById(String annotationId, FormatHandler format)
-		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
-		
-		AbstractAnnotationDB db = null;
-		String annotation = null;
-		
-		try {
-			db = Config.getInstance().getAnnotationDatabase();
-			db.connect(request);
-			annotation = format.serialize(db.findAnnotationById(URLDecoder.decode(annotationId, URL_ENCODING)));
-		} finally {
-			if(db != null) db.disconnect();
-		}
-		return Response.ok(annotation).build();
-	}
-
-	/**
-	 * Retrieve the thread which contains the given annotation
-	 * @param annotationId the annotation ID
-	 * @return status code 200 and representation of the annotation thread
-	 * @throws AnnotationDatabaseException (500)
-	 * @throws UnsupportedEncodingException (500
-	 */
-	protected Response findThreadForAnnotation(String annotationId, FormatHandler format)
-		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
-		
-		AbstractAnnotationDB db = null;
-		String thread = null;
-		try {
-			db = Config.getInstance().getAnnotationDatabase();
-			db.connect(request);
-			thread = format.serialize(db.findThreadForAnnotation(URLDecoder.decode(annotationId, URL_ENCODING)));
-		} finally {
-			if(db != null) db.disconnect();
-		}
-		return Response.ok().entity(thread).build();
-	}
-		
+				
 	/**
 	 * Find annotations that match the given search term
 	 * @param query the query term
