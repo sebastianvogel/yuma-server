@@ -25,6 +25,7 @@ import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.model.AnnotationTree;
 import at.ait.dme.yuma.server.model.MapKeys;
 
 /**
@@ -149,7 +150,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public List<Annotation> getAnnotationsForObject(String objectId)
+	public AnnotationTree findAnnotationsForObject(String objectId)
 			throws AnnotationDatabaseException {
 		
 		ArrayList<Annotation> annotations = new ArrayList<Annotation>();
@@ -167,7 +168,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 			}
 		}
 		
-		return annotations;
+		return new AnnotationTree(annotations);
 	}
 	
 	@Override
@@ -201,7 +202,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 	
 	@Override
-	public List<Annotation> findThreadForAnnotation(String annotationId)
+	public AnnotationTree findThreadForAnnotation(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 		
 		String rootId = findAnnotationById(annotationId).getRootId();		
@@ -220,7 +221,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 			}
 		}
 		
-		return annotations;
+		return new AnnotationTree(annotations);
 	}
 
 	@Override

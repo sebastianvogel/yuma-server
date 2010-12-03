@@ -26,22 +26,24 @@ public class AnnotationTree {
 	private HashMap<String, ArrayList<Annotation>> replies = new HashMap<String, ArrayList<Annotation>>();
 	
 	public AnnotationTree(List<Annotation> annotations) {
-		// Temporary map to store replies while building the tree
-		HashMap<String, ArrayList<Annotation>> allReplies = new HashMap<String, ArrayList<Annotation>>();
-		
 		for (Annotation a : annotations) {
-			if (a.getParentId() == null) {
+			if ((a.getParentId() == null) || a.getParentId().isEmpty()) {
 				// Add to root annotation list
 				rootAnnotations.add(a);
 			} else {
 				// Add to appropriate reply list
-				ArrayList<Annotation> replyList = allReplies.get(a.getParentId());
+				ArrayList<Annotation> replyList = replies.get(a.getParentId());
 				if (replyList == null) 
 					replyList = new ArrayList<Annotation>();
 				replyList.add(a);
-				allReplies.put(a.getParentId(), replyList);
+				
+				replies.put(a.getParentId(), replyList);
 			}
 		}
+	}
+	
+	public List<Annotation> getRootAnnotations() {
+		return rootAnnotations;
 	}
 	
 	/**
@@ -52,10 +54,11 @@ public class AnnotationTree {
 	 * @return the child (or root) annotations 
 	 */
 	public List<Annotation> getChildren(String annotationId) {
-		if (annotationId == null)
-			return rootAnnotations;
+		List<Annotation> list = replies.get(annotationId);
+		if (list == null)
+			return new ArrayList<Annotation>();
 		
-		return replies.get(annotationId);
+		return list;
 	}
 
 }

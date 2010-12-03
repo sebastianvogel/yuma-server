@@ -31,6 +31,7 @@ public class Data {
 	
 	public static final String ANNOTATION_JSON_UPDATE =
 		"{ \"parent-id\" : \"\" , " +
+		  "\"id\" : \"test\" , " +
 		  "\"root-id\" : \"\" , " +
 		  "\"title\" : \"Ponte 25 de Abril\" , "+
 		  "\"text\" : \"The 25 de Abril Bridge is a suspension bridge connecting the city of Lisbon, capital of Portugal, " + 
@@ -64,8 +65,8 @@ public class Data {
 		"}";
 	
 	public static final String REPLY_JSON =
-		"{ \"parent-id\" : \"@parentId@\" , " +
-		  "\"root-id\" : \"@parentId@\" , " +
+		"{ \"parent-id\" : \"test\" , " +
+		  "\"root-id\" : \"test\" , " +
 		  "\"title\" : \"RE: Ponte 25 de Abril\" , "+
 		  "\"text\" : \"Interesting!\" ," +
 		  "\"scope\" : \"public\" , "+

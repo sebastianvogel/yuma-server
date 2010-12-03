@@ -10,6 +10,7 @@ import com.mongodb.util.JSON;
 
 import at.ait.dme.yuma.server.controller.formats.FormatHandler;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
+import at.ait.dme.yuma.server.model.AnnotationTree;
 import at.ait.dme.yuma.server.model.AnnotationType;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.Scope;
@@ -23,6 +24,8 @@ import at.ait.dme.yuma.server.model.SemanticTag;
  * @author Rainer Simon
  */
 public class JSONFormatHandler implements FormatHandler {
+	
+	private static final String KEY_REPLIES = "replies";
 	
 	@Override
 	public Annotation parse(String serialized)
@@ -90,14 +93,8 @@ public class JSONFormatHandler implements FormatHandler {
 	}
 
 	@Override
-	public String serialize(List<Annotation> annotations) {
-		ArrayList<Map<String, Object>> maps = new ArrayList<Map<String,Object>>();
-		
-		for (Annotation annotation : annotations) {
-			maps.add(toJSONFormat(annotation));
-		}
-		
-		return JSON.serialize(maps);
+	public String serialize(AnnotationTree tree) {
+		return JSON.serialize(toJSONFormat(tree));
 	}
 	
 	/**
@@ -130,6 +127,38 @@ public class JSONFormatHandler implements FormatHandler {
 		}
 		
 		return maps;
+	}
+	
+	public List<Map<String, Object>> toJSONFormat(AnnotationTree tree) {
+		List<Map<String, Object>> jsonTree = new ArrayList<Map<String,Object>>();
+		
+		for (Annotation a : tree.getRootAnnotations()) {
+			Map<String, Object> root = toJSONFormat(a);
+			buildTree(root, tree);
+			jsonTree.add(root);
+		}
+		
+		return jsonTree;
+	}
+	
+	private void buildTree(Map<String, Object> parent, AnnotationTree tree) {
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> repliesList = (List<Map<String, Object>>) parent.get(KEY_REPLIES);
+		if (repliesList == null) {
+			repliesList = new ArrayList<Map<String, Object>>();
+		}
+		
+		String parentId = (String) parent.get(MapKeys.ANNOTATION_ID);
+		for (Annotation a : tree.getChildren(parentId)) {
+			// Append each reply to the list...
+			Map<String, Object> reply = toJSONFormat(a); 
+			repliesList.add(reply);
+			
+			// ...and continue recursively
+			buildTree(reply, tree);
+		}
+		
+		parent.put(KEY_REPLIES, repliesList);
 	}
 		
 }

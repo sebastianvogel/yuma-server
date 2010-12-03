@@ -2,6 +2,7 @@ package at.ait.dme.yuma.server.controller.formats;
 
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
@@ -11,9 +12,12 @@ import java.util.regex.Pattern;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.mongodb.util.JSON;
+
 import at.ait.dme.yuma.server.bootstrap.Data;
 import at.ait.dme.yuma.server.controller.formats.json.JSONFormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.model.AnnotationTree;
 import at.ait.dme.yuma.server.model.AnnotationType;
 import at.ait.dme.yuma.server.model.MapKeys;
 import at.ait.dme.yuma.server.model.Scope;
@@ -142,6 +146,18 @@ public class JSONFormatHandlerTest {
 		assertTrue(tags[1].contains("\"type\" : \"place\""));
 		assertTrue(tags[1].contains("\"lang\" : \"en\"")); 
 		assertTrue(tags[1].contains("\"property\" : \"spatiallyContains\""));
+	}
+	
+	@Test
+	public void testTreeSerialization() throws Exception {
+		JSONFormatHandler jsonFormat = new JSONFormatHandler();
+		
+		List<Annotation> list = new ArrayList<Annotation>();
+		list.add(jsonFormat.parse(Data.ANNOTATION_JSON_UPDATE));
+		list.add(jsonFormat.parse(Data.REPLY_JSON));
+		
+		AnnotationTree tree = new AnnotationTree(list);
+		System.out.println(JSON.serialize(jsonFormat.toJSONFormat(tree)));
 	}
 	
 }

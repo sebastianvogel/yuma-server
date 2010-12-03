@@ -175,7 +175,7 @@ public abstract class AbstractAnnotationController {
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			tree = format.serialize(db.getAnnotationsForObject(URLDecoder.decode(objectId, URL_ENCODING)));
+			tree = format.serialize(db.findAnnotationsForObject(URLDecoder.decode(objectId, URL_ENCODING)));
 		} finally {
 			if(db != null) db.disconnect();
 		}
@@ -221,7 +221,7 @@ public abstract class AbstractAnnotationController {
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			annotations = format.serialize(db.findAnnotations(URLDecoder.decode(query, URL_ENCODING)));
+			// annotations = format.serialize(db.findAnnotations(URLDecoder.decode(query, URL_ENCODING)));
 		} finally {
 			if(db != null) db.disconnect();
 		}
