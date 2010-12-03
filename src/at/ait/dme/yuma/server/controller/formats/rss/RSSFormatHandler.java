@@ -1,20 +1,22 @@
-package at.ait.dme.yuma.server.controller.formats;
+package at.ait.dme.yuma.server.controller.formats.rss;
 
 import java.util.List;
 
+import at.ait.dme.yuma.server.controller.formats.FormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
 
 /**
- * Format handler for OAC RDF/XML.
+ * Format handler for RSS (serialization only)
  * 
  * @author Rainer Simon
  */
-public class OACXMLFormatHandler implements FormatHandler {
+public class RSSFormatHandler implements FormatHandler {
 
 	@Override
-	public Annotation parse(String serialized) {
-		// TODO Auto-generated method stub
-		return null;
+	public Annotation parse(String serialized)
+			throws UnsupportedOperationException {
+		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

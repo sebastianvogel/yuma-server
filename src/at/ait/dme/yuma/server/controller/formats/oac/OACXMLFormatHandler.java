@@ -1,21 +1,21 @@
-package at.ait.dme.yuma.server.controller.formats;
+package at.ait.dme.yuma.server.controller.formats.oac;
 
 import java.util.List;
 
+import at.ait.dme.yuma.server.controller.formats.FormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
 
 /**
- * Format handler for OpenSearch (serialization only)
+ * Format handler for OAC RDF/XML.
  * 
  * @author Rainer Simon
  */
-public class OpenSearchFormatHandler implements FormatHandler {
+public class OACXMLFormatHandler implements FormatHandler {
 
 	@Override
-	public Annotation parse(String serialized)
-			throws UnsupportedOperationException {
-
-		throw new UnsupportedOperationException();
+	public Annotation parse(String serialized) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

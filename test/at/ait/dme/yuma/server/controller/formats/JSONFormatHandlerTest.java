@@ -12,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import at.ait.dme.yuma.server.bootstrap.Data;
+import at.ait.dme.yuma.server.controller.formats.json.JSONFormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationType;
 import at.ait.dme.yuma.server.model.MapKeys;

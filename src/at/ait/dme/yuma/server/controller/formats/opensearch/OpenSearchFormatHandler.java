@@ -1,20 +1,22 @@
-package at.ait.dme.yuma.server.controller.formats;
+package at.ait.dme.yuma.server.controller.formats.opensearch;
 
 import java.util.List;
 
+import at.ait.dme.yuma.server.controller.formats.FormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
 
 /**
- * Format handler for LEMO RDF/XML.
+ * Format handler for OpenSearch (serialization only)
  * 
  * @author Rainer Simon
  */
-public class LEMOXMLFormatHandler implements FormatHandler {
+public class OpenSearchFormatHandler implements FormatHandler {
 
 	@Override
-	public Annotation parse(String serialized) {
-		// TODO Auto-generated method stub
-		return null;
+	public Annotation parse(String serialized)
+			throws UnsupportedOperationException {
+
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -28,5 +30,5 @@ public class LEMOXMLFormatHandler implements FormatHandler {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }

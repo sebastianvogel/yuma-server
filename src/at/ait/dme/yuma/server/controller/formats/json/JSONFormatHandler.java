@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.controller.formats;
+package at.ait.dme.yuma.server.controller.formats.json;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.mongodb.util.JSON;
 
+import at.ait.dme.yuma.server.controller.formats.FormatHandler;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.AnnotationType;
 import at.ait.dme.yuma.server.model.Annotation;
