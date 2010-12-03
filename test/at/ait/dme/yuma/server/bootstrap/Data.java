@@ -26,12 +26,11 @@ public class Data {
 			"</svg:svg>" +
 		  "\" , "+
 		  "\"type\" : \"image\" , "+
-		  "\"object-id\" : \"http://upload.wikimedia.org/wikipedia/commons/7/77/Lissabon.jpg\"" +
+		  "\"object-id\" : \"object-lissabon\"" +
 		"}";
 	
 	public static final String ANNOTATION_JSON_UPDATE =
 		"{ \"parent-id\" : \"\" , " +
-		  "\"id\" : \"test\" , " +
 		  "\"root-id\" : \"\" , " +
 		  "\"title\" : \"Ponte 25 de Abril\" , "+
 		  "\"text\" : \"The 25 de Abril Bridge is a suspension bridge connecting the city of Lisbon, capital of Portugal, " + 
@@ -57,16 +56,29 @@ public class Data {
 			"</svg:svg>" +
 		  "\" , "+
 		  "\"type\" : \"image\" , "+
-		  "\"object-id\" : \"http://upload.wikimedia.org/wikipedia/commons/7/77/Lissabon.jpg\", " +
+		  "\"object-id\" : \"object-lissabon\", " +
 		  "\"tags\" : [ " +
 		    "{ \"alt-labels\" : { } , \"label\" : \"Lisbon\" , \"type\" : \"place\" , \"relation\" : { \"namespace\" : \"\" , \"property\" : \"spatiallyContains\" } , \"alt-descriptions\" : { } , \"lang\" : \"en\" , \"uri\" : \"http://www.geonames.org/2267057/\"} ," +
 		    "{ \"alt-labels\" : { } , \"label\" : \"Portugal\" , \"type\" : \"place\" , \"relation\" : { \"namespace\" : \"\" , \"property\" : \"spatiallyContains\" } , \"alt-descriptions\" : { } , \"lang\" : \"en\" , \"uri\" : \"http://www.geonames.org/2264397/\"} " +
 		  "]" +
 		"}";
 	
-	public static final String REPLY_JSON =
-		"{ \"parent-id\" : \"test\" , " +
-		  "\"root-id\" : \"test\" , " +
+	public static final String ROOT_JSON =
+		"{ \"parent-id\" : \"\" , " +
+		  "\"root-id\" : \"\" , " +
+		  "\"title\" : \"Ponte 25 de Abril\" , "+
+		  "\"text\" : \"Root annotation!\" ," +
+		  "\"scope\" : \"public\" , "+
+		  "\"last-modified\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} ,"+
+		  "\"created\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} , "+
+		  "\"created-by\" : \"rsimon\" , "+
+		  "\"type\" : \"image\" , "+
+		  "\"object-id\" : \"object-lissabon\"" +
+		"}";
+	
+	private static final String REPLY_JSON =
+		"{ \"parent-id\" : \"@parent@\" , " +
+		  "\"root-id\" : \"@root@\" , " +
 		  "\"title\" : \"RE: Ponte 25 de Abril\" , "+
 		  "\"text\" : \"Interesting!\" ," +
 		  "\"scope\" : \"public\" , "+
@@ -74,7 +86,13 @@ public class Data {
 		  "\"created\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} , "+
 		  "\"created-by\" : \"rsimon\" , "+
 		  "\"type\" : \"image\" , "+
-		  "\"object-id\" : \"http://upload.wikimedia.org/wikipedia/commons/7/77/Lissabon.jpg\"" +
+		  "\"object-id\" : \"object-lissabon\"" +
 		"}";
+	
+	public static String reply(String root, String parent) {
+		return REPLY_JSON
+			.replace("@root@", root)
+			.replace("@parent@", parent);
+	}
 
 }

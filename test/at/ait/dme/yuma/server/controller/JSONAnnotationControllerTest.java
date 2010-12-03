@@ -86,4 +86,56 @@ public class JSONAnnotationControllerTest {
 		*/
 	}
 	
+	/**
+	 * Creates the following annotation tree structure
+	 * 
+	 * - root #1
+	 *   - reply #1
+	 *     - sub-reply #1
+	 *   - reply #2
+	 * - root #2
+	 *   - reply #3
+	 */
+	@Test
+	public void testReplyFunctionality() throws Exception {
+		HttpClient httpClient = new HttpClient();
+		
+		// root #1
+		PostMethod createMethod = new PostMethod(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
+		createMethod.setRequestEntity(new StringRequestEntity(Data.ROOT_JSON, 
+				CONTENT_TYPE_JSON, ENCODING));						
+		assertEquals(httpClient.executeMethod(createMethod), HttpStatus.SC_CREATED);
+		Header location = createMethod.getResponseHeader(LOCATION_HEADER);						
+		String root1 = location.getValue();
+		root1 = root1.substring(root1.lastIndexOf("/") + 1);
+		System.out.println(root1);
+		
+		// root #2
+		createMethod = new PostMethod(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
+		createMethod.setRequestEntity(new StringRequestEntity(Data.ROOT_JSON, 
+				CONTENT_TYPE_JSON, ENCODING));						
+		assertEquals(httpClient.executeMethod(createMethod), HttpStatus.SC_CREATED);
+		location = createMethod.getResponseHeader(LOCATION_HEADER);						
+		String root2 = location.getValue();
+		root2 = root2.substring(root2.lastIndexOf("/") + 1);
+		System.out.println(root2);
+		
+		// reply #1
+		createMethod = new PostMethod(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
+		createMethod.setRequestEntity(new StringRequestEntity(Data.reply(root1, root1), 
+				CONTENT_TYPE_JSON, ENCODING));						
+		assertEquals(httpClient.executeMethod(createMethod), HttpStatus.SC_CREATED);
+		location = createMethod.getResponseHeader(LOCATION_HEADER);						
+		String reply1 = location.getValue();
+		assertNotNull(reply1);
+		
+		// Read
+		String treeUrl = "http://localhost:8081/yuma-server/tree/object-lissabon";
+		
+		GetMethod findTreeMethod = new GetMethod(treeUrl);
+		findTreeMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
+		httpClient.executeMethod(findTreeMethod);
+		System.out.println(findTreeMethod.getResponseBodyAsString());
+	}
+	
 }

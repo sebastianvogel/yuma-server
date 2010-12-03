@@ -26,11 +26,12 @@ import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
  *  
  * @author Rainer Simon
  */
-@Path("/annotation")
+@Path("/")
 public class JSONAnnotationController extends AbstractAnnotationController {
 
 	@POST
 	@Consumes("application/json")
+	@Path("/annotation")
 	public Response createAnnotation(String annotation)
 		throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationModifiedException {
 		
@@ -39,7 +40,7 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 	
 	@PUT
 	@Consumes("application/json")
-	@Path("/{id}")
+	@Path("/annotation/{id}")
 	public Response updateAnnotation(@PathParam("id") String id, String annotation) 
 			throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationHasReplyException, UnsupportedEncodingException {
 		
@@ -47,7 +48,7 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 	}
 	
 	@DELETE
-	@Path("/{id}")
+	@Path("/annotation/{id}")
 	public Response deleteAnnotation(@PathParam("id") String id) 
 			throws AnnotationDatabaseException, AnnotationHasReplyException, UnsupportedEncodingException, AnnotationNotFoundException {
 		
@@ -56,11 +57,20 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 
 	@GET
 	@Produces("application/json")
-	@Path("/{id}")
+	@Path("/annotation/{id}")
 	public Response findAnnotationById(@PathParam("id") String id)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
 		return super.findAnnotationById(id, new JSONFormatHandler());
+	}
+	
+	@GET
+	@Produces("application/json")
+	@Path("/tree/{id}")
+	public Response findAnnotationTreeForObject(@PathParam("id") String id)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		return super.findAnnotationTreeForObject(id, new JSONFormatHandler());
 	}
 			
 }

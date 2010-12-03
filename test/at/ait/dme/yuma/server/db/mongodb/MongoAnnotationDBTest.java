@@ -69,7 +69,7 @@ public class MongoAnnotationDBTest {
 		String parentId = db.createAnnotation(root);
 		
 		// Store reply
-		Annotation reply = format.parse(Data.REPLY_JSON.replace("@parentId@", parentId));
+		Annotation reply = format.parse(Data.reply(parentId, parentId));
 		String replyId = db.createAnnotation(reply);
 		
 		// Some checks on stored annotations
