@@ -31,11 +31,8 @@
 	<classpathentry kind="lib" path="WEB-INF/lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/mongo-2.3.jar"/>
-	<classpathentry kind="lib" path="WEB-INF/lib/openrdf-sesame-2.1-onejar.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/postgresql-8.3-603.jdbc4.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/resteasy-jaxrs-1.2.GA.jar"/>
-	<classpathentry kind="lib" path="WEB-INF/lib/scala-compiler.jar"/>
-	<classpathentry kind="lib" path="WEB-INF/lib/scala-library.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/scannotation-1.0.2.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/slf4j-api-1.5.0.jar"/>
