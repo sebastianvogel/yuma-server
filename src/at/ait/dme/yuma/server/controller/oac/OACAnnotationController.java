@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.controller;
+package at.ait.dme.yuma.server.controller.oac;
 
 /**
  * An annotation controller which produces an RDF/XML

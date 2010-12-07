@@ -18,7 +18,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.MongoException;
 
 import at.ait.dme.yuma.server.config.Config;
-import at.ait.dme.yuma.server.controller.formats.json.JSONFormatHandler;
+import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;

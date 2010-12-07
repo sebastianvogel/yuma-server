@@ -1,15 +1,15 @@
-package at.ait.dme.yuma.server.controller.formats.oac;
+package at.ait.dme.yuma.server.controller.lemo;
 
-import at.ait.dme.yuma.server.controller.formats.FormatHandler;
+import at.ait.dme.yuma.server.controller.FormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
 
 /**
- * Format handler for OAC RDF/XML.
+ * Format handler for LEMO RDF/XML.
  * 
  * @author Rainer Simon
  */
-public class OACXMLFormatHandler implements FormatHandler {
+public class LEMOXMLFormatHandler implements FormatHandler {
 
 	@Override
 	public Annotation parse(String serialized) {
@@ -28,5 +28,5 @@ public class OACXMLFormatHandler implements FormatHandler {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 }

@@ -18,6 +18,7 @@ import org.junit.Test;
 import at.ait.dme.yuma.server.bootstrap.Data;
 import at.ait.dme.yuma.server.bootstrap.Setup;
 import at.ait.dme.yuma.server.config.Config;
+import at.ait.dme.yuma.server.controller.json.JSONAnnotationController;
 
 /**
  * Tests for the AnnoteaAnnotationController
@@ -56,7 +57,6 @@ public class JSONAnnotationControllerTest {
 		assertEquals(httpClient.executeMethod(createMethod), HttpStatus.SC_CREATED);
 		Header location = createMethod.getResponseHeader(LOCATION_HEADER);						
 		String createdAnnotationUrl = location.getValue();
-		System.out.println(createdAnnotationUrl);
 		assertNotNull(createdAnnotationUrl);
 		
 		// Read
@@ -128,12 +128,13 @@ public class JSONAnnotationControllerTest {
 		String reply1 = location.getValue();
 		assertNotNull(reply1);
 		
-		// Read
+		/* Read
 		String treeUrl = "http://localhost:8081/yuma-server/tree/object-lissabon";
 		
 		GetMethod findTreeMethod = new GetMethod(treeUrl);
 		findTreeMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
 		httpClient.executeMethod(findTreeMethod);
+		*/
 	}
 	
 }

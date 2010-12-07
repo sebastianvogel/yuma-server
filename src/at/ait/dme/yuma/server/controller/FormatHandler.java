@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.controller.formats;
+package at.ait.dme.yuma.server.controller;
 
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;

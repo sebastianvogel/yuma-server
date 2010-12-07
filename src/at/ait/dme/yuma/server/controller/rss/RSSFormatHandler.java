@@ -1,20 +1,20 @@
-package at.ait.dme.yuma.server.controller.formats.opensearch;
+package at.ait.dme.yuma.server.controller.rss;
 
-import at.ait.dme.yuma.server.controller.formats.FormatHandler;
+import at.ait.dme.yuma.server.controller.FormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
 
 /**
- * Format handler for OpenSearch (serialization only)
+ * Format handler for RSS (serialization only)
  * 
  * @author Rainer Simon
  */
-public class OpenSearchFormatHandler implements FormatHandler {
+public class RSSFormatHandler implements FormatHandler {
 
 	@Override
 	public Annotation parse(String serialized)
 			throws UnsupportedOperationException {
-
+		
 		throw new UnsupportedOperationException();
 	}
 
