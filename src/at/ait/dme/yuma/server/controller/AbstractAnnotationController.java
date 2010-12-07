@@ -54,7 +54,7 @@ public abstract class AbstractAnnotationController {
 		} finally {
 			if (db != null) db.disconnect();
 		}
-		return Response.created(URIBuilder.toURI(annotationId)).entity(annotation).build();
+		return Response.created(URIBuilder.toURI(annotationId)).entity(annotationId).build();
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public abstract class AbstractAnnotationController {
 	 * @throws AnnotationDatabaseException (500)
 	 * @throws UnsupportedEncodingException (500
 	 */
-	protected Response findAnnotationById(String annotationId, FormatHandler format)
+	protected Response getAnnotation(String annotationId, FormatHandler format)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
@@ -142,7 +142,7 @@ public abstract class AbstractAnnotationController {
 	 * @throws AnnotationDatabaseException (500)
 	 * @throws UnsupportedEncodingException (500
 	 */
-	protected Response findAnnotationThreadForAnnotation(String annotationId, FormatHandler format)
+	protected Response getThreadForAnnotation(String annotationId, FormatHandler format)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
@@ -165,7 +165,7 @@ public abstract class AbstractAnnotationController {
 	 * @throws InvalidAnnotationException (415)
 	 * @throws UnsupportedEncodingException (500)
 	 */
-	protected Response findAnnotationTreeForObject(String objectId, FormatHandler format)
+	protected Response getAnnotationTree(String objectId, FormatHandler format)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
@@ -211,7 +211,7 @@ public abstract class AbstractAnnotationController {
 	 * @throws AnnotationDatabaseException (500)
 	 * @throws UnsupportedEncodingException (500
 	 */
-	protected Response findAnnotations(String query, FormatHandler format)
+	protected Response searchAnnotations(String query, FormatHandler format)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
