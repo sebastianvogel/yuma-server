@@ -33,25 +33,7 @@
 	  </copy>
 	</target>
 	
-	<target name="compile-scala" depends="compile-java">
-		<taskdef resource="scala/tools/ant/antlib.xml">
-			<classpath>
-				<pathelement location="${lib.dir}/scala-compiler.jar" />
-				<pathelement location="${lib.dir}/scala-library.jar" />
-			</classpath>
-		</taskdef>
-		
-		<scalac srcdir="${src.dir}" destdir="${classes.dir}" addparams="-g:vars">
-			<classpath>
-		 	    <fileset dir="${lib.dir}">
-     					<include name="**/*.jar" />
-   				</fileset>
-		 	</classpath>
-			<include name="**/*.scala" />
-		</scalac>
-	</target>
-	
-	<target name="test" depends="compile-scala">		
+	<target name="test" depends="compile-java">		
 		<mkdir dir="${report.dir}"/>				
 		<junit printsummary="yes" haltonfailure="yes" fork="yes" showoutput="yes">
 			<classpath>
@@ -71,7 +53,7 @@
 		</junit>
 	</target>
 	
-	<target name="create-war" depends="compile-scala">
+	<target name="create-war" depends="compile-java">
 		<copy todir="${classes.metainf.dir}">
     		<fileset dir="${metainf.dir}"/>
   		</copy>		
