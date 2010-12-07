@@ -52,8 +52,8 @@ public class JSONFormatHandlerTest {
 				"the lower platform two train tracks. Until 1974 the bridge was named Salazar " +
 				"Bridge.", a.getText());
 		assertEquals(Scope.PUBLIC, a.getScope());
-		assertEquals(dateFormat.parse("2010-11-11T10:58:23Z"), a.getCreated());
-		assertEquals(dateFormat.parse("2010-11-11T11:58:23Z"), a.getLastModified());		
+		assertEquals(dateFormat.parse("2008-10-15T04:00:00Z"), a.getCreated());
+		assertEquals(dateFormat.parse("2008-10-15T04:00:00Z"), a.getLastModified());		
 		assertEquals("rsimon", a.getCreatedBy());
 		assertEquals("fragment", "<svg:svg xmlns:svg=\"http://www.w3.org/2000/svg\" width=\"640px\" height=\"480px\" viewbox=\"0px 0px 640px 480px\"> " +
 				"<svg:defs xmlns:svg=\"http://www.w3.org/2000/svg\"> " +
@@ -66,7 +66,7 @@ public class JSONFormatHandlerTest {
 				"</svg:defs>" +
 				"</svg:svg>", a.getFragment());
 		assertEquals(AnnotationType.IMAGE, a.getType());
-		assertEquals("http://upload.wikimedia.org/wikipedia/commons/7/77/Lissabon.jpg", a.getObjectID());
+		assertEquals("object-lissabon", a.getObjectID());
 
 		List<SemanticTag> tags = a.getTags();
 		assertTrue(tags.size() == 2);
@@ -106,9 +106,9 @@ public class JSONFormatHandlerTest {
 				"2.277 m, it is the 19th largest suspension bridge in the world. The upper " +
 				"platform carries six car lanes, the lower platform two train tracks. Until " +
 				 "1974 the bridge was named Salazar Bridge.\""));
-		assertTrue(serialized.contains("\"scope\" : \"public\""));
-		assertTrue(serialized.contains("\"last-modified\" : { \"$date\" : \"2010-11-11T11:58:23Z\"}"));
-		assertTrue(serialized.contains("\"created\" : { \"$date\" : \"2010-11-11T10:58:23Z\"}"));
+		assertTrue(serialized.contains("\"scope\" : \"PUBLIC\""));
+		assertTrue(serialized.contains("\"last-modified\" : 1224043200000"));
+		assertTrue(serialized.contains("\"created\" : 1224043200000"));
 		assertTrue(serialized.contains("\"created-by\" : \"rsimon\""));
 		assertTrue(serialized.contains("\"fragment\" : \"" + 
 				"<svg:svg xmlns:svg=\\\"http://www.w3.org/2000/svg\\\" width=\\\"640px\\\" height=\\\"480px\\\" viewbox=\\\"0px 0px 640px 480px\\\"> " +
@@ -122,8 +122,8 @@ public class JSONFormatHandlerTest {
 				  "</svg:defs>" +
 				"</svg:svg>" +
 			  "\""));
-		assertTrue(serialized.contains("\"type\" : \"image\""));
-		assertTrue(serialized.contains("\"object-id\" : \"http://upload.wikimedia.org/wikipedia/commons/7/77/Lissabon.jpg\""));
+		assertTrue(serialized.contains("\"type\" : \"IMAGE\""));
+		assertTrue(serialized.contains("\"object-id\" : \"object-lissabon\""));
 
 		Pattern p = Pattern.compile("\"tags\" : \\[((.|\n)*?)\\]");
 		Matcher m = p.matcher(serialized);
