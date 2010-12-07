@@ -9,7 +9,7 @@ import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
  * An implementation does not need to support each interface
  * functionality (e.g. some implementations may only support
  * serialization, but not parsing). In this case, implementations
- * shall raise an
+ * shall raise an UnsupportedOperationException.
  *  
  * @author Rainer Simon
  */

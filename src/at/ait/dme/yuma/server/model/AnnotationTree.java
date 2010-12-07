@@ -9,7 +9,7 @@ import java.util.List;
  * that exist for an annotated object. The tree consists of
  * root annotations (the annotations that directly reference the
  * annotated object) and replies (annotations that reference another
- * annotation)
+ * annotation).
  * 
  * @author Rainer Simon
  */
