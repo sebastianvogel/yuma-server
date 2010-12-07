@@ -121,7 +121,7 @@ public class Annotation {
 			this.annotationId = (String) map.get(MapKeys.ANNOTATION_ID);
 			this.rootId = (String) map.get(MapKeys.ANNOTATION_ROOT_ID);
 			this.parentId = (String) map.get(MapKeys.ANNOTATION_PARENT_ID);
-			this.objectId = (String) map.get(MapKeys.ANNOTATION_OBJECT_ID);
+			this.objectId = (String) map.get(MapKeys.ANNOTATION_OBJECT_ID);				
 			this.created = (Date) map.get(MapKeys.ANNOTATION_CREATED);
 			this.lastModified = (Date) map.get(MapKeys.ANNOTATION_LAST_MODIFIED);
 			this.createdBy = (String) map.get(MapKeys.ANNOTATION_CREATED_BY);
