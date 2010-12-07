@@ -10,8 +10,8 @@ public class Data {
 		  "to the municipality of Almada on the left bank of the Tagus river. It was inaugurated on August 6, 1966 " +
 		  "and a train platform was added in 1999.\", " +
 		  "\"scope\" : \"public\" , "+
-		  "\"last-modified\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} ,"+
-		  "\"created\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} , "+
+		  "\"last-modified\" : 1224043200000 ,"+
+		  "\"created\" : 1224043200000 , "+
 		  "\"created-by\" : \"rsimon\" , "+
 		  "\"fragment\" : \"" +
 			"<svg:svg xmlns:svg=\\\"http://www.w3.org/2000/svg\\\" width=\\\"640px\\\" height=\\\"480px\\\" viewbox=\\\"0px 0px 640px 480px\\\"> " +
@@ -40,8 +40,8 @@ public class Data {
 		  "suspension bridge in the world. The upper platform carries six car lanes, the lower platform two train tracks. Until " +
 		  "1974 the bridge was named Salazar Bridge.\", " +
 		  "\"scope\" : \"public\" , "+
-		  "\"last-modified\" : { \"$date\" : \"2010-11-11T11:58:23Z\"} ,"+
-		  "\"created\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} , "+
+		  "\"last-modified\" : 1224043200000 ,"+
+		  "\"created\" : 1224043200000 , "+
 		  "\"created-by\" : \"rsimon\" , "+
 		  "\"fragment\" : \"" +
 			"<svg:svg xmlns:svg=\\\"http://www.w3.org/2000/svg\\\" width=\\\"640px\\\" height=\\\"480px\\\" viewbox=\\\"0px 0px 640px 480px\\\"> " +
@@ -69,8 +69,8 @@ public class Data {
 		  "\"title\" : \"Ponte 25 de Abril\" , "+
 		  "\"text\" : \"Root annotation!\" ," +
 		  "\"scope\" : \"public\" , "+
-		  "\"last-modified\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} ,"+
-		  "\"created\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} , "+
+		  "\"last-modified\" : 1224043200000 ,"+
+		  "\"created\" : 1224043200000 , "+
 		  "\"created-by\" : \"rsimon\" , "+
 		  "\"type\" : \"image\" , "+
 		  "\"object-id\" : \"object-lissabon\"" +
@@ -82,8 +82,8 @@ public class Data {
 		  "\"title\" : \"RE: Ponte 25 de Abril\" , "+
 		  "\"text\" : \"Interesting!\" ," +
 		  "\"scope\" : \"public\" , "+
-		  "\"last-modified\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} ,"+
-		  "\"created\" : { \"$date\" : \"2010-11-11T10:58:23Z\"} , "+
+		  "\"last-modified\" : 1224043200000 ,"+
+		  "\"created\" : 1224043200000 , "+
 		  "\"created-by\" : \"rsimon\" , "+
 		  "\"type\" : \"image\" , "+
 		  "\"object-id\" : \"object-lissabon\"" +

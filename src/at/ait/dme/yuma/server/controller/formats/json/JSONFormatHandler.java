@@ -64,11 +64,11 @@ public class JSONFormatHandler implements FormatHandler {
 	public Annotation toAnnotation(Map<String, Object> map) throws InvalidAnnotationException {	
 		String type = (String) map.get(MapKeys.ANNOTATION_TYPE);
 		if (type != null)
-			map.put(MapKeys.ANNOTATION_TYPE, AnnotationType.valueOf(type));
+			map.put(MapKeys.ANNOTATION_TYPE, AnnotationType.valueOf(type.toUpperCase()));
 		
 		String scope = (String) map.get(MapKeys.ANNOTATION_SCOPE);
 		if (scope != null)
-			map.put(MapKeys.ANNOTATION_SCOPE, Scope.valueOf(scope));
+			map.put(MapKeys.ANNOTATION_SCOPE, Scope.valueOf(scope.toUpperCase()));
 		
 		try {
 			Date created = new Date((Long) map.get(MapKeys.ANNOTATION_CREATED));

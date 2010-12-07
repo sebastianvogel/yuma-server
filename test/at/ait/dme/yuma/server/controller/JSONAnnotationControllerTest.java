@@ -56,6 +56,7 @@ public class JSONAnnotationControllerTest {
 		assertEquals(httpClient.executeMethod(createMethod), HttpStatus.SC_CREATED);
 		Header location = createMethod.getResponseHeader(LOCATION_HEADER);						
 		String createdAnnotationUrl = location.getValue();
+		System.out.println(createdAnnotationUrl);
 		assertNotNull(createdAnnotationUrl);
 		
 		// Read
@@ -108,7 +109,6 @@ public class JSONAnnotationControllerTest {
 		Header location = createMethod.getResponseHeader(LOCATION_HEADER);						
 		String root1 = location.getValue();
 		root1 = root1.substring(root1.lastIndexOf("/") + 1);
-		System.out.println(root1);
 		
 		// root #2
 		createMethod = new PostMethod(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
@@ -118,7 +118,6 @@ public class JSONAnnotationControllerTest {
 		location = createMethod.getResponseHeader(LOCATION_HEADER);						
 		String root2 = location.getValue();
 		root2 = root2.substring(root2.lastIndexOf("/") + 1);
-		System.out.println(root2);
 		
 		// reply #1
 		createMethod = new PostMethod(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
@@ -135,7 +134,6 @@ public class JSONAnnotationControllerTest {
 		GetMethod findTreeMethod = new GetMethod(treeUrl);
 		findTreeMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
 		httpClient.executeMethod(findTreeMethod);
-		System.out.println(findTreeMethod.getResponseBodyAsString());
 	}
 	
 }
