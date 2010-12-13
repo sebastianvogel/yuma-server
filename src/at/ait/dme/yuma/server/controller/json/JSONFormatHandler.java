@@ -122,6 +122,13 @@ public class JSONFormatHandler implements FormatHandler {
 		return JSON.serialize(toJSONFormat(tree));
 	}
 	
+	@Override
+	public String serialize(List<Annotation> annotations)
+			throws UnsupportedOperationException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	/**
 	 * Converts an annotation to a JSON-formatted map
 	 * @param annotation the annotation
