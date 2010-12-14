@@ -6,11 +6,14 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.LockModeType;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.Persistence;
 import javax.servlet.http.HttpServletRequest;
 
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
+import at.ait.dme.yuma.server.db.hibernate.entities.AnnotationEntity;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
@@ -90,8 +93,38 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	public String createAnnotation(Annotation annotation)
 			throws AnnotationDatabaseException, AnnotationModifiedException,
 			InvalidAnnotationException {
-		// TODO Auto-generated method stub
-		return null;
+
+		try {			
+			if (!em.getTransaction().isActive()) em.getTransaction().begin();
+			
+			// in case of a reply we have to ensure that the parent is unchanged
+			AnnotationEntity entity = new AnnotationEntity(annotation);
+			if (entity.getParentId()!=null) {
+				// an annotation gets a new id on every update. therefore, checking for
+				// existence is sufficient here.			
+				AnnotationEntity parent = em.find(AnnotationEntity.class, entity.getParentId());				
+				if(parent==null) 
+					throw new AnnotationModifiedException(entity.getParentId());
+
+				// parent is unchanged, lock it and make sure it wasn't modified concurrently
+				try {
+					em.lock(parent, LockModeType.WRITE);
+				} catch(OptimisticLockException ole) {
+					throw new AnnotationModifiedException(annotation.getParentId());
+				}				
+				em.refresh(parent);				
+			}
+
+			em.persist(entity);														
+			if(isAutoCommit()) commit();
+			return Long.toString(entity.getAnnotationId());
+		} catch(AnnotationModifiedException e) {
+			throw e;
+		} catch(Throwable t) {
+			rollback();
+			System.out.println(FAILED_TO_SAVE_ANNOTATION + ":" + t.getMessage());
+			throw new AnnotationDatabaseException(t);
+		}
 	}
 
 	@Override
