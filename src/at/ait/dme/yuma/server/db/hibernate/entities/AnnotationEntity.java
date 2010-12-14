@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +14,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -20,12 +23,25 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Index;
 
+import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
+import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationType;
+import at.ait.dme.yuma.server.model.MapKeys;
 import at.ait.dme.yuma.server.model.Scope;
 import at.ait.dme.yuma.server.model.SemanticTag;
 
+/**
+ * A JPA database entity wrapper for an annotation object.
+ * 
+ * @author Rainer Simon
+ */
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "annotationentity.search",
+			query = "from AnnotationEntity a where (lower(a.title) like concat('%',:term,'%') or " +
+					"lower(a.text) like concat('%',:term,'%'))")	
+})
 @Table(name = "annotations")
 public class AnnotationEntity implements Serializable {
 
@@ -77,6 +93,8 @@ public class AnnotationEntity implements Serializable {
 			cascade=CascadeType.ALL)
 	private Collection<SemanticTagEntity> tags = new ArrayList<SemanticTagEntity>();
 
+	public AnnotationEntity() { }
+	
 	public AnnotationEntity(Annotation a)  {
 		if (!a.getRootId().isEmpty())
 			this.setRootId(Long.parseLong(a.getRootId()));
@@ -93,11 +111,41 @@ public class AnnotationEntity implements Serializable {
 		this.setType(a.getType());
 		this.setFragment(a.getFragment());
 		this.setScope(a.getScope());
+		
 		for (SemanticTag t : a.getTags()) {
 			this.tags.add(new SemanticTagEntity(this, t));
 		}
 	}
 
+	public Annotation toAnnotation() throws AnnotationDatabaseException {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+
+		map.put(MapKeys.ANNOTATION_ID, Long.toString(id));
+		
+		if (rootId != null)
+			map.put(MapKeys.ANNOTATION_ROOT_ID, Long.toString(rootId));
+		
+		if (parentId != null)
+			map.put(MapKeys.ANNOTATION_PARENT_ID, Long.toString(parentId));
+		
+		map.put(MapKeys.ANNOTATION_OBJECT_ID, objectId);
+		map.put(MapKeys.ANNOTATION_CREATED, created);
+		map.put(MapKeys.ANNOTATION_LAST_MODIFIED, lastModified);
+		map.put(MapKeys.ANNOTATION_CREATED_BY, createdBy);
+		map.put(MapKeys.ANNOTATION_TITLE, title);
+		map.put(MapKeys.ANNOTATION_TEXT, text);
+		map.put(MapKeys.ANNOTATION_TYPE, type);
+		map.put(MapKeys.ANNOTATION_FRAGMENT, fragment);
+		map.put(MapKeys.ANNOTATION_SCOPE, scope);
+		// map.put(MapKeys.ANNOTATION_SEMANTIC_TAGS, tags);
+		
+		try {
+			return new Annotation(map);
+		} catch (InvalidAnnotationException e) {
+			throw new AnnotationDatabaseException();
+		}
+	}
+	
 	public void setAnnotationId(Long id) {
 		this.id = id;
 	}

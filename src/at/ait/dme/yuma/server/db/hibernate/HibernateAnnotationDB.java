@@ -1,5 +1,6 @@
 package at.ait.dme.yuma.server.db.hibernate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.LockModeType;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 
 import at.ait.dme.yuma.server.config.Config;
@@ -186,10 +188,24 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public List<Annotation> findAnnotations(String query)
+	public List<Annotation> findAnnotations(String q)
 			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return null;
+
+		try {
+			Query query = em.createNamedQuery("annotationentity.search");
+			query.setParameter("term", q.toLowerCase());
+			
+			ArrayList<Annotation> annotations = new ArrayList<Annotation>();
+			
+			@SuppressWarnings("unchecked")
+			List<AnnotationEntity> entities = query.getResultList();
+			for (AnnotationEntity entity : entities) {
+				annotations.add(entity.toAnnotation());
+			}
+			return annotations;
+		} catch(Throwable t) {
+			throw new AnnotationDatabaseException(t);
+		}
 	}
 
 }

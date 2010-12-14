@@ -4,6 +4,11 @@ import javax.persistence.Embeddable;
 
 import at.ait.dme.yuma.server.model.SemanticRelation;
 
+/**
+ * A JPA database entity wrapper for a SemanticRelation object.
+ * 
+ * @author Rainer Simon
+ */
 @Embeddable
 public class SemanticRelationEntity {
 	

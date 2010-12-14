@@ -1,5 +1,7 @@
 package at.ait.dme.yuma.server.db.hibernate;
 
+import java.util.List;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -30,13 +32,19 @@ public class HibernateAnnotationDBTest {
 		HibernateAnnotationDB db = new HibernateAnnotationDB();
 		db.connect();
 		
-		// Create + Read
+		// Create
 		Annotation before = format.parse(Data.ANNOTATION_JSON_UPDATE);
 		for (SemanticTag t : before.getTags()) {
 			System.out.println(t.getURI());
 		}
 		String id = db.createAnnotation(before);
 		System.out.println(id);
+		
+		// Search
+		List<Annotation> annotations = db.findAnnotations("ponte");
+		for (Annotation a : annotations) {
+			System.out.println(a.getTitle());
+		}
 	}
 	
 }

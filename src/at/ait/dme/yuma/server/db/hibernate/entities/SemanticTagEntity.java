@@ -12,6 +12,11 @@ import javax.persistence.Table;
 
 import at.ait.dme.yuma.server.model.SemanticTag;
 
+/**
+ * A JPA database entity wrapper for a SemanticTag object.
+ * 
+ * @author Rainer Simon
+ */
 @Entity
 @Table(name = "tags")
 public class SemanticTagEntity implements Serializable {
@@ -48,6 +53,8 @@ public class SemanticTagEntity implements Serializable {
 	
 	// private Map<String, String> altDescriptions;
 	
+	public SemanticTagEntity() { }
+	
 	public SemanticTagEntity(AnnotationEntity parent, SemanticTag t) {
 		this.setParent(parent);
 		this.setUri(t.getURI().toString());
@@ -56,6 +63,10 @@ public class SemanticTagEntity implements Serializable {
 		this.setPrimaryLang(t.getPrimaryLanguage());
 		this.setType(t.getType());
 		this.setRelation(new SemanticRelationEntity(t.getRelation()));
+	}
+	
+	public SemanticTag toSemanticTag() {
+		return null;
 	}
 
 	public void setId(Long id) {
