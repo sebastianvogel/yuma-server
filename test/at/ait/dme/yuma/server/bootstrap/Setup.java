@@ -19,7 +19,7 @@ public class Setup {
     public static void buildHibernateConfiguration() throws AnnotationDatabaseException {
     	new Config.Builder(
     			"at.ait.dme.yuma.server.db.hibernate.HibernateAnnotationDatabase",				
-				"http://localhost:8081/yuma-server/annotation/"
+				"http://localhost:8081/yuma-server/"
 		)    	
     			.dbDriver("org.postgresql.Driver")
     			.dbDriverProtocol("jdbc:postgresql").
@@ -36,7 +36,7 @@ public class Setup {
     public static void buildMongoDBConfiguration() throws AnnotationDatabaseException {
     	new Config.Builder(
     			"at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB",				
-				"http://localhost:8081/yuma-server/annotation/"
+				"http://localhost:8081/yuma-server/"
 		)    	
 				.dbHost("localhost")
 				.dbPort("27017")

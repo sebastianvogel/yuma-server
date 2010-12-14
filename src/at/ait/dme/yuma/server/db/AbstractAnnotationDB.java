@@ -191,6 +191,16 @@ public abstract class AbstractAnnotationDB {
 		throws AnnotationDatabaseException, AnnotationNotFoundException;
 
 	/**
+	 * Retrieves the N most recent annotations from the database.
+	 * @param n the number of annotations to retrieve
+	 * @return the annotations (as a flat list)
+	 * @throws AnnotationDatabaseException if anything goes wrong
+	 */
+	public abstract List<Annotation> getMostRecent(int n)
+		throws AnnotationDatabaseException;
+
+	
+	/**
 	 * Find annotations that match the given search term
 	 * @param query the query term
 	 * @return the list of matching annotations

@@ -203,6 +203,23 @@ public abstract class AbstractAnnotationController {
 		}
 		return Response.ok().entity(count).build();
 	}
+	
+	protected Response getMostRecent(int n, FormatHandler format) 
+		throws AnnotationDatabaseException, UnsupportedEncodingException {
+		
+		AbstractAnnotationDB db = null;
+		String mostRecent = null;
+		
+		try {
+			db = Config.getInstance().getAnnotationDatabase();
+			db.connect(request);
+			mostRecent = format.serialize(db.getMostRecent(n));
+		} finally {
+			if(db != null) db.disconnect();
+		}
+		
+		return Response.ok().entity(mostRecent).build();
+	}
 				
 	/**
 	 * Find annotations that match the given search term

@@ -16,7 +16,7 @@ public class URIBuilder {
 	
 	public static URI toURI(String annotationID) {
 		try {
-			return new URI(Config.getInstance().getAnnotationBaseUrl() + annotationID);
+			return new URI(Config.getInstance().getAnnotationBaseUrl() + "api/annotation/" + annotationID);
 		} catch (URISyntaxException e) {
 			// Should never happen
 			throw new RuntimeException(ERROR + annotationID);

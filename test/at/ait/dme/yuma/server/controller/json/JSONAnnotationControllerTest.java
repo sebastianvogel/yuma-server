@@ -28,7 +28,7 @@ import at.ait.dme.yuma.server.controller.json.JSONAnnotationController;
  */
 public class JSONAnnotationControllerTest {
 	private static final String JSON_ANNOTATION_CONTROLLER_BASE_URL = 
-		"http://localhost:8081/yuma-server/annotation";
+		"http://localhost:8081/yuma-server/api/annotation";
 
 	private static final String ACCEPT_HEADER = "Accept";
 	private static final String LOCATION_HEADER = "Location";
@@ -55,6 +55,7 @@ public class JSONAnnotationControllerTest {
 		createMethod.setRequestEntity(new StringRequestEntity(Data.ANNOTATION_JSON_ORIGINAL, 
 				CONTENT_TYPE_JSON, ENCODING));						
 		assertEquals(httpClient.executeMethod(createMethod), HttpStatus.SC_CREATED);
+		
 		Header location = createMethod.getResponseHeader(LOCATION_HEADER);						
 		String createdAnnotationUrl = location.getValue();
 		assertNotNull(createdAnnotationUrl);
@@ -63,6 +64,7 @@ public class JSONAnnotationControllerTest {
 		GetMethod findByIdMethod = new GetMethod(createdAnnotationUrl);
 		findByIdMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
 		assertEquals(HttpStatus.SC_OK, httpClient.executeMethod(findByIdMethod));
+		httpClient.executeMethod(findByIdMethod);
 		
 		// Update
 		PutMethod updateMethod = new PutMethod(createdAnnotationUrl);

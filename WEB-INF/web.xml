@@ -16,7 +16,7 @@
 
 	<context-param>
 		<param-name>annotation.base.url</param-name>
-		<param-value>http://localhost:8089/yuma-server/annotation/</param-value>
+		<param-value>http://localhost:8089/yuma-server/</param-value>
 	</context-param>
 	
 	<!--  HIBERNATE  -->

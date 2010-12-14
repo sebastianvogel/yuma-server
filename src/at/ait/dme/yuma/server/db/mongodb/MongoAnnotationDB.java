@@ -223,6 +223,27 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		
 		return new AnnotationTree(annotations);
 	}
+	
+	@Override
+	public List<Annotation> getMostRecent(int n)
+			throws AnnotationDatabaseException {
+
+		ArrayList<Annotation> annotations = new ArrayList<Annotation>();
+		
+		DBCursor cursor = collection.find()
+			.sort(new BasicDBObject(MapKeys.ANNOTATION_CREATED, 1));
+		
+		int ctr = 0;
+		while (cursor.hasNext() && ctr < n) {
+			try {
+				annotations.add(toAnnotation(cursor.next()));
+			} catch (InvalidAnnotationException e) {
+				// TODO log this
+			}
+		}
+		
+		return annotations;
+	}
 
 	@Override
 	public List<Annotation> findAnnotations(String query)
