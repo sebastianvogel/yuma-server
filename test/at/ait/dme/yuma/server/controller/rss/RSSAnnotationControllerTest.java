@@ -3,9 +3,11 @@ package at.ait.dme.yuma.server.controller.rss;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -34,12 +36,16 @@ public class RSSAnnotationControllerTest {
 		
 	@Test
 	public void testGetTimeline() throws Exception {
-		HttpClient httpClient = new HttpClient();
+		HttpClient httpClient = new DefaultHttpClient();
 		
-		GetMethod getTimelineMethod = new GetMethod(RSS_ANNOTATION_CONTROLLER_BASE_URL + "/timeline");
-		getTimelineMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_RSS);
-		assertEquals(HttpStatus.SC_OK, httpClient.executeMethod(getTimelineMethod));
-		assertNotNull(getTimelineMethod.getResponseBodyAsString());
+		HttpGet getTimelineMethod = new HttpGet(RSS_ANNOTATION_CONTROLLER_BASE_URL + "/timeline");
+		getTimelineMethod.addHeader(ACCEPT_HEADER, CONTENT_TYPE_RSS);
+		
+		HttpResponse response = httpClient.execute(getTimelineMethod);
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		assertNotNull(response.getEntity());
+		// response.getEntity().writeTo(System.out);
+		response.getEntity().consumeContent();
 	}
 	
 }

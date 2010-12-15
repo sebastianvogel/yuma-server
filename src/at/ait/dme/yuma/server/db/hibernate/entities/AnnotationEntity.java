@@ -21,8 +21,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.Index;
-
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
@@ -58,7 +56,6 @@ public class AnnotationEntity implements Serializable {
 	private Long parentId;
 
     @Column(length = 512, nullable = false)
-    @Index(name = "objectId")
 	private String objectId;
 
     @Column

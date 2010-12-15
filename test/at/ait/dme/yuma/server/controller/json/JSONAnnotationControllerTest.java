@@ -3,14 +3,16 @@ package at.ait.dme.yuma.server.controller.json;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.DeleteMethod;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.PutMethod;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -48,45 +50,48 @@ public class JSONAnnotationControllerTest {
 		
 	@Test
 	public void testCreateUpdateDeleteAnnotation() throws Exception {
-		HttpClient httpClient = new HttpClient();
+		HttpClient httpClient = new DefaultHttpClient();
 			
 		// Create
-		PostMethod createMethod = new PostMethod(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
-		createMethod.setRequestEntity(new StringRequestEntity(Data.ANNOTATION_JSON_ORIGINAL, 
-				CONTENT_TYPE_JSON, ENCODING));						
-		assertEquals(httpClient.executeMethod(createMethod), HttpStatus.SC_CREATED);
+		StringEntity createEntity = new StringEntity(Data.ANNOTATION_JSON_ORIGINAL, ENCODING);
+		createEntity.setContentType(CONTENT_TYPE_JSON);
+		HttpPost createMethod = new HttpPost(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
+		createMethod.setEntity(createEntity);
 		
-		Header location = createMethod.getResponseHeader(LOCATION_HEADER);						
+		HttpResponse response = httpClient.execute(createMethod);
+		assertEquals(HttpStatus.SC_CREATED, response.getStatusLine().getStatusCode());
+		Header location = response.getHeaders(LOCATION_HEADER)[0];						
 		String createdAnnotationUrl = location.getValue();
 		assertNotNull(createdAnnotationUrl);
+		response.getEntity().consumeContent();
 		
 		// Read
-		GetMethod findByIdMethod = new GetMethod(createdAnnotationUrl);
-		findByIdMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
-		assertEquals(HttpStatus.SC_OK, httpClient.executeMethod(findByIdMethod));
-		httpClient.executeMethod(findByIdMethod);
+		HttpGet findByIdMethod = new HttpGet(createdAnnotationUrl);
+		findByIdMethod.addHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
+		
+		response = httpClient.execute(findByIdMethod);
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		response.getEntity().consumeContent();
 		
 		// Update
-		PutMethod updateMethod = new PutMethod(createdAnnotationUrl);
-		updateMethod.setRequestEntity(new StringRequestEntity(Data.ANNOTATION_JSON_UPDATE, 
-				CONTENT_TYPE_JSON, ENCODING));						
-		assertEquals(HttpStatus.SC_OK, httpClient.executeMethod(updateMethod));
-		location = updateMethod.getResponseHeader(LOCATION_HEADER);						
+		StringEntity putEntity = new StringEntity(Data.ANNOTATION_JSON_UPDATE, ENCODING);
+		putEntity.setContentType(CONTENT_TYPE_JSON);
+		HttpPut updateMethod = new HttpPut(createdAnnotationUrl);
+		updateMethod.setEntity(putEntity);
+		
+		response = httpClient.execute(updateMethod);
+		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+		location = response.getHeaders(LOCATION_HEADER)[0];						
 		String updatedAnnotationUrl = location.getValue();
 		assertNotNull(updatedAnnotationUrl);
+		response.getEntity().consumeContent();
 		
 		// Delete
-		DeleteMethod deleteMethod = new DeleteMethod(updatedAnnotationUrl);
-		deleteMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
-		assertEquals(HttpStatus.SC_NO_CONTENT, httpClient.executeMethod(deleteMethod));
+		HttpDelete deleteMethod = new HttpDelete(updatedAnnotationUrl);
+		deleteMethod.addHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
 		
-		/* for clients that can't send put and delete
-		PostMethod postDeleteMethod = new PostMethod(createdAnnotationUrl);		
-		postDeleteMethod.setQueryString("_method=delete");	
-		postDeleteMethod.setRequestEntity(new StringRequestEntity("", 
-				CONTENT_TYPE_JSON, ENCODING));			
-		assertEquals(httpClient.executeMethod(postDeleteMethod), HttpStatus.SC_OK);
-		*/
+		response = httpClient.execute(deleteMethod);
+		assertEquals(HttpStatus.SC_NO_CONTENT, response.getStatusLine().getStatusCode());
 	}
 	
 	/**
@@ -101,42 +106,42 @@ public class JSONAnnotationControllerTest {
 	 */
 	@Test
 	public void testReplyFunctionality() throws Exception {
-		HttpClient httpClient = new HttpClient();
+		HttpClient httpClient = new DefaultHttpClient();
 		
 		// root #1
-		PostMethod createMethod = new PostMethod(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
-		createMethod.setRequestEntity(new StringRequestEntity(Data.ROOT_JSON, 
-				CONTENT_TYPE_JSON, ENCODING));						
-		assertEquals(httpClient.executeMethod(createMethod), HttpStatus.SC_CREATED);
-		Header location = createMethod.getResponseHeader(LOCATION_HEADER);						
+		StringEntity createEntity = new StringEntity(Data.ROOT_JSON, ENCODING);
+		createEntity.setContentType(CONTENT_TYPE_JSON);
+		HttpPost createMethod = new HttpPost(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
+		createMethod.setEntity(createEntity);		
+		
+		HttpResponse response = httpClient.execute(createMethod);
+		assertEquals(HttpStatus.SC_CREATED, response.getStatusLine().getStatusCode());
+		Header location = response.getHeaders(LOCATION_HEADER)[0];						
 		String root1 = location.getValue();
 		root1 = root1.substring(root1.lastIndexOf("/") + 1);
+		response.getEntity().consumeContent();
 		
 		// root #2
-		createMethod = new PostMethod(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
-		createMethod.setRequestEntity(new StringRequestEntity(Data.ROOT_JSON, 
-				CONTENT_TYPE_JSON, ENCODING));						
-		assertEquals(httpClient.executeMethod(createMethod), HttpStatus.SC_CREATED);
-		location = createMethod.getResponseHeader(LOCATION_HEADER);						
+		response = httpClient.execute(createMethod);
+		response.getEntity().consumeContent();
+		
+		assertEquals(HttpStatus.SC_CREATED, response.getStatusLine().getStatusCode());
+		location = response.getHeaders(LOCATION_HEADER)[0];						
 		String root2 = location.getValue();
 		root2 = root2.substring(root2.lastIndexOf("/") + 1);
 		
 		// reply #1
-		createMethod = new PostMethod(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
-		createMethod.setRequestEntity(new StringRequestEntity(Data.reply(root1, root1), 
-				CONTENT_TYPE_JSON, ENCODING));						
-		assertEquals(httpClient.executeMethod(createMethod), HttpStatus.SC_CREATED);
-		location = createMethod.getResponseHeader(LOCATION_HEADER);						
+		StringEntity replyEntity = new  StringEntity(Data.reply(root1, root1), ENCODING);
+		replyEntity.setContentType(CONTENT_TYPE_JSON);
+		createMethod = new HttpPost(JSON_ANNOTATION_CONTROLLER_BASE_URL);		
+		createMethod.setEntity(replyEntity);			
+		
+		response = httpClient.execute(createMethod);	
+		assertEquals(HttpStatus.SC_CREATED, response.getStatusLine().getStatusCode());
+		location = response.getHeaders(LOCATION_HEADER)[0];						
 		String reply1 = location.getValue();
 		assertNotNull(reply1);
-		
-		/* Read
-		String treeUrl = "http://localhost:8081/yuma-server/tree/object-lissabon";
-		
-		GetMethod findTreeMethod = new GetMethod(treeUrl);
-		findTreeMethod.addRequestHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
-		httpClient.executeMethod(findTreeMethod);
-		*/
+		response.getEntity().consumeContent();
 	}
 	
 }

@@ -49,7 +49,7 @@ public class Setup {
     }   
     
     public static void startEmbeddedJaxrsServer(Class <?> clazz) {
-        TJWSEmbeddedJaxrsServer tjws = new TJWSEmbeddedJaxrsServer();
+    	TJWSEmbeddedJaxrsServer tjws = new TJWSEmbeddedJaxrsServer();
 		tjws.setBindAddress("localhost");
 		tjws.setRootResourcePath("/yuma-server");
 		tjws.setPort(8081);
