@@ -94,16 +94,6 @@ public class JSONAnnotationControllerTest {
 		assertEquals(HttpStatus.SC_NO_CONTENT, response.getStatusLine().getStatusCode());
 	}
 	
-	/**
-	 * Creates the following annotation tree structure
-	 * 
-	 * - root #1
-	 *   - reply #1
-	 *     - sub-reply #1
-	 *   - reply #2
-	 * - root #2
-	 *   - reply #3
-	 */
 	@Test
 	public void testReplyFunctionality() throws Exception {
 		HttpClient httpClient = new DefaultHttpClient();
@@ -141,7 +131,23 @@ public class JSONAnnotationControllerTest {
 		location = response.getHeaders(LOCATION_HEADER)[0];						
 		String reply1 = location.getValue();
 		assertNotNull(reply1);
-		response.getEntity().consumeContent();
+		response.getEntity().consumeContent();	
+		
+		// Delete
+		HttpDelete deleteMethod = new HttpDelete(reply1);
+		deleteMethod.addHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
+		response = httpClient.execute(deleteMethod);
+		assertEquals(HttpStatus.SC_NO_CONTENT, response.getStatusLine().getStatusCode());
+		
+		deleteMethod = new HttpDelete(JSON_ANNOTATION_CONTROLLER_BASE_URL + "/" + root1);
+		deleteMethod.addHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
+		response = httpClient.execute(deleteMethod);
+		assertEquals(HttpStatus.SC_NO_CONTENT, response.getStatusLine().getStatusCode());
+		
+		deleteMethod = new HttpDelete(JSON_ANNOTATION_CONTROLLER_BASE_URL + "/" + root2);
+		deleteMethod.addHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
+		response = httpClient.execute(deleteMethod);
+		assertEquals(HttpStatus.SC_NO_CONTENT, response.getStatusLine().getStatusCode());
 	}
 	
 }

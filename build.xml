@@ -47,6 +47,9 @@
 				<fileset dir="${lib.dir}">
 					<include name="*.jar" />
 				</fileset>
+				<fileset dir="${lib.test.dir}">
+					<include name="*.jar" />
+				</fileset>
 			</classpath>
 			<batchtest todir="${report.dir}">
 				<formatter type="xml" />
