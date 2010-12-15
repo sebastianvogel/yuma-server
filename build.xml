@@ -7,6 +7,7 @@
 	<property name="resources.dir" location="resources" />	
 	<property name="classes.dir" location="WEB-INF/classes" />
 	<property name="lib.dir" location="WEB-INF/lib" />
+	<property name="lib.test.dir" location="lib" />
 	<property name="web.xml" location="WEB-INF/web.xml" />
 	<property name="metainf.dir" location="${resources.dir}/META-INF" />
 	<property name="classes.metainf.dir" location="${classes.dir}/META-INF" />
@@ -22,6 +23,9 @@
 		 	<src path="${test.dir}" />			 				
 		 	<classpath>
 		 	    <fileset dir="${lib.dir}">
+     					<include name="**/*.jar" />
+   				</fileset>
+		 	    <fileset dir="${lib.test.dir}">
      					<include name="**/*.jar" />
    				</fileset>
 		 	</classpath>
@@ -59,7 +63,7 @@
   		</copy>		
 		<war destfile="yuma-server.war" webxml="${web.xml}">
 			<lib dir="${lib.dir}" />
-			<classes dir="${classes.dir}" />			
+			<classes dir="${classes.dir}" excludes="**/bootstrap/** **/*Test*" />
 		</war>
 	</target>
 </project>
