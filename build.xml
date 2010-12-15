@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="yuma-annotation-server" default="create-war" basedir=".">	
-	<property name="src.dir" location="src" />
-	<property name="test.dir" location="test" />
+	<property name="src.dir" location="src/main/java" />
+	<property name="test.dir" location="src/test/java" />
 	<property name="report.dir" location="report" />
-	<property name="resources.dir" location="resources" />	
+	<property name="resources.dir" location="src/main/resources" />	
 	<property name="classes.dir" location="WEB-INF/classes" />
 	<property name="lib.dir" location="WEB-INF/lib" />
 	<property name="lib.test.dir" location="lib" />
