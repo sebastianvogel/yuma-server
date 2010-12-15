@@ -46,7 +46,7 @@ public class AnnotationEntity implements Serializable {
 	
 	@Id
 	@GeneratedValue
-	private Long id;	
+	private Long id;
 	
 	@Column
 	private Long rootId;

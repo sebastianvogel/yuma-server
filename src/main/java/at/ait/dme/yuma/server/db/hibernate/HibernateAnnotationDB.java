@@ -72,7 +72,8 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 
 	@Override
 	public void disconnect() {
-		if(em!=null) em.close();	
+		if ((em!=null) && (em.isOpen()))
+			em.close();	
 	}
 
 	@Override
