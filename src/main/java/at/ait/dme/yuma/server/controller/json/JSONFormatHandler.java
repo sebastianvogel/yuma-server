@@ -149,15 +149,17 @@ public class JSONFormatHandler implements FormatHandler {
 	private ArrayList<Map<String, Object>> toJSONFormat(List<SemanticTag> tags) {
 		ArrayList<Map<String, Object>> maps = new ArrayList<Map<String,Object>>();
 		
-		for (SemanticTag tag : tags) {
-			Map<String, Object> map = tag.toMap();
-			map.put(MapKeys.TAG_URI, tag.getURI().toString());
-			
-			SemanticRelation relation = tag.getRelation();
-			if (relation != null)
-				map.put(MapKeys.TAG_RELATION, relation.toMap());
-			
-			maps.add(map);
+		if (tags != null) {
+			for (SemanticTag tag : tags) {
+				Map<String, Object> map = tag.toMap();
+				map.put(MapKeys.TAG_URI, tag.getURI().toString());
+				
+				SemanticRelation relation = tag.getRelation();
+				if (relation != null)
+					map.put(MapKeys.TAG_RELATION, relation.toMap());
+				
+				maps.add(map);
+			}
 		}
 		
 		return maps;

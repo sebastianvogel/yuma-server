@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,10 +21,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
-import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationType;
-import at.ait.dme.yuma.server.model.MapKeys;
 import at.ait.dme.yuma.server.model.Scope;
 import at.ait.dme.yuma.server.model.SemanticTag;
 
@@ -38,7 +35,9 @@ import at.ait.dme.yuma.server.model.SemanticTag;
 @NamedQueries({
 	@NamedQuery(name = "annotationentity.search",
 			query = "from AnnotationEntity a where (lower(a.title) like concat('%',:term,'%') or " +
-					"lower(a.text) like concat('%',:term,'%'))")	
+					"lower(a.text) like concat('%',:term,'%'))"),
+	@NamedQuery(name = "annotationentity.count",
+			query = "select count(*) from AnnotationEntity a where a.objectId = :objectId"),
 })
 @Table(name = "annotations")
 public class AnnotationEntity implements Serializable {
@@ -115,32 +114,31 @@ public class AnnotationEntity implements Serializable {
 	}
 
 	public Annotation toAnnotation() throws AnnotationDatabaseException {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-
-		map.put(MapKeys.ANNOTATION_ID, Long.toString(id));
+		Annotation a = new Annotation(
+			Long.toString(id),
+			objectId,
+			createdBy,
+			created,
+			lastModified,
+			type,
+			scope
+		);
 		
 		if (rootId != null)
-			map.put(MapKeys.ANNOTATION_ROOT_ID, Long.toString(rootId));
+			a.setRootId(Long.toString(rootId));
 		
 		if (parentId != null)
-			map.put(MapKeys.ANNOTATION_PARENT_ID, Long.toString(parentId));
+			a.setParentId(Long.toString(parentId));
 		
-		map.put(MapKeys.ANNOTATION_OBJECT_ID, objectId);
-		map.put(MapKeys.ANNOTATION_CREATED, created);
-		map.put(MapKeys.ANNOTATION_LAST_MODIFIED, lastModified);
-		map.put(MapKeys.ANNOTATION_CREATED_BY, createdBy);
-		map.put(MapKeys.ANNOTATION_TITLE, title);
-		map.put(MapKeys.ANNOTATION_TEXT, text);
-		map.put(MapKeys.ANNOTATION_TYPE, type);
-		map.put(MapKeys.ANNOTATION_FRAGMENT, fragment);
-		map.put(MapKeys.ANNOTATION_SCOPE, scope);
-		// map.put(MapKeys.ANNOTATION_SEMANTIC_TAGS, tags);
+		a.setTitle(title);
+		a.setText(text);
+		a.setFragment(fragment);
 		
-		try {
-			return new Annotation(map);
-		} catch (InvalidAnnotationException e) {
-			throw new AnnotationDatabaseException();
+		for (SemanticTagEntity t : tags) {
+			a.addTag(t.toSemanticTag());
 		}
+		
+		return a;
 	}
 	
 	public void setAnnotationId(Long id) {

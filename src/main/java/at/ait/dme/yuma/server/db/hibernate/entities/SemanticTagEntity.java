@@ -1,6 +1,8 @@
 package at.ait.dme.yuma.server.db.hibernate.entities;
 
 import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.SemanticTag;
 
 /**
@@ -65,8 +68,27 @@ public class SemanticTagEntity implements Serializable {
 		this.setRelation(new SemanticRelationEntity(t.getRelation()));
 	}
 	
-	public SemanticTag toSemanticTag() {
-		return null;
+	public SemanticTag toSemanticTag()  {
+		try {
+			SemanticTag t = new SemanticTag(
+				new URI(uri),
+				primaryLabel,
+				primaryDescription
+			);
+			
+			t.setPrimaryLanguage(primaryLang);
+			t.setType(type);
+			if (relation != null)
+				t.setSemanticRelation(relation.toSemanticRelation());
+			
+			return t;
+		} catch (URISyntaxException e) {
+			// Should never happen
+			throw new RuntimeException("Malformed URI in annotation " + id + ": " + e.getMessage());
+		} catch (InvalidAnnotationException e) {
+			// Should never happen
+			throw new RuntimeException("Malformed semantic relation in annotation " + id + ": " + e.getMessage());
+		}
 	}
 
 	public void setId(Long id) {

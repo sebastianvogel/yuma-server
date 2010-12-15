@@ -1,5 +1,7 @@
 package at.ait.dme.yuma.server.db.hibernate;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -11,7 +13,6 @@ import at.ait.dme.yuma.server.bootstrap.Setup;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.SemanticTag;
 
 public class HibernateAnnotationDBTest {
 
@@ -33,17 +34,29 @@ public class HibernateAnnotationDBTest {
 		db.connect();
 		
 		// Create
-		Annotation before = format.parse(Data.ANNOTATION_JSON_UPDATE);
-		for (SemanticTag t : before.getTags()) {
-			System.out.println(t.getURI());
-		}
+		Annotation before = format.parse(Data.ANNOTATION_JSON_ORIGINAL);
 		String id = db.createAnnotation(before);
-		System.out.println(id);
+		System.out.println("Created: " + id);
+		
+		// Read
+		Annotation annotation = db.findAnnotationById(id);
+		System.out.println(format.serialize(annotation));
+		
+		// Update
+		Annotation after = format.parse(Data.ANNOTATION_JSON_UPDATE);
+		id = db.updateAnnotation(id, after);
+		System.out.println("Updated to: " + id);
+		
+		long count = db.countAnnotationsForObject("object-lissabon");
+		
+		// Delete
+		db.deleteAnnotation(id);
+		assertEquals(count - 1, db.countAnnotationsForObject("object-lissabon"));
 		
 		// Search
 		List<Annotation> annotations = db.findAnnotations("ponte");
 		for (Annotation a : annotations) {
-			System.out.println(a.getTitle());
+			System.out.println(format.serialize(a));
 		}
 	}
 	

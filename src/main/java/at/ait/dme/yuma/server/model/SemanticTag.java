@@ -19,46 +19,76 @@ public class SemanticTag {
 
 	/**
 	 * The tag URI
+	 * 
+	 * MANDATORY
 	 */
 	private URI uri;
 
 	/**
 	 * The tag's primary label
+	 * 
+	 * MANDATORY
 	 */
 	private String primaryLabel;
 
 	/**
 	 * The primary description/abstract of this tag
+	 * 
+	 * MANDATORY
 	 */
 	private String primaryDescription;
 	
 	/**
 	 * The language of the primary label and description
+	 * 
+	 * OPTIONAL
 	 */
 	private String primaryLang;
 	
 	/**
 	 * The tag type (freely definable)
+	 * 
+	 * OPTIONAL
 	 */
 	private String type;
 	
 	/**
 	 * The typed relation between annotated item and tag
+	 * 
+	 * OPTIONAL
 	 */
 	private SemanticRelation relation;
 
 	/**
 	 * Alternative labels in other languages in the form <lang, label>
+	 * 
+	 * OPTIONAL
 	 */
 	private HashMap<String, String> altLabels;
 	
 	/**
 	 * Alternative descriptions in other languages in the form <lang, label>
+	 * 
+	 * OPTIONAL
 	 */
 	private HashMap<String, String> altDescriptions;
 	
 	/**
+	 * Creates a semantic tag based on it's mandatory properties.
+	 * @param uri the URI
+	 * @param primaryLabel the primary label
+	 * @param primaryDescription the primary description
+	 */
+	public SemanticTag(URI uri, String primaryLabel, String primaryDescription) {
+		this.uri = uri;
+		this.primaryLabel = primaryLabel;
+		this.primaryDescription = primaryDescription;
+	}
+	
+	/**
 	 * Creates a semantic tag with the specified properties.
+	 * Mandatory properties must be set in the map. Otherwise
+	 * an InvalidAnnotationException will be thrown.
 	 * @param map the semantic tag's properties
 	 */
 	@SuppressWarnings("unchecked")
@@ -107,12 +137,24 @@ public class SemanticTag {
 		return primaryLang;
 	}
 	
+	public void setPrimaryLanguage(String lang) {
+		this.primaryLang = lang;
+	}
+	
 	public String getType() {
 		return type;
 	}
 	
+	public void setType(String type) {
+		this.type = type;
+	}
+	
 	public SemanticRelation getRelation() {
 		return relation;
+	}
+	
+	public void setSemanticRelation(SemanticRelation relation) {
+		this.relation = relation;
 	}
 		
 	public String getAlternativeLabel(String language) {

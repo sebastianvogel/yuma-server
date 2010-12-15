@@ -2,6 +2,7 @@ package at.ait.dme.yuma.server.db.hibernate.entities;
 
 import javax.persistence.Embeddable;
 
+import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.SemanticRelation;
 
 /**
@@ -21,6 +22,10 @@ public class SemanticRelationEntity {
 	public SemanticRelationEntity(SemanticRelation relation) {
 		this.setNamespace(relation.getNamespace());
 		this.setProperty(relation.getProperty());
+	}
+	
+	public SemanticRelation toSemanticRelation() throws InvalidAnnotationException {
+		return new SemanticRelation(namespace, property);
 	}
 
 	public void setNamespace(String namespace) {

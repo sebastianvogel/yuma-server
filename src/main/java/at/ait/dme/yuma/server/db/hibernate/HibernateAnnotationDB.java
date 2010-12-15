@@ -8,8 +8,8 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.LockModeType;
-import javax.persistence.OptimisticLockException;
 import javax.persistence.Persistence;
+import javax.persistence.PessimisticLockException;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 
@@ -97,7 +97,8 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 			InvalidAnnotationException {
 
 		try {			
-			if (!em.getTransaction().isActive()) em.getTransaction().begin();
+			if (!em.getTransaction().isActive())
+				em.getTransaction().begin();
 			
 			// in case of a reply we have to ensure that the parent is unchanged
 			AnnotationEntity entity = new AnnotationEntity(annotation);
@@ -110,15 +111,17 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 
 				// parent is unchanged, lock it and make sure it wasn't modified concurrently
 				try {
-					em.lock(parent, LockModeType.WRITE);
-				} catch(OptimisticLockException ole) {
+					em.lock(parent, LockModeType.PESSIMISTIC_WRITE);
+				} catch(PessimisticLockException e) {
 					throw new AnnotationModifiedException(annotation.getParentId());
 				}				
 				em.refresh(parent);				
 			}
 
 			em.persist(entity);														
-			if(isAutoCommit()) commit();
+			if(isAutoCommit())
+				commit();
+			
 			return Long.toString(entity.getAnnotationId());
 		} catch(AnnotationModifiedException e) {
 			throw e;
@@ -133,16 +136,55 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	public String updateAnnotation(String annotationId, Annotation annotation)
 			throws AnnotationDatabaseException, AnnotationNotFoundException,
 			AnnotationHasReplyException, InvalidAnnotationException {
-		// TODO Auto-generated method stub
-		return null;
+
+		boolean autoCommit = isAutoCommit();
+		setAutoCommit(false);
+		try {
+			AnnotationEntity entity = new AnnotationEntity(annotation);
+			if (!em.getTransaction().isActive())
+				em.getTransaction().begin();
+			
+			deleteAnnotation(annotationId);
+			em.persist(entity);
+			
+			if(autoCommit)
+				commit();
+			
+			return Long.toString(entity.getAnnotationId());
+		} catch(Throwable t) {
+			rollback();
+			throw new AnnotationDatabaseException(t);
+		} finally {
+			setAutoCommit(autoCommit);
+		}
 	}
 
 	@Override
 	public void deleteAnnotation(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException,
 			AnnotationHasReplyException {
-		// TODO Auto-generated method stub
-		
+
+		try {
+			Long id = Long.parseLong(annotationId);		
+			if (!em.getTransaction().isActive())
+				em.getTransaction().begin();					
+			
+			AnnotationEntity entity = em.find(AnnotationEntity.class, id);						
+			em.lock(entity, LockModeType.PESSIMISTIC_WRITE);			
+			em.refresh(entity);
+			
+			/* TODO implement this!
+			if(!entity.getReplies().isEmpty())
+				throw new AnnotationHasReplyException();
+			*/
+			
+			em.remove(entity);			
+			if(isAutoCommit())
+				commit();
+		} catch (Throwable t) {
+			rollback();
+			throw new AnnotationDatabaseException(t);
+		}
 	}
 
 	@Override
@@ -155,15 +197,34 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	@Override
 	public long countAnnotationsForObject(String objectId)
 			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return 0;
+
+		int count = 0;
+		try {
+			Query query = em.createNamedQuery("annotationentity.count");
+			query.setParameter("objectId", objectId);
+			count = ((Long) query.getSingleResult()).intValue();
+		} catch(Throwable t) {
+			throw new AnnotationDatabaseException(t);
+		}
+		return count;
 	}
 
 	@Override
 	public Annotation findAnnotationById(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+
+		try {
+			Long id = Long.parseLong(annotationId);
+			AnnotationEntity entity = em.find(AnnotationEntity.class, id);
+			if (entity == null)
+				throw new AnnotationNotFoundException();
+			
+			return entity.toAnnotation();					
+		} catch(AnnotationNotFoundException e) {
+			throw e;
+		} catch(Throwable t) {
+			throw new AnnotationDatabaseException(t);
+		}
 	}
 
 	@Override
