@@ -45,7 +45,7 @@ import at.ait.dme.yuma.server.model.SemanticTag;
 			query = "from AnnotationEntity a order by a.lastModified"),	
 	@NamedQuery(name = "annotationentity.search",
 			query = "from AnnotationEntity a where (lower(a.title) like concat('%',:term,'%') or " +
-					"lower(a.text) like concat('%',:term,'%'))"),
+					"lower(a.text) like concat('%',:term,'%'))")
 })
 @Table(name = "annotations")
 public class AnnotationEntity implements Serializable {
