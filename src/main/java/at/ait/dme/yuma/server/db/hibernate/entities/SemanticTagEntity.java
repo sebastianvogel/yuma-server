@@ -3,8 +3,10 @@ package at.ait.dme.yuma.server.db.hibernate.entities;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Map;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -52,9 +54,11 @@ public class SemanticTagEntity implements Serializable {
 	@Column
 	private SemanticRelationEntity relation;
 	
-	// private Map<String, String> altLabels;
+	@ElementCollection
+	private Map<String, String> altLabels;
 	
-	// private Map<String, String> altDescriptions;
+	@ElementCollection
+	private Map<String, String> altDescriptions;
 	
 	public SemanticTagEntity() { }
 	
@@ -65,7 +69,12 @@ public class SemanticTagEntity implements Serializable {
 		this.setPrimaryDescription(t.getPrimaryDescription());
 		this.setPrimaryLang(t.getPrimaryLanguage());
 		this.setType(t.getType());
-		this.setRelation(new SemanticRelationEntity(t.getRelation()));
+		
+		if (t.getRelation() != null)
+			this.setRelation(new SemanticRelationEntity(t.getRelation()));
+		
+		this.setAltLabels(t.getAlternativeLabels());
+		this.setAltDescriptions(t.getAlternativeDescriptions());
 	}
 	
 	public SemanticTag toSemanticTag()  {
@@ -80,6 +89,9 @@ public class SemanticTagEntity implements Serializable {
 			t.setType(type);
 			if (relation != null)
 				t.setSemanticRelation(relation.toSemanticRelation());
+			
+			t.setAlternativeLabels(altLabels);
+			t.setAlternativeDescriptions(altDescriptions);
 			
 			return t;
 		} catch (URISyntaxException e) {
@@ -153,6 +165,22 @@ public class SemanticTagEntity implements Serializable {
 
 	public SemanticRelationEntity getRelation() {
 		return relation;
+	}
+
+	public void setAltLabels(Map<String, String> altLabels) {
+		this.altLabels = altLabels;
+	}
+
+	public Map<String, String> getAltLabels() {
+		return altLabels;
+	}
+
+	public void setAltDescriptions(Map<String, String> altDescriptions) {
+		this.altDescriptions = altDescriptions;
+	}
+
+	public Map<String, String> getAltDescriptions() {
+		return altDescriptions;
 	}
 
 }

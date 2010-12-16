@@ -1,6 +1,7 @@
 package at.ait.dme.yuma.server.db.hibernate;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import at.ait.dme.yuma.server.bootstrap.Data;
 import at.ait.dme.yuma.server.bootstrap.Setup;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
+import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.model.Annotation;
 
 public class HibernateAnnotationDBTest {
@@ -43,15 +45,28 @@ public class HibernateAnnotationDBTest {
 		System.out.println(format.serialize(annotation));
 		
 		// Update
-		Annotation after = format.parse(Data.ANNOTATION_JSON_UPDATE);
+		Annotation after = format.parse(Data.ANNOTATION_JSON_UPDATE);		
 		id = db.updateAnnotation(id, after);
 		System.out.println("Updated to: " + id);
+		
+		// Create reply
+		Annotation reply = format.parse(Data.reply(id, id));
+		String replyId = db.createAnnotation(reply);
+		
+		// Try delete root annotation
+		try {
+			db.deleteAnnotation(id);
+			fail("Annotation has reply - delete should fail!");
+		} catch (AnnotationHasReplyException e) {
+			// Expected
+		}
 		
 		long count = db.countAnnotationsForObject("object-lissabon");
 		
 		// Delete
+		db.deleteAnnotation(replyId);
 		db.deleteAnnotation(id);
-		assertEquals(count - 1, db.countAnnotationsForObject("object-lissabon"));
+		assertEquals(count - 2, db.countAnnotationsForObject("object-lissabon"));
 		
 		// Search
 		List<Annotation> annotations = db.findAnnotations("ponte");

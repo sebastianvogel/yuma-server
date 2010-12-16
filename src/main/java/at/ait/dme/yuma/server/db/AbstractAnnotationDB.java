@@ -178,7 +178,7 @@ public abstract class AbstractAnnotationDB {
 	 * @throws AnnotationNotFoundException if the annotation was not found
 	 */
 	public abstract long countReplies(String annotationId)
-		throws AnnotationDatabaseException, AnnotationNotFoundException;
+		throws AnnotationDatabaseException;
 	
 	/**
 	 * Retrieve the thread which contains the given annotation

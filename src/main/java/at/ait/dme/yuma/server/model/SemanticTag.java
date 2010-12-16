@@ -64,14 +64,14 @@ public class SemanticTag {
 	 * 
 	 * OPTIONAL
 	 */
-	private HashMap<String, String> altLabels;
+	private Map<String, String> altLabels;
 	
 	/**
 	 * Alternative descriptions in other languages in the form <lang, label>
 	 * 
 	 * OPTIONAL
 	 */
-	private HashMap<String, String> altDescriptions;
+	private Map<String, String> altDescriptions;
 	
 	/**
 	 * Creates a semantic tag based on it's mandatory properties.
@@ -156,21 +156,29 @@ public class SemanticTag {
 	public void setSemanticRelation(SemanticRelation relation) {
 		this.relation = relation;
 	}
-		
+
+	public Map<String, String> getAlternativeLabels() {
+		return altLabels;
+	}
+	
+	public void setAlternativeLabels(Map<String, String> altLabels) {
+		this.altLabels = altLabels;
+	}
+	
 	public String getAlternativeLabel(String language) {
 		return altLabels.get(language);
 	}
+
+	public Map<String, String> getAlternativeDescriptions() {
+		return altDescriptions;
+	}
 	
-	public Set<String> getAlternativeLabelLanguages() {
-		return altLabels.keySet();
+	public void setAlternativeDescriptions(Map<String, String> altDescriptions) {
+		this.altDescriptions = altDescriptions;
 	}
 		
 	public String getAlternativeDescription(String language) {
 		return altDescriptions.get(language);
-	}
-	
-	public Set<String> getAlternativeDescriptionLanguages() {
-		return altDescriptions.keySet();
 	}
 	
 	public Map<String, Object> toMap() {

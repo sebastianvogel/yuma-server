@@ -38,6 +38,8 @@ import at.ait.dme.yuma.server.model.SemanticTag;
 					"lower(a.text) like concat('%',:term,'%'))"),
 	@NamedQuery(name = "annotationentity.count",
 			query = "select count(*) from AnnotationEntity a where a.objectId = :objectId"),
+	@NamedQuery(name = "annotationentity.count.replies",
+			query = "select count(*) from AnnotationEntity a where a.parentId = :id"),
 })
 @Table(name = "annotations")
 public class AnnotationEntity implements Serializable {

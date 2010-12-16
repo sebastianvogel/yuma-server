@@ -141,9 +141,10 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 		boolean autoCommit = isAutoCommit();
 		setAutoCommit(false);
 		try {
-			AnnotationEntity entity = new AnnotationEntity(annotation);
 			if (!em.getTransaction().isActive())
 				em.getTransaction().begin();
+			
+			AnnotationEntity entity = new AnnotationEntity(annotation);
 			
 			deleteAnnotation(annotationId);
 			em.persist(entity);
@@ -174,14 +175,14 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 			em.lock(entity, LockModeType.PESSIMISTIC_WRITE);			
 			em.refresh(entity);
 			
-			/* TODO implement this!
-			if(!entity.getReplies().isEmpty())
+			if (countReplies(annotationId) > 0)
 				throw new AnnotationHasReplyException();
-			*/
 			
 			em.remove(entity);			
 			if(isAutoCommit())
 				commit();
+		} catch (AnnotationHasReplyException e) {
+			throw e;
 		} catch (Throwable t) {
 			rollback();
 			throw new AnnotationDatabaseException(t);
@@ -230,9 +231,17 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 
 	@Override
 	public long countReplies(String annotationId)
-			throws AnnotationDatabaseException, AnnotationNotFoundException {
-		// TODO Auto-generated method stub
-		return 0;
+			throws AnnotationDatabaseException {
+		
+		int count = 0;
+		try {
+			Query query = em.createNamedQuery("annotationentity.count.replies");
+			query.setParameter("id", Long.parseLong(annotationId));
+			count = ((Long) query.getSingleResult()).intValue();
+		} catch (Throwable t) {
+			throw new AnnotationDatabaseException(t);
+		}
+		return count;
 	}
 
 	@Override

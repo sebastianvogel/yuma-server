@@ -193,9 +193,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 	
 	@Override
-	public long countReplies(String annotationId)
-		throws AnnotationDatabaseException, AnnotationNotFoundException {
-
+	public long countReplies(String annotationId) {
 		BasicDBObject query = new BasicDBObject();
 		query.put(MapKeys.ANNOTATION_PARENT_ID, annotationId);
 		return collection.count(query);
