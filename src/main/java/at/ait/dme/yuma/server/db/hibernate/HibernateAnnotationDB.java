@@ -192,8 +192,18 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	@Override
 	public AnnotationTree findAnnotationsForObject(String objectId)
 			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return null;
+
+		try {
+			Query query = em.createNamedQuery("annotationentity.find.for.object");
+			query.setParameter("objectId", objectId);
+			
+			@SuppressWarnings("unchecked")
+			List<Annotation> allAnnotations = query.getResultList();
+			
+			return new AnnotationTree(allAnnotations);
+		} catch(Throwable t) {
+			throw new AnnotationDatabaseException(t);
+		}
 	}
 
 	@Override
@@ -202,7 +212,7 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 
 		int count = 0;
 		try {
-			Query query = em.createNamedQuery("annotationentity.count");
+			Query query = em.createNamedQuery("annotationentity.count.for.object");
 			query.setParameter("objectId", objectId);
 			count = ((Long) query.getSingleResult()).intValue();
 		} catch(Throwable t) {
