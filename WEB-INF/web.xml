@@ -21,7 +21,6 @@
 	
 	<!--  HIBERNATE  -->
 	<!--  Make sure your database supports UTF8 encoding! -->
-	<!-- 	
 	<context-param>
 		<param-name>annotation.db.impl</param-name>
 		<param-value>at.ait.dme.yuma.server.db.hibernate.HibernateAnnotationDB</param-value>
@@ -39,7 +38,7 @@
 	
 	<context-param>
 		<param-name>annotation.db.name</param-name>
-		<param-value>annotations</param-value>
+		<param-value>ait</param-value>
 	</context-param>
 
 	<context-param>
@@ -71,10 +70,10 @@
 		<param-name>annotation.db.driver.protocol</param-name>
 		<param-value>jdbc:postgresql</param-value>
 	</context-param>
-	-->	
 	
 	<!--  MONGODB  -->
 	<!--  Make sure your database supports UTF8 encoding!  -->	
+	<!-- 
 	<context-param>
 		<param-name>annotation.db.impl</param-name>
 		<param-value>at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB</param-value>
@@ -124,6 +123,7 @@
 		<param-name>annotation.db.driver.protocol</param-name>
 		<param-value></param-value>
 	</context-param>	
+	-->
 			
 	<listener>
 		<listener-class>
