@@ -19,7 +19,7 @@ public class Start {
 		WebAppContext bb = new WebAppContext();
 		bb.setServer(server);
 		bb.setContextPath("/yuma-server");
-		bb.setWar(".");
+		bb.setWar("src/main/webapp");
 		
 		server.addHandler(bb);
 		try {

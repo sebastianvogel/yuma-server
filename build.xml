@@ -5,10 +5,10 @@
 	<property name="test.dir" location="src/test/java" />
 	<property name="report.dir" location="report" />
 	<property name="resources.dir" location="src/main/resources" />	
-	<property name="classes.dir" location="WEB-INF/classes" />
-	<property name="lib.dir" location="WEB-INF/lib" />
+	<property name="classes.dir" location="src/main/webapp/WEB-INF/classes" />
+	<property name="lib.dir" location="src/main/webapp/WEB-INF/lib" />
 	<property name="lib.test.dir" location="lib" />
-	<property name="web.xml" location="WEB-INF/web.xml" />
+	<property name="web.xml" location="src/main/webapp/WEB-INF/web.xml" />
 					
 	<target name="clean">
 		<delete dir="${classes.dir}"/>
@@ -64,7 +64,7 @@
   		</copy>		
 		<war destfile="yuma-server.war" webxml="${web.xml}">
 			<lib dir="${lib.dir}" />
-			<classes dir="${classes.dir}" excludes="**/bootstrap/** **/*Test*" />
+			<classes dir="${classes.dir}" excludes="**/bootstrap/** **/gui/Start* **/*Test*" />
 		</war>
 	</target>
 </project>

@@ -8,20 +8,11 @@ import org.apache.wicket.protocol.http.WebApplication;
  * 
  * @see at.ait.dme.yuma.server.gui.Start#main(String[])
  */
-public class WicketApplication extends WebApplication
-{    
-    /**
-     * Constructor
-     */
-	public WicketApplication()
-	{
-	}
+public class WicketApplication extends WebApplication {    
+    
+	public WicketApplication() { }
 	
-	/**
-	 * @see org.apache.wicket.Application#getHomePage()
-	 */
-	public Class<HomePage> getHomePage()
-	{
+	public Class<HomePage> getHomePage() {
 		return HomePage.class;
 	}
 
