@@ -54,8 +54,7 @@ public class RSSFormatHandler implements FormatHandler {
 
 	@Override
 	public String serialize(AnnotationTree tree) {
-		// TODO Auto-generated method stub
-		return null;
+		return serialize(tree.asFlatList());
 	}
 
 	@Override

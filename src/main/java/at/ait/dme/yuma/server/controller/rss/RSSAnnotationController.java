@@ -16,10 +16,16 @@ import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 @Path("/feeds")
 public class RSSAnnotationController extends AbstractAnnotationController {
 	
-	private static final int TIMELINE_LENGTH = 20;
+	private static final int FEED_LENGTH = 20;
+	private static final String FEED_BASEURL = Config.getInstance().getAnnotationBaseUrl() + "feeds/";
+	
 	private static final String TIMELINE_TITLE = "YUMA Timeline Feed";
 	private static final String TIMELINE_DESCRIPTION = "Most recent annotations on this YUMA annotation server.";
-	private static final String TIMELINE_URL = Config.getInstance().getAnnotationBaseUrl() + "feeds/timeline";
+	private static final String TIMELINE_URL = FEED_BASEURL + "timeline";
+	
+	private static final String OBJECT_FEED_TITLE = "Annotations for ";
+	private static final String OBJECT_FEED_DESCRIPTION = "Annotation feed for object with ID ";
+	private static final String OBJECT_FEED_URL = FEED_BASEURL + "object/";
 	
 	/**
 	 * Returns a feed with the most recent public annotations in the system.
@@ -33,7 +39,7 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	public Response getTimeline()
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		return super.getMostRecent(TIMELINE_LENGTH, new RSSFormatHandler(
+		return super.getMostRecent(FEED_LENGTH, new RSSFormatHandler(
 				TIMELINE_TITLE,
 				TIMELINE_DESCRIPTION,
 				TIMELINE_URL));
@@ -52,6 +58,7 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	public Response getUserFeed(@PathParam("name") String name) 
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
+		// TODO implement
 		return null;
 	}
 	
@@ -68,7 +75,10 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	public Response getObjectFeed(@PathParam("objectId") String objectId) 
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		return null;
+		return super.getAnnotationTree(objectId, new RSSFormatHandler(
+				OBJECT_FEED_TITLE + objectId,
+				OBJECT_FEED_DESCRIPTION + objectId,
+				OBJECT_FEED_URL + objectId));
 	}
 	
 	/**
@@ -85,6 +95,7 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	public Response getAnnotationFeed(@PathParam("id") String id) 
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
+		// TODO implement
 		return null;
 	}
 	

@@ -1,6 +1,7 @@
 package at.ait.dme.yuma.server.db.hibernate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -198,9 +199,9 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 			query.setParameter("objectId", objectId);
 			
 			@SuppressWarnings("unchecked")
-			List<Annotation> allAnnotations = query.getResultList();
+			List<AnnotationEntity> allAnnotations = query.getResultList();
 			
-			return new AnnotationTree(allAnnotations);
+			return new AnnotationTree(toAnnotations(allAnnotations));
 		} catch(Throwable t) {
 			throw new AnnotationDatabaseException(t);
 		}
@@ -257,15 +258,38 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	@Override
 	public AnnotationTree findThreadForAnnotation(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+
+		try {
+			Annotation a = findAnnotationById(annotationId);
+			if (a.getRootId() == null) {
+				return new AnnotationTree(Arrays.asList(a));
+			}
+			
+			Query query = em.createNamedQuery("annotationentity.find.thread");	
+			query.setParameter("rootId", a.getRootId());
+			
+			@SuppressWarnings("unchecked")
+			List<AnnotationEntity> thread = query.getResultList();		
+			return new AnnotationTree(toAnnotations(thread));
+		} catch (Throwable t) {
+			throw new AnnotationDatabaseException(t);
+		}
 	}
 
 	@Override
 	public List<Annotation> getMostRecent(int n)
 			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return null;
+
+		try {
+			Query query = em.createNamedQuery("annotationentity.mostrecent");
+			query.setMaxResults(n);
+			
+			@SuppressWarnings("unchecked")
+			List<AnnotationEntity> mostRecent = query.getResultList();
+			return toAnnotations(mostRecent);
+		} catch(Throwable t) {
+			throw new AnnotationDatabaseException(t);
+		}
 	}
 
 	@Override
@@ -276,17 +300,20 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 			Query query = em.createNamedQuery("annotationentity.search");
 			query.setParameter("term", q.toLowerCase());
 			
-			ArrayList<Annotation> annotations = new ArrayList<Annotation>();
-			
 			@SuppressWarnings("unchecked")
 			List<AnnotationEntity> entities = query.getResultList();
-			for (AnnotationEntity entity : entities) {
-				annotations.add(entity.toAnnotation());
-			}
-			return annotations;
+			return toAnnotations(entities);
 		} catch(Throwable t) {
 			throw new AnnotationDatabaseException(t);
 		}
+	}
+	
+	private List<Annotation> toAnnotations(List<AnnotationEntity> entities) throws AnnotationDatabaseException {
+		List<Annotation> annotations = new ArrayList<Annotation>();
+		for (AnnotationEntity entity : entities) {
+			annotations.add(entity.toAnnotation());
+		}
+		return annotations;
 	}
 
 }

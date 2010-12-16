@@ -1,6 +1,8 @@
 package at.ait.dme.yuma.server.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,7 +16,7 @@ import java.util.List;
  * @author Rainer Simon
  */
 public class AnnotationTree {
-	
+		
 	/**
 	 * Root annotations in this tree
 	 */
@@ -59,6 +61,30 @@ public class AnnotationTree {
 			return new ArrayList<Annotation>();
 		
 		return list;
+	}
+	
+	/**
+	 * Returns a flat list of all annotations in this tree, sorted by
+	 * creation date.
+	 * @return the list of annotations
+	 */
+	public List<Annotation> asFlatList() {
+		List<Annotation> flatList = new ArrayList<Annotation>(rootAnnotations);
+		for(String key : replies.keySet()) {
+			flatList.addAll(replies.get(key));
+		}
+
+		Collections.sort(flatList, new Comparator<Annotation>() {
+			@Override
+			public int compare(Annotation a, Annotation b) {
+				if (a.getCreated().getTime() > b.getCreated().getTime())
+						return 1;
+				
+				return -1;
+			}
+		});
+		
+		return flatList;
 	}
 
 }
