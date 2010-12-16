@@ -26,7 +26,7 @@ import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
  *  
  * @author Rainer Simon
  */
-@Path("/api")
+@Path("/")
 public class JSONAnnotationController extends AbstractAnnotationController {
 
 	@POST

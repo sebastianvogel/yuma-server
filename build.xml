@@ -9,8 +9,6 @@
 	<property name="lib.dir" location="WEB-INF/lib" />
 	<property name="lib.test.dir" location="lib" />
 	<property name="web.xml" location="WEB-INF/web.xml" />
-	<property name="metainf.dir" location="${resources.dir}/META-INF" />
-	<property name="classes.metainf.dir" location="${classes.dir}/META-INF" />
 					
 	<target name="clean">
 		<delete dir="${classes.dir}"/>
@@ -61,8 +59,8 @@
 	</target>
 	
 	<target name="create-war" depends="compile-java">
-		<copy todir="${classes.metainf.dir}">
-    		<fileset dir="${metainf.dir}"/>
+		<copy todir="${classes.dir}">
+    		<fileset dir="${resources.dir}"/>
   		</copy>		
 		<war destfile="yuma-server.war" webxml="${web.xml}">
 			<lib dir="${lib.dir}" />
