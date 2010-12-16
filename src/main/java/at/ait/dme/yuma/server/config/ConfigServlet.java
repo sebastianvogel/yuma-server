@@ -31,12 +31,11 @@ public class ConfigServlet extends HttpServlet {
 	    String dbDir=readProperty("annotation.db.dir", application); 
 	    String dbFlags=readProperty("annotation.db.flags", application);
 	    String annotationBaseUrl=readProperty("annotation.base.url", application);
-	    String lockManagerImpl=readProperty("annotation.db.lock.manager", application);
 	   
 	    new Config.Builder(dbImpl, annotationBaseUrl).
 	    	dbDriver(dbDriver).dbDriverProtocol(dbDriverProtocol).dbHost(dbHost).
 	    	dbPort(dbPort).dbName(dbName).dbUser(dbUser).dbUser(dbUser).
-	    	dbPass(dbPass).dbDir(dbDir).dbFlags(dbFlags).lockManager(lockManagerImpl).
+	    	dbPass(dbPass).dbDir(dbDir).dbFlags(dbFlags).
 	    	createInstance();	    
 	    try {
 	    	Config.getInstance().getAnnotationDatabase().init();

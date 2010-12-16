@@ -3,7 +3,6 @@ package at.ait.dme.yuma.server.config;
 import org.apache.log4j.Logger;
 
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
-import at.ait.dme.yuma.server.db.AbstractLockManager;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 
 /**
@@ -27,7 +26,6 @@ public class Config {
 	private final String dbDir;
 	private final String dbFlags;	
 	private final String annotationBaseUrl;
-	private final String lockManagerImpl;
 
 	private Config(Builder builder) {
 		this.dbHost = builder.dbHost;
@@ -41,11 +39,9 @@ public class Config {
 		this.dbImpl = builder.dbImpl;
 		this.dbDriver = builder.dbDriver;
 		this.dbDriverProtocol = builder.dbDriverProtocol;
-		this.lockManagerImpl = builder.lockManagerImpl;
 	}
 	
 	public static class Builder {
-		private String lockManagerImpl = null;		
 		private String dbImpl = null;
 		private String dbDriver = null;
 		private String dbDriverProtocol = null;		
@@ -109,11 +105,6 @@ public class Config {
 			return this;
 		}
 		
-		public Builder lockManager(String val) {
-			lockManagerImpl = val;
-			return this;
-		}
-		
 		public Config createInstance() {
 			synchronized(this.getClass()) {
 				if (singletonInstance == null) {
@@ -171,26 +162,6 @@ public class Config {
 	
 	public String getAnnotationBaseUrl() {
 		return annotationBaseUrl;
-	}
-
-	public AbstractLockManager getLockManager() throws AnnotationDatabaseException {
-		AbstractLockManager lockManager = null;
-		try {
-			if(lockManagerImpl.isEmpty()) return lockManager;
-			Class<?> annotationDbLockImplClass = Class.forName(lockManagerImpl);
-			Object obj = annotationDbLockImplClass.newInstance();
-			if (obj instanceof AbstractLockManager) {
-				lockManager = (AbstractLockManager) obj;
-			} else {
-				logger.fatal("annotation lockmanager implementation class is invalid. "
-						+ "check inheritance");
-				throw new InstantiationException();
-			}
-		} catch (Exception e) {
-			logger.fatal("failed to load lock manager implementation", e);
-			throw new AnnotationDatabaseException(e);
-		}
-		return lockManager;
 	}
 	
 	public AbstractAnnotationDB getAnnotationDatabase() throws AnnotationDatabaseException {

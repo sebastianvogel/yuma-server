@@ -61,11 +61,6 @@
 		<param-name>annotation.db.flags</param-name>
 		<param-value></param-value>
 	</context-param>
-		
-	<context-param>
-		<param-name>annotation.db.lock.manager</param-name>
-		<param-value></param-value>
-	</context-param>
 	
 	<context-param>
 		<param-name>annotation.db.driver</param-name>
@@ -117,11 +112,6 @@
 
 	<context-param>
 		<param-name>annotation.db.flags</param-name>
-		<param-value></param-value>
-	</context-param>
-		
-	<context-param>
-		<param-name>annotation.db.lock.manager</param-name>
 		<param-value></param-value>
 	</context-param>
 	
