@@ -12,8 +12,8 @@ public class WicketApplication extends WebApplication {
     
 	public WicketApplication() { }
 	
-	public Class<HomePage> getHomePage() {
-		return HomePage.class;
+	public Class<Search> getHomePage() {
+		return Search.class;
 	}
 
 }

@@ -132,7 +132,7 @@
 	</listener>
 	
 	<filter>
-		<filter-name>wicket.gui</filter-name>
+		<filter-name>wicket.pages</filter-name>
  		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
 		<init-param>
 			<param-name>applicationClassName</param-name>
@@ -141,8 +141,8 @@
  	</filter>
  	
 	<filter-mapping>
-		<filter-name>wicket.gui</filter-name>
-		<url-pattern>/gui/*</url-pattern>
+		<filter-name>wicket.pages</filter-name>
+		<url-pattern>/pages/*</url-pattern>
 	</filter-mapping>
 
 	<servlet>
@@ -174,4 +174,8 @@
 		<servlet-class>at.ait.dme.yuma.server.config.ConfigServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
+	<welcome-file-list>
+		<welcome-file>pages</welcome-file> 
+	</welcome-file-list>
 </web-app>
