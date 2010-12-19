@@ -6,15 +6,20 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
+
+import at.ait.dme.yuma.server.gui.feeds.Timeline;
 
 
 public class Search extends WebPage {
 
 	public static final String QUERY_PARAM = "q";
 	
-    public Search(final PageParameters parameters) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public Search(final PageParameters parameters) {
         add(new SearchForm("form", new Query()));
+        add(new BookmarkablePageLink("link-timeline", Timeline.class));
     }
         
 	private class SearchForm extends StatelessForm<Query> {

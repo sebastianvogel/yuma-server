@@ -1,7 +1,6 @@
 package at.ait.dme.yuma.server.gui;
 
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.util.lang.PackageName;
 
 import at.ait.dme.yuma.server.gui.feeds.Timeline;
 import at.ait.dme.yuma.server.gui.search.Search;
@@ -15,7 +14,7 @@ import at.ait.dme.yuma.server.gui.search.Search;
 public class WicketApplication extends WebApplication {    
     
 	public WicketApplication() {
-		this.mount("pages", PackageName.forClass(Timeline.class));
+		this.mountBookmarkablePage("pages/timeline", Timeline.class);
 	}
 	
 	public Class<Search> getHomePage() {

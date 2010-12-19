@@ -1,17 +1,20 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Annotation Lookup</title>
-		<link href="css/style.css" rel="stylesheet" type="text/css" />
-	</head>
-	<body>
-		<div id="vcenter">
-			<div id="hcenter">
-				<form wicket:id="form">
-					<input class="searchfield" wicket:id="query" />
-					<input class="searchbutton" type="submit" value="Search"/>
-				</form>
-			</div>
-		</div>
-	</body>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Annotation Lookup</title>
+    <link href="css/search.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div id="container">
+      <p class="logo">yuma <span class="hi">[ annotation ]</span> server</p>
+      <form wicket:id="form">
+        <input class="searchfield" wicket:id="query" /><input class="searchbutton" type="submit" value="Search"/>
+      </form>
+      <p class="searchlinks">
+        <a wicket:id="link-timeline">View Public Timeline</a>
+        <a href="#">Advanced Search</a>
+      </p>
+    </div>
+  </body>
 </html>

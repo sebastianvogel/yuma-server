@@ -1,39 +1,10 @@
 body {
 	margin:0px;
 	padding:0px;
-	background-color:#7B8288;
+	color:#000;
 	text-align:center;
-	font-family:"Verdana", "Arial";
-}
-
-#vcenter {
-	position:absolute;
-	top:40%;
-	width:100%;
-}
-
-#hcenter {
-	margin:0px auto 0px auto;	
-}
-
-.searchfield {
-	font-size:16px;
-	padding:4px 8px 4px 8px;
-	width:300px;
-	border:#000000 solid 1px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-}
-
-.searchbutton {
-	font-size:16px;
-	padding:3px 10px 3px 10px;
-	background: white url('../images/btn-grad.png') repeat-x bottom;
-	border-style:solid;
-	border-width:1px;
-	border-color:#3F3F3F #000000 #000000 #3F3F3F;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
+	font-family:"Verdana","Arial";
+	background-color:#fff;
 }
 
 div.annotation {

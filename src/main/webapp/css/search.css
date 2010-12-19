@@ -1,0 +1,64 @@
+body {
+	margin:0px;
+	padding:0px;
+	color:#000;
+	text-align:center;
+	font-family:"Verdana","Arial";
+	background-color:#fff;
+}
+
+form {
+	margin:0px 0px 25px 0px;
+}	
+
+#container {
+	position:absolute;
+	top:25%;
+	width:100%;
+	margin:0px auto 0px auto;	
+}
+
+.logo {
+	font-family:"Garamond";
+	font-size:30px;
+}
+
+.logo .hi {
+	color:#790b1a;
+	font-weight:bold;
+}
+
+.searchfield {
+	font-size:14px;
+	padding:4px 8px 4px 8px;
+	margin:0px;
+	width:380px;
+	background-color:#fff;
+	border:#000000 solid 1px;
+}
+
+.searchbutton {
+	font-size:14px;
+	padding:3px 10px 3px 10px;
+	margin:0px;
+	width:100px;
+	color:#fff;
+	background-color:#000;
+	border:1px solid #000;
+}
+
+.searchlinks {
+	margin:0px auto 0px auto;
+	width:480px;
+	text-align:right;
+	font-size:11px;
+}
+
+a {
+	padding-left:5px;
+	color:#000;
+}
+
+a:visited {
+	color:#000;
+}
