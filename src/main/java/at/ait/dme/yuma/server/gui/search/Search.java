@@ -1,12 +1,13 @@
-package at.ait.dme.yuma.server.gui;
+package at.ait.dme.yuma.server.gui.search;
 
 import java.util.HashMap;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
+
 
 public class Search extends WebPage {
 
@@ -16,7 +17,7 @@ public class Search extends WebPage {
         add(new SearchForm("form", new Query()));
     }
         
-	private class SearchForm extends Form<Query> {
+	private class SearchForm extends StatelessForm<Query> {
 
 		private static final long serialVersionUID = -7070901543076806931L;
 
@@ -29,7 +30,7 @@ public class Search extends WebPage {
 		protected void onSubmit() {
             HashMap<String, String> params = new HashMap<String, String>();
             params.put("q", getModelObject().toString());
-            redirectToInterceptPage(new Results(new PageParameters(params)));
+            setResponsePage(new Results(new PageParameters(params)));
 		}
     	
     }

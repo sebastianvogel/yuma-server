@@ -3,6 +3,8 @@ package at.ait.dme.yuma.server.gui;
 import junit.framework.TestCase;
 import org.apache.wicket.util.tester.WicketTester;
 
+import at.ait.dme.yuma.server.gui.search.Search;
+
 /**
  * Simple test using the WicketTester
  */

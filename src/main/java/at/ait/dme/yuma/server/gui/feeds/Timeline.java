@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.gui;
+package at.ait.dme.yuma.server.gui.feeds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,30 +12,27 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.gui.components.AnnotationListView;
 import at.ait.dme.yuma.server.model.Annotation;
 
-public class Results extends WebPage {
+public class Timeline extends WebPage {
 	
-    public Results(final PageParameters parameters) {
-    	List<Annotation> searchResults = 
-    		findAnnotations((String) parameters.get(Search.QUERY_PARAM));
-    	
-    	add(new AnnotationListView("listview", searchResults));
+   public Timeline(final PageParameters parameters) {
+    	add(new AnnotationListView("listview", getMostRecent(20)));
     }
     
-	private List<Annotation> findAnnotations(String query) {
+	private List<Annotation> getMostRecent(int n) {
 		AbstractAnnotationDB db = null;
-		List<Annotation> searchResults = new ArrayList<Annotation>();
+		List<Annotation> mostRecent = new ArrayList<Annotation>();
 		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect();
-			searchResults = db.findAnnotations(query);
+			mostRecent = db.getMostRecent(n);
 		} catch (AnnotationDatabaseException e) {
 			// TODO log this
 		} finally {
 			if(db != null) db.disconnect();
 		}
 		
-		return searchResults;
+		return mostRecent;
 	}
 
 }
