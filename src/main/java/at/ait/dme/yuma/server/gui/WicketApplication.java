@@ -15,7 +15,7 @@ import at.ait.dme.yuma.server.gui.search.Search;
 public class WicketApplication extends WebApplication {    
     
 	public WicketApplication() {
-		this.mount("feeds", PackageName.forClass(Timeline.class));
+		this.mount("pages", PackageName.forClass(Timeline.class));
 	}
 	
 	public Class<Search> getHomePage() {

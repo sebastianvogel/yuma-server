@@ -142,7 +142,7 @@
  	
 	<filter-mapping>
 		<filter-name>wicket.pages</filter-name>
-		<url-pattern>/pages/*</url-pattern>
+		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
 	<servlet>
@@ -174,8 +174,4 @@
 		<servlet-class>at.ait.dme.yuma.server.config.ConfigServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	
-	<welcome-file-list>
-		<welcome-file>pages</welcome-file> 
-	</welcome-file-list>
 </web-app>
