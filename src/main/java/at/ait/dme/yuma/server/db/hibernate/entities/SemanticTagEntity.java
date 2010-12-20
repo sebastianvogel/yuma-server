@@ -42,7 +42,7 @@ public class SemanticTagEntity implements Serializable {
 	@Column
 	private String primaryLabel;
 
-	@Column
+	@Column(length = 4096)		
 	private String primaryDescription;
 	
 	@Column
