@@ -8,7 +8,10 @@ body {
 }
 
 form {
-	margin:0px 0px 25px 0px;
+	width:480px;
+	background-image:url('../images/search-ds.png');
+	margin:0px auto 5px auto;
+	padding:9px 10px 10px 9px;
 }	
 
 #container {
@@ -19,26 +22,34 @@ form {
 }
 
 .logo {
-	padding:0px 0px 20px 0px;
+	padding:0px 0px 10px 0px;
 }
 
 .searchfield {
+	position:relative;
+	top:-1px;
 	font-size:14px;
 	padding:4px 8px 4px 8px;
 	margin:0px;
 	width:380px;
+	height:27px;
 	background-color:#fff;
-	border:#000000 solid 1px;
+	border-width:1px 0px 1px 1px;
+	border-style:solid;
+	border-color:#000;
 }
 
 .searchbutton {
+	background-image:url('../images/button.png');
 	font-size:14px;
 	padding:3px 10px 3px 10px;
 	margin:0px;
 	width:100px;
+	height:27px;
 	color:#fff;
 	background-color:#000;
 	border:1px solid #000;
+	cursor:pointer;
 }
 
 .searchlinks {
