@@ -64,7 +64,7 @@
   		</copy>		
 		<war destfile="yuma-server.war" webxml="${web.xml}">
 			<lib dir="${lib.dir}" />
-			<classes dir="${classes.dir}" excludes="**/bootstrap/** **/gui/Start* **/*Test*" />
+			<classes dir="${classes.dir}" excludes="**/bootstrap/** **/*Test*" />
 		</war>
 	</target>
 </project>

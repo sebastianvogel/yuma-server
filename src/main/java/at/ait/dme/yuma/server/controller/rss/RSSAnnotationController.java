@@ -19,7 +19,7 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	private static final int FEED_LENGTH = 20;
 	private static final String FEED_BASEURL = Config.getInstance().getAnnotationBaseUrl() + "feeds/";
 	
-	private static final String TIMELINE_TITLE = "YUMA Timeline Feed";
+	private static final String TIMELINE_TITLE = "YUMA Public Timeline";
 	private static final String TIMELINE_DESCRIPTION = "Most recent annotations on this YUMA annotation server.";
 	private static final String TIMELINE_URL = FEED_BASEURL + "timeline";
 	

@@ -8,7 +8,7 @@ import at.ait.dme.yuma.server.gui.search.Search;
 /**
  * Simple test using the WicketTester
  */
-public class TestHomePage extends TestCase {
+public class HomePageTest extends TestCase {
 	
 	private WicketTester tester;
 
