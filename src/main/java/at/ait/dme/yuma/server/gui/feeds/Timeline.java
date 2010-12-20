@@ -3,6 +3,7 @@ package at.ait.dme.yuma.server.gui.feeds;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
 
@@ -14,7 +15,9 @@ import at.ait.dme.yuma.server.model.Annotation;
 
 public class Timeline extends WebPage {
 	
-   public Timeline(final PageParameters parameters) {
+	private Logger logger = Logger.getLogger(Timeline.class);
+	
+	public Timeline(final PageParameters parameters) {
     	add(new AnnotationListView("listview", getMostRecent(20)));
     }
     
@@ -27,7 +30,7 @@ public class Timeline extends WebPage {
 			db.connect();
 			mostRecent = db.getMostRecent(n);
 		} catch (AnnotationDatabaseException e) {
-			// TODO log this
+			logger.fatal(e.getMessage());
 		} finally {
 			if(db != null) db.disconnect();
 		}

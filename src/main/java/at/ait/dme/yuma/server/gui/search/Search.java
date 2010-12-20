@@ -20,6 +20,7 @@ public class Search extends WebPage {
 	public Search(final PageParameters parameters) {
         add(new SearchForm("form", new Query()));
         add(new BookmarkablePageLink("link-timeline", Timeline.class));
+        add(new BookmarkablePageLink("link-advanced", AdvancedSearch.class));
     }
         
 	private class SearchForm extends StatelessForm<Query> {

@@ -5,6 +5,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndContentImpl;
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -31,6 +33,8 @@ public class RSSFormatHandler implements FormatHandler {
 	private String feedTitle;
 	private String feedDescription;
 	private String feedLink;
+	
+	private Logger logger = Logger.getLogger(RSSFormatHandler.class);
 
 	public RSSFormatHandler(String feedTitle, String feedDescription, String feedLink) {
 		this.feedTitle = feedTitle;
@@ -89,11 +93,9 @@ public class RSSFormatHandler implements FormatHandler {
 			output.output(feed, sw);
 			return sw.toString();
 		} catch (IOException e) {
-			// TODO log this
-			System.out.println(e.getMessage());
+			logger.error(e.getMessage());
 		} catch (FeedException e) {
-			// TODO log this
-			System.out.println(e.getMessage());
+			logger.error(e.getMessage());
 		}
 		return null;
 	}

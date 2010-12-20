@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 
 import com.mongodb.DB;
@@ -60,6 +61,11 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	 * JSON format handler to perform translations JSON<->Annotation
 	 */
 	private JSONFormatHandler format = new JSONFormatHandler();
+	
+	/**
+	 * Logger
+	 */
+	private Logger logger = Logger.getLogger(MongoAnnotationDB.class);
 	
 	@Override
 	public synchronized void init() throws AnnotationDatabaseException {
@@ -236,7 +242,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 			try {
 				annotations.add(toAnnotation(cursor.next()));
 			} catch (InvalidAnnotationException e) {
-				// TODO log this
+				logger.error("Got invalid annotation from MongoDB: " + e.getMessage());
 			}
 		}
 		

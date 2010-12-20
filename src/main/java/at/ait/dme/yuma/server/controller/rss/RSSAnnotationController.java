@@ -95,7 +95,6 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	public Response getAnnotationFeed(@PathParam("id") String id) 
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
-		// TODO implement
 		return null;
 	}
 	
