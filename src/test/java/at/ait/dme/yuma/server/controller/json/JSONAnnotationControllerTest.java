@@ -39,7 +39,7 @@ public class JSONAnnotationControllerTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
-		Setup.buildMongoDBConfiguration();
+		Setup.buildHibernateConfiguration();
         Setup.startEmbeddedJaxrsServer(JSONAnnotationController.class);
 	}
 

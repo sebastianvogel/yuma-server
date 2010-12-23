@@ -36,9 +36,9 @@ import at.ait.dme.yuma.server.model.SemanticTag;
 	@NamedQuery(name = "annotationentity.find.thread",
 			query = "from AnnotationEntity a where a.rootId = :rootId"),	
 	@NamedQuery(name = "annotationentity.find.for.object",
-			query = "from AnnotationEntity a where a.objectId = :objectId"),	
+			query = "from AnnotationEntity a where a.objectUri = :objectUri"),	
 	@NamedQuery(name = "annotationentity.count.for.object",
-			query = "select count(*) from AnnotationEntity a where a.objectId = :objectId"),
+			query = "select count(*) from AnnotationEntity a where a.objectUri = :objectUri"),
 	@NamedQuery(name = "annotationentity.count.replies",
 			query = "select count(*) from AnnotationEntity a where a.parentId = :id"),
 	@NamedQuery(name = "annotationentity.mostrecent",
@@ -62,8 +62,8 @@ public class AnnotationEntity implements Serializable {
 	@Column
 	private Long parentId;
 
-    @Column(length = 512, nullable = false)
-	private String objectId;
+    @Column(length = 512)
+	private String objectUri;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
@@ -106,7 +106,7 @@ public class AnnotationEntity implements Serializable {
 		if (!a.getParentId().isEmpty())
 			this.setParentId(Long.parseLong(a.getParentId()));
 		
-		this.setObjectId(a.getObjectID());
+		this.setObjectUri(a.getObjectUri());
 		this.setCreated(a.getCreated());
 		this.setLastModified(a.getLastModified());
 		this.setCreatedBy(a.getCreatedBy());
@@ -124,14 +124,14 @@ public class AnnotationEntity implements Serializable {
 	public Annotation toAnnotation() throws AnnotationDatabaseException {
 		Annotation a = new Annotation(
 			Long.toString(id),
-			objectId,
+			objectUri,
 			createdBy,
 			created,
 			lastModified,
 			type,
 			scope
 		);
-		
+
 		if (rootId != null)
 			a.setRootId(Long.toString(rootId));
 		
@@ -173,12 +173,12 @@ public class AnnotationEntity implements Serializable {
 		return parentId;
 	}
 
-	public void setObjectId(String objectId) {
-		this.objectId = objectId;
+	public void setObjectUri(String objectUri) {
+		this.objectUri = objectUri;
 	}
 
-	public String getObjectId() {
-		return objectId;
+	public String getObjectUri() {
+		return objectUri;
 	}
 
 	public void setCreated(Date created) {

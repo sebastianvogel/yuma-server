@@ -143,20 +143,20 @@ public abstract class AbstractAnnotationDB {
 
 	/**
 	 * Returns all annotations for a given object
-	 * @param objectId the object ID
+	 * @param objectUri the object URI
 	 * @return the annotation tree for the object
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract AnnotationTree findAnnotationsForObject(String objectId)
+	public abstract AnnotationTree findAnnotationsForObject(String objectUri)
 		throws AnnotationDatabaseException;
 
 	/**
 	 * Retrieves the number of annotations for the given object
-	 * @param objectId the object ID
+	 * @param objectUri the object ID
 	 * @return the number of annotations for this object
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract long countAnnotationsForObject(String objectId)
+	public abstract long countAnnotationsForObject(String objectUri)
 		throws AnnotationDatabaseException; 
 		
 	/**

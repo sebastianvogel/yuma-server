@@ -191,12 +191,12 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public AnnotationTree findAnnotationsForObject(String objectId)
+	public AnnotationTree findAnnotationsForObject(String objectUri)
 			throws AnnotationDatabaseException {
 
 		try {
 			Query query = em.createNamedQuery("annotationentity.find.for.object");
-			query.setParameter("objectId", objectId);
+			query.setParameter("objectUri", objectUri);
 			
 			@SuppressWarnings("unchecked")
 			List<AnnotationEntity> allAnnotations = query.getResultList();
@@ -208,13 +208,13 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public long countAnnotationsForObject(String objectId)
+	public long countAnnotationsForObject(String objectUri)
 			throws AnnotationDatabaseException {
 
 		int count = 0;
 		try {
 			Query query = em.createNamedQuery("annotationentity.count.for.object");
-			query.setParameter("objectId", objectId);
+			query.setParameter("objectUri", objectUri);
 			count = ((Long) query.getSingleResult()).intValue();
 		} catch(Throwable t) {
 			throw new AnnotationDatabaseException(t);

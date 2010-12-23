@@ -26,7 +26,7 @@ public class Data {
 			"</svg:svg>" +
 		  "\" , "+
 		  "\"type\" : \"image\" , "+
-		  "\"object-id\" : \"object-lissabon\"" +
+		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\"" +
 		"}";
 	
 	public static final String ANNOTATION_JSON_UPDATE =
@@ -56,7 +56,7 @@ public class Data {
 			"</svg:svg>" +
 		  "\" , "+
 		  "\"type\" : \"image\" , "+
-		  "\"object-id\" : \"object-lissabon\", " +
+		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\", " +
 		  "\"tags\" : [ " +
 		    "{ \"alt-labels\" : { } , \"label\" : \"Lisbon\" , \"type\" : \"place\" , \"relation\" : { \"namespace\" : \"\" , \"property\" : \"spatiallyContains\" } , \"alt-descriptions\" : { } , \"lang\" : \"en\" , \"uri\" : \"http://www.geonames.org/2267057/\"} ," +
 		    "{ \"alt-labels\" : { } , \"label\" : \"Portugal\" , \"type\" : \"place\" , \"relation\" : { \"namespace\" : \"\" , \"property\" : \"spatiallyContains\" } , \"alt-descriptions\" : { } , \"lang\" : \"en\" , \"uri\" : \"http://www.geonames.org/2264397/\"} " +
@@ -73,7 +73,7 @@ public class Data {
 		  "\"created\" : 1224043200000 , "+
 		  "\"created-by\" : \"rsimon\" , "+
 		  "\"type\" : \"image\" , "+
-		  "\"object-id\" : \"object-lissabon\"" +
+		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\"" +
 		"}";
 	
 	private static final String REPLY_JSON =
@@ -86,7 +86,7 @@ public class Data {
 		  "\"created\" : 1224043200000 , "+
 		  "\"created-by\" : \"rsimon\" , "+
 		  "\"type\" : \"image\" , "+
-		  "\"object-id\" : \"object-lissabon\"" +
+		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\"" +
 		"}";
 	
 	public static String reply(String root, String parent) {

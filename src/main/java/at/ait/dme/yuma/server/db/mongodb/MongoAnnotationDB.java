@@ -156,13 +156,13 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public AnnotationTree findAnnotationsForObject(String objectId)
+	public AnnotationTree findAnnotationsForObject(String objectUri)
 			throws AnnotationDatabaseException {
 		
 		ArrayList<Annotation> annotations = new ArrayList<Annotation>();
 		
 		BasicDBObject query = new BasicDBObject();
-		query.put(MapKeys.ANNOTATION_OBJECT_ID, objectId);
+		query.put(MapKeys.ANNOTATION_OBJECT_URI, objectUri);
 		DBCursor cursor = collection.find(query);
 		
 		while (cursor.hasNext()) {
@@ -178,11 +178,11 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 	
 	@Override
-	public long countAnnotationsForObject(String objectId)
+	public long countAnnotationsForObject(String objectUri)
 			throws AnnotationDatabaseException {
 
 		BasicDBObject query = new BasicDBObject();
-		query.put(MapKeys.ANNOTATION_OBJECT_ID, objectId);
+		query.put(MapKeys.ANNOTATION_OBJECT_URI, objectUri);
 		return collection.count(query);
 	}
 

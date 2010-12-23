@@ -41,12 +41,12 @@ public class Annotation {
 	private String parentId;
 	
 	/**
-	 * The ID of the object which this annotation 
+	 * The URI of the object which this annotation 
 	 * annotates.
 	 * 
 	 * MANDATORY
 	 */
-	private String objectId;
+	private String objectUri;
 	
 	/**
 	 * Date and time of creation
@@ -121,11 +121,11 @@ public class Annotation {
 	 * @param type the annotation type
 	 * @param scope the annotation scope
 	 */
-	public Annotation(String annotationId, String objectId, String createdBy, 
+	public Annotation(String annotationId, String objectUri, String createdBy, 
 			Date created, Date lastModified, AnnotationType type, Scope scope) {
 		
 		this.annotationId = annotationId;
-		this.objectId = objectId;
+		this.objectUri = objectUri;
 		this.createdBy = createdBy;
 		this.created = created;
 		this.lastModified = lastModified;
@@ -145,7 +145,7 @@ public class Annotation {
 			this.annotationId = (String) map.get(MapKeys.ANNOTATION_ID);
 			this.rootId = (String) map.get(MapKeys.ANNOTATION_ROOT_ID);
 			this.parentId = (String) map.get(MapKeys.ANNOTATION_PARENT_ID);
-			this.objectId = (String) map.get(MapKeys.ANNOTATION_OBJECT_ID);				
+			this.objectUri = (String) map.get(MapKeys.ANNOTATION_OBJECT_URI);				
 			this.created = (Date) map.get(MapKeys.ANNOTATION_CREATED);
 			this.lastModified = (Date) map.get(MapKeys.ANNOTATION_LAST_MODIFIED);
 			this.createdBy = (String) map.get(MapKeys.ANNOTATION_CREATED_BY);
@@ -162,8 +162,8 @@ public class Annotation {
 		}		
 		
 		// Verify mandatory properties are set
-		if (this.getObjectID() == null)
-			throw new InvalidAnnotationException("ObjectID may not be null");
+		if (this.getObjectUri() == null)
+			throw new InvalidAnnotationException("ObjectURI may not be null");
 
 		if (this.getCreated() == null)
 			throw new InvalidAnnotationException("Creation timestamp may not be null");
@@ -201,8 +201,8 @@ public class Annotation {
 		this.parentId = parentId;
 	}
 
-	public String getObjectID() {
-		return objectId;
+	public String getObjectUri() {
+		return objectUri;
 	}
 
 	public Date getCreated() {
@@ -266,7 +266,7 @@ public class Annotation {
 		map.put(MapKeys.ANNOTATION_ID, annotationId);
 		map.put(MapKeys.ANNOTATION_ROOT_ID, rootId);
 		map.put(MapKeys.ANNOTATION_PARENT_ID, parentId);
-		map.put(MapKeys.ANNOTATION_OBJECT_ID, objectId);
+		map.put(MapKeys.ANNOTATION_OBJECT_URI, objectUri);
 		map.put(MapKeys.ANNOTATION_CREATED, created);
 		map.put(MapKeys.ANNOTATION_LAST_MODIFIED, lastModified);
 		map.put(MapKeys.ANNOTATION_CREATED_BY, createdBy);
@@ -290,7 +290,7 @@ public class Annotation {
 		Annotation a = (Annotation) other;
 		
 		// Compare mandatory properties
-		if (!a.getObjectID().equals(this.getObjectID()))
+		if (!a.getObjectUri().equals(this.getObjectUri()))
 			return false;
 
 		if (!a.getCreated().equals(this.getCreated()))

@@ -23,7 +23,7 @@ public class AnnotationListView extends ListView<Annotation> {
 		Annotation a = (Annotation) item.getModelObject();
 		item.add(new Label("title", a.getTitle()));
 		item.add(new Label("author", a.getCreatedBy()));
-		item.add(new Label("objectId", a.getObjectID()));
+		item.add(new Label("objectUri", a.getObjectUri()));
 		item.add(new Label("lastModified", a.getLastModified().toString()));
 		item.add(new Label("text", a.getText()));
 		String uri = URIBuilder.toURI(a.getAnnotationID()).toString();

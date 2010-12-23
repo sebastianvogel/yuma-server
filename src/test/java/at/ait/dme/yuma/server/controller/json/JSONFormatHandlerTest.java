@@ -66,7 +66,7 @@ public class JSONFormatHandlerTest {
 				"</svg:defs>" +
 				"</svg:svg>", a.getFragment());
 		assertEquals(AnnotationType.IMAGE, a.getType());
-		assertEquals("object-lissabon", a.getObjectID());
+		assertEquals("http://dme.ait.ac.at/object/lissabon.jpg", a.getObjectUri());
 
 		List<SemanticTag> tags = a.getTags();
 		assertTrue(tags.size() == 2);
@@ -123,7 +123,7 @@ public class JSONFormatHandlerTest {
 				"</svg:svg>" +
 			  "\""));
 		assertTrue(serialized.contains("\"type\" : \"IMAGE\""));
-		assertTrue(serialized.contains("\"object-id\" : \"object-lissabon\""));
+		assertTrue(serialized.contains("\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\""));
 
 		Pattern p = Pattern.compile("\"tags\" : \\[((.|\n)*?)\\]");
 		Matcher m = p.matcher(serialized);

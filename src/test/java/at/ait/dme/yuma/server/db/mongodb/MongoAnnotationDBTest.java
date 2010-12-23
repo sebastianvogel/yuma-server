@@ -73,7 +73,7 @@ public class MongoAnnotationDBTest {
 		String replyId = db.createAnnotation(reply);
 		
 		// Some checks on stored annotations
-		assertEquals(2, db.countAnnotationsForObject(root.getObjectID()));
+		assertEquals(2, db.countAnnotationsForObject(root.getObjectUri()));
 		assertEquals(1, db.countReplies(parentId));
 		
 		// Try delete root

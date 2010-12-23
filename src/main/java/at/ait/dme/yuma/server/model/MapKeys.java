@@ -11,7 +11,7 @@ public class MapKeys {
 	public static final String ANNOTATION_ID = "id";
 	public static final String ANNOTATION_ROOT_ID = "root-id";
 	public static final String ANNOTATION_PARENT_ID = "parent-id";
-	public static final String ANNOTATION_OBJECT_ID = "object-id";
+	public static final String ANNOTATION_OBJECT_URI = "object-uri";
 	public static final String ANNOTATION_CREATED = "created";
 	public static final String ANNOTATION_LAST_MODIFIED = "last-modified";
 	public static final String ANNOTATION_CREATED_BY = "created-by";

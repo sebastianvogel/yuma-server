@@ -49,7 +49,7 @@ public class LEMOXMLFormatHandler implements FormatHandler {
 			properties.put(MapKeys.ANNOTATION_ID,
 					URIBuilder.toID(a.getURI()));
 			
-			properties.put(MapKeys.ANNOTATION_OBJECT_ID, 
+			properties.put(MapKeys.ANNOTATION_OBJECT_URI, 
 					a.getProperty(m.createProperty(NS_ANNOTATION, "annotates")).getString());
 			
 			properties.put(MapKeys.ANNOTATION_CREATED_BY,
@@ -108,7 +108,7 @@ public class LEMOXMLFormatHandler implements FormatHandler {
 		
 		Resource annotation = m.createResource(URIBuilder.toURI(a.getAnnotationID()).toString());		
 		
-		annotation.addProperty(m.createProperty(NS_ANNOTATION, "annotates"), a.getObjectID());
+		annotation.addProperty(m.createProperty(NS_ANNOTATION, "annotates"), a.getObjectUri());
 		annotation.addProperty(RDF.type, m.createProperty(NS_ANNOTATION, "Annotation"));
 		annotation.addProperty(DC.title, a.getTitle());
 		annotation.addProperty(DC.creator, a.getCreatedBy());
