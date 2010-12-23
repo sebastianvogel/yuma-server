@@ -5,19 +5,19 @@ body {
 	text-align:center;
 	font-family:"Verdana","Arial";
 	background-color:#fff;
+	width:100%;
 }
 
 form {
-	width:480px;
+	width:514px;
 	background-image:url('../images/search-ds.png');
 	background-repeat:no-repeat;
 	margin:0px auto 5px auto;
-	padding:9px 10px 10px 9px;
+	padding:17px 0px 16px 0px;
 }	
 
 #container {
-	position:absolute;
-	top:25%;
+	padding-top:15%;
 	width:100%;
 	margin:0px auto 0px auto;	
 }
@@ -27,30 +27,44 @@ form {
 }
 
 .searchfield {
-	position:relative;
-	top:-1px;
 	font-size:14px;
 	padding:4px 8px 4px 8px;
 	margin:0px;
-	width:380px;
-	height:27px;
+	width:364px;
+	height:16px;
 	background-color:#fff;
 	border-width:1px 0px 1px 1px;
 	border-style:solid;
 	border-color:#000;
 }
 
+@-moz-document url-prefix() {
+    .searchfield {
+		position:relative;
+        top:1px;
+    }
+}
+
 .searchbutton {
+	position:relative;
+	top:1px;
 	background-image:url('../images/button.png');
-	font-size:14px;
 	padding:3px 10px 3px 10px;
-	margin:0px;
-	width:100px;
-	height:27px;
-	color:#fff;
+	margin:1px 0px 0px 0px;
 	background-color:#000;
 	border:1px solid #000;
 	cursor:pointer;
+}
+
+.searchbutton input {
+	background:none;
+	border:0px;
+	margin:0px;
+	padding:0px;
+	font-size:14px;
+	width:80px;
+	height:27px;
+	color:#fff;
 }
 
 .searchlinks {
