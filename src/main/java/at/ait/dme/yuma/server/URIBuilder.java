@@ -22,5 +22,9 @@ public class URIBuilder {
 			throw new RuntimeException(ERROR + annotationID);
 		}
 	}
+	
+	public static String toID(String uri) {
+		return uri.substring(uri.lastIndexOf("/") + 1);
+	}
 
 }

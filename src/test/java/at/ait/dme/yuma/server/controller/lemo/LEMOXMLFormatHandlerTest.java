@@ -1,5 +1,7 @@
 package at.ait.dme.yuma.server.controller.lemo;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -18,10 +20,16 @@ public class LEMOXMLFormatHandlerTest {
 	
 	@Test
 	public void testLEMOSerialization() throws Exception {
-		Annotation a = new JSONFormatHandler().parse(Data.ANNOTATION_JSON_UPDATE);
+		Annotation before = new JSONFormatHandler().parse(Data.ANNOTATION_JSON_UPDATE);
 		
 		FormatHandler lemoFormat = new LEMOXMLFormatHandler();
-		System.out.println(lemoFormat.serialize(a));
+		String s = lemoFormat.serialize(before);
+		
+		Annotation after = lemoFormat.parse(s);
+		
+		assertEquals(before.getTitle(), after.getTitle());
+		assertEquals(before.getText(), after.getText());
+		assertEquals(before.getCreatedBy(), after.getCreatedBy());
 	}
 
 }

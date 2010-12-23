@@ -1,14 +1,66 @@
 package at.ait.dme.yuma.server.controller.lemo;
 
+import java.io.UnsupportedEncodingException;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
+
+import at.ait.dme.yuma.server.controller.AbstractAnnotationController;
+import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
+import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
+import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
+import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
+import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
+
 /**
  * An annotation controller which produces an RDF/XML
  * representations of annotations based on the 
  * LEMO RDF annotation model.
- *  
- * TODO implement this! 
  * 
  * @author Rainer Simon
  */
-public class LEMOAnnotationController {
+public class LEMOAnnotationController extends AbstractAnnotationController {
 
+	@POST
+	@Consumes("application/rdf+xml")
+	@Path("/annotation")
+	public Response createAnnotation(String annotation)
+		throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationModifiedException {
+		
+		return super.createAnnotation(annotation, new LEMOXMLFormatHandler());
+	}
+	
+	@PUT
+	@Consumes("application/rdf+xml")
+	@Path("/annotation/{id}")
+	public Response updateAnnotation(@PathParam("id") String id, String annotation) 
+			throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationHasReplyException, UnsupportedEncodingException {
+		
+		return super.updateAnnotation(id, annotation, new LEMOXMLFormatHandler());
+	}
+	
+	@GET
+	@Produces("application/rdf+xml")
+	@Path("/annotation/{id}")
+	public Response getAnnotation(@PathParam("id") String id)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		return super.getAnnotation(id, new LEMOXMLFormatHandler());
+	}
+	
+	@GET
+	@Produces("application/rdf+xml")
+	@Path("/tree/{objectId}")
+	public Response getAnnotationTree(@PathParam("objectId") String objectId)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		return super.getAnnotationTree(objectId, new LEMOXMLFormatHandler());
+	}
+	
 }
