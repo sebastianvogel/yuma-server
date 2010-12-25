@@ -24,6 +24,7 @@ public class LEMOXMLFormatHandlerTest {
 		
 		FormatHandler lemoFormat = new LEMOXMLFormatHandler();
 		String s = lemoFormat.serialize(before);
+		System.out.println(s);
 		
 		Annotation after = lemoFormat.parse(s);
 		

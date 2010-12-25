@@ -18,9 +18,11 @@ import at.ait.dme.yuma.server.controller.FormatHandler;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
-import at.ait.dme.yuma.server.model.AnnotationType;
+import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.model.MapKeys;
 import at.ait.dme.yuma.server.model.Scope;
+import at.ait.dme.yuma.server.model.SemanticRelation;
+import at.ait.dme.yuma.server.model.SemanticTag;
 
 /**
  * Format handler for LEMO RDF/XML.
@@ -43,6 +45,7 @@ public class LEMOXMLFormatHandler implements FormatHandler {
 		
 		ResIterator it =
 			m.listResourcesWithProperty(m.createProperty(NS_ANNOTATION, "annotates"));
+		
 		if (it.hasNext()) {
 			Resource a = it.next();
 			
@@ -62,7 +65,7 @@ public class LEMOXMLFormatHandler implements FormatHandler {
 					new Date());
 			
 			properties.put(MapKeys.ANNOTATION_TYPE,
-					AnnotationType.IMAGE);
+					MediaType.IMAGE);
 			
 			properties.put(MapKeys.ANNOTATION_SCOPE,
 					Scope.valueOf(a.getProperty(m.createProperty(NS_SCOPE, "scope")).getString()));
@@ -116,6 +119,11 @@ public class LEMOXMLFormatHandler implements FormatHandler {
 		annotation.addProperty(m.createProperty(NS_ANNOTATION, "modified"), a.getLastModified().toString());
 		annotation.addProperty(m.createProperty(NS_ANNOTATION, "label"), a.getText());
 		annotation.addProperty(m.createProperty(NS_SCOPE, "scope"), a.getScope().name());
+		
+		for (SemanticTag t : a.getTags()) {
+			SemanticRelation r = t.getRelation();
+			annotation.addProperty(m.createProperty(r.getNamespace(), r.getProperty()), t.getURI().toString());
+		}
 	}
 	
 	private String toString(Model m) {

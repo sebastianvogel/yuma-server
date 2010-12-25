@@ -11,7 +11,7 @@ import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 
-import at.ait.dme.yuma.server.model.AnnotationType;
+import at.ait.dme.yuma.server.model.MediaType;
 
 public class AdvancedSearch extends WebPage {
 
@@ -86,7 +86,7 @@ public class AdvancedSearch extends WebPage {
     	/**
     	 * List of types to include
     	 */
-    	private List<AnnotationType> searchTypes;
+    	private List<MediaType> searchTypes;
     	
     	public String getQuery() {
     		return query;
@@ -144,11 +144,11 @@ public class AdvancedSearch extends WebPage {
 			return toDate;
 		}
 
-		public void setSearchTypes(List<AnnotationType> searchTypes) {
+		public void setSearchTypes(List<MediaType> searchTypes) {
 			this.searchTypes = searchTypes;
 		}
 
-		public List<AnnotationType> getSearchTypes() {
+		public List<MediaType> getSearchTypes() {
 			return searchTypes;
 		}
     	

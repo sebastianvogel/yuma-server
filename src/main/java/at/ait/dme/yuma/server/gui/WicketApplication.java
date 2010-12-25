@@ -2,6 +2,9 @@ package at.ait.dme.yuma.server.gui;
 
 import org.apache.wicket.protocol.http.WebApplication;
 
+import at.ait.dme.yuma.server.gui.doc.APIDoc;
+import at.ait.dme.yuma.server.gui.doc.DeveloperDoc;
+import at.ait.dme.yuma.server.gui.doc.Overview;
 import at.ait.dme.yuma.server.gui.feeds.Timeline;
 import at.ait.dme.yuma.server.gui.search.Search;
 
@@ -14,7 +17,11 @@ import at.ait.dme.yuma.server.gui.search.Search;
 public class WicketApplication extends WebApplication {    
     
 	public WicketApplication() {
-		this.mountBookmarkablePage("pages/timeline", Timeline.class);
+		this.mountBookmarkablePage("timeline", Timeline.class);
+		
+		this.mountBookmarkablePage("doc/overview", Overview.class);
+		this.mountBookmarkablePage("doc/api", APIDoc.class);
+		this.mountBookmarkablePage("doc/developer", DeveloperDoc.class);
 	}
 	
 	public Class<Search> getHomePage() {

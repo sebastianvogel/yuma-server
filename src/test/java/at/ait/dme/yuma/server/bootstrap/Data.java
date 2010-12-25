@@ -25,7 +25,7 @@ public class Data {
 			  "</svg:defs>" +
 			"</svg:svg>" +
 		  "\" , "+
-		  "\"type\" : \"image\" , "+
+		  "\"media-type\" : \"image\" , "+
 		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\"" +
 		"}";
 	
@@ -55,11 +55,11 @@ public class Data {
 			  "</svg:defs>" +
 			"</svg:svg>" +
 		  "\" , "+
-		  "\"type\" : \"image\" , "+
+		  "\"media-type\" : \"image\" , "+
 		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\", " +
 		  "\"tags\" : [ " +
-		    "{ \"alt-labels\" : { } , \"label\" : \"Lisbon\" , \"type\" : \"place\" , \"relation\" : { \"namespace\" : \"\" , \"property\" : \"spatiallyContains\" } , \"alt-descriptions\" : { } , \"lang\" : \"en\" , \"uri\" : \"http://www.geonames.org/2267057/\"} ," +
-		    "{ \"alt-labels\" : { } , \"label\" : \"Portugal\" , \"type\" : \"place\" , \"relation\" : { \"namespace\" : \"\" , \"property\" : \"spatiallyContains\" } , \"alt-descriptions\" : { } , \"lang\" : \"en\" , \"uri\" : \"http://www.geonames.org/2264397/\"} " +
+		    "{ \"alt-labels\" : { } , \"label\" : \"Lisbon\" , \"type\" : \"place\" , \"relation\" : { \"namespace\" : \"http://geonames.org/geo#\" , \"property\" : \"spatiallyContains\" } , \"alt-descriptions\" : { } , \"lang\" : \"en\" , \"uri\" : \"http://www.geonames.org/2267057/\"} ," +
+		    "{ \"alt-labels\" : { } , \"label\" : \"Portugal\" , \"type\" : \"place\" , \"relation\" : { \"namespace\" : \"http://geonames.org/geo#\" , \"property\" : \"spatiallyContains\" } , \"alt-descriptions\" : { } , \"lang\" : \"en\" , \"uri\" : \"http://www.geonames.org/2264397/\"} " +
 		  "]" +
 		"}";
 	
@@ -72,7 +72,7 @@ public class Data {
 		  "\"last-modified\" : 1224043200000 ,"+
 		  "\"created\" : 1224043200000 , "+
 		  "\"created-by\" : \"rsimon\" , "+
-		  "\"type\" : \"image\" , "+
+		  "\"media-type\" : \"image\" , "+
 		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\"" +
 		"}";
 	
@@ -85,7 +85,7 @@ public class Data {
 		  "\"last-modified\" : 1224043200000 ,"+
 		  "\"created\" : 1224043200000 , "+
 		  "\"created-by\" : \"rsimon\" , "+
-		  "\"type\" : \"image\" , "+
+		  "\"media-type\" : \"image\" , "+
 		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\"" +
 		"}";
 	

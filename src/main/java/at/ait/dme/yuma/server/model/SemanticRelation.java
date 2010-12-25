@@ -38,7 +38,7 @@ public class SemanticRelation {
 	
 	private void validate() throws InvalidAnnotationException {
 		if (this.namespace == null)
-			this.namespace = "";
+			throw new InvalidAnnotationException("Semantic relation namespace may not be null");
 		
 		if (this.property == null)
 			throw new InvalidAnnotationException("Semantic relation property may not be null!");

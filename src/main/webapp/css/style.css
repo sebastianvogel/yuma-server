@@ -41,3 +41,11 @@ img {
 	padding:0px;
 	float:right;
 }
+
+.content {
+	text-align:left;
+	margin:10px auto 10px auto;
+	width:600px;
+	line-height:16px;
+	font-size:12px;
+}

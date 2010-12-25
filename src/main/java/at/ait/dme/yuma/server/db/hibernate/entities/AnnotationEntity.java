@@ -22,7 +22,7 @@ import javax.persistence.TemporalType;
 
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationType;
+import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.model.Scope;
 import at.ait.dme.yuma.server.model.SemanticTag;
 
@@ -83,7 +83,7 @@ public class AnnotationEntity implements Serializable {
 	private String text;
 	
 	@Enumerated(EnumType.STRING)
-	private AnnotationType type;
+	private MediaType type;
 	
     @Column(length = 8192)
 	private String fragment;
@@ -221,11 +221,11 @@ public class AnnotationEntity implements Serializable {
 		return text;
 	}
 
-	public void setType(AnnotationType type) {
+	public void setType(MediaType type) {
 		this.type = type;
 	}
 
-	public AnnotationType getType() {
+	public MediaType getType() {
 		return type;
 	}
 

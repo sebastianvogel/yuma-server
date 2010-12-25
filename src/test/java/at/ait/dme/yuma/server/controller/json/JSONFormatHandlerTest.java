@@ -15,7 +15,7 @@ import at.ait.dme.yuma.server.bootstrap.Data;
 import at.ait.dme.yuma.server.controller.FormatHandler;
 import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationType;
+import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.model.MapKeys;
 import at.ait.dme.yuma.server.model.Scope;
 import at.ait.dme.yuma.server.model.SemanticRelation;
@@ -65,7 +65,7 @@ public class JSONFormatHandlerTest {
 				"</svg:symbol> " +
 				"</svg:defs>" +
 				"</svg:svg>", a.getFragment());
-		assertEquals(AnnotationType.IMAGE, a.getType());
+		assertEquals(MediaType.IMAGE, a.getType());
 		assertEquals("http://dme.ait.ac.at/object/lissabon.jpg", a.getObjectUri());
 
 		List<SemanticTag> tags = a.getTags();

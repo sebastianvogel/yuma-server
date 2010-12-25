@@ -17,7 +17,7 @@ public class MapKeys {
 	public static final String ANNOTATION_CREATED_BY = "created-by";
 	public static final String ANNOTATION_TITLE = "title";
 	public static final String ANNOTATION_TEXT = "text";
-	public static final String ANNOTATION_TYPE = "type";
+	public static final String ANNOTATION_TYPE = "media-type";
 	public static final String ANNOTATION_FRAGMENT = "fragment";
 	public static final String ANNOTATION_SCOPE = "scope";
 	public static final String ANNOTATION_SEMANTIC_TAGS = "tags";

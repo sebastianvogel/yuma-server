@@ -88,7 +88,7 @@ public class Annotation {
 	 * 
 	 * MANDATORY
 	 */
-	private AnnotationType type;
+	private MediaType type;
 	
 	/**
 	 * The media fragment this annotation annotates
@@ -122,7 +122,7 @@ public class Annotation {
 	 * @param scope the annotation scope
 	 */
 	public Annotation(String annotationId, String objectUri, String createdBy, 
-			Date created, Date lastModified, AnnotationType type, Scope scope) {
+			Date created, Date lastModified, MediaType type, Scope scope) {
 		
 		this.annotationId = annotationId;
 		this.objectUri = objectUri;
@@ -151,7 +151,7 @@ public class Annotation {
 			this.createdBy = (String) map.get(MapKeys.ANNOTATION_CREATED_BY);
 			this.title = (String) map.get(MapKeys.ANNOTATION_TITLE);
 			this.text = (String) map.get(MapKeys.ANNOTATION_TEXT);
-			this.type = (AnnotationType) map.get(MapKeys.ANNOTATION_TYPE);
+			this.type = (MediaType) map.get(MapKeys.ANNOTATION_TYPE);
 			this.fragment = (String) map.get(MapKeys.ANNOTATION_FRAGMENT);
 			this.scope = (Scope) map.get(MapKeys.ANNOTATION_SCOPE);
 			this.tags = (ArrayList<SemanticTag>) map.get(MapKeys.ANNOTATION_SEMANTIC_TAGS);
@@ -233,7 +233,7 @@ public class Annotation {
 		this.text = text;
 	}	
 	
-	public AnnotationType getType() {
+	public MediaType getType() {
 		return type;
 	}
 

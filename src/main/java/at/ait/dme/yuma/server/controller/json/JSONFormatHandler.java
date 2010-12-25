@@ -12,7 +12,7 @@ import com.mongodb.util.JSON;
 import at.ait.dme.yuma.server.controller.FormatHandler;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.AnnotationTree;
-import at.ait.dme.yuma.server.model.AnnotationType;
+import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.Scope;
 import at.ait.dme.yuma.server.model.MapKeys;
@@ -64,7 +64,7 @@ public class JSONFormatHandler implements FormatHandler {
 	public Annotation toAnnotation(Map<String, Object> map) throws InvalidAnnotationException {	
 		String type = (String) map.get(MapKeys.ANNOTATION_TYPE);
 		if (type != null)
-			map.put(MapKeys.ANNOTATION_TYPE, AnnotationType.valueOf(type.toUpperCase()));
+			map.put(MapKeys.ANNOTATION_TYPE, MediaType.valueOf(type.toUpperCase()));
 		
 		String scope = (String) map.get(MapKeys.ANNOTATION_SCOPE);
 		if (scope != null)

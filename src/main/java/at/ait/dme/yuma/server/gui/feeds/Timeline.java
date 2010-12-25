@@ -5,21 +5,27 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
 
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
-import at.ait.dme.yuma.server.gui.components.AnnotationListView;
+import at.ait.dme.yuma.server.gui.components.AnnotationList;
 import at.ait.dme.yuma.server.model.Annotation;
 
-public class Timeline extends WebPage {
+public class Timeline extends AnnotationList {
 	
 	private Logger logger = Logger.getLogger(Timeline.class);
 	
 	public Timeline(final PageParameters parameters) {
-    	add(new AnnotationListView("listview", getMostRecent(20)));
-    }
+		super(parameters);
+		
+		add(new Label("title", "YUMA Annotation Server - Public Timeline"));		
+		add(new Label("heading", "public timeline"));
+		add(new Label("subheading", ""));
+		
+		setAnnotations(getMostRecent(20));
+	}
     
 	private List<Annotation> getMostRecent(int n) {
 		AbstractAnnotationDB db = null;
