@@ -10,10 +10,10 @@ import org.apache.wicket.markup.html.basic.Label;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
-import at.ait.dme.yuma.server.gui.components.AnnotationList;
+import at.ait.dme.yuma.server.gui.BaseAnnotationListPage;
 import at.ait.dme.yuma.server.model.Annotation;
 
-public class Timeline extends AnnotationList {
+public class Timeline extends BaseAnnotationListPage {
 	
 	private Logger logger = Logger.getLogger(Timeline.class);
 	

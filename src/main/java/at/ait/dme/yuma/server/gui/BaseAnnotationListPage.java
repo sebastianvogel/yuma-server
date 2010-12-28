@@ -1,23 +1,21 @@
-package at.ait.dme.yuma.server.gui.components;
+package at.ait.dme.yuma.server.gui;
 
 import java.util.List;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 
 import at.ait.dme.yuma.server.URIBuilder;
-import at.ait.dme.yuma.server.gui.Layout;
 import at.ait.dme.yuma.server.model.Annotation;
 
-public abstract class AnnotationList extends Layout {
+public abstract class BaseAnnotationListPage extends WebPage {
 	
-	public AnnotationList(final PageParameters parameters) {
-		super(parameters);
-		
+	public BaseAnnotationListPage(final PageParameters parameters) {
 		add(CSSPackageResource.getHeaderContribution("css/annotation-list.css"));
 	}
 	
