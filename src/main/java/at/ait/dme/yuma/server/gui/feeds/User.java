@@ -17,7 +17,6 @@ public class User extends BaseAnnotationListPage {
 		
 		add(new Label("title", "YUMA Annotation Server - User " + username));		
 		add(new Label("heading", username + "'s public feed"));
-		add(new Label("subheading", ""));
 		
 		setAnnotations(new ArrayList<Annotation>());
 	}

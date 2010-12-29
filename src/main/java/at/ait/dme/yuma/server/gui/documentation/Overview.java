@@ -10,7 +10,7 @@ public class Overview extends BaseTextPage {
     	super(parameters);
     	
     	setTitle("YUMA Annotation Server - Documentation - Overview");
-		setHeading("YUMA Server Documentation");
+		setHeading("yuma server > documentation");
 		setNavbar(new DocumentationNavbar(Overview.class));
 	}
 

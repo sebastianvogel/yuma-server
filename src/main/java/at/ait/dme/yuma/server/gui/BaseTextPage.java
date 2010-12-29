@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 
 import at.ait.dme.yuma.server.gui.Navbar.NavbarItem;
+import at.ait.dme.yuma.server.gui.search.Search;
 
 /**
  * @author Rainer
@@ -41,6 +42,8 @@ public abstract class BaseTextPage extends WebPage {
 					item.add(new SimpleAttributeModifier("class", "selected"));
 		    }
 		});
+		
+		add(new BookmarkablePageLink<String>("home", Search.class));
 	}
 	
 }

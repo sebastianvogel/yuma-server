@@ -8,6 +8,10 @@ public class API extends BaseTextPage {
 	
 	public API(final PageParameters parameters) {
     	super(parameters);
+    	
+    	setTitle("YUMA Annotation Server - Documentation - API");
+		setHeading("yuma server > documentation");
+		setNavbar(new DocumentationNavbar(API.class));
     }
 
 }

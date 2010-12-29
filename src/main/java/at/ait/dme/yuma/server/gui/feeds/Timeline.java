@@ -22,7 +22,6 @@ public class Timeline extends BaseAnnotationListPage {
 		
 		add(new Label("title", "YUMA Annotation Server - Public Timeline"));		
 		add(new Label("heading", "public timeline"));
-		add(new Label("subheading", ""));
 		
 		setAnnotations(getMostRecent(20));
 	}

@@ -8,6 +8,8 @@ body {
 	padding:0px;
 	text-align:center;
 	font-family:"Verdana","Arial";
+	line-height:19px;
+	font-size:12px;
 }
 
 img {
@@ -18,26 +20,17 @@ img {
 	width:100%;
 	background-color:#2d2d2d;
 	color:#fff;
-	margin:0px 0px 30px 0px;
+	margin:0px;
 	padding:0px;
 }
 
 .header h1 {
+	color:#fff;
 	width:600px;	
 	margin:0px auto 0px auto;
-	padding:15px 0px 0px 0px;
-	font-family:Verdana;
-	font-size:26px;
-	font-weight:normal;
-	text-align:left;
-}
-
-.header h2 {
-	width:600px;	
-	margin:0px auto 0px auto;
-	padding:5px 0px 15px 0px;
-	font-family:Verdana;
-	font-size:14px;
+	padding:30px 0px;
+	font-family:"Lucida Sans", "Verdana";
+	font-size:28px;
 	font-weight:normal;
 	text-align:left;
 }
