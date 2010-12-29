@@ -9,9 +9,8 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 
-import at.ait.dme.yuma.server.gui.doc.Overview;
+import at.ait.dme.yuma.server.gui.documentation.Overview;
 import at.ait.dme.yuma.server.gui.feeds.Timeline;
-
 
 public class Search extends WebPage {
 
