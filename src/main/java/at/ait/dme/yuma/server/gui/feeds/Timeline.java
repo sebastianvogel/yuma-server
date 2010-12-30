@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.markup.html.basic.Label;
 
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
@@ -17,13 +16,15 @@ public class Timeline extends BaseAnnotationListPage {
 	
 	private Logger logger = Logger.getLogger(Timeline.class);
 	
+	private static final String TITLE = "YUMA Annotation Server - Public Timeline";
+	private static final String HEADLINE = "public timeline";
+	private static final String FEED_URL = "feeds/timeline";
+	
 	public Timeline(final PageParameters parameters) {
-		super(parameters);
-		
-		add(new Label("title", "YUMA Annotation Server - Public Timeline"));		
-		add(new Label("heading", "public timeline"));
-		
+		setTitle(TITLE);
+		setHeadline(HEADLINE);
 		setAnnotations(getMostRecent(20));
+		setFeedURL(FEED_URL);
 	}
     
 	private List<Annotation> getMostRecent(int n) {

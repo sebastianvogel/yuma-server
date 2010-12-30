@@ -2,8 +2,6 @@ package at.ait.dme.yuma.server.gui;
 
 import java.util.List;
 
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -14,13 +12,27 @@ import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.model.Annotation;
 
 public abstract class BaseAnnotationListPage extends WebPage {
-	
-	public BaseAnnotationListPage(final PageParameters parameters) {
-		add(CSSPackageResource.getHeaderContribution("css/annotation-list.css"));
+
+	private static final String SPAN = "<span class=\"grad\"></span>";
+		
+	public void setTitle(String title) {
+		add(new Label("title", title));				
+	}
+		
+	public void setHeadline(String headline) {
+		add(new Label("heading", SPAN + headline).setEscapeModelStrings(false));		
 	}
 	
-	protected void setAnnotations(List<Annotation> annotations) {
-		add(new AnnotationListView("annotations", annotations));
+	public void setAnnotations(List<Annotation> annotations) {
+		add(new AnnotationListView("annotations", annotations));				
+	}
+	
+	public void setFeedURL(String feedUrl) {
+		if (feedUrl != null) {
+			add(new Label("feed-icon", "<img src=\"images/feed-icon-28x28.png\" />").setEscapeModelStrings(false));			
+		} else {
+			add(new Label("feed-icon", ""));			
+		}		
 	}
 	
 	private class AnnotationListView extends ListView<Annotation> {

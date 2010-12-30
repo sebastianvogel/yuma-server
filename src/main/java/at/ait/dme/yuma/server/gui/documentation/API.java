@@ -6,12 +6,11 @@ import at.ait.dme.yuma.server.gui.BaseTextPage;
 
 public class API extends BaseTextPage {
 	
+	private static final String TITLE = "YUMA Annotation Server - Documentation - API";
+	private static final String HEADING = "yuma server > documentation";
+	
 	public API(final PageParameters parameters) {
-    	super(parameters);
-    	
-    	setTitle("YUMA Annotation Server - Documentation - API");
-		setHeading("yuma server > documentation");
-		setNavbar(new DocumentationNavbar(API.class));
+    	super(TITLE, HEADING, new DocumentationNavbar(API.class));
     }
 
 }

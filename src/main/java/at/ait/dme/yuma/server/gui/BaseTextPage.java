@@ -1,6 +1,5 @@
 package at.ait.dme.yuma.server.gui;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -17,17 +16,12 @@ import at.ait.dme.yuma.server.gui.search.Search;
  */
 public abstract class BaseTextPage extends WebPage {
 
-	public BaseTextPage (final PageParameters parameters) {	}
+	private static final String SPAN = "<span class=\"grad\"></span>";
 	
-	public void setTitle(String title) {
-		add(new Label("title", title));		
-	}
-		
-	public void setHeading(String heading) {
-		add(new Label("heading", heading));
-	}
-	
-	public void setNavbar(Navbar navbar) {
+	public BaseTextPage (String title, String heading, Navbar navbar) {
+		add(new Label("title", title));	
+		add(new Label("heading", SPAN + heading).setEscapeModelStrings(false));
+
 		add(new ListView<NavbarItem>("navbar", navbar.getItems()) {
 			private static final long serialVersionUID = 9140947690636209796L;
 
@@ -44,6 +38,7 @@ public abstract class BaseTextPage extends WebPage {
 		});
 		
 		add(new BookmarkablePageLink<String>("home", Search.class));
+
 	}
 	
 }

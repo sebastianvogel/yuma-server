@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.markup.html.basic.Label;
 
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
@@ -17,17 +16,18 @@ public class Results extends BaseAnnotationListPage {
 	
 	private Logger logger = Logger.getLogger(Results.class);
 	
+	private static final String TITLE = "YUMA Annotation Server - Search";
+	private static final String HEADLINE = " Annotations Found";
+	
     public Results(final PageParameters parameters) {
-		super(parameters);
-		
+    	setTitle(TITLE);
+
     	List<Annotation> searchResults = 
     		findAnnotations((String) parameters.get(Search.QUERY_PARAM));
-		
-		add(new Label("title", "YUMA Annotation Server - Search"));		
-		add(new Label("heading", Integer.toString(searchResults.size()) + " Annotations Found"));
-		add(new Label("subheading", ""));    	
     	
+    	setHeadline(Integer.toString(searchResults.size()) + HEADLINE);    	
 		setAnnotations(searchResults);
+		setFeedURL(null);
     }
     
 	private List<Annotation> findAnnotations(String query) {
