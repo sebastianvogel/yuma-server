@@ -1,6 +1,7 @@
 package at.ait.dme.yuma.server.controller.rss;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -26,6 +27,10 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	private static final String OBJECT_FEED_TITLE = "Annotations for ";
 	private static final String OBJECT_FEED_DESCRIPTION = "Annotation feed for object with ID ";
 	private static final String OBJECT_FEED_URL = FEED_BASEURL + "object/";
+	
+	private static final String USER_FEED_TITLE = "'s Annotations";
+	private static final String USER_FEED_DESCRIPTION = "Annotations by ";
+	private static final String USER_FEED_URL = FEED_BASEURL + "user/";
 	
 	/**
 	 * Returns a feed with the most recent public annotations in the system.
@@ -58,8 +63,12 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	public Response getUserFeed(@PathParam("name") String name) 
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		// TODO implement
-		return null;
+		String username = URLDecoder.decode(name, URL_ENCODING);
+		
+		return super.getAnnotationsForUser(name, new RSSFormatHandler(
+				username + USER_FEED_TITLE,
+				USER_FEED_DESCRIPTION + username,
+				USER_FEED_URL + username));
 	}
 	
 	/**

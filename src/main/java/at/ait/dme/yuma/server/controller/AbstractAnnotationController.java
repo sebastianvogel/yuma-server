@@ -204,6 +204,22 @@ public abstract class AbstractAnnotationController {
 		return Response.ok().entity(count).build();
 	}
 	
+	protected Response getAnnotationsForUser(String username, FormatHandler format)
+		throws AnnotationDatabaseException, UnsupportedEncodingException {
+		
+		AbstractAnnotationDB db = null;
+		String annotations = null;
+		
+		try {
+			db = Config.getInstance().getAnnotationDatabase();
+			db.connect(request);
+			annotations = format.serialize(db.findAnnotationsForUser(URLDecoder.decode(username, URL_ENCODING)));
+		} finally {
+			if(db != null) db.disconnect();
+		}
+		return Response.ok().entity(annotations).build();	
+	}
+	
 	protected Response getMostRecent(int n, FormatHandler format) 
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
