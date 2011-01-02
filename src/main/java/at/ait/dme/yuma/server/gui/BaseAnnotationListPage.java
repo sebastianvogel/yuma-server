@@ -42,6 +42,7 @@ public abstract class BaseAnnotationListPage extends WebPage {
 		if (feedUrl == null) {
 			add(new ExternalLink("list-feed-url", "#").add(new SimpleAttributeModifier("style", "visibility:hidden")));
 		} else {
+			add(LinkHeaderContributor.forRssLink(feedUrl));
 			add(new ExternalLink("list-feed-url", feedUrl));
 		}
 	}
