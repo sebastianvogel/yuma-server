@@ -18,6 +18,19 @@
 	float:right;
 }
 
+.navigation {
+	width:600px;	
+}
+
+.navigation p {
+	padding:0px;
+	margin:0px;
+}
+
+.navigation .home {
+	padding-bottom:0px;
+}
+
 div.annotation {
 	margin:20px auto 10px auto;
 	width:600px;

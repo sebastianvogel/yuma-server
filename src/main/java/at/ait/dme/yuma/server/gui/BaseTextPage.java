@@ -40,7 +40,6 @@ public abstract class BaseTextPage extends WebPage {
 		});
 		
 		add(new BookmarkablePageLink<String>("home", Search.class));
-
 	}
-	
+
 }

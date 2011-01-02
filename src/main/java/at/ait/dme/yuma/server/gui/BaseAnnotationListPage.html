@@ -7,9 +7,17 @@
 	<body>
 		<div class="header">
 			<h1>
-				<span class="heading" wicket:id="heading"></span><a class="feed-icon" wicket:id="list-feed-url"><img src="images/feed-icon-28x28.png" /></a>
+				<span class="heading" wicket:id="heading"></span>
+				<a class="feed-icon" wicket:id="list-feed-url">
+					<img src="images/feed-icon-28x28.png" alt="Subscribe" title="Subscribe"/>
+				</a>
 				<br style="clear:both" />
 			</h1>
+		</div>
+		
+		<div class="navigation">
+			<p class="home"><a wicket:id="home">Home</a><p>
+			<br style="clear:both"/>
 		</div>
 			
 		<div class="annotation" wicket:id="annotations">
@@ -33,6 +41,9 @@
 					</tr>
 					<tr>              
 						<td colspan="2" class="label">Text</td><td class="content" wicket:id="text"></td>
+					</tr>
+					<tr>
+						<td colspan="2" class="label">Tags</td><td class="content" wicket:id="tags"></td>
 					</tr>
 					<tr>              
 						<td colspan="2" class="label">URI</td><td class="content"><a wicket:id="uri" href="#"></a></td>

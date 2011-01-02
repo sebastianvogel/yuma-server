@@ -14,11 +14,17 @@ import org.apache.wicket.markup.html.list.ListView;
 
 import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.gui.feeds.User;
+import at.ait.dme.yuma.server.gui.search.Search;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.model.SemanticTag;
 
 public abstract class BaseAnnotationListPage extends WebPage {
 
 	private static final String SPAN = "<span class=\"grad\"></span>";
+	
+	public BaseAnnotationListPage() {
+		add(new BookmarkablePageLink<String>("home", Search.class));
+	}
 	
 	public void setTitle(String title) {
 		add(new Label("title", title));				
@@ -63,6 +69,16 @@ public abstract class BaseAnnotationListPage extends WebPage {
 			item.add(new Label("lastModified", a.getLastModified().toString()));
 			item.add(new Label("text", a.getText()));
 			String uri = URIBuilder.toURI(a.getAnnotationID()).toString();
+
+			StringBuffer tags = new StringBuffer();
+			if (a.getTags() != null) {
+				for (SemanticTag t : a.getTags()) {
+					tags.append(t.getPrimaryLabel() + ", ");
+				}
+				tags.delete(tags.length() - 2, tags.length());
+			}
+			item.add(new Label("tags", tags.toString()));
+			
 			item.add(new ExternalLink("uri", uri, uri));
 		}
 		

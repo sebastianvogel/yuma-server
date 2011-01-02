@@ -9,50 +9,6 @@ body {
 
 .navigation {
 	width:800px;	
-	color:#000;
-	margin:2px auto 0px auto;
-	padding:0px;
-	border:1px solid transparent;
-}
-
-.navigation ul {
-	padding:0px;
-	margin:0px;
-	font-family:Verdana;
-	font-size:14px;
-	font-weight:normal;
-	text-align:left;
-	float:left;
-}
-
-.navigation li {
-	display:inline;
-	padding:0px 10px 0px 3px;
-	font-size:12px;
-}
-
-.navigation a {
-	color:#000;
-	text-decoration:none;
-}
-
-.navigation a:hover {
-	text-decoration:underline;
-}
-
-.navigation a:visited {
-	color:#000;
-}
-
-.navigation li.selected a {
-	font-weight:bold;
-	color:#000;
-}
-
-.navigation .home {
-	float:right;
-	padding:0px 3px 10px 0px;
-	margin:0px;
 }
 
 .content {
