@@ -11,8 +11,10 @@ import at.ait.dme.yuma.server.gui.Navbar.NavbarItem;
 import at.ait.dme.yuma.server.gui.search.Search;
 
 /**
- * @author Rainer
- *
+ * Base class for all pages that display text (i.e. documentation
+ * pages).
+ * 
+ * @author Rainer Simon
  */
 public abstract class BaseTextPage extends WebPage {
 

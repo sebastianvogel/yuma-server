@@ -5,6 +5,12 @@ import java.util.List;
 
 import org.apache.wicket.Page;
 
+/**
+ * Utility class for creating a navigation bar GUI element (used
+ * in the text pages).
+ * 
+ * @author Rainer Simon
+ */
 public class Navbar {
 
 	private List<NavbarItem> items = new ArrayList<NavbarItem>();

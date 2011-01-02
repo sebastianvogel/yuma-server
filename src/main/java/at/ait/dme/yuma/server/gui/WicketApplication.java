@@ -24,7 +24,7 @@ public class WicketApplication extends WebApplication {
 		this.mount(new MixedParamUrlCodingStrategy(
 				"user", 
 				User.class,
-				new String[]{"username"}
+				new String[]{User.PARAM_USERNAME}
 		));
 		
 		this.mountBookmarkablePage("doc/overview", Overview.class);

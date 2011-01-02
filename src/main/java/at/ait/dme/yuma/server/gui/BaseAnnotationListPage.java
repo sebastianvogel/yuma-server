@@ -1,20 +1,24 @@
 package at.ait.dme.yuma.server.gui;
 
+import java.util.HashMap;
 import java.util.List;
 
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 
 import at.ait.dme.yuma.server.URIBuilder;
+import at.ait.dme.yuma.server.gui.feeds.User;
 import at.ait.dme.yuma.server.model.Annotation;
 
 public abstract class BaseAnnotationListPage extends WebPage {
 
 	private static final String SPAN = "<span class=\"grad\"></span>";
-		
+	
 	public void setTitle(String title) {
 		add(new Label("title", title));				
 	}
@@ -47,7 +51,13 @@ public abstract class BaseAnnotationListPage extends WebPage {
 		protected void populateItem(ListItem<Annotation> item) {
 			Annotation a = (Annotation) item.getModelObject();
 			item.add(new Label("title", a.getTitle()));
-			item.add(new Label("author", a.getCreatedBy()));
+			
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put(User.PARAM_USERNAME, a.getCreatedBy());
+			item.add(
+				new BookmarkablePageLink<String>("author-href", User.class, new PageParameters(params))
+					.add(new Label("author-label", a.getCreatedBy())));
+			
 			item.add(new Label("objectUri", a.getObjectUri()));
 			item.add(new Label("lastModified", a.getLastModified().toString()));
 			item.add(new Label("text", a.getText()));

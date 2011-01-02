@@ -3,7 +3,6 @@ package at.ait.dme.yuma.server.gui.search;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
 
 import at.ait.dme.yuma.server.config.Config;
@@ -14,23 +13,33 @@ import at.ait.dme.yuma.server.model.Annotation;
 
 public class Results extends BaseAnnotationListPage {
 	
-	private Logger logger = Logger.getLogger(Results.class);
-	
 	private static final String TITLE = "YUMA Annotation Server - Search";
-	private static final String HEADLINE = " Annotations Found";
-	
+	private static final String ANNOTATION_FOUND = " Annotation Found";
+	private static final String ANNOTATIONS_FOUND = " Annotations Found";
+
     public Results(final PageParameters parameters) {
     	setTitle(TITLE);
 
-    	List<Annotation> searchResults = 
-    		findAnnotations((String) parameters.get(Search.QUERY_PARAM));
-    	
-    	setHeadline(Integer.toString(searchResults.size()) + HEADLINE);    	
-		setAnnotations(searchResults);
+    	try {
+	    	List<Annotation> searchResults = 
+	    		findAnnotations((String) parameters.get(Search.QUERY_PARAM));
+	    	
+	    	int numResults = searchResults.size();
+	    	if (numResults == 1) {
+	    		setHeadline(Integer.toString(searchResults.size()) + ANNOTATION_FOUND);
+	    	} else {
+	    		setHeadline(Integer.toString(searchResults.size()) + ANNOTATIONS_FOUND);	    		
+	    	}
+	    	
+			setAnnotations(searchResults);
+    	} catch (AnnotationDatabaseException e) {
+    		setHeadline("Sorry: " + e.getMessage());
+    		setAnnotations(new ArrayList<Annotation>());
+    	}
 		setFeedURL(null);
     }
     
-	private List<Annotation> findAnnotations(String query) {
+	private List<Annotation> findAnnotations(String query) throws AnnotationDatabaseException {
 		AbstractAnnotationDB db = null;
 		List<Annotation> searchResults = new ArrayList<Annotation>();
 		
@@ -38,8 +47,6 @@ public class Results extends BaseAnnotationListPage {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect();
 			searchResults = db.findAnnotations(query);
-		} catch (AnnotationDatabaseException e) {
-			logger.fatal(e.getMessage());
 		} finally {
 			if(db != null) db.disconnect();
 		}
