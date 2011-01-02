@@ -3,8 +3,12 @@ body {
 	background-color:#e2e2e2;
 }
 
+.header h1 {
+	width:800px;
+}
+
 .navigation {
-	width:600px;	
+	width:800px;	
 	color:#000;
 	margin:2px auto 0px auto;
 	padding:0px;
@@ -54,12 +58,22 @@ body {
 .content {
 	text-align:left;
 	margin:0px auto 10px auto;
-	padding:5px 15px;
-	width:570px;
+	padding:0px 20px 20px 20px;
+	width:770px;
 	background-color:#fff;
 	border:1px solid #cecece;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
+}
+
+.content h3 {
+	margin-top:20px;
+	margin-bottom:0px;
+}
+
+.content p {
+	margin:0px;
+	padding-top:3px;
 }
 
 .content a {

@@ -1,6 +1,30 @@
 <wicket:extend>
 	<h3>Developer Documentation</h3>
+	<p>Note: architecture image needed!</p>
+	<p>The YUMA source</p>
+	
+	<h3>Dependencies</h3>
 	<p>
-	Lorem ipsum...
+	In case you want to hack on the source code of the YUMA Annotation
+	Server, you may want to familiarize yourself with one or more of
+	its library dependencies:
+	<ul>
+	<li><a href="#">RESTeasy</a>: JAX-RS implementation used for
+	the API controllers</li>
+	<li><a href="#">Hibernate</a>: persistence framework for attaching
+	relational databases</li>
+	<li><a href="#">Jena Semantic Web Framework</a>: used for RDF (de-)serialization</li>
+	<li><a href="#">Rome</a>: RSS feed generation</li>
+	<li><a href="#">Wicket</a>: Web framework used for the GUI</li>
+	</ul>
+	</p>
+	
+	<h3>Getting and Building the Source Code</h3>
+	<p>
+	You can check out the source code from
+	<a href="http://www.github.com/yuma-annotation">the official home of
+	the YUMA Annotation Framework on github</a>. The YUMA Annotation Server
+	is built with ANT. Use the default 'create-war' target to build the .war 
+	file.
 	</p>
 </wicket:extend>

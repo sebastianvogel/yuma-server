@@ -7,7 +7,7 @@ import at.ait.dme.yuma.server.gui.BaseTextPage;
 public class Overview extends BaseTextPage {
 	
 	private static final String TITLE = "YUMA Annotation Server - Documentation - Overview";
-	private static final String HEADING = "yuma server > documentation";
+	private static final String HEADING = "yuma server > docs > overview";
 	
 	public Overview(final PageParameters parameters) {
     	super(TITLE, HEADING, new DocumentationNavbar(Overview.class));
