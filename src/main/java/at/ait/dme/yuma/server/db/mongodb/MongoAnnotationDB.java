@@ -185,6 +185,13 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 		query.put(MapKeys.ANNOTATION_OBJECT_URI, objectUri);
 		return collection.count(query);
 	}
+	
+	@Override
+	public List<Annotation> findAnnotationsForUser(String username)
+			throws AnnotationDatabaseException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public Annotation findAnnotationById(String annotationId)

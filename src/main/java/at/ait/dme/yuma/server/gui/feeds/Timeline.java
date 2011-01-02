@@ -24,7 +24,7 @@ public class Timeline extends BaseAnnotationListPage {
 		setTitle(TITLE);
 		setHeadline(HEADLINE);
 		setAnnotations(getMostRecent(20));
-		setFeedURL(FEED_URL);
+		setFeedURL(Config.getInstance().getAnnotationBaseUrl() + FEED_URL);
 	}
     
 	private List<Annotation> getMostRecent(int n) {

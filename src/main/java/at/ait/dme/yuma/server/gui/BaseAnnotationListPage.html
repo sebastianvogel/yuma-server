@@ -7,7 +7,7 @@
 	<body>
 		<div class="header">
 			<h1>
-				<span class="heading" wicket:id="heading"></span><span class="feed-icon" wicket:id="feed-icon"></span>
+				<span class="heading" wicket:id="heading"></span><a class="feed-icon" wicket:id="list-feed-url"><img src="images/feed-icon-28x28.png" /></a>
 				<br style="clear:both" />
 			</h1>
 		</div>
@@ -26,7 +26,7 @@
 						<td colspan="2" class="label">Author</td><td class="content"><a wicket:id="author-href"><span wicket:id="author-label"></span></a></td>
 					</tr>
 					<tr>
-						<td colspan="2" class="label">Annotates</td><td class="content" wicket:id="objectUri"></td>
+						<td colspan="2" class="label">Annotates</td><td class="content"><a wicket:id="objectUri"></a></td>
 					</tr>
 					<tr>
 						<td colspan="2" class="label">Last Modified</td><td class="content" wicket:id="lastModified"></td>

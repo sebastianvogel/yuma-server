@@ -223,6 +223,23 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
+	public List<Annotation> findAnnotationsForUser(String username)
+			throws AnnotationDatabaseException {
+
+		try {
+			Query query = em.createNamedQuery("annotationentity.find.for.user");
+			query.setParameter("username", username);
+			
+			@SuppressWarnings("unchecked")
+			List<AnnotationEntity> allAnnotations = query.getResultList();
+			
+			return toAnnotations(allAnnotations);
+		} catch(Throwable t) {
+			throw new AnnotationDatabaseException(t);
+		}
+	}	
+	
+	@Override
 	public Annotation findAnnotationById(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 

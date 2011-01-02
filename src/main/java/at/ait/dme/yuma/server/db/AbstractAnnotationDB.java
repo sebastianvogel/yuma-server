@@ -160,6 +160,15 @@ public abstract class AbstractAnnotationDB {
 		throws AnnotationDatabaseException; 
 		
 	/**
+	 * Retrieves the annotations for the given user
+	 * @param username the user name
+	 * @return the annotations
+	 * @throws AnnotationDatabaseException if anything goes wrong
+	 */
+	public abstract List<Annotation> findAnnotationsForUser(String username)
+		throws AnnotationDatabaseException;
+
+	/**
 	 * Retrieve an annotation by ID
 	 * @param annotationId the annotation ID
 	 * @return the annotation

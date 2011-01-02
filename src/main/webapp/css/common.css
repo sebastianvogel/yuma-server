@@ -30,7 +30,7 @@ img {
 .header span.grad {
 	position:absolute;
 	left:-5px;
-	width:100%;
+	width:570px;
 	height:26px;
 	background-image:url('../images/font-grad.png');
 	background-position:left bottom; 

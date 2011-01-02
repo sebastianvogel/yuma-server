@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -32,17 +33,17 @@ public abstract class BaseAnnotationListPage extends WebPage {
 	}
 	
 	public void setFeedURL(String feedUrl) {
-		if (feedUrl != null) {
-			add(new Label("feed-icon", "<img src=\"images/feed-icon-28x28.png\" />").setEscapeModelStrings(false));			
+		if (feedUrl == null) {
+			add(new ExternalLink("list-feed-url", "#").add(new SimpleAttributeModifier("style", "visibility:hidden")));
 		} else {
-			add(new Label("feed-icon", ""));			
-		}		
+			add(new ExternalLink("list-feed-url", feedUrl));
+		}
 	}
 	
 	private class AnnotationListView extends ListView<Annotation> {
 
 		private static final long serialVersionUID = 6677934776500475422L;
-
+		
 		public AnnotationListView(String id, List<Annotation> list) {
 			super(id, list);
 		}
@@ -58,7 +59,7 @@ public abstract class BaseAnnotationListPage extends WebPage {
 				new BookmarkablePageLink<String>("author-href", User.class, new PageParameters(params))
 					.add(new Label("author-label", a.getCreatedBy())));
 			
-			item.add(new Label("objectUri", a.getObjectUri()));
+			item.add(new ExternalLink("objectUri", a.getObjectUri(), a.getObjectUri()));			
 			item.add(new Label("lastModified", a.getLastModified().toString()));
 			item.add(new Label("text", a.getText()));
 			String uri = URIBuilder.toURI(a.getAnnotationID()).toString();

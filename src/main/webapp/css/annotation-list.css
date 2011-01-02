@@ -11,6 +11,8 @@
 
 .header .feed-icon {
 	margin:-5px 0px 5px 0px;
+	width:28px;
+	height:28px;
 	padding:0px 3px;
 	display:block;
 	float:right;
