@@ -102,10 +102,10 @@ public class AnnotationEntity implements Serializable {
 	public AnnotationEntity() { }
 	
 	public AnnotationEntity(Annotation a)  {
-		if (!a.getRootId().isEmpty())
+		if (a.getRootId() != null && !a.getRootId().isEmpty())
 			this.setRootId(Long.parseLong(a.getRootId()));
 		
-		if (!a.getParentId().isEmpty())
+		if (a.getRootId()!= null && !a.getParentId().isEmpty())
 			this.setParentId(Long.parseLong(a.getParentId()));
 		
 		this.setObjectUri(a.getObjectUri());

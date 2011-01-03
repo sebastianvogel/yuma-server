@@ -3,8 +3,8 @@ package at.ait.dme.yuma.server.bootstrap;
 public class Data {
 	
 	public static final String ANNOTATION_JSON_ORIGINAL =
-		"{ \"parent-id\" : \"\" , " +
-		  "\"root-id\" : \"\" , " +
+		"[{ \"parent-id\" : null , " +
+		  "\"root-id\" : null , " +
 		  "\"title\" : \"Ponte 25 de Abril\" , "+
 		  "\"text\" : \"The 25 de Abril Bridge is a suspension bridge connecting the city of Lisbon, capital of Portugal, " + 
 		  "to the municipality of Almada on the left bank of the Tagus river. It was inaugurated on August 6, 1966 " +
@@ -26,8 +26,8 @@ public class Data {
 			"</svg:svg>" +
 		  "\" , "+
 		  "\"media-type\" : \"image\" , "+
-		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\"" +
-		"}";
+		  "\"object-uri\" : \"http:\\/\\/upload.wikimedia.org\\/wikipedia\\/commons\\/4\\/49\\/Hirschvogel_Map_Austria.jpg\"" +
+		"}]";
 	
 	public static final String ANNOTATION_JSON_UPDATE =
 		"{ \"parent-id\" : \"\" , " +
