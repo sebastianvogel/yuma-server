@@ -4,6 +4,11 @@ import org.apache.wicket.PageParameters;
 
 import at.ait.dme.yuma.server.gui.BaseTextPage;
 
+/**
+ * The doc overview page.
+ * 
+ * @author Rainer Simon
+ */
 public class Overview extends BaseTextPage {
 	
 	private static final String TITLE = "YUMA Annotation Server - Documentation - Overview";

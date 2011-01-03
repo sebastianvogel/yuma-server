@@ -18,6 +18,17 @@ import at.ait.dme.yuma.server.gui.search.Search;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.SemanticTag;
 
+/**
+ * Base class for all pages that lists of annotations (i.e. feed and
+ * search result pages).
+ * 
+ * TODO Memo to myself: currently throws a RuntimeException if not all
+ * template components are set (title, headline, annotations, feed URL).
+ * Probably better to fill member fields in the setters and then override
+ * the onRender method, replacing nulls where necessary.
+ * 
+ * @author Rainer Simon
+ */
 public abstract class BaseAnnotationListPage extends WebPage {
 
 	private static final String SPAN = "<span class=\"grad\"></span>";
@@ -42,7 +53,7 @@ public abstract class BaseAnnotationListPage extends WebPage {
 		if (feedUrl == null) {
 			add(new ExternalLink("list-feed-url", "#").add(new SimpleAttributeModifier("style", "visibility:hidden")));
 		} else {
-			add(LinkHeaderContributor.forRssLink(feedUrl));
+			add(LinkHeaderContributor.forRss(feedUrl));
 			add(new ExternalLink("list-feed-url", feedUrl));
 		}
 	}

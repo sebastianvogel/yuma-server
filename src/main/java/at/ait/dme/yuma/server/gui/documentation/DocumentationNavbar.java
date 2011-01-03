@@ -4,6 +4,11 @@ import org.apache.wicket.Page;
 
 import at.ait.dme.yuma.server.gui.Navbar;
 
+/**
+ * The navbar for the documentation section.
+ * 
+ * @author Rainer Simon
+ */
 public class DocumentationNavbar extends Navbar {
 
 	private static final long serialVersionUID = -7540625212385536895L;

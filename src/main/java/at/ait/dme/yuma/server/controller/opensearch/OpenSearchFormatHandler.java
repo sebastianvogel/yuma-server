@@ -57,22 +57,18 @@ public class OpenSearchFormatHandler implements FormatHandler {
 	}
 
 	@Override
-	public Annotation parse(String serialized)
-			throws UnsupportedOperationException {
-
+	public Annotation parse(String serialized) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String serialize(Annotation annotation) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String serialize(AnnotationTree tree) {
-		// TODO Auto-generated method stub
-		return null;
+		return serialize(tree.asFlatList());
 	}
 
 	@Override

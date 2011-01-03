@@ -34,28 +34,23 @@ public class EuropeanaDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public void connect(HttpServletRequest request)
-			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		
+	public void connect(HttpServletRequest request) {
+		// 
 	}
 
 	@Override
 	public void disconnect() {
-		// TODO Auto-generated method stub
-		
+		// 
 	}
 
 	@Override
-	public void commit() throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		
+	public void commit() {
+		// 
 	}
 
 	@Override
-	public void rollback() throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		
+	public void rollback() {
+		//
 	}
 
 	@Override

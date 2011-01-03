@@ -12,6 +12,14 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.gui.BaseAnnotationListPage;
 import at.ait.dme.yuma.server.model.Annotation;
 
+/**
+ * A user's public feed page.
+ * 
+ * TODO the feed page is actually NOT public right now - also 
+ * includes the private annotations!
+ * 
+ * @author Rainer Simon
+ */
 public class User extends BaseAnnotationListPage {
 
 	private Logger logger = Logger.getLogger(User.class);

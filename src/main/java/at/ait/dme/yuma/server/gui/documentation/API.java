@@ -6,6 +6,11 @@ import org.apache.wicket.markup.html.link.ExternalLink;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.gui.BaseTextPage;
 
+/**
+ * The API doc page.
+ * 
+ * @author Rainer Simon
+ */
 public class API extends BaseTextPage {
 	
 	private static final String TITLE = "YUMA Annotation Server - Documentation - API";

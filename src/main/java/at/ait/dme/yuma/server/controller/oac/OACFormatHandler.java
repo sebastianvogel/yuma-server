@@ -7,11 +7,12 @@ import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
 
 /**
- * Format handler for OAC RDF/XML.
+ * Format handler for OAC RDF(in different serialization
+ * languages).
  * 
  * @author Rainer Simon
  */
-public class OACXMLFormatHandler implements FormatHandler {
+public class OACFormatHandler implements FormatHandler {
 
 	@Override
 	public Annotation parse(String serialized) {
@@ -32,8 +33,7 @@ public class OACXMLFormatHandler implements FormatHandler {
 	}
 
 	@Override
-	public String serialize(List<Annotation> annotations)
-			throws UnsupportedOperationException {
+	public String serialize(List<Annotation> annotations) {
 		// TODO Auto-generated method stub
 		return null;
 	}

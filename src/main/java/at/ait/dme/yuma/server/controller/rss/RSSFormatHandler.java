@@ -44,16 +44,12 @@ public class RSSFormatHandler implements FormatHandler {
 	}
 	
 	@Override
-	public Annotation parse(String serialized)
-			throws UnsupportedOperationException {
-		
+	public Annotation parse(String serialized) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public String serialize(Annotation annotation) 
-			throws UnsupportedOperationException {
-		
+	public String serialize(Annotation annotation) {
 		throw new UnsupportedOperationException();
 	}
 

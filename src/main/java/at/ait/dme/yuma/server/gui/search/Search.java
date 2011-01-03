@@ -12,6 +12,12 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import at.ait.dme.yuma.server.gui.documentation.Overview;
 import at.ait.dme.yuma.server.gui.feeds.Timeline;
 
+/**
+ * The YUMA server homepage with search form and links to other 
+ * relevant pages.
+ * 
+ * @author Rainer Simon
+ */
 public class Search extends WebPage {
 
 	public static final String QUERY_PARAM = "q";

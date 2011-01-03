@@ -12,6 +12,14 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.gui.BaseAnnotationListPage;
 import at.ait.dme.yuma.server.model.Annotation;
 
+/**
+ * The public timeline.
+ * 
+ * TODO the timeline is actually NOT public right now - also 
+ * includes the private annotations!
+ * 
+ * @author Rainer Simon
+ */
 public class Timeline extends BaseAnnotationListPage {
 	
 	private Logger logger = Logger.getLogger(Timeline.class);

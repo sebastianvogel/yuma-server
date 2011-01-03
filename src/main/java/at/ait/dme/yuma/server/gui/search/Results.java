@@ -11,6 +11,11 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.gui.BaseAnnotationListPage;
 import at.ait.dme.yuma.server.model.Annotation;
 
+/**
+ * The search result page.
+ * 
+ * @author Rainer Simon
+ */
 public class Results extends BaseAnnotationListPage {
 	
 	private static final String TITLE = "YUMA Annotation Server - Search";

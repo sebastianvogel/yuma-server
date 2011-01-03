@@ -4,6 +4,11 @@ import org.apache.wicket.PageParameters;
 
 import at.ait.dme.yuma.server.gui.BaseTextPage;
 
+/**
+ * The developer doc page.
+ * 
+ * @author Rainer Simon
+ */
 public class Developer extends BaseTextPage {
 	
 	private static final String TITLE = "YUMA Annotation Server - Documentation - Developer";

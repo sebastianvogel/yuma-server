@@ -25,7 +25,8 @@ import at.ait.dme.yuma.server.model.SemanticRelation;
 import at.ait.dme.yuma.server.model.SemanticTag;
 
 /**
- * Format handler for LEMO RDF/XML.
+ * Format handler for LEMO RDF format (in different serialization
+ * languages).
  * 
  * @author Rainer Simon
  */

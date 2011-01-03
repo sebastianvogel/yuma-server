@@ -123,8 +123,7 @@ public class JSONFormatHandler implements FormatHandler {
 	}
 	
 	@Override
-	public String serialize(List<Annotation> annotations)
-			throws UnsupportedOperationException {
+	public String serialize(List<Annotation> annotations) {
 		
 		List<Map<String, Object>> jsonFormat = new ArrayList<Map<String,Object>>();
 		for (Annotation a : annotations) {

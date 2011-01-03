@@ -13,6 +13,13 @@ import org.apache.wicket.model.CompoundPropertyModel;
 
 import at.ait.dme.yuma.server.model.MediaType;
 
+/**
+ * Advanced search.
+ * 
+ * @TODO implement this! 
+ * 
+ * @author Rainer Simon
+ */
 public class AdvancedSearch extends WebPage {
 
 	public static final String QUERY_PARAM = "q";

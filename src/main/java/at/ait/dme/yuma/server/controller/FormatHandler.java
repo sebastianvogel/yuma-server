@@ -11,7 +11,7 @@ import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
  * An implementation does not need to support each interface
  * functionality (e.g. some implementations may only support
  * serialization, but not parsing). In this case, implementations
- * shall raise an UnsupportedOperationException.
+ * shall throw an UnsupportedOperationException.
  *  
  * @author Rainer Simon
  */
@@ -24,7 +24,7 @@ public interface FormatHandler {
 	 * @throws UnsupportedOperationException if this implementation does not support parsing
 	 */
 	public Annotation parse(String serialized)
-		throws UnsupportedOperationException, InvalidAnnotationException;
+		throws InvalidAnnotationException;
 	
 	/**
 	 * Serializes an annotation to a representation in the given format.
@@ -32,8 +32,7 @@ public interface FormatHandler {
 	 * @return the serialized representation
 	 * @throws UnsupportedOperationException if this implementation does not support serialization
 	 */
-	public String serialize(Annotation annotation)
-		throws UnsupportedOperationException;
+	public String serialize(Annotation annotation);
 	
 	/**
 	 * Serializes an annotation tree to a representation in the given format
@@ -41,8 +40,7 @@ public interface FormatHandler {
 	 * @return the serialized representation
 	 * @throws UnsupportedOperationException if this implementation does not support serialization
 	 */
-	public String serialize(AnnotationTree tree)
-		throws UnsupportedOperationException;
+	public String serialize(AnnotationTree tree);
 	
 	/**
 	 * Serializes a list of annotations to a representation in the given format
@@ -50,7 +48,6 @@ public interface FormatHandler {
 	 * @return the serialized representation
 	 * @throws UnsupportedOperationException if this implementation does not support serialization 
 	 */
-	public String serialize(List<Annotation> annotations)
-		throws UnsupportedOperationException;
+	public String serialize(List<Annotation> annotations);
 	
 }

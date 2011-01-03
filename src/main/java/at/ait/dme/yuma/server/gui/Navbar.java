@@ -6,8 +6,7 @@ import java.util.List;
 import org.apache.wicket.Page;
 
 /**
- * Utility class for creating a navigation bar GUI element (used
- * in the text pages).
+ * Utility class for creating a navigation bar GUI element.
  * 
  * @author Rainer Simon
  */
