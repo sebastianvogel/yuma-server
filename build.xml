@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="yuma-annotation-server" default="create-war" basedir=".">	
+<project name="yuma-server" default="create-war" basedir=".">	
 	<property name="src.dir" location="src/main/java" />
 	<property name="test.dir" location="src/test/java" />
 	<property name="report.dir" location="report" />
