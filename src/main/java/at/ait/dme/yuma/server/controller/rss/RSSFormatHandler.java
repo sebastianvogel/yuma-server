@@ -27,6 +27,7 @@ import at.ait.dme.yuma.server.model.AnnotationTree;
  */
 public class RSSFormatHandler implements FormatHandler {
 
+	private static final String RSS2_0 = "rss_2.0";
 	private static final String UTF8 = "UTF-8";
 	private static final String MIME_HTML = "text/html";
 	
@@ -64,7 +65,7 @@ public class RSSFormatHandler implements FormatHandler {
 	@Override
 	public String serialize(List<Annotation> annotations) {
 		SyndFeed feed = new SyndFeedImpl();
-		feed.setFeedType("rss_2.0");
+		feed.setFeedType(RSS2_0);
 		feed.setTitle(feedTitle);
 		feed.setDescription(feedDescription);
 		feed.setLink(feedLink);

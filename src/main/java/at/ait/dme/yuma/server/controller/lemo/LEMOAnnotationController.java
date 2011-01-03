@@ -33,7 +33,7 @@ public class LEMOAnnotationController extends AbstractAnnotationController {
 	public Response createAnnotation(String annotation)
 		throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationModifiedException {
 		
-		return super.createAnnotation(annotation, new LEMOXMLFormatHandler());
+		return super.createAnnotation(annotation, new LEMOFormatHandler());
 	}
 	
 	@PUT
@@ -42,25 +42,43 @@ public class LEMOAnnotationController extends AbstractAnnotationController {
 	public Response updateAnnotation(@PathParam("id") String id, String annotation) 
 			throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationHasReplyException, UnsupportedEncodingException {
 		
-		return super.updateAnnotation(id, annotation, new LEMOXMLFormatHandler());
+		return super.updateAnnotation(id, annotation, new LEMOFormatHandler());
 	}
 	
 	@GET
 	@Produces("application/rdf+xml")
 	@Path("/annotation/{id}")
-	public Response getAnnotation(@PathParam("id") String id)
+	public Response getAnnotationXML(@PathParam("id") String id)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
-		return super.getAnnotation(id, new LEMOXMLFormatHandler());
+		return super.getAnnotation(id, new LEMOFormatHandler());
+	}
+
+	@GET
+	@Produces("application/x-turtle")
+	@Path("/annotation/{id}")
+	public Response getAnnotationTurtle(@PathParam("id") String id)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		return super.getAnnotation(id, new LEMOFormatHandler(LEMOFormatHandler.TURTLE));
 	}
 	
 	@GET
 	@Produces("application/rdf+xml")
 	@Path("/tree/{objectId}")
-	public Response getAnnotationTree(@PathParam("objectId") String objectId)
+	public Response getAnnotationTreeXML(@PathParam("objectId") String objectId)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
-		return super.getAnnotationTree(objectId, new LEMOXMLFormatHandler());
+		return super.getAnnotationTree(objectId, new LEMOFormatHandler());
+	}
+	
+	@GET
+	@Produces("application/x-turtle")
+	@Path("/tree/{objectId}")
+	public Response getAnnotationTreeTurtle(@PathParam("objectId") String objectId)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		return super.getAnnotationTree(objectId, new LEMOFormatHandler(LEMOFormatHandler.TURTLE));
 	}
 	
 }

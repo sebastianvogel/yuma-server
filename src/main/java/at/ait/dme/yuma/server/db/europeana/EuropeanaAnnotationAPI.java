@@ -1,135 +1,53 @@
 package at.ait.dme.yuma.server.db.europeana;
 
-import java.util.List;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
-import javax.servlet.http.HttpServletRequest;
+import org.jboss.resteasy.client.ClientResponse;
 
-import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
-import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
-import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
-import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
-import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
-import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
-import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationTree;
+/**
+ * The interface to the RESTful Europeana annotation service.
+ * 
+ * @author Christian Sadilek
+ */
+@Path("api/annotation")
+public interface EuropeanaAnnotationAPI {
+	
+	@POST
+	@Path("/IMAGE_ANNOTATION/{europeanaUri}")
+	@Consumes("application/xml")	
+	public ClientResponse<String> createAnnotation(@PathParam("europeanaUri") String europeanaUri, 
+			String annotation);
+	
+	@POST
+	@Consumes("application/xml")	
+	public ClientResponse<String> createAnnotationReply(@QueryParam("predecessor") String parentId, 
+			String annotation);
+	
+	@PUT
+	@Consumes("application/xml")
+	@Path("/{id}")
+	public ClientResponse<String> updateAnnotation(@PathParam("id") String id, String annotation);
+	
+	@DELETE
+	@Path("/{id}")
+	public ClientResponse<String> deleteAnnotation(@PathParam("id") String id);
+	
+	@GET
+	@Produces("application/xml")
+	@Path("/IMAGE_ANNOTATION/{europeanaUri}")
+	public ClientResponse<String> listAnnotations(@PathParam("europeanaUri") String europeanaUri);
 
-public class EuropeanaAnnotationAPI extends AbstractAnnotationDB {
-
-	@Override
-	public void init() throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void shutdown() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void connect(HttpServletRequest request)
-			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void disconnect() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void commit() throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void rollback() throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String createAnnotation(Annotation annotation)
-			throws AnnotationDatabaseException, AnnotationModifiedException,
-			InvalidAnnotationException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String updateAnnotation(String annotationId, Annotation annotation)
-			throws AnnotationDatabaseException, AnnotationNotFoundException,
-			AnnotationHasReplyException, InvalidAnnotationException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void deleteAnnotation(String annotationId)
-			throws AnnotationDatabaseException, AnnotationNotFoundException,
-			AnnotationHasReplyException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public AnnotationTree findAnnotationsForObject(String objectUri)
-			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public long countAnnotationsForObject(String objectUri)
-			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public List<Annotation> findAnnotationsForUser(String username)
-			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Annotation findAnnotationById(String annotationId)
-			throws AnnotationDatabaseException, AnnotationNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public long countReplies(String annotationId)
-			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public AnnotationTree findThreadForAnnotation(String annotationId)
-			throws AnnotationDatabaseException, AnnotationNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Annotation> getMostRecent(int n)
-			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Annotation> findAnnotations(String query)
-			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	@GET
+	@Produces("application/xml")
+	@Path("/{id}")
+	public ClientResponse<String> findAnnotationById(@PathParam("id") String id);
+	
 }

@@ -29,11 +29,35 @@ import at.ait.dme.yuma.server.model.SemanticTag;
  * 
  * @author Rainer Simon
  */
-public class LEMOXMLFormatHandler implements FormatHandler {
+public class LEMOFormatHandler implements FormatHandler {
+	
+	public static final String RDF_XML = "RDF/XML";
+	public static final String N3 = "N3";
+	public static final String N_TRIPLE = "N-TRIPLE";
+	public static final String TURTLE = "TURTLE";
 	
 	private static final String NS_ANNOTATION = "http://lemo.mminf.univie.ac.at/annotation-core#";
 	private static final String NS_SCOPE = "http://lemo.mminf.univie.ac.at/ann-tel#";
 
+	private String serializationLanguage;
+	
+	/**
+	 * Creates a LEMO RDF format handler with the default
+	 * serialization (RDF/XML)
+	 */
+	public LEMOFormatHandler() {
+		this.serializationLanguage = RDF_XML;
+	}
+	
+	/**
+	 * Creates a LEMO RDF format handler with the specified
+	 * RDF serialization language
+	 * @param language the language
+	 */
+	public LEMOFormatHandler(String language) {
+		this.serializationLanguage = language;
+	}
+	
 	@Override
 	public Annotation parse(String serialized)
 		throws InvalidAnnotationException {
@@ -128,7 +152,7 @@ public class LEMOXMLFormatHandler implements FormatHandler {
 	
 	private String toString(Model m) {
 		StringWriter sw = new StringWriter();
-		m.write(sw);
+		m.write(sw, serializationLanguage);
 		return sw.toString();
 	}
 	

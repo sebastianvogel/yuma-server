@@ -22,7 +22,7 @@ public class LEMOXMLFormatHandlerTest {
 	public void testLEMOSerialization() throws Exception {
 		Annotation before = new JSONFormatHandler().parse(Data.ANNOTATION_JSON_UPDATE);
 		
-		FormatHandler lemoFormat = new LEMOXMLFormatHandler();
+		FormatHandler lemoFormat = new LEMOFormatHandler(LEMOFormatHandler.TURTLE);
 		String s = lemoFormat.serialize(before);
 		System.out.println(s);
 		
