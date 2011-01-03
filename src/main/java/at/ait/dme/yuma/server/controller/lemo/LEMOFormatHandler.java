@@ -28,6 +28,8 @@ import at.ait.dme.yuma.server.model.SemanticTag;
  * Format handler for LEMO RDF format (in different serialization
  * languages).
  * 
+ * TODO Finish this!
+ * 
  * @author Rainer Simon
  */
 public class LEMOFormatHandler implements FormatHandler {
