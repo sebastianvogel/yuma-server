@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 
+import at.ait.dme.yuma.server.gui.admin.Dashboard;
 import at.ait.dme.yuma.server.gui.documentation.Overview;
 import at.ait.dme.yuma.server.gui.feeds.Timeline;
 
@@ -28,6 +29,7 @@ public class Search extends WebPage {
         add(new BookmarkablePageLink("link-timeline", Timeline.class));
         add(new BookmarkablePageLink("link-advanced", AdvancedSearch.class));
         add(new BookmarkablePageLink("link-doc", Overview.class));
+        add(new BookmarkablePageLink("link-login", Dashboard.class));
     }
         
 	private class SearchForm extends StatelessForm<Query> {
