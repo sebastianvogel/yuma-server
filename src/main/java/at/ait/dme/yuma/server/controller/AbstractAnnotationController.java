@@ -106,7 +106,7 @@ public abstract class AbstractAnnotationController {
 		} finally {
 			if(db != null) db.disconnect();
 		}	
-		return Response.ok().entity(annotation.toString()).header("Location", URIBuilder.toURI(annotationId)).build(); 
+		return Response.ok().entity(annotationId.toString()).header("Location", URIBuilder.toURI(annotationId)).build(); 
 	}
 	
 	/**

@@ -1,19 +1,52 @@
 <wicket:extend>
-	<h3>API and Data Model</h3>
-	<p>
-	Lorem ipsum...
-	</p>
+	<p>@TODO Introduction </p>
 	
 	<h3>API Endpoints</h3>
+	<p>
+	The API of this YUMA Annotation Server is available under the
+	<strong wicket:id="api-base-url"></strong> root path. The API provides 
+	basic CRUD (Create, Read, Update, Delete) operations over a RESTful
+	interface. 
+	</p>
+	
+	<h4 wicket:id="api-annotation-base-url"></h4>
 	<ul>
-		<li>The REST interface for annotation CRUD operations in JSON
-		format is available here: <a wicket:id="api-json"></a> @TODO
-		List the REST methods /annotation, /tree</li>
+		<li><strong>HTTP POST</strong> to this URL will create an annotation. Supported payload 
+		formats are JSON and (with limited functionality) RDF/XML. In case of success, the server
+		will respond with HTTP 201 (Created) code, the URI of the annotation in the Location
+		header, and the ID assigned to the annotation by the system in the response body.</li>
+	</ul>
+	
+	<h4 wicket:id="api-annotation-url"></h4>
+	<ul>
+		<li><strong>HTTP GET</strong> to this URL will retrieve the annotation with the specified
+		ID. The server will respond with HTTP 200 (OK) and the serialized annotation in the payload.
+		Supported response formats are JSON and RDF (XML or TURTLE). The format decision is based on
+		the MIME type specified in the HTTP Accept header (content negotiation).</li>		
 		
-		<li>RSS feeds are available under the /feeds URL prefix.</li>
+		<li><strong>HTTP PUT</strong> to this URL will update the annotation with the specified
+		ID. If successful, the server will respond with HTTP 200 (OK), the URI of the 
+		annotation in the Location header, and the (new) ID assigned to the annotation by the system 
+		in the response body.</li> 
+		
+		<li><strong>HTTP DELETE</strong> to this URL will delete the annotation with the specified
+		ID. The server will respond with HTTP 204 (No Content) in case of
+		success.</li>
+	</ul>
+	
+	<h4 wicket:id="api-tree-url"></h4>
+	<ul>
+		<li><strong>HTTP GET</strong> to this URL will retrieve the entire tree of annotations that
+		exist for an annotated multimedia object, specified by its (URL-encoded) URI. The server will
+		respond with HTTP 200 (OK) and the serialized tree of annotations in the payload.
+		Supported response formats are JSON and RDF (XML or TURTLE). The format decision is based on
+		the MIME type specified in the HTTP Accept header (content negotiation).</li>	
 	</ul>
 	
 	<h3>JSON Annotation Format</h3>
-	<p>Lorem ipsum...</p>
+	<p>@TODO</p>
+	
+	<h3>RDF Annotation Format</h3>
+	<p>@TODO</p>
 </wicket:extend>
 		
