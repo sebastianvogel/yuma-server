@@ -30,7 +30,7 @@ public class ConfigServlet extends HttpServlet {
 	    String dbPass=readProperty("annotation.db.pass", application);
 	    String dbDir=readProperty("annotation.db.dir", application); 
 	    String dbFlags=readProperty("annotation.db.flags", application);
-	    String annotationBaseUrl=readProperty("annotation.base.url", application);
+	    String annotationBaseUrl=readProperty("server.base.url", application);
 	   
 	    new Config.Builder(dbImpl, annotationBaseUrl).
 	    	dbDriver(dbDriver).dbDriverProtocol(dbDriverProtocol).dbHost(dbHost).

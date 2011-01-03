@@ -10,7 +10,7 @@ public class API extends BaseTextPage {
 	
 	private static final String TITLE = "YUMA Annotation Server - Documentation - API";
 	private static final String HEADING = "yuma server > docs > api";
-	private static final String BASE_URL = Config.getInstance().getAnnotationBaseUrl();
+	private static final String BASE_URL = Config.getInstance().getServerBaseUrl();
 	
 	public API(final PageParameters parameters) {
     	super(TITLE, HEADING, new DocumentationNavbar(API.class));

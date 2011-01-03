@@ -25,7 +25,7 @@ public class Config {
 	private final String dbPass;
 	private final String dbDir;
 	private final String dbFlags;	
-	private final String annotationBaseUrl;
+	private final String serverBaseUrl;
 
 	private Config(Builder builder) {
 		this.dbHost = builder.dbHost;
@@ -35,7 +35,7 @@ public class Config {
 		this.dbPass = builder.dbPass;
 		this.dbDir = builder.dbDir;
 		this.dbFlags = builder.dbFlags;		
-		this.annotationBaseUrl = builder.annotationBaseUrl;
+		this.serverBaseUrl = builder.serverBaseUrl;
 		this.dbImpl = builder.dbImpl;
 		this.dbDriver = builder.dbDriver;
 		this.dbDriverProtocol = builder.dbDriverProtocol;
@@ -45,7 +45,7 @@ public class Config {
 		private String dbImpl = null;
 		private String dbDriver = null;
 		private String dbDriverProtocol = null;		
-		private String annotationBaseUrl = null;
+		private String serverBaseUrl = null;
 		
 		private String dbHost = null;
 		private String dbPort = null;
@@ -55,9 +55,9 @@ public class Config {
 		private String dbDir = null;
 		private String dbFlags = null;	
 		
-		public Builder(String dbImpl, String annotationBaseUrl) {
+		public Builder(String dbImpl, String serverBaseUrl) {
 			this.dbImpl = dbImpl;			
-			this.annotationBaseUrl = annotationBaseUrl;
+			this.serverBaseUrl = serverBaseUrl;
 		}
 		
 		public Builder dbDriver(String val) {
@@ -160,8 +160,8 @@ public class Config {
 		return dbDriverProtocol;
 	}
 	
-	public String getAnnotationBaseUrl() {
-		return annotationBaseUrl;
+	public String getServerBaseUrl() {
+		return serverBaseUrl;
 	}
 	
 	public AbstractAnnotationDB getAnnotationDatabase() throws AnnotationDatabaseException {

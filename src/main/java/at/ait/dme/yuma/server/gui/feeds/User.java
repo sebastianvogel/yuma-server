@@ -28,7 +28,7 @@ public class User extends BaseAnnotationListPage {
 		setTitle(TITLE + username);
 		setHeadline(username + HEADLINE);		
 		setAnnotations(getAnnotationsByUser(username));
-		setFeedURL(Config.getInstance().getAnnotationBaseUrl() + FEEDS + username);
+		setFeedURL(Config.getInstance().getServerBaseUrl() + FEEDS + username);
 	}
 	
 	private List<Annotation> getAnnotationsByUser(String username) {
