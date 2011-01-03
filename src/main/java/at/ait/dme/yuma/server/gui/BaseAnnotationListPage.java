@@ -32,6 +32,7 @@ import at.ait.dme.yuma.server.model.SemanticTag;
 public abstract class BaseAnnotationListPage extends WebPage {
 
 	private static final String SPAN = "<span class=\"grad\"></span>";
+	private static final String ELLIPSIS = "...";
 	
 	public BaseAnnotationListPage() {
 		add(new BookmarkablePageLink<String>("home", Search.class));
@@ -77,7 +78,11 @@ public abstract class BaseAnnotationListPage extends WebPage {
 				new BookmarkablePageLink<String>("author-href", User.class, new PageParameters(params))
 					.add(new Label("author-label", a.getCreatedBy())));
 			
-			item.add(new ExternalLink("objectUri", a.getObjectUri(), a.getObjectUri()));			
+			String screenUri = a.getObjectUri();
+			if (screenUri.length() > 40)
+				screenUri = screenUri.substring(0, 55) + ELLIPSIS;
+			item.add(new ExternalLink("objectUri", a.getObjectUri(), screenUri));
+			
 			item.add(new Label("lastModified", a.getLastModified().toString()));
 			item.add(new Label("text", a.getText()));
 			String uri = URIBuilder.toURI(a.getAnnotationID()).toString();
