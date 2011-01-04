@@ -3,7 +3,7 @@
 <web-app>
 	<display-name>YUMA Annotation Server</display-name>
 
-	<!-- General YUMA configurtion -->
+	<!-- General YUMA configuration -->
 
 	<context-param>
 		<param-name>server.base.url</param-name>
@@ -25,12 +25,11 @@
 		<param-value>admin</param-value>
 	</context-param>
 	
-	<!-- Wicket Deployment Mode  -->
+	<!-- Wicket Deployment Mode ('development' or  'deployment') -->
 
 	<context-param>
          <param-name>configuration</param-name>
          <param-value>development</param-value>
-         <!--   <param-value>deployment</param-value> -->
 	</context-param>
 	
 	<!-- RESTeasy configuration -->
