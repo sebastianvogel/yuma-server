@@ -11,9 +11,11 @@
 	</p>
 	
 	<p>
-	The project comes with an included starter class that will launch an embedded Jetty 
-	Web server <em>(version 6.1.26)</em>. This way, you can work interactively on the code in your 
-	IDE without the need to constantly re-build and re-deploy. Locate the class
+	The project comes with an included starter class that will launch the project in an embedded
+	Jetty Web server <em>(version 6.1.26)</em>. This way, you can work interactively on the code 
+	in your IDE without the need to constantly re-build and re-deploy. Please ensure that
+	your IDE compiles the application classes to the <em>/src/main/webapp/WEB-INF/classes</em> 
+	directory. Then locate the class
 	</p>
 	
 	<p>
@@ -21,7 +23,7 @@
 	</p>
 	
 	<p>
-	in the /src/main/test folder, and launch it as a Java application. 
+	in the <em>/src/main/test</em> folder, and launch it as a Java application. 
 	Per default, the Jetty will launch on port 8080. The YUMA Annotation Server will
 	be available at 
 	<a href="http://localhost:8080/yuma-server">http://localhost:8080/yuma-server</a>. Modify
@@ -74,5 +76,12 @@
 	<a href="http://community.jboss.org/wiki/SupportedDatabases" target="_blank">Hibernate-supported
 	databases</a>, you should only need to add the appropriate JDBC driver to the project, and edit
 	the Hibernate configuration in the web.xml file. 
+	</p>
+	
+	<h3>Reporting Issues</h3>
+	<p>Please report issues via the github issue tracking system at 
+	<a href="http://github.com/yuma-annotation/server/issues">http://github.com/yuma-annotation/server/issues</a>
+	or contact us via the <a href="http://groups.google.com/group/yuma-annotation">yuma-annotation</a> Google 
+	Group (<a href="mailto:yuma-annotation@googlegroups.com">E-Mail</a>).
 	</p>
 </wicket:extend>
