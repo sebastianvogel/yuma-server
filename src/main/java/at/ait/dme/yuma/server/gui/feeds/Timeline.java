@@ -10,6 +10,7 @@ import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.gui.BaseAnnotationListPage;
+import at.ait.dme.yuma.server.gui.YUMAWebSession;
 import at.ait.dme.yuma.server.model.Annotation;
 
 /**
@@ -42,7 +43,7 @@ public class Timeline extends BaseAnnotationListPage {
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect();
-			mostRecent = db.getMostRecent(n);
+			mostRecent = db.getMostRecent(n, !YUMAWebSession.get().isSignedIn());
 		} catch (AnnotationDatabaseException e) {
 			logger.fatal(e.getMessage());
 		} finally {

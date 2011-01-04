@@ -43,7 +43,9 @@ import at.ait.dme.yuma.server.model.SemanticTag;
 			query = "select count(*) from AnnotationEntity a where a.objectUri = :objectUri"),
 	@NamedQuery(name = "annotationentity.count.replies",
 			query = "select count(*) from AnnotationEntity a where a.parentId = :id"),
-	@NamedQuery(name = "annotationentity.mostrecent",
+	@NamedQuery(name = "annotationentity.mostrecent.public",
+			query = "from AnnotationEntity a where a.scope = 'PUBLIC' order by a.lastModified"),	
+	@NamedQuery(name = "annotationentity.mostrecent.all",
 			query = "from AnnotationEntity a order by a.lastModified"),	
 	@NamedQuery(name = "annotationentity.search",
 			query = "from AnnotationEntity a where (lower(a.title) like concat('%',:term,'%') or " +

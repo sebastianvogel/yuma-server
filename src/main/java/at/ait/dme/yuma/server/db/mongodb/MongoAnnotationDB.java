@@ -236,9 +236,10 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 	
 	@Override
-	public List<Annotation> getMostRecent(int n)
+	public List<Annotation> getMostRecent(int n, boolean publicOnly)
 			throws AnnotationDatabaseException {
 
+		// TODO implement publicOnly behavior!
 		ArrayList<Annotation> annotations = new ArrayList<Annotation>();
 		
 		DBCursor cursor = collection.find()

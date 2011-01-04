@@ -229,7 +229,7 @@ public abstract class AbstractAnnotationController {
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			mostRecent = format.serialize(db.getMostRecent(n));
+			mostRecent = format.serialize(db.getMostRecent(n, true));
 		} finally {
 			if(db != null) db.disconnect();
 		}

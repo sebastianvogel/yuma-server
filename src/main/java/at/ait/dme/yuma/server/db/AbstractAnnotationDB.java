@@ -200,12 +200,14 @@ public abstract class AbstractAnnotationDB {
 		throws AnnotationDatabaseException, AnnotationNotFoundException;
 
 	/**
+	/**
 	 * Retrieves the N most recent annotations from the database.
 	 * @param n the number of annotations to retrieve
+	 * @param publicOnly if true, only annotations with public scope will be returned
 	 * @return the annotations (as a flat list)
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract List<Annotation> getMostRecent(int n)
+	public abstract List<Annotation> getMostRecent(int n, boolean publicOnly)
 		throws AnnotationDatabaseException;
 
 	

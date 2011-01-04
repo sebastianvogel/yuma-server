@@ -294,11 +294,16 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public List<Annotation> getMostRecent(int n)
+	public List<Annotation> getMostRecent(int n, boolean publicOnly)
 			throws AnnotationDatabaseException {
-
+		
 		try {
-			Query query = em.createNamedQuery("annotationentity.mostrecent");
+			Query query;
+			if (publicOnly) {
+				query = em.createNamedQuery("annotationentity.mostrecent.public");
+			} else {
+				query = em.createNamedQuery("annotationentity.mostrecent.all");
+			}
 			query.setMaxResults(n);
 			
 			@SuppressWarnings("unchecked")

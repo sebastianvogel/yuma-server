@@ -120,7 +120,7 @@ public class EuropeanaDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public List<Annotation> getMostRecent(int n)
+	public List<Annotation> getMostRecent(int n, boolean publicOnly)
 			throws AnnotationDatabaseException {
 		// TODO Auto-generated method stub
 		return null;
