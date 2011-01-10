@@ -3,19 +3,22 @@ package at.ait.dme.yuma.server.db.hibernate.entities;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
-import at.ait.dme.yuma.server.model.SemanticTag;
+import at.ait.dme.yuma.server.model.tag.PlainLiteral;
+import at.ait.dme.yuma.server.model.tag.SemanticTag;
 
 /**
  * A JPA database entity wrapper for a SemanticTag object.
@@ -54,11 +57,15 @@ public class SemanticTagEntity implements Serializable {
 	@Column
 	private SemanticRelationEntity relation;
 	
-	@ElementCollection
-	private Map<String, String> altLabels;
+	@OneToMany(mappedBy="parent",
+			targetEntity=PlainLiteralEntity.class, 
+			cascade=CascadeType.ALL)
+	private List<PlainLiteralEntity> altLabels = new ArrayList<PlainLiteralEntity>();
 	
-	@ElementCollection
-	private Map<String, String> altDescriptions;
+	@OneToMany(mappedBy="parent",
+			targetEntity=PlainLiteralEntity.class, 
+			cascade=CascadeType.ALL)
+	private List<PlainLiteralEntity> altDescriptions = new ArrayList<PlainLiteralEntity>();
 	
 	public SemanticTagEntity() { }
 	
@@ -73,8 +80,13 @@ public class SemanticTagEntity implements Serializable {
 		if (t.getRelation() != null)
 			this.setRelation(new SemanticRelationEntity(t.getRelation()));
 		
-		this.setAltLabels(t.getAlternativeLabels());
-		this.setAltDescriptions(t.getAlternativeDescriptions());
+		for (PlainLiteral l : t.getAlternativeLabels()) {
+			this.altLabels.add(new PlainLiteralEntity(this, l));
+		}
+
+		for (PlainLiteral l : t.getAlternativeDescriptions()) {
+			this.altDescriptions.add(new PlainLiteralEntity(this, l));
+		}
 	}
 	
 	public SemanticTag toSemanticTag()  {
@@ -90,8 +102,13 @@ public class SemanticTagEntity implements Serializable {
 			if (relation != null)
 				t.setSemanticRelation(relation.toSemanticRelation());
 			
-			t.setAlternativeLabels(altLabels);
-			t.setAlternativeDescriptions(altDescriptions);
+			for (PlainLiteralEntity l : altLabels) {
+				t.addAlternativeLabel(l.toPlainLiteral());
+			}
+			
+			for (PlainLiteralEntity l : altDescriptions) {
+				t.addAlternativeDescription(l.toPlainLiteral());
+			}
 			
 			return t;
 		} catch (URISyntaxException e) {
@@ -167,19 +184,19 @@ public class SemanticTagEntity implements Serializable {
 		return relation;
 	}
 
-	public void setAltLabels(Map<String, String> altLabels) {
+	public void setAltLabels(List<PlainLiteralEntity> altLabels) {
 		this.altLabels = altLabels;
 	}
 
-	public Map<String, String> getAltLabels() {
+	public List<PlainLiteralEntity> getAltLabels() {
 		return altLabels;
 	}
 
-	public void setAltDescriptions(Map<String, String> altDescriptions) {
+	public void setAltDescriptions(List<PlainLiteralEntity> altDescriptions) {
 		this.altDescriptions = altDescriptions;
 	}
 
-	public Map<String, String> getAltDescriptions() {
+	public List<PlainLiteralEntity> getAltDescriptions() {
 		return altDescriptions;
 	}
 

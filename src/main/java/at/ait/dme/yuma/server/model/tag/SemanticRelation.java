@@ -1,9 +1,10 @@
-package at.ait.dme.yuma.server.model;
+package at.ait.dme.yuma.server.model.tag;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
+import at.ait.dme.yuma.server.model.MapKeys;
 
 /**
  * A 'semantic relation', used to express a typed link between an 

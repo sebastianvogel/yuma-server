@@ -16,7 +16,7 @@ import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.gui.feeds.User;
 import at.ait.dme.yuma.server.gui.search.Search;
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.SemanticTag;
+import at.ait.dme.yuma.server.model.tag.SemanticTag;
 
 /**
  * Base class for all pages that lists of annotations (i.e. feed and

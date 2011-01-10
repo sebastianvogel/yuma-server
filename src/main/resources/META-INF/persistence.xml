@@ -4,6 +4,7 @@
     <persistence-unit name="annotation">   
     	<class>at.ait.dme.yuma.server.db.hibernate.entities.AnnotationEntity</class>
     	<class>at.ait.dme.yuma.server.db.hibernate.entities.SemanticTagEntity</class>
+    	<class>at.ait.dme.yuma.server.db.hibernate.entities.PlainLiteralEntity</class>
     	<exclude-unlisted-classes>true</exclude-unlisted-classes>
     </persistence-unit>
 

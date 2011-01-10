@@ -16,8 +16,9 @@ import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.Scope;
 import at.ait.dme.yuma.server.model.MapKeys;
-import at.ait.dme.yuma.server.model.SemanticRelation;
-import at.ait.dme.yuma.server.model.SemanticTag;
+import at.ait.dme.yuma.server.model.tag.PlainLiteral;
+import at.ait.dme.yuma.server.model.tag.SemanticRelation;
+import at.ait.dme.yuma.server.model.tag.SemanticTag;
 
 /**
  * Format handler for JSON.
@@ -106,10 +107,33 @@ public class JSONFormatHandler implements FormatHandler {
 			if (relation != null)
 				map.put(MapKeys.TAG_RELATION, new SemanticRelation(relation));
 			
+			@SuppressWarnings("unchecked")			
+			List<Map<String, String>> altLabels = ((List<Map<String, String>>) (map.get(MapKeys.TAG_ALT_LABELS)));
+			if (altLabels != null)
+				map.put(MapKeys.TAG_ALT_LABELS, toPlainLiterals(altLabels));
+
+			@SuppressWarnings("unchecked")			
+			List<Map<String, String>> altDescriptions = ((List<Map<String, String>>) (map.get(MapKeys.TAG_ALT_DESCRIPTIONS)));
+			if (altDescriptions != null)
+				map.put(MapKeys.TAG_ALT_DESCRIPTIONS, toPlainLiterals(altDescriptions));
+			
 			tags.add(new SemanticTag(map));
 		}
 		
 		return tags;
+	}
+	
+	private List<PlainLiteral> toPlainLiterals(List<Map<String, String>> maps) {
+		ArrayList<PlainLiteral> literals = new ArrayList<PlainLiteral>();
+		
+		for (Map<String, String> map : maps) {
+			literals.add(new PlainLiteral(
+				map.get(MapKeys.PLAIN_LITERAL_VALUE),	
+				map.get(MapKeys.PLAIN_LITERAL_LANG)
+			));
+		}
+		
+		return literals;
 	}
 	
 	@Override

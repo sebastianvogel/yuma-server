@@ -1,11 +1,13 @@
-package at.ait.dme.yuma.server.model;
+package at.ait.dme.yuma.server.model.tag;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Set;
 
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
+import at.ait.dme.yuma.server.model.MapKeys;
 
 /**
  * A semantic tag which is part of an annotation. A semantic
@@ -64,14 +66,14 @@ public class SemanticTag {
 	 * 
 	 * OPTIONAL
 	 */
-	private Map<String, String> altLabels;
+	private List<PlainLiteral> altLabels;
 	
 	/**
 	 * Alternative descriptions in other languages in the form <lang, label>
 	 * 
 	 * OPTIONAL
 	 */
-	private Map<String, String> altDescriptions;
+	private List<PlainLiteral> altDescriptions;
 	
 	/**
 	 * Creates a semantic tag based on it's mandatory properties.
@@ -83,6 +85,9 @@ public class SemanticTag {
 		this.uri = uri;
 		this.primaryLabel = primaryLabel;
 		this.primaryDescription = primaryDescription;
+		
+		this.altLabels = new ArrayList<PlainLiteral>();
+		this.altDescriptions = new ArrayList<PlainLiteral>();
 	}
 	
 	/**
@@ -100,12 +105,12 @@ public class SemanticTag {
 			this.primaryLang = (String) map.get(MapKeys.TAG_LANG);
 			this.type = (String) map.get(MapKeys.TAG_TYPE);
 			this.relation = (SemanticRelation) map.get(MapKeys.TAG_RELATION);
-			this.altLabels = (HashMap<String, String>) map.get(MapKeys.TAG_ALT_LABELS);
+			this.altLabels = (ArrayList<PlainLiteral>) map.get(MapKeys.TAG_ALT_LABELS);
 			if (this.altLabels == null)
-				this.altLabels = new HashMap<String, String>();
-			this.altDescriptions = (HashMap<String, String>) map.get(MapKeys.TAG_ALT_DESCRIPTIONS);
+				this.altLabels = new ArrayList<PlainLiteral>();
+			this.altDescriptions = (ArrayList<PlainLiteral>) map.get(MapKeys.TAG_ALT_DESCRIPTIONS);
 			if (this.altDescriptions == null)
-				this.altDescriptions = new HashMap<String, String>();
+				this.altDescriptions = new ArrayList<PlainLiteral>();
 		} catch (Throwable t) {
 			throw new InvalidAnnotationException(t.getMessage());
 		}
@@ -157,28 +162,36 @@ public class SemanticTag {
 		this.relation = relation;
 	}
 
-	public Map<String, String> getAlternativeLabels() {
+	public List<PlainLiteral> getAlternativeLabels() {
 		return altLabels;
 	}
 	
-	public void setAlternativeLabels(Map<String, String> altLabels) {
+	public void setAlternativeLabels(List<PlainLiteral> altLabels) {
 		this.altLabels = altLabels;
 	}
 	
+	public void addAlternativeLabel(PlainLiteral altLabel) {
+		altLabels.add(altLabel);
+	}
+	
 	public String getAlternativeLabel(String language) {
-		return altLabels.get(language);
+		return getPlainLiteral(language, altLabels);
 	}
 
-	public Map<String, String> getAlternativeDescriptions() {
+	public List<PlainLiteral> getAlternativeDescriptions() {
 		return altDescriptions;
 	}
 	
-	public void setAlternativeDescriptions(Map<String, String> altDescriptions) {
+	public void setAlternativeDescriptions(List<PlainLiteral> altDescriptions) {
 		this.altDescriptions = altDescriptions;
 	}
 		
+	public void addAlternativeDescription(PlainLiteral altDescription) {
+		altDescriptions.add(altDescription);
+	}
+	
 	public String getAlternativeDescription(String language) {
-		return altDescriptions.get(language);
+		return getPlainLiteral(language, altDescriptions);
 	}
 	
 	public Map<String, Object> toMap() {
@@ -194,6 +207,15 @@ public class SemanticTag {
 		map.put(MapKeys.TAG_ALT_DESCRIPTIONS, altDescriptions);
 		
 		return map;
+	}
+	
+	private String getPlainLiteral(String language, List<PlainLiteral> literals) {
+		for (PlainLiteral l : literals) {
+			if (l.getLanguage().equalsIgnoreCase(language))
+				return l.getValue();
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -230,20 +252,15 @@ public class SemanticTag {
 		return true;
 	}
 
-	private boolean equals(Map<String, String> a, Map<String, String> b) {
+	private boolean equals(List<PlainLiteral> a, List<PlainLiteral> b) {
 		if (a.size() != b.size())
 			return false;
 		
-		Set<String> aKeys = a.keySet();
-		Set<String> bKeys = b.keySet();
-		
-		if (!aKeys.containsAll(bKeys))
+		if (!a.containsAll(b))
 			return false;
 		
-		for (String key : aKeys) {
-			if (!a.get(key).equals(b.get(key)))
-				return false;		
-		}
+		if (!b.containsAll(a))
+			return false;
 		
 		return true;
 	}

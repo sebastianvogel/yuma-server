@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
@@ -24,7 +23,7 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.model.Scope;
-import at.ait.dme.yuma.server.model.SemanticTag;
+import at.ait.dme.yuma.server.model.tag.SemanticTag;
 
 /**
  * A JPA database entity wrapper for an annotation object.
@@ -97,7 +96,6 @@ public class AnnotationEntity implements Serializable {
 	
 	@OneToMany(mappedBy="parent",
 			targetEntity=SemanticTagEntity.class, 
-			fetch=FetchType.EAGER,
 			cascade=CascadeType.ALL)
 	private Collection<SemanticTagEntity> tags = new ArrayList<SemanticTagEntity>();
 

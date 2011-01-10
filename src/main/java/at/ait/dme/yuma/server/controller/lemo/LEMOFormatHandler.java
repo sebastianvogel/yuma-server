@@ -21,8 +21,8 @@ import at.ait.dme.yuma.server.model.AnnotationTree;
 import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.model.MapKeys;
 import at.ait.dme.yuma.server.model.Scope;
-import at.ait.dme.yuma.server.model.SemanticRelation;
-import at.ait.dme.yuma.server.model.SemanticTag;
+import at.ait.dme.yuma.server.model.tag.SemanticRelation;
+import at.ait.dme.yuma.server.model.tag.SemanticTag;
 
 /**
  * Format handler for LEMO RDF format (in different serialization

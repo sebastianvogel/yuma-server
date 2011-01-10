@@ -33,6 +33,8 @@ import at.ait.dme.yuma.server.model.MapKeys;
  * Annotation DB implementation based on the 
  * MongoDB key/value store.
  * 
+ * TODO needs revision! Doesn't work with PlainLiteral!!!
+ * 
  * @author Rainer Simon
  */
 public class MongoAnnotationDB extends AbstractAnnotationDB {

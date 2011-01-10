@@ -3,7 +3,7 @@ package at.ait.dme.yuma.server.db.hibernate.entities;
 import javax.persistence.Embeddable;
 
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
-import at.ait.dme.yuma.server.model.SemanticRelation;
+import at.ait.dme.yuma.server.model.tag.SemanticRelation;
 
 /**
  * A JPA database entity wrapper for a SemanticRelation object.

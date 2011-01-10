@@ -33,5 +33,8 @@ public class MapKeys {
 	
 	public static final String RELATION_NAMESPACE = "namespace";
 	public static final String RELATION_PROPERTY = "property";
+	
+	public static final String PLAIN_LITERAL_VALUE = "val";
+	public static final String PLAIN_LITERAL_LANG = "lang";
 
 }

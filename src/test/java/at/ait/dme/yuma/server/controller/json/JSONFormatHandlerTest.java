@@ -18,8 +18,8 @@ import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.model.MapKeys;
 import at.ait.dme.yuma.server.model.Scope;
-import at.ait.dme.yuma.server.model.SemanticRelation;
-import at.ait.dme.yuma.server.model.SemanticTag;
+import at.ait.dme.yuma.server.model.tag.SemanticRelation;
+import at.ait.dme.yuma.server.model.tag.SemanticTag;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;

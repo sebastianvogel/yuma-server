@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
+import at.ait.dme.yuma.server.model.tag.SemanticTag;
 
 /**
  * The annotation.
