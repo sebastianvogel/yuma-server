@@ -311,7 +311,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	 * @return the map
 	 */
 	private DBObject toDBObject(Annotation annotation) {
-		return new BasicDBObject(format.toJSONFormat(annotation));
+		return new BasicDBObject(format.annotationToJSONFormat(annotation));
 	}
 	
 	/**

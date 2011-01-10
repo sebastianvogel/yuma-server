@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -138,7 +139,7 @@ public class JSONFormatHandler implements FormatHandler {
 	
 	@Override
 	public String serialize(Annotation annotation) {
-		return JSON.serialize(toJSONFormat(annotation));
+		return JSON.serialize(annotationToJSONFormat(annotation));
 	}
 
 	@Override
@@ -151,7 +152,7 @@ public class JSONFormatHandler implements FormatHandler {
 		
 		List<Map<String, Object>> jsonFormat = new ArrayList<Map<String,Object>>();
 		for (Annotation a : annotations) {
-			jsonFormat.add(toJSONFormat(a));
+			jsonFormat.add(annotationToJSONFormat(a));
 		}
 		return JSON.serialize(jsonFormat);
 	}
@@ -161,19 +162,19 @@ public class JSONFormatHandler implements FormatHandler {
 	 * @param annotation the annotation
 	 * @return the JSON-formatted map
 	 */
-	public Map<String, Object> toJSONFormat(Annotation annotation) {
+	public Map<String, Object> annotationToJSONFormat(Annotation annotation) {
 		Map<String, Object> map = annotation.toMap();
 		
 		map.put(MapKeys.ANNOTATION_TYPE, annotation.getType().toString());
 		map.put(MapKeys.ANNOTATION_SCOPE, annotation.getScope().toString());
 		map.put(MapKeys.ANNOTATION_CREATED, annotation.getCreated().getTime());
 		map.put(MapKeys.ANNOTATION_LAST_MODIFIED, annotation.getLastModified().getTime());
-		map.put(MapKeys.ANNOTATION_SEMANTIC_TAGS, toJSONFormat(annotation.getTags()));
+		map.put(MapKeys.ANNOTATION_SEMANTIC_TAGS, tagsToJSONFormat(annotation.getTags()));
 		
 		return map;
 	}
 	
-	private ArrayList<Map<String, Object>> toJSONFormat(List<SemanticTag> tags) {
+	private ArrayList<Map<String, Object>> tagsToJSONFormat(List<SemanticTag> tags) {
 		ArrayList<Map<String, Object>> maps = new ArrayList<Map<String,Object>>();
 		
 		if (tags != null) {
@@ -185,6 +186,9 @@ public class JSONFormatHandler implements FormatHandler {
 				if (relation != null)
 					map.put(MapKeys.TAG_RELATION, relation.toMap());
 				
+				map.put(MapKeys.TAG_ALT_LABELS, literalsToJSONFormat(tag.getAlternativeLabels()));
+				map.put(MapKeys.TAG_ALT_DESCRIPTIONS, literalsToJSONFormat(tag.getAlternativeDescriptions()));
+				
 				maps.add(map);
 			}
 		}
@@ -192,11 +196,27 @@ public class JSONFormatHandler implements FormatHandler {
 		return maps;
 	}
 	
+	private ArrayList<Map<String, String>> literalsToJSONFormat(List<PlainLiteral> literals) {
+		ArrayList<Map<String, String>> jsonFormat = new ArrayList<Map<String,String>>();
+		
+		for (PlainLiteral l : literals) {
+			HashMap<String, String> m = new HashMap<String, String>();
+			m.put(MapKeys.PLAIN_LITERAL_VALUE, l.getValue());
+			
+			if (l.getLanguage() != null)
+				m.put(MapKeys.PLAIN_LITERAL_LANG, l.getLanguage());
+			
+			jsonFormat.add(m);
+		}
+		
+		return jsonFormat;
+	}
+	
 	public List<Map<String, Object>> toJSONFormat(AnnotationTree tree) {
 		List<Map<String, Object>> jsonTree = new ArrayList<Map<String,Object>>();
 		
 		for (Annotation a : tree.getRootAnnotations()) {
-			Map<String, Object> root = toJSONFormat(a);
+			Map<String, Object> root = annotationToJSONFormat(a);
 			buildTree(root, tree);
 			jsonTree.add(root);
 		}
@@ -214,7 +234,7 @@ public class JSONFormatHandler implements FormatHandler {
 		String parentId = (String) parent.get(MapKeys.ANNOTATION_ID);
 		for (Annotation a : tree.getChildren(parentId)) {
 			// Append each reply to the list...
-			Map<String, Object> reply = toJSONFormat(a); 
+			Map<String, Object> reply = annotationToJSONFormat(a); 
 			repliesList.add(reply);
 			
 			// ...and continue recursively

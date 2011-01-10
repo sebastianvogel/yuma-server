@@ -245,7 +245,7 @@ public class SemanticTag {
 		
 		if (!equals(t.altLabels, this.altLabels))
 			return false;
-		
+
 		if (!equals(t.altDescriptions, this.altDescriptions))
 			return false;
 

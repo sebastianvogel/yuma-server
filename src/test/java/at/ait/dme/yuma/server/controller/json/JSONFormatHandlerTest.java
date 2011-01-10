@@ -38,7 +38,7 @@ public class JSONFormatHandlerTest {
 	public void testJSONParsing() throws Exception {
 		FormatHandler jsonFormat = new JSONFormatHandler();
 		Annotation a = jsonFormat.parse(Data.ANNOTATION_JSON_UPDATE);
-				
+		
 		assertEquals("", a.getParentId());
 		assertEquals("", a.getRootId());
 		assertEquals("Ponte 25 de Abril", a.getTitle());
@@ -76,7 +76,7 @@ public class JSONFormatHandlerTest {
 		tag.put(MapKeys.TAG_LABEL, "Lisbon");
 		tag.put(MapKeys.TAG_LANG, "en");
 		tag.put(MapKeys.TAG_TYPE, "place");
-		tag.put(MapKeys.TAG_RELATION, new SemanticRelation(null, "spatiallyContains"));
+		tag.put(MapKeys.TAG_RELATION, new SemanticRelation("http://geonames.org/geo#", "spatiallyContains"));
 		assertTrue(tags.contains(new SemanticTag(tag)));
 		
 		tag.clear();
@@ -84,7 +84,7 @@ public class JSONFormatHandlerTest {
 		tag.put(MapKeys.TAG_LABEL, "Portugal");
 		tag.put(MapKeys.TAG_LANG, "en");
 		tag.put(MapKeys.TAG_TYPE, "place");
-		tag.put(MapKeys.TAG_RELATION, new SemanticRelation(null, "spatiallyContains"));
+		tag.put(MapKeys.TAG_RELATION, new SemanticRelation("http://geonames.org/geo#", "spatiallyContains"));
 		assertTrue(tags.contains(new SemanticTag(tag)));
 	}
 
@@ -122,7 +122,7 @@ public class JSONFormatHandlerTest {
 				  "</svg:defs>" +
 				"</svg:svg>" +
 			  "\""));
-		assertTrue(serialized.contains("\"type\" : \"IMAGE\""));
+		assertTrue(serialized.contains("\"media-type\" : \"IMAGE\""));
 		assertTrue(serialized.contains("\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\""));
 
 		Pattern p = Pattern.compile("\"tags\" : \\[((.|\n)*?)\\]");
