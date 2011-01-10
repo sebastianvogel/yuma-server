@@ -17,6 +17,7 @@ public class DocumentationNavbar extends Navbar {
 		addNavbarItem("Overview", Overview.class, Overview.class == selected);
 		addNavbarItem("API", API.class, API.class == selected);
 		addNavbarItem("Developers", Developer.class, Developer.class == selected);
+		addNavbarItem("Get in Touch", Contact.class, Contact.class == selected);
 	}
 	
 }
