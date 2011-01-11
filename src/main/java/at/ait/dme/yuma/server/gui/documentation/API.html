@@ -40,10 +40,87 @@
 		the MIME type specified in the HTTP Accept header (content negotiation).</li>	
 	</ul>
 	
+	<h3>YUMA Annotation Model</h3>
+	<p>
+	YUMA represents annotations as hierarchical data structures, with only a few mandatory properties.
+	Fig. 1 shows an diagram of the YUMA Annotation Model. (Green boxes represent actual classes. Blue boxes
+	represent enumerations, i.e. the range of possible values for the <span class="code">Scope</span> and
+	<span class="code">Media Type</span> fields, respectively.) The upper properties - above the dotted
+	line - are mandatory properties that must be set. Pproperties below the dotted line are optional. 
+	</p>
+	
+	<img src="images/annotation-classes.png" alt="YUMA Annotation Class Model" title="YUMA Annotation Class Model" />
+	<span class="caption">Fig.1 YUMA Annotation Class Model</span>
+	
+	<p>
+	Some Additional Remarks:
+	</p>
+	<ul>
+		<li>The <span class="code">Parent ID</span> and <span class="code">Root ID</span> fields are only
+		needed if the annotation is a reply to another annotation. In this case, the 
+		<span class="code">Parent ID</span> is the ID of the immediate parent annotation, and the
+		<span class="code">Root ID</span> is the top-most annotation in the reply thread.</li>
+		
+		<li>The <span class="code">Fragment</span> field contains the media fragment (if any). YUMA
+		does not make any assumptions about the syntax of the fragment identifier; the field is simply
+		a String field that can take any arbitrary value. It is the responsibility of the client
+		to make sense of the fragment information.</li>
+		
+		<li>The <span class="code">Alternative Labels</span> and <span class="code">Alternative
+		Descriptions</span> fields in the <span class="code">Semantic Tag</span> class are lists
+		of <span class="code">Plain Literals</span>. A <span class="code">Plain Literal</span> is simply
+		a String with an optional language code.</li>
+	</ul>
+	
 	<h3>JSON Annotation Format</h3>
-	<p>@TODO</p>
+	<p>The most compact and straight-forward serialization format for YUMA annotations is implemented in
+	<a href="http://www.json.org/">JSON</a>. Properties of the annotation model are mapped to a 
+	JSON structure using pre-defined keys. The JSON snippet below provides an example.</p>
+	
+	<p class="code">
+		<pre>
+  {
+    &quot;parent-id&quot; : &quot;&quot; ,
+    &quot;root-id&quot; : &quot;&quot; , 
+    &quot;title&quot; : &quot;The Pillars of Hercules&quot; , 
+    &quot;text&quot; : &quot;In antiquity, the Strait of Gibraltar was also known as The Pillars of Hercules.&quot;,
+    &quot;scope&quot; : &quot;PUBLIC&quot; ,
+    &quot;last-modified&quot; : 1224043200000 ,
+    &quot;created&quot; : 1224043200000 ,
+    &quot;created-by&quot; : &quot;rsimon&quot; ,
+    &quot;media-type&quot; : &quot;IMAGE&quot; , 
+    &quot;object-uri&quot; : &quot;http://dme.ait.ac.at/object/lissabon.jpg&quot;
+  }
+		</pre>
+	</p>
 	
 	<h3>RDF Annotation Format</h3>
-	<p>@TODO</p>
+	<p>The YUMA Server also offers RDF output in different RDF vocabularies and serialization
+	languages. The snippet below provides an example for RDF/XML serialization according to the
+	LEMO annotation vocabulary.</p>
+	
+	<p class="code">
+		<pre>
+ &lt;rdf:RDF
+    xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+    xmlns:j.0=&quot;http://geonames.org/geo#&quot;
+    xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot;
+    xmlns:scope=&quot;http://lemo.mminf.univie.ac.at/ann-tel#&quot;
+    xmlns:a=&quot;http://lemo.mminf.univie.ac.at/annotation-core#&quot;  &gt; 
+   &lt;rdf:Description rdf:about=&quot;http://localhost:8081/yuma-server/api/annotation/123&quot; &gt;
+     &lt;scope:scope &gt;PUBLIC &lt;/scope:scope &gt;
+     &lt;j.0:spatiallyContains &gt;http://www.geonames.org/2264397/ &lt;/j.0:spatiallyContains &gt;
+     &lt;a:modified &gt;Wed Oct 15 06:00:00 CEST 2008 &lt;/a:modified &gt;
+     &lt;a:created &gt;Wed Oct 15 06:00:00 CEST 2008 &lt;/a:created &gt;
+     &lt;rdf:type rdf:resource=&quot;http://lemo.mminf.univie.ac.at/annotation-core#Annotation&quot;/ &gt;
+     &lt;a:annotates &gt;http://dme.ait.ac.at/object/lissabon.jpg &lt;/a:annotates &gt;
+     &lt;dc:creator &gt;rsimon &lt;/dc:creator &gt;
+     &lt;j.0:spatiallyContains &gt;http://www.geonames.org/2267057/ &lt;/j.0:spatiallyContains &gt;
+     &lt;a:label &gt;In antiquity, the Strait of Gibraltar was also known as The Pillars of Hercules.&lt;/a:label &gt;
+     &lt;dc:title &gt;The Pillars of Hercules&lt;/dc:title &gt;
+   &lt;/rdf:Description &gt;
+ &lt;/rdf:RDF &gt;
+		</pre>
+	</p>
 </wicket:extend>
 		

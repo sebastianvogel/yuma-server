@@ -32,7 +32,7 @@ body {
 }
 
 .content h4 {
-	color:#790b1a;
+	color:#000
 	margin-top:20px;
 	margin-bottom:0px;
 }
@@ -61,5 +61,12 @@ body {
 
 .content .code {
 	font-family:"Courier New";
+	font-weight:bold;
+}
+
+.content .caption {
+	display:block;
+	width:770px;
+	text-align:center;
 	font-weight:bold;
 }
