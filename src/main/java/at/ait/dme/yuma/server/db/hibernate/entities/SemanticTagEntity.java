@@ -92,7 +92,8 @@ public class SemanticTagEntity implements Serializable {
 			this.altDescriptions.add(new PlainLiteralEntity(this, l));
 		}
 		
-		this.setGeolocation(t.getGeolocation().toWKT());
+		if (t.getGeolocation() != null)
+			this.setGeolocation(t.getGeolocation().toWKT());
 	}
 	
 	public SemanticTag toSemanticTag()  {
@@ -116,7 +117,8 @@ public class SemanticTagEntity implements Serializable {
 				t.addAlternativeDescription(l.toPlainLiteral());
 			}
 			
-			t.setGeolocation(GeoLocation.fromWKT(geolocation));
+			if (geolocation != null)
+				t.setGeolocation(GeoLocation.fromWKT(geolocation));
 			
 			return t;
 		} catch (URISyntaxException e) {

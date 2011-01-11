@@ -41,7 +41,7 @@ public class PlainLiteralEntity implements Serializable {
 	}
 	
 	public PlainLiteral toPlainLiteral() {
-		return null;
+		return new PlainLiteral(value, lang);
 	}
 
 	public void setId(Long id) {
