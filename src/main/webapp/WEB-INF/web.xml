@@ -11,7 +11,7 @@
 	</context-param>
 	
 	<context-param>
-		<param-name>client.base.url</param-name>
+		<param-name>suite.base.url</param-name>
 		<param-value>http://localhost:8080/yuma-suite/</param-value>	
 	</context-param>
 

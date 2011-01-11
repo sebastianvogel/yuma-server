@@ -26,6 +26,7 @@ public class Config {
 	private final String dbDir;
 	private final String dbFlags;	
 	private final String serverBaseUrl;
+	private final String suiteBaseUrl;
 	private final String adminUsername;
 	private final String adminPassword;
 
@@ -38,6 +39,7 @@ public class Config {
 		this.dbDir = builder.dbDir;
 		this.dbFlags = builder.dbFlags;		
 		this.serverBaseUrl = builder.serverBaseUrl;
+		this.suiteBaseUrl = builder.suiteBaseUrl;
 		this.adminUsername = builder.adminUsername;
 		this.adminPassword = builder.adminPassword;
 		this.dbImpl = builder.dbImpl;
@@ -50,6 +52,7 @@ public class Config {
 		private String dbDriver = null;
 		private String dbDriverProtocol = null;		
 		private String serverBaseUrl = null;
+		private String suiteBaseUrl = null;
 		
 		private String adminUsername = null;
 		private String adminPassword = null;
@@ -62,9 +65,10 @@ public class Config {
 		private String dbDir = null;
 		private String dbFlags = null;	
 		
-		public Builder(String dbImpl, String serverBaseUrl, String adminUsername, String adminPassword) {
+		public Builder(String dbImpl, String serverBaseUrl, String suiteBaseUrl, String adminUsername, String adminPassword) {
 			this.dbImpl = dbImpl;			
 			this.serverBaseUrl = serverBaseUrl;
+			this.suiteBaseUrl = suiteBaseUrl;
 			this.adminUsername = adminUsername;
 			this.adminPassword = adminPassword;
 		}
@@ -171,6 +175,10 @@ public class Config {
 	
 	public String getServerBaseUrl() {
 		return serverBaseUrl;
+	}
+	
+	public String getSuiteBaseUrl() {
+		return suiteBaseUrl;
 	}
 	
 	public String getAdminUsername() {

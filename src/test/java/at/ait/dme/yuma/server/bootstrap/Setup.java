@@ -19,7 +19,8 @@ public class Setup {
     public static void buildHibernateConfiguration() throws AnnotationDatabaseException {
     	new Config.Builder(
     			"at.ait.dme.yuma.server.db.hibernate.HibernateAnnotationDB",				
-				"http://localhost:8081/yuma-server/",
+				"http://localhost:8080/yuma-server/",
+				"http://localhost:8080/yuma-suite/",
 				"admin",
 				"admin"
 		)    	
@@ -38,7 +39,8 @@ public class Setup {
     public static void buildMongoDBConfiguration() throws AnnotationDatabaseException {
     	new Config.Builder(
     			"at.ait.dme.yuma.server.db.mongodb.MongoAnnotationDB",				
-				"http://localhost:8081/yuma-server/",
+				"http://localhost:8080/yuma-server/",
+				"http://localhost:8080/yuma-suite",
 				"admin",
 				"admin"
 		)    	

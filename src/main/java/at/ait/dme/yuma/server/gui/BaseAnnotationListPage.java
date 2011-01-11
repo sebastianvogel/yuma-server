@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 
 import at.ait.dme.yuma.server.URIBuilder;
+import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.gui.feeds.User;
 import at.ait.dme.yuma.server.gui.search.Search;
 import at.ait.dme.yuma.server.model.Annotation;
@@ -33,6 +34,7 @@ public abstract class BaseAnnotationListPage extends WebPage {
 
 	private static final String SPAN = "<span class=\"grad\"></span>";
 	private static final String ELLIPSIS = "...";
+	private static final String SUITE_BASE_URL = Config.getInstance().getSuiteBaseUrl();
 	
 	public BaseAnnotationListPage() {
 		add(new BookmarkablePageLink<String>("home", Search.class));
@@ -97,6 +99,12 @@ public abstract class BaseAnnotationListPage extends WebPage {
 			item.add(new Label("tags", tags.toString()));
 			
 			item.add(new ExternalLink("uri", uri, uri));
+	
+			item.add(new ExternalLink("dl-json", uri + ".json", "JSON"));
+			item.add(new ExternalLink("dl-rdf-xml", uri + ".rdf", "RDF/XML"));
+			item.add(new ExternalLink("dl-rdf-turtle", uri + ".turtle", "RDF/TURTLE"));
+			
+			item.add(new ExternalLink("open-in-client", SUITE_BASE_URL + "?objectUri=" + a.getObjectUri(), "Open in Client"));
 		}
 		
 	}
