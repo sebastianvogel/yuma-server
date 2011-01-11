@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.tag.PlainLiteral;
 import at.ait.dme.yuma.server.model.tag.SemanticTag;
+import at.ait.dme.yuma.server.model.tag.geo.GeoLocation;
 
 /**
  * A JPA database entity wrapper for a SemanticTag object.
@@ -67,6 +68,9 @@ public class SemanticTagEntity implements Serializable {
 			cascade=CascadeType.ALL)
 	private List<PlainLiteralEntity> altDescriptions = new ArrayList<PlainLiteralEntity>();
 	
+	@Column
+	private String geolocation;
+	
 	public SemanticTagEntity() { }
 	
 	public SemanticTagEntity(AnnotationEntity parent, SemanticTag t) {
@@ -87,6 +91,8 @@ public class SemanticTagEntity implements Serializable {
 		for (PlainLiteral l : t.getAlternativeDescriptions()) {
 			this.altDescriptions.add(new PlainLiteralEntity(this, l));
 		}
+		
+		this.setGeolocation(t.getGeolocation().toWKT());
 	}
 	
 	public SemanticTag toSemanticTag()  {
@@ -109,6 +115,8 @@ public class SemanticTagEntity implements Serializable {
 			for (PlainLiteralEntity l : altDescriptions) {
 				t.addAlternativeDescription(l.toPlainLiteral());
 			}
+			
+			t.setGeolocation(GeoLocation.fromWKT(geolocation));
 			
 			return t;
 		} catch (URISyntaxException e) {
@@ -198,6 +206,14 @@ public class SemanticTagEntity implements Serializable {
 
 	public List<PlainLiteralEntity> getAltDescriptions() {
 		return altDescriptions;
+	}
+
+	public void setGeolocation(String geolocation) {
+		this.geolocation = geolocation;
+	}
+
+	public String getGeolocation() {
+		return geolocation;
 	}
 
 }

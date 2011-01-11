@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.MapKeys;
+import at.ait.dme.yuma.server.model.tag.geo.GeoLocation;
 
 /**
  * A semantic tag which is part of an annotation. A semantic
@@ -74,6 +75,13 @@ public class SemanticTag {
 	 * OPTIONAL
 	 */
 	private List<PlainLiteral> altDescriptions;
+	
+	/**
+	 * Geographical location of the real-world entity represented by this semantic tag
+	 * 
+	 * OPTIONAL
+	 */
+	private GeoLocation geolocation;
 	
 	/**
 	 * Creates a semantic tag based on it's mandatory properties.
@@ -192,6 +200,14 @@ public class SemanticTag {
 	
 	public String getAlternativeDescription(String language) {
 		return getPlainLiteral(language, altDescriptions);
+	}
+	
+	public void setGeolocation(GeoLocation geolocation) {
+		this.geolocation = geolocation;
+	}
+
+	public GeoLocation getGeolocation() {
+		return geolocation;
 	}
 	
 	public Map<String, Object> toMap() {

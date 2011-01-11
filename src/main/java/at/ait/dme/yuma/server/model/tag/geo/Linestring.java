@@ -3,39 +3,34 @@ package at.ait.dme.yuma.server.model.tag.geo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Polygon extends GeoLocation {
+public class Linestring extends GeoLocation {
 
 	private List<Point> points;
 	
-	public Polygon() {
+	public Linestring() {
 		this.points = new ArrayList<Point>();
 	}
 	
-	public Polygon(List<Point> points) {
+	public Linestring(List<Point> points) {
 		this.points = points;
 	}
 	
 	public void addPoint(Point p) {
 		points.add(p);
 	}
-		
+	
+	public List<Point> getPoints() {
+		return points;
+	}
+	
 	@Override
 	public String toWKT() {
-		close();
 		StringBuffer sb = new StringBuffer();
 		for (Point p : points) {
 			sb.append(p.getX() + " " + p.getY() + ",");
 		}
 		sb.deleteCharAt(sb.length() - 1);
-		return WKT_POLYGON.replace("@coords@", sb.toString());
-	}
-	
-	private void close() {
-		if (points.size() > 0) {
-			if (!points.get(0).equals(points.get(points.size() - 1))) {
-				points.add(new Point(points.get(points.size() - 1)));
-			}
-		}
+		return WKT_LINESTRING.replace("@coords@", sb.toString());
 	}
 
 }
