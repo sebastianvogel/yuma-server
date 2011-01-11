@@ -5,6 +5,14 @@ WARNING: The YUMA Annotation Server is not yet completed. The documentation
 below is PRELIMINARY DEVELOPER DOC! And not yet suitable for end users!
 Please contact rainer.simon@ait.ac.at for further details.
 
+UPDATE: You can check out a sandbox instance of the YUMA Annotation Server at
+
+http://dme.ait.ac.at/yuma-server
+
+Some more online documentation (included in the server) can be found at 
+
+http://dme.ait.ac.at/yuma-server/doc
+
 Requirements
 ------------
 The YUMA Annotation Server requires Java 1.6, a Servlet container such as

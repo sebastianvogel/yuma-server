@@ -31,7 +31,8 @@ public class WicketApplication extends AuthenticatedWebApplication {
 				User.class,
 				new String[]{User.PARAM_USERNAME}
 		));
-		
+
+		this.mountBookmarkablePage("doc", Overview.class);
 		this.mountBookmarkablePage("doc/overview", Overview.class);
 		this.mountBookmarkablePage("doc/api", API.class);
 		this.mountBookmarkablePage("doc/developer", Developer.class);

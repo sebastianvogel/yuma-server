@@ -46,7 +46,7 @@
 	Fig. 1 shows an diagram of the YUMA Annotation Model. (Green boxes represent actual classes. Blue boxes
 	represent enumerations, i.e. the range of possible values for the <span class="code">Scope</span> and
 	<span class="code">Media Type</span> fields, respectively.) The upper properties - above the dotted
-	line - are mandatory properties that must be set. Pproperties below the dotted line are optional. 
+	line - are mandatory properties that must be set. Properties below the dotted line are optional. 
 	</p>
 	
 	<img src="images/annotation-classes.png" alt="YUMA Annotation Class Model" title="YUMA Annotation Class Model" />
@@ -75,7 +75,9 @@
 	<h3>JSON Annotation Format</h3>
 	<p>The most compact and straight-forward serialization format for YUMA annotations is implemented in
 	<a href="http://www.json.org/">JSON</a>. Properties of the annotation model are mapped to a 
-	JSON structure using pre-defined keys. The JSON snippet below provides an example.</p>
+	JSON structure using pre-defined keys. The JSON snippet below provides an example. (Please note
+	that timestamps are serialized according to <a href="http://en.wikipedia.org/wiki/Unix_time">Unix 
+	Time</a>.)</p>
 	
 	<p class="code">
 		<pre>
