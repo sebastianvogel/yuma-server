@@ -81,6 +81,24 @@ public class LEMOAnnotationController extends AbstractAnnotationController {
 		
 		return super.getAnnotation(id.substring(0, id.indexOf('.')), new LEMOFormatHandler(LEMOFormatHandler.TURTLE));
 	}
+
+	@GET
+	@Produces("text/rdf+n3")
+	@Path("/annotation/{id}")
+	public Response getAnnotationN3(@PathParam("id") String id)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		return super.getAnnotation(id, new LEMOFormatHandler(LEMOFormatHandler.N3));
+	}
+	
+	@GET
+	@Produces("text/rdf+n3")
+	@Path("/annotation/{id:.+\\.n3}")
+	public Response getAnnotationN3_forceN3(@PathParam("id") String id)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		return super.getAnnotation(id.substring(0, id.indexOf('.')), new LEMOFormatHandler(LEMOFormatHandler.N3));
+	}	
 	
 	@GET
 	@Produces("application/rdf+xml")
