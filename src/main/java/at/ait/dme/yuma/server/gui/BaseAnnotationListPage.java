@@ -99,7 +99,11 @@ public abstract class BaseAnnotationListPage extends WebPage {
 			item.add(new ExternalLink("dl-rdf-n3", uri + ".n3", "N3"));
 			item.add(new ExternalLink("dl-rdf-turtle", uri + ".turtle", "Turtle"));
 			
-			item.add(new ExternalLink("open-in-client", SUITE_BASE_URL + "?objectUri=" + a.getObjectUri(), "Open in Client"));
+			item.add(new ExternalLink("open-in-client", 
+								SUITE_BASE_URL + "?objectUri=" + a.getObjectUri(),
+								"Open in " + a.getType().getScreenName() + " Tool")
+							.add(new SimpleAttributeModifier("title", "Open in " + a.getType().getScreenName() + " Annotation Tool"))
+			);
 		}
 		
 	}
