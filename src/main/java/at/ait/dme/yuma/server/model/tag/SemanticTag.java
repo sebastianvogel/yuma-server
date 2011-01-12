@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.MapKeys;
-import at.ait.dme.yuma.server.model.tag.geo.GeoLocation;
+import at.ait.dme.yuma.server.model.geo.GeoLocation;
 
 /**
  * A semantic tag which is part of an annotation. A semantic

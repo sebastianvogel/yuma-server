@@ -17,9 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
+import at.ait.dme.yuma.server.model.geo.GeoLocation;
 import at.ait.dme.yuma.server.model.tag.PlainLiteral;
 import at.ait.dme.yuma.server.model.tag.SemanticTag;
-import at.ait.dme.yuma.server.model.tag.geo.GeoLocation;
 
 /**
  * A JPA database entity wrapper for a SemanticTag object.

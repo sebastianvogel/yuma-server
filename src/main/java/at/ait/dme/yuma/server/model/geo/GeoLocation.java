@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.model.tag.geo;
+package at.ait.dme.yuma.server.model.geo;
 
 public abstract class GeoLocation {
 	
