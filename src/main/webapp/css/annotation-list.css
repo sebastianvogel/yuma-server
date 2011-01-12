@@ -98,27 +98,42 @@ td.no-border {
 	text-align:right;
 }
 
-a.btn-json, a.btn-rdf {
-	font-size:9px;
-	padding:1px 3px;
+a.btn-json, a.btn-rdf, a.btn-xml {
+	background-color:#f5f5f5;
+    border:1px solid #dedede;
+    border-top:1px solid #eee;
+    border-left:1px solid #eee;
+    color:#565656;
+    font-family:"Lucida Grande", "Verdana", "Arial";	
+	font-size:10px;
+	padding:2px 6px;
 	position:relative;
 	top:-1px;
 }
 
-a.btn-json:hover, a.btn-rdf:hover {
-	text-decoration:none;
+a.btn-json:visited, a.btn-rdf:visited, a.btn-xml:visited {
+    color:#565656;	
 }
 
-td.content a.btn-json {
-	color:#e20000;
-	border:1px solid #e20000;
-	background-color:#ffe2e2;
+a.btn-json:hover {
+	background-color:#fbe3e4;
+    border:1px solid #fbc2c4;
+    color:#d12f19;
+    text-decoration:none;
 }
 
-td.content a.btn-rdf {
-	color:#0000e2;
-	border:1px solid #0000e2;
-	background-color:#e2e2ff;
+a.btn-rdf:hover {
+    background-color:#dff4ff;
+    border:1px solid #c2e1ef;
+    color:#336699;
+    text-decoration:none;
+}
+
+a.btn-xml:hover {
+    background-color:#E6EFC2;
+    border:1px solid #C6D880;
+    color:#529214;
+    text-decoration:none;    
 }
 
 a {
