@@ -9,6 +9,7 @@ import at.ait.dme.yuma.server.gui.admin.Dashboard;
 import at.ait.dme.yuma.server.gui.admin.LoginPage;
 import at.ait.dme.yuma.server.gui.admin.LogoutPage;
 import at.ait.dme.yuma.server.gui.documentation.API;
+import at.ait.dme.yuma.server.gui.documentation.Contact;
 import at.ait.dme.yuma.server.gui.documentation.Developer;
 import at.ait.dme.yuma.server.gui.documentation.Overview;
 import at.ait.dme.yuma.server.gui.feeds.Timeline;
@@ -36,6 +37,7 @@ public class WicketApplication extends AuthenticatedWebApplication {
 		this.mountBookmarkablePage("doc/overview", Overview.class);
 		this.mountBookmarkablePage("doc/api", API.class);
 		this.mountBookmarkablePage("doc/developer", Developer.class);
+		this.mountBookmarkablePage("doc/contact", Contact.class);
 
 		this.mountBookmarkablePage("admin", Dashboard.class);
 		this.mountBookmarkablePage("admin/login", LoginPage.class);
