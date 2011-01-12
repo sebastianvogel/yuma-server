@@ -94,6 +94,10 @@ td.content {
 	border-bottom-right-radius: 3px;
 }
 
+td.no-border {
+	text-align:right;
+}
+
 a.btn-json, a.btn-rdf {
 	font-size:9px;
 	padding:1px 3px;
