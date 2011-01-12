@@ -87,17 +87,9 @@ public abstract class BaseAnnotationListPage extends WebPage {
 			
 			item.add(new Label("lastModified", a.getLastModified().toString()));
 			item.add(new Label("text", a.getText()));
-			String uri = URIBuilder.toURI(a.getAnnotationID()).toString();
-
-			StringBuffer tags = new StringBuffer();
-			if (a.getTags() != null) {
-				for (SemanticTag t : a.getTags()) {
-					tags.append(t.getPrimaryLabel() + ", ");
-				}
-				tags.delete(tags.length() - 2, tags.length());
-			}
-			item.add(new Label("tags", tags.toString()));
+			item.add(new TagListView("tags", a.getTags()));
 			
+			String uri = URIBuilder.toURI(a.getAnnotationID()).toString();
 			item.add(new ExternalLink("uri", uri, uri));
 	
 			item.add(new ExternalLink("dl-json", uri + ".json", "JSON"));
@@ -106,6 +98,27 @@ public abstract class BaseAnnotationListPage extends WebPage {
 			item.add(new ExternalLink("dl-rdf-turtle", uri + ".turtle", "Turtle"));
 			
 			item.add(new ExternalLink("open-in-client", SUITE_BASE_URL + "?objectUri=" + a.getObjectUri(), "Open in Client"));
+		}
+		
+	}
+	
+	private class TagListView extends ListView<SemanticTag> {
+
+		private static final long serialVersionUID = -8059370816141108712L;
+
+		public TagListView(String id, List<SemanticTag> list) {
+			super(id, list);
+		}
+
+		@Override
+		protected void populateItem(ListItem<SemanticTag> item) {
+			SemanticTag t = item.getModelObject();
+			
+			ExternalLink link = new ExternalLink("tag", t.getURI().toString(), t.getPrimaryLabel());
+			if (t.getPrimaryDescription() != null) {
+				link.add(new SimpleAttributeModifier("title", t.getPrimaryDescription()));
+			}
+			item.add(link);
 		}
 		
 	}

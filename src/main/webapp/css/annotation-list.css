@@ -94,6 +94,16 @@ td.content {
 	border-bottom-right-radius: 3px;
 }
 
+ul.tags {
+	padding:0px;
+	margin:0px;
+}
+
+li.tag {
+	display:inline;
+	padding:0px 5px 0px 0px;
+}
+
 td.no-border {
 	text-align:right;
 }
