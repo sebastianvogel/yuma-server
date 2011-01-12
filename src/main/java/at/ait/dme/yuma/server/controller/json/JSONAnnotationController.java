@@ -66,6 +66,15 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 	
 	@GET
 	@Produces("application/json")
+	@Path("/annotation/{id:.+\\.json}")
+	public Response getAnnotation_forceJSON(@PathParam("id") String id)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		return super.getAnnotation(id.substring(0, id.indexOf('.')), new JSONFormatHandler());
+	}
+	
+	@GET
+	@Produces("application/json")
 	@Path("/tree/{objectUri}")
 	public Response getAnnotationTree(@PathParam("objectUri") String objectUri)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {

@@ -94,6 +94,29 @@ td.content {
 	border-bottom-right-radius: 3px;
 }
 
+a.btn-json, a.btn-rdf {
+	font-size:9px;
+	padding:1px 3px;
+	position:relative;
+	top:-1px;
+}
+
+a.btn-json:hover, a.btn-rdf:hover {
+	text-decoration:none;
+}
+
+td.content a.btn-json {
+	color:#e20000;
+	border:1px solid #e20000;
+	background-color:#ffe2e2;
+}
+
+td.content a.btn-rdf {
+	color:#0000e2;
+	border:1px solid #0000e2;
+	background-color:#e2e2ff;
+}
+
 a {
 	color:#790b1a;
 	text-decoration:none;

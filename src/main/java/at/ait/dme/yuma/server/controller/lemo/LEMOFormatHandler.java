@@ -147,9 +147,11 @@ public class LEMOFormatHandler implements FormatHandler {
 		annotation.addProperty(m.createProperty(NS_ANNOTATION, "label"), a.getText());
 		annotation.addProperty(m.createProperty(NS_SCOPE, "scope"), a.getScope().name());
 		
-		for (SemanticTag t : a.getTags()) {
-			SemanticRelation r = t.getRelation();
-			annotation.addProperty(m.createProperty(r.getNamespace(), r.getProperty()), t.getURI().toString());
+		if (a.getTags() != null) {
+			for (SemanticTag t : a.getTags()) {
+				SemanticRelation r = t.getRelation();
+				annotation.addProperty(m.createProperty(r.getNamespace(), r.getProperty()), t.getURI().toString());
+			}
 		}
 	}
 	

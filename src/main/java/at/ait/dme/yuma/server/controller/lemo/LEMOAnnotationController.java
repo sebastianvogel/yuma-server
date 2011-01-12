@@ -25,6 +25,7 @@ import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
  * 
  * @author Rainer Simon
  */
+@Path("/api")
 public class LEMOAnnotationController extends AbstractAnnotationController {
 
 	@POST
@@ -53,6 +54,15 @@ public class LEMOAnnotationController extends AbstractAnnotationController {
 		
 		return super.getAnnotation(id, new LEMOFormatHandler());
 	}
+	
+	@GET
+	@Produces("application/rdf+xml")
+	@Path("/annotation/{id:.+\\.rdf}")
+	public Response getAnnotationXML_forceXML(@PathParam("id") String id)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		return super.getAnnotation(id.substring(0, id.indexOf('.')), new LEMOFormatHandler());
+	}
 
 	@GET
 	@Produces("application/x-turtle")
@@ -61,6 +71,15 @@ public class LEMOAnnotationController extends AbstractAnnotationController {
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
 		return super.getAnnotation(id, new LEMOFormatHandler(LEMOFormatHandler.TURTLE));
+	}
+	
+	@GET
+	@Produces("application/x-turtle")
+	@Path("/annotation/{id:.+\\.turtle}")
+	public Response getAnnotationTurtle_forceTurtle(@PathParam("id") String id)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		return super.getAnnotation(id.substring(0, id.indexOf('.')), new LEMOFormatHandler(LEMOFormatHandler.TURTLE));
 	}
 	
 	@GET
