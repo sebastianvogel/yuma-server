@@ -84,9 +84,11 @@ public abstract class BaseAnnotationListPage extends WebPage {
 			if (screenUri.length() > 40)
 				screenUri = screenUri.substring(0, 55) + ELLIPSIS;
 			item.add(new ExternalLink("objectUri", a.getObjectUri(), screenUri));
-			
+
+			item.add(new Label("created", a.getCreated().toString()));
 			item.add(new Label("lastModified", a.getLastModified().toString()));
 			item.add(new Label("text", a.getText()));
+			item.add(new Label("scope", a.getScope().name()));
 			item.add(new TagListView("tags", a.getTags()));
 			
 			String uri = URIBuilder.toURI(a.getAnnotationID()).toString();
