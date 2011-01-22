@@ -76,8 +76,8 @@ public class AnnotationEntity implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
 	private Date lastModified;
 	
-    @Column(length = 64)
-	private String createdBy;
+    @Column
+	private UserEntity createdBy;
 	
     @Column(length = 128)	
 	private String title;
@@ -111,7 +111,7 @@ public class AnnotationEntity implements Serializable {
 		this.setObjectUri(a.getObjectUri());
 		this.setCreated(a.getCreated());
 		this.setLastModified(a.getLastModified());
-		this.setCreatedBy(a.getCreatedBy());
+		this.setCreatedBy(new UserEntity(a.getCreatedBy()));
 		this.setTitle(a.getTitle());
 		this.setText(a.getText());
 		this.setType(a.getType());
@@ -127,7 +127,7 @@ public class AnnotationEntity implements Serializable {
 		Annotation a = new Annotation(
 			Long.toString(id),
 			objectUri,
-			createdBy,
+			createdBy.toUser(),
 			created,
 			lastModified,
 			type,
@@ -199,11 +199,11 @@ public class AnnotationEntity implements Serializable {
 		return lastModified;
 	}
 
-	public void setCreatedBy(String createdBy) {
+	public void setCreatedBy(UserEntity createdBy) {
 		this.createdBy = createdBy;
 	}
 
-	public String getCreatedBy() {
+	public UserEntity getCreatedBy() {
 		return createdBy;
 	}
 

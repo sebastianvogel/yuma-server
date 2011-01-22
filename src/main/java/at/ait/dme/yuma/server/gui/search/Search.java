@@ -11,7 +11,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 
 import at.ait.dme.yuma.server.gui.admin.Dashboard;
 import at.ait.dme.yuma.server.gui.documentation.Overview;
-import at.ait.dme.yuma.server.gui.feeds.Timeline;
+import at.ait.dme.yuma.server.gui.feeds.TimelinePage;
 
 /**
  * The YUMA server homepage with search form and links to other 
@@ -26,7 +26,7 @@ public class Search extends WebPage {
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public Search(final PageParameters parameters) {
         add(new SearchForm("form", new Query()));
-        add(new BookmarkablePageLink("link-timeline", Timeline.class));
+        add(new BookmarkablePageLink("link-timeline", TimelinePage.class));
         add(new BookmarkablePageLink("link-advanced", AdvancedSearch.class));
         add(new BookmarkablePageLink("link-doc", Overview.class));
         add(new BookmarkablePageLink("link-login", Dashboard.class));

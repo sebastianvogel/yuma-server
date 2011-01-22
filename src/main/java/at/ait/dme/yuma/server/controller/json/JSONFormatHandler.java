@@ -17,6 +17,7 @@ import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.Scope;
 import at.ait.dme.yuma.server.model.MapKeys;
+import at.ait.dme.yuma.server.model.User;
 import at.ait.dme.yuma.server.model.tag.PlainLiteral;
 import at.ait.dme.yuma.server.model.tag.SemanticRelation;
 import at.ait.dme.yuma.server.model.tag.SemanticTag;
@@ -64,6 +65,11 @@ public class JSONFormatHandler implements FormatHandler {
 	 * @throws InvalidAnnotationException if the map does not contain valid annotation data
 	 */
 	public Annotation toAnnotation(Map<String, Object> map) throws InvalidAnnotationException {	
+		@SuppressWarnings("unchecked")
+		Map<String, String> createdBy =
+			(Map<String, String>) map.get(MapKeys.ANNOTATION_CREATED_BY);
+		map.put(MapKeys.ANNOTATION_CREATED_BY, new User(createdBy));
+		
 		String type = (String) map.get(MapKeys.ANNOTATION_TYPE);
 		if (type != null)
 			map.put(MapKeys.ANNOTATION_TYPE, MediaType.valueOf(type.toUpperCase()));
@@ -89,7 +95,7 @@ public class JSONFormatHandler implements FormatHandler {
 			
 		return new Annotation(map);
 	}	
-
+	
 	private List<SemanticTag> toSemanticTags(List<Map<String, Object>> maps) throws InvalidAnnotationException {
 		ArrayList<SemanticTag> tags = new ArrayList<SemanticTag>();
 		
@@ -149,7 +155,6 @@ public class JSONFormatHandler implements FormatHandler {
 	
 	@Override
 	public String serialize(List<Annotation> annotations) {
-		
 		List<Map<String, Object>> jsonFormat = new ArrayList<Map<String,Object>>();
 		for (Annotation a : annotations) {
 			jsonFormat.add(annotationToJSONFormat(a));
@@ -165,6 +170,7 @@ public class JSONFormatHandler implements FormatHandler {
 	public Map<String, Object> annotationToJSONFormat(Annotation annotation) {
 		Map<String, Object> map = annotation.toMap();
 		
+		map.put(MapKeys.ANNOTATION_CREATED_BY, annotation.getCreatedBy().toMap());
 		map.put(MapKeys.ANNOTATION_TYPE, annotation.getType().toString());
 		map.put(MapKeys.ANNOTATION_SCOPE, annotation.getScope().toString());
 		map.put(MapKeys.ANNOTATION_CREATED, annotation.getCreated().getTime());
@@ -173,7 +179,7 @@ public class JSONFormatHandler implements FormatHandler {
 		
 		return map;
 	}
-	
+		
 	private ArrayList<Map<String, Object>> tagsToJSONFormat(List<SemanticTag> tags) {
 		ArrayList<Map<String, Object>> maps = new ArrayList<Map<String,Object>>();
 		

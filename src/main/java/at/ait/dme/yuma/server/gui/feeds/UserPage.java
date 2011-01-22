@@ -20,9 +20,9 @@ import at.ait.dme.yuma.server.model.Annotation;
  * 
  * @author Rainer Simon
  */
-public class User extends BaseAnnotationListPage {
+public class UserPage extends BaseAnnotationListPage {
 
-	private Logger logger = Logger.getLogger(User.class);
+	private Logger logger = Logger.getLogger(UserPage.class);
 	
 	public static final String PARAM_USERNAME = "username";
 	
@@ -30,7 +30,7 @@ public class User extends BaseAnnotationListPage {
 	private static final String HEADLINE = "'s public feed";
 	private static final String FEEDS = "feeds/user/";
 	
-	public User(final PageParameters parameters) {
+	public UserPage(final PageParameters parameters) {
 		String username = parameters.getString(PARAM_USERNAME);		
 		
 		setTitle(TITLE + username);

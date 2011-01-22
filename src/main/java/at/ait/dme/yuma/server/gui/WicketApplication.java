@@ -12,8 +12,8 @@ import at.ait.dme.yuma.server.gui.documentation.API;
 import at.ait.dme.yuma.server.gui.documentation.Contact;
 import at.ait.dme.yuma.server.gui.documentation.Developer;
 import at.ait.dme.yuma.server.gui.documentation.Overview;
-import at.ait.dme.yuma.server.gui.feeds.Timeline;
-import at.ait.dme.yuma.server.gui.feeds.User;
+import at.ait.dme.yuma.server.gui.feeds.TimelinePage;
+import at.ait.dme.yuma.server.gui.feeds.UserPage;
 import at.ait.dme.yuma.server.gui.search.Search;
 
 /**
@@ -25,12 +25,12 @@ import at.ait.dme.yuma.server.gui.search.Search;
 public class WicketApplication extends AuthenticatedWebApplication {    
     
 	public WicketApplication() {
-		this.mountBookmarkablePage("timeline", Timeline.class);
+		this.mountBookmarkablePage("timeline", TimelinePage.class);
 		
 		this.mount(new MixedParamUrlCodingStrategy(
 				"user", 
-				User.class,
-				new String[]{User.PARAM_USERNAME}
+				UserPage.class,
+				new String[]{UserPage.PARAM_USERNAME}
 		));
 
 		this.mountBookmarkablePage("doc", Overview.class);

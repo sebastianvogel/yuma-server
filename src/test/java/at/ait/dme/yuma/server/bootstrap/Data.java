@@ -5,14 +5,14 @@ public class Data {
 	public static final String ANNOTATION_JSON_ORIGINAL =
 		"[{ \"parent-id\" : null , " +
 		  "\"root-id\" : null , " +
-		  "\"title\" : \"Ponte 25 de Abril\" , "+
+		  "\"title\" : \"Ponte 25 de Abril\" , " +
 		  "\"text\" : \"The 25 de Abril Bridge is a suspension bridge connecting the city of Lisbon, capital of Portugal, " + 
 		  "to the municipality of Almada on the left bank of the Tagus river. It was inaugurated on August 6, 1966 " +
 		  "and a train platform was added in 1999.\", " +
 		  "\"scope\" : \"public\" , "+
 		  "\"last-modified\" : 1224043200000 ,"+
 		  "\"created\" : 1224043200000 , "+
-		  "\"created-by\" : \"rsimon\" , "+
+		  "\"created-by\" :  { \"user-name\" : \"rsimon\" } , " +
 		  "\"fragment\" : \"" +
 			"<svg:svg xmlns:svg=\\\"http://www.w3.org/2000/svg\\\" width=\\\"640px\\\" height=\\\"480px\\\" viewbox=\\\"0px 0px 640px 480px\\\"> " +
 			  "<svg:defs xmlns:svg=\\\"http://www.w3.org/2000/svg\\\"> " +
@@ -42,7 +42,7 @@ public class Data {
 		  "\"scope\" : \"public\" , "+
 		  "\"last-modified\" : 1224043200000 ,"+
 		  "\"created\" : 1224043200000 , "+
-		  "\"created-by\" : \"rsimon\" , "+
+		  "\"created-by\" :  { \"user-name\" : \"rsimon\" } , " +
 		  "\"fragment\" : \"" +
 			"<svg:svg xmlns:svg=\\\"http://www.w3.org/2000/svg\\\" width=\\\"640px\\\" height=\\\"480px\\\" viewbox=\\\"0px 0px 640px 480px\\\"> " +
 			  "<svg:defs xmlns:svg=\\\"http://www.w3.org/2000/svg\\\"> " +
@@ -69,10 +69,10 @@ public class Data {
 		  "\"title\" : \"Ponte 25 de Abril\" , "+
 		  "\"text\" : \"Root annotation!\" ," +
 		  "\"scope\" : \"public\" , "+
-		  "\"last-modified\" : 1224043200000 ,"+
-		  "\"created\" : 1224043200000 , "+
-		  "\"created-by\" : \"rsimon\" , "+
-		  "\"media-type\" : \"image\" , "+
+		  "\"last-modified\" : 1224043200000 ," +
+		  "\"created\" : 1224043200000 , " +
+		  "\"created-by\" :  { \"user-name\" : \"rsimon\" } , " +
+		  "\"media-type\" : \"image\" , " +
 		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\"" +
 		"}";
 	
@@ -82,10 +82,10 @@ public class Data {
 		  "\"title\" : \"RE: Ponte 25 de Abril\" , "+
 		  "\"text\" : \"Interesting!\" ," +
 		  "\"scope\" : \"public\" , "+
-		  "\"last-modified\" : 1224043200000 ,"+
-		  "\"created\" : 1224043200000 , "+
-		  "\"created-by\" : \"rsimon\" , "+
-		  "\"media-type\" : \"image\" , "+
+		  "\"last-modified\" : 1224043200000 ," +
+		  "\"created\" : 1224043200000 , " +
+		  "\"created-by\" :  { \"user-name\" : \"rsimon\" } , " +
+		  "\"media-type\" : \"image\" , " +
 		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\"" +
 		"}";
 	

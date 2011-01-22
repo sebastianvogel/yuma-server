@@ -14,7 +14,7 @@ import org.apache.wicket.markup.html.list.ListView;
 
 import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.config.Config;
-import at.ait.dme.yuma.server.gui.feeds.User;
+import at.ait.dme.yuma.server.gui.feeds.UserPage;
 import at.ait.dme.yuma.server.gui.search.Search;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.tag.SemanticTag;
@@ -75,10 +75,10 @@ public abstract class BaseAnnotationListPage extends WebPage {
 			item.add(new Label("title", a.getTitle()));
 			
 			HashMap<String, String> params = new HashMap<String, String>();
-			params.put(User.PARAM_USERNAME, a.getCreatedBy());
+			params.put(UserPage.PARAM_USERNAME, a.getCreatedBy().getUsername());
 			item.add(
-				new BookmarkablePageLink<String>("author-href", User.class, new PageParameters(params))
-					.add(new Label("author-label", a.getCreatedBy())));
+				new BookmarkablePageLink<String>("author-href", UserPage.class, new PageParameters(params))
+					.add(new Label("author-label", a.getCreatedBy().getUsername())));
 			
 			String screenUri = a.getObjectUri();
 			if (screenUri.length() > 40)

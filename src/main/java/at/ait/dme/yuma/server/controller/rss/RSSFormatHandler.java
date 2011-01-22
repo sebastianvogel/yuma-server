@@ -71,7 +71,7 @@ public class RSSFormatHandler implements FormatHandler {
 		for (Annotation a : annotations) {
 			SyndEntry entry = new SyndEntryImpl();
 			entry.setTitle(a.getTitle());
-			entry.setAuthor(a.getCreatedBy());
+			entry.setAuthor(a.getCreatedBy().getUsername());
 			entry.setPublishedDate(a.getCreated());
 			entry.setUpdatedDate(a.getLastModified());
 			

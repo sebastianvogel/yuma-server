@@ -68,7 +68,7 @@ public class Annotation {
 	 * 
 	 * MANDATORY
 	 */
-	private String createdBy;
+	private User createdBy;
 	
 	/**
 	 * The title of this annotation
@@ -122,7 +122,7 @@ public class Annotation {
 	 * @param type the annotation type
 	 * @param scope the annotation scope
 	 */
-	public Annotation(String annotationId, String objectUri, String createdBy, 
+	public Annotation(String annotationId, String objectUri, User createdBy, 
 			Date created, Date lastModified, MediaType type, Scope scope) {
 		
 		this.annotationId = annotationId;
@@ -149,7 +149,7 @@ public class Annotation {
 			this.objectUri = (String) map.get(MapKeys.ANNOTATION_OBJECT_URI);				
 			this.created = (Date) map.get(MapKeys.ANNOTATION_CREATED);
 			this.lastModified = (Date) map.get(MapKeys.ANNOTATION_LAST_MODIFIED);
-			this.createdBy = (String) map.get(MapKeys.ANNOTATION_CREATED_BY);
+			this.createdBy = (User) map.get(MapKeys.ANNOTATION_CREATED_BY);
 			this.title = (String) map.get(MapKeys.ANNOTATION_TITLE);
 			this.text = (String) map.get(MapKeys.ANNOTATION_TEXT);
 			this.type = (MediaType) map.get(MapKeys.ANNOTATION_TYPE);
@@ -214,7 +214,7 @@ public class Annotation {
 		return lastModified;
 	}
 
-	public String getCreatedBy() {
+	public User getCreatedBy() {
 		return createdBy;
 	}
 

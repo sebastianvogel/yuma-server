@@ -21,6 +21,7 @@ import at.ait.dme.yuma.server.model.AnnotationTree;
 import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.model.MapKeys;
 import at.ait.dme.yuma.server.model.Scope;
+import at.ait.dme.yuma.server.model.User;
 import at.ait.dme.yuma.server.model.tag.SemanticRelation;
 import at.ait.dme.yuma.server.model.tag.SemanticTag;
 
@@ -83,7 +84,7 @@ public class LEMOFormatHandler implements FormatHandler {
 					a.getProperty(m.createProperty(NS_ANNOTATION, "annotates")).getString());
 			
 			properties.put(MapKeys.ANNOTATION_CREATED_BY,
-					a.getProperty(DC.creator).getString());
+					new User(a.getProperty(DC.creator).getString()));
 			
 			properties.put(MapKeys.ANNOTATION_CREATED,
 					new Date());
@@ -141,7 +142,7 @@ public class LEMOFormatHandler implements FormatHandler {
 		annotation.addProperty(m.createProperty(NS_ANNOTATION, "annotates"), a.getObjectUri());
 		annotation.addProperty(RDF.type, m.createProperty(NS_ANNOTATION, "Annotation"));
 		annotation.addProperty(DC.title, a.getTitle());
-		annotation.addProperty(DC.creator, a.getCreatedBy());
+		annotation.addProperty(DC.creator, a.getCreatedBy().getUsername());
 		annotation.addProperty(m.createProperty(NS_ANNOTATION, "created"), a.getCreated().toString());
 		annotation.addProperty(m.createProperty(NS_ANNOTATION, "modified"), a.getLastModified().toString());
 		annotation.addProperty(m.createProperty(NS_ANNOTATION, "label"), a.getText());

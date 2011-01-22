@@ -22,6 +22,10 @@ public class MapKeys {
 	public static final String ANNOTATION_SCOPE = "scope";
 	public static final String ANNOTATION_SEMANTIC_TAGS = "tags";
 	
+	public static final String USER_NAME = "user-name";
+	public static final String USER_GRAVATAR_HASH = "user-gravatar-hash";
+	public static final String USER_URI = "user-uri";
+	
 	public static final String TAG_URI = "uri";
 	public static final String TAG_LANG = "lang";
 	public static final String TAG_LABEL = "label";

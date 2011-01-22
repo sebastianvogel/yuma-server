@@ -21,15 +21,15 @@ import at.ait.dme.yuma.server.model.Annotation;
  * 
  * @author Rainer Simon
  */
-public class Timeline extends BaseAnnotationListPage {
+public class TimelinePage extends BaseAnnotationListPage {
 	
-	private Logger logger = Logger.getLogger(Timeline.class);
+	private Logger logger = Logger.getLogger(TimelinePage.class);
 	
 	private static final String TITLE = "YUMA Annotation Server - Public Timeline";
 	private static final String HEADLINE = "public timeline";
 	private static final String FEED_URL = "feeds/timeline";
 	
-	public Timeline(final PageParameters parameters) {
+	public TimelinePage(final PageParameters parameters) {
 		setTitle(TITLE);
 		setHeadline(HEADLINE);
 		setAnnotations(getMostRecent(20));
