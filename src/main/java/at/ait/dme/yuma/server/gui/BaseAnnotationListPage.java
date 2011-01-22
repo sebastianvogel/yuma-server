@@ -100,7 +100,7 @@ public abstract class BaseAnnotationListPage extends WebPage {
 			item.add(new ExternalLink("dl-rdf-turtle", uri + ".turtle", "Turtle"));
 			
 			item.add(new ExternalLink("open-in-client", 
-								SUITE_BASE_URL + "?objectUri=" + a.getObjectUri(),
+								SUITE_BASE_URL + a.getType().name().toLowerCase() + "?objectURI=" + a.getObjectUri(),
 								"Open in " + a.getType().getScreenName() + " Tool")
 							.add(new SimpleAttributeModifier("title", "Open in " + a.getType().getScreenName() + " Annotation Tool"))
 			);
