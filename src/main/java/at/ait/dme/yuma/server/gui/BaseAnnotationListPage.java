@@ -81,7 +81,7 @@ public abstract class BaseAnnotationListPage extends WebPage {
 					.add(new Label("author-label", a.getCreatedBy().getUsername())));
 			
 			String screenUri = a.getObjectUri();
-			if (screenUri.length() > 40)
+			if (screenUri.length() > 55)
 				screenUri = screenUri.substring(0, 55) + ELLIPSIS;
 			item.add(new ExternalLink("objectUri", a.getObjectUri(), screenUri));
 
