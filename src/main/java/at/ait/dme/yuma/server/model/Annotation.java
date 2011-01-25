@@ -17,7 +17,7 @@ import at.ait.dme.yuma.server.model.tag.SemanticTag;
 public class Annotation {
 	
 	/**
-	 * The ID if this annotation
+	 * The ID of this annotation
 	 *  
 	 * MANDATORY
 	 */
@@ -64,7 +64,7 @@ public class Annotation {
 	private Date lastModified;
 	
 	/**
-	 * The username of the creator
+	 * The creator of this annotation
 	 * 
 	 * MANDATORY
 	 */
@@ -85,7 +85,7 @@ public class Annotation {
 	private String text;
 	
 	/**
-	 * The type of this annotation
+	 * The media type of this annotation
 	 * 
 	 * MANDATORY
 	 */
@@ -106,7 +106,7 @@ public class Annotation {
 	private Scope scope;
 	
 	/**
-	 * This annotation's tags
+	 * This annotation's semantic tags
 	 * 
 	 * OPTIONAL
 	 */
