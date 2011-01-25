@@ -12,6 +12,9 @@ import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
  * functionality (e.g. some implementations may only support
  * serialization, but not parsing). In this case, implementations
  * shall throw an UnsupportedOperationException.
+ * 
+ * TODO split this into two classes for better overview:
+ * FormatParser and FormatSerializer
  *  
  * @author Rainer Simon
  */

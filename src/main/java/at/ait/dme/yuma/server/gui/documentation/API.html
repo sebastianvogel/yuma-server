@@ -9,7 +9,7 @@
 	<h4 wicket:id="api-annotation-base-url"></h4>
 	<ul>
 		<li><strong>HTTP POST</strong> to this URL will create an annotation. Supported payload 
-		formats are JSON and (with limited functionality) RDF/XML. In case of success, the server
+		formats are JSON and (with limited functionality) RDF. In case of success, the server
 		will respond with HTTP 201 (Created) code, the URI of the annotation in the Location
 		header, and the ID assigned to the annotation by the system in the response body.</li>
 	</ul>
@@ -18,8 +18,10 @@
 	<ul>
 		<li><strong>HTTP GET</strong> to this URL will retrieve the annotation with the specified
 		ID. The server will respond with HTTP 200 (OK) and the serialized annotation in the payload.
-		Supported response formats are JSON and RDF (XML or TURTLE). The format decision is based on
-		the MIME type specified in the HTTP Accept header (content negotiation).</li>		
+		Supported response formats are JSON and RDF (XML, N3 or TURTLE). The format decision is based
+		on the MIME type specified in the HTTP Accept header (content negotiation). Alternatively, 
+		the return type can be forced by appending an extension. Supported extensions are
+		.json, .rdf, .n3 and .turtle.</li>		
 		
 		<li><strong>HTTP PUT</strong> to this URL will update the annotation with the specified
 		ID. If successful, the server will respond with HTTP 200 (OK), the URI of the 
@@ -43,10 +45,10 @@
 	<h3>YUMA Annotation Model</h3>
 	<p>
 	YUMA represents annotations as hierarchical data structures, with only a few mandatory properties.
-	Fig. 1 shows an diagram of the YUMA Annotation Model. (Green boxes represent actual classes. Blue boxes
+	Fig. 1 shows a diagram of the YUMA Annotation Model. (Green boxes represent actual classes. Blue boxes
 	represent enumerations, i.e. the range of possible values for the <span class="code">Scope</span> and
 	<span class="code">Media Type</span> fields, respectively.) The upper properties - above the dotted
-	line - are mandatory properties that must be set. Properties below the dotted line are optional. 
+	line - are mandatory properties. Properties below the dotted line are optional. 
 	</p>
 	
 	<img src="images/annotation-classes.png" alt="YUMA Annotation Class Model" title="YUMA Annotation Class Model" />
@@ -61,19 +63,19 @@
 		<span class="code">Parent ID</span> is the ID of the immediate parent annotation, and the
 		<span class="code">Root ID</span> is the top-most annotation in the reply thread.</li>
 		
-		<li>The <span class="code">Fragment</span> field contains the media fragment (if any). YUMA
-		does not make any assumptions about the syntax of the fragment identifier; the field is simply
-		a String field that can take any arbitrary value. It is the responsibility of the client
+		<li>The <span class="code">Fragment</span> field contains the media fragment (if any). In the current
+		implementation, YUMA does not make any assumptions about the syntax of the fragment identifier. 
+		The field is simply a String that can take any arbitrary value. It is the responsibility of the client
 		to make sense of the fragment information.</li>
 		
 		<li>The <span class="code">Alternative Labels</span> and <span class="code">Alternative
 		Descriptions</span> fields in the <span class="code">Semantic Tag</span> class are lists
-		of <span class="code">Plain Literals</span>. A <span class="code">Plain Literal</span> is simply
+		of <span class="code">Plain Literals</span>. A <span class="code">Plain Literal</span> is 
 		a String with an optional language code.</li>
 	</ul>
 	
 	<h3>JSON Annotation Format</h3>
-	<p>The most compact and straight-forward serialization format for YUMA annotations is implemented in
+	<p>The most compact serialization format for YUMA annotations is implemented in
 	<a href="http://www.json.org/">JSON</a>. Properties of the annotation model are mapped to a 
 	JSON structure using pre-defined keys. The JSON snippet below provides an example. (Please note
 	that timestamps are serialized according to <a href="http://en.wikipedia.org/wiki/Unix_time">Unix 
