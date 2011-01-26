@@ -13,6 +13,12 @@ Some more online documentation (included in the server) can be found at
 
 http://dme.ait.ac.at/yuma-server/doc
 
+TODOs
+-----
+
+- Split FormatHandler into two separate classes (for parsing and serialization)
+- Integrate the Europeana Annotation API as a 'backend'
+
 Requirements
 ------------
 The YUMA Annotation Server requires Java 1.6, a Servlet container such as
