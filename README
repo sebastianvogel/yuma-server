@@ -19,6 +19,7 @@ TODOs
 - Split FormatHandler into two separate classes (for parsing and serialization).
 - Integrate the Europeana Annotation API as a 'backend'.
 - Implement OAC Model
+- JSON and RDF export of list view contents (search results, feed pages)
 - Think of a decent solution for implementing SemanticTag's 'GeoLocation'.
 - Map view (once GeoLocation is done)
 - Think about a 'dump database' feature (in the admin section)
