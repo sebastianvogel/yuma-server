@@ -1,6 +1,5 @@
 package at.ait.dme.yuma.server.gui;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,12 +12,9 @@ import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 
-import de.spieleck.app.cngram.NGramProfiles;
-import de.spieleck.app.cngram.NGramProfiles.RankResult;
-import de.spieleck.app.cngram.NGramProfiles.Ranker;
-
 import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.config.Config;
+import at.ait.dme.yuma.server.gizmos.LanguageGuesser;
 import at.ait.dme.yuma.server.gui.feeds.UserPage;
 import at.ait.dme.yuma.server.gui.search.Search;
 import at.ait.dme.yuma.server.model.Annotation;
@@ -40,17 +36,9 @@ public abstract class BaseAnnotationListPage extends WebPage {
 	private static final String SPAN = "<span class=\"grad\"></span>";
 	private static final String ELLIPSIS = "...";
 	private static final String SUITE_BASE_URL = Config.getInstance().getSuiteBaseUrl();
-	
-	private NGramProfiles profiles = null;
-	
+		
 	public BaseAnnotationListPage() {
 		add(new BookmarkablePageLink<String>("home", Search.class));
-		
-		try {
-			profiles = new NGramProfiles();
-		} catch (IOException e) {
-			// Do nothing
-		}
 	}
 	
 	public void setTitle(String title) {
@@ -107,7 +95,8 @@ public abstract class BaseAnnotationListPage extends WebPage {
 			String uri = URIBuilder.toURI(a.getAnnotationID()).toString();
 			item.add(new ExternalLink("uri", uri, uri));
 			
-			item.add(new Label("lang", guessLanguage(a.getText())));
+			item.add(new Label("lang", LanguageGuesser
+						.getInstance().guess(a.getText())));
 	
 			item.add(new ExternalLink("dl-json", uri + ".json", "JSON"));
 			item.add(new ExternalLink("dl-rdf-xml", uri + ".rdf", "RDF/XML"));
@@ -142,20 +131,6 @@ public abstract class BaseAnnotationListPage extends WebPage {
 			item.add(link);
 		}
 		
-	}
-	
-	private String guessLanguage(String text) {
-		if (profiles == null)
-			return "[language guessing feature not available]";
-		
-		Ranker ranker = profiles.getRanker();
-		ranker.account(text);
-		RankResult result = ranker.getRankResult();
-		
-		if (result.getScore(0) > 0.5)
-			return result.getName(0).toUpperCase();
-
-		return "[could not be determined]"; 
 	}
 
 }
