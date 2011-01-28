@@ -59,5 +59,39 @@ public class User {
 		
 		return map;
 	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof User))
+			return false;
+		
+		User user = (User) other;
+		
+		if (this.username != user.username)
+			return false;
+		
+		if (!equalsNullable(this.uri, user.uri))
+			return false;
+		
+		if (!equalsNullable(this.gravatarHash, user.gravatarHash))
+			return false;
+		
+		return true;
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.username.hashCode();
+	}
+	
+	private boolean equalsNullable(Object a, Object b) {
+		if (a == null)
+			return b == null;
+		
+		if (b == null)
+			return a == null;
+		
+		return a.equals(b);
+	}
 
 }
