@@ -2,9 +2,12 @@ package at.ait.dme.yuma.server.controller.oac;
 
 import java.util.List;
 
-import at.ait.dme.yuma.server.controller.FormatHandler;
+import at.ait.dme.yuma.server.controller.RDFFormatHandler;
+import at.ait.dme.yuma.server.controller.SerializationLanguage;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
+
+import com.hp.hpl.jena.rdf.model.Model;
 
 /**
  * Format handler for OAC RDF(in different serialization
@@ -12,16 +15,14 @@ import at.ait.dme.yuma.server.model.AnnotationTree;
  * 
  * @author Rainer Simon
  */
-public class OACFormatHandler implements FormatHandler {
-
-	@Override
-	public Annotation parse(String serialized) {
-		// TODO Auto-generated method stub
-		return null;
+public class OACFormatHandler extends RDFFormatHandler {
+	
+	public OACFormatHandler() {
+		super(SerializationLanguage.RDF_XML);
 	}
 
 	@Override
-	public String serialize(Annotation annotation) {
+	public Annotation parse(String serialized) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -38,4 +39,9 @@ public class OACFormatHandler implements FormatHandler {
 		return null;
 	}
 
+	@Override
+	protected void addRDFResource(Annotation annotation, Model model) {
+		// TODO Auto-generated method stub
+		
+	}
 }

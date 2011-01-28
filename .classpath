@@ -29,18 +29,19 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jta-1.1.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/mongo-2.3.jar"/>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/postgresql-9.0-801.jdbc4.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/postgresql-9.0-801.jdbc4.jar" sourcepath="/home/chef/.m2/repository/postgresql/postgresql/9.0-801.jdbc4/postgresql-9.0-801.jdbc4-sources.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/resteasy-jaxrs-2.0.1.GA.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/rome-1.0.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/scannotation-1.0.2.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/slf4j-api-1.6.1.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/slf4j-log4j12-1.6.1.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/wicket-1.4.14.jar"/>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jena-2.6.4.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jena-2.6.4.jar" sourcepath="/home/chef/.m2/repository/com/hp/hpl/jena/jena/2.6.4/jena-2.6.4-sources.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/xercesImpl-2.7.1.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/iri-0.8.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/icu4j-3.4.4.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/opensearch-0.1.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/wicket-auth-roles-1.4.14.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/mysql-connector-java-5.1.14-bin.jar"/>
 	<classpathentry kind="output" path="src/main/webapp/WEB-INF/classes"/>
 </classpath>
