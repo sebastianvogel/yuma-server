@@ -42,5 +42,6 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/icu4j-3.4.4.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/opensearch-0.1.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/wicket-auth-roles-1.4.14.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/cngram.jar"/>
 	<classpathentry kind="output" path="src/main/webapp/WEB-INF/classes"/>
 </classpath>
