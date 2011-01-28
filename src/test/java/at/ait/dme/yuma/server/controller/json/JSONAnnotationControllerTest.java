@@ -7,6 +7,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -85,13 +86,11 @@ public class JSONAnnotationControllerTest {
 		response.getEntity().consumeContent();
 		
 		// Delete
-		/*
 		HttpDelete deleteMethod = new HttpDelete(updatedAnnotationUrl);
 		deleteMethod.addHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
 		
 		response = httpClient.execute(deleteMethod);
 		assertEquals(HttpStatus.SC_NO_CONTENT, response.getStatusLine().getStatusCode());
-		*/
 	}
 	
 	@Test
@@ -134,7 +133,6 @@ public class JSONAnnotationControllerTest {
 		response.getEntity().consumeContent();	
 		
 		// Delete
-		/*
 		HttpDelete deleteMethod = new HttpDelete(reply1);
 		deleteMethod.addHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
 		response = httpClient.execute(deleteMethod);
@@ -149,7 +147,6 @@ public class JSONAnnotationControllerTest {
 		deleteMethod.addHeader(ACCEPT_HEADER, CONTENT_TYPE_JSON);
 		response = httpClient.execute(deleteMethod);
 		assertEquals(HttpStatus.SC_NO_CONTENT, response.getStatusLine().getStatusCode());
-		*/
 	}
 	
 }

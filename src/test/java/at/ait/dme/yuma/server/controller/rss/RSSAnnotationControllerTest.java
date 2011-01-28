@@ -18,14 +18,14 @@ import at.ait.dme.yuma.server.config.Config;
 public class RSSAnnotationControllerTest {
 	
 	private static final String RSS_ANNOTATION_CONTROLLER_BASE_URL = 
-		"http://localhost:8081/yuma-server/feeds";
+		"http://localhost:8080/yuma-server/feeds";
 	
 	private static final String ACCEPT_HEADER = "Accept";
 	private static final String CONTENT_TYPE_RSS = "application/rss+xml";
 
 	@BeforeClass
 	public static void setUp() throws Exception {
-		Setup.buildMongoDBConfiguration();
+		Setup.buildHibernateConfiguration();
         Setup.startEmbeddedJaxrsServer(RSSAnnotationController.class);
 	}
 
@@ -40,8 +40,8 @@ public class RSSAnnotationControllerTest {
 		
 		HttpGet getTimelineMethod = new HttpGet(RSS_ANNOTATION_CONTROLLER_BASE_URL + "/timeline");
 		getTimelineMethod.addHeader(ACCEPT_HEADER, CONTENT_TYPE_RSS);
-		
 		HttpResponse response = httpClient.execute(getTimelineMethod);
+		
 		assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 		assertNotNull(response.getEntity());
 		// response.getEntity().writeTo(System.out);
