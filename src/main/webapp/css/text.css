@@ -44,11 +44,12 @@ body {
 }
 
 .content ul {
+	margin-top:5px;
 	list-style-type:square;
 }
 
 .content li {
-	margin-bottom:10px;
+	margin-bottom:5px;
 }
 
 .content a {
