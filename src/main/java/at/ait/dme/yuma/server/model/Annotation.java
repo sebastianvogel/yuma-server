@@ -283,8 +283,6 @@ public class Annotation {
 	
 	@Override
 	public boolean equals(Object other) {		
-		// TODO implement hashCode()
-		
 		if (!(other instanceof Annotation))
 			return false;
 		
@@ -340,7 +338,15 @@ public class Annotation {
 		
 		return true;
 	}
-		
+
+	@Override
+	public int hashCode() {
+		return (annotationId + 
+				objectUri + 
+				lastModified.getTime() + 
+				createdBy.getUsername()).hashCode();
+	}
+	
 	private boolean equalsNullable(Object a, Object b) {
 		if (a == null)
 			return b == null;
