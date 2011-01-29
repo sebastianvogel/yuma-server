@@ -18,7 +18,7 @@ public class LanguageGuesser {
 	/**
 	 * The singleton instance
 	 */
-	private static final LanguageGuesser instance = new LanguageGuesser();
+	private static LanguageGuesser instance = null;
 	
 	/**
 	 * N-Gram profiles
@@ -47,6 +47,9 @@ public class LanguageGuesser {
 	}
 
 	public static LanguageGuesser getInstance() {
+		if (instance == null)
+			instance = new LanguageGuesser();
+		
 		return instance;
 	}
 	
