@@ -10,14 +10,10 @@ import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.gui.BaseAnnotationListPage;
-import at.ait.dme.yuma.server.gui.YUMAWebSession;
 import at.ait.dme.yuma.server.model.Annotation;
 
 /**
  * The public timeline.
- * 
- * TODO the timeline is actually NOT public right now - also 
- * includes the private annotations!
  * 
  * @author Rainer Simon
  */
@@ -43,7 +39,7 @@ public class TimelinePage extends BaseAnnotationListPage {
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect();
-			mostRecent = db.getMostRecent(n, !YUMAWebSession.get().isSignedIn());
+			mostRecent = db.getMostRecent(n, true);
 		} catch (AnnotationDatabaseException e) {
 			logger.fatal(e.getMessage());
 		} finally {
