@@ -19,10 +19,10 @@ public class Setup {
     public static void buildHibernateConfiguration() throws AnnotationDatabaseException {
     	new Config.Builder(
     			"at.ait.dme.yuma.server.db.hibernate.HibernateAnnotationDB",				
-				"http://localhost:8081/yuma-server/",
-				"http://localhost:8081/yuma-suite/",
-				"admin",
-				"admin"
+				"http://localhost:8080/yuma-server/",
+				"http://localhost:8080/yuma-suite/",
+				"yuma",
+				"yuma"
 		)    	
     			.dbDriver("com.mysql.jdbc.Driver")
     			.dbDriverProtocol("jdbc:mysql")

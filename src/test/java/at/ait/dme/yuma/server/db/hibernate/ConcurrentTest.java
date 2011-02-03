@@ -1,5 +1,6 @@
 package at.ait.dme.yuma.server.db.hibernate;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.concurrent.CountDownLatch;
@@ -14,6 +15,7 @@ import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
+import at.ait.dme.yuma.server.model.Annotation;
 
 /**
 * Test for concurrent access to the annotation database
@@ -92,15 +94,18 @@ public class ConcurrentTest {
 		
 		db1.setAutoCommit(false);
 		String id = null;
-		try {			
+		try {
 			db1.connect();
 			id = db1.createAnnotation(format.parse(Data.ANNOTATION_JSON_ORIGINAL));
+			
 			db2.connect();
+			
 			try {
-				db2.findAnnotationById(id.toString());
-				fail("AnnotationNotFoundException expected");
+				Annotation foundAnnotation = db2.findAnnotationById(id.toString());
+
+				assertEquals(id, foundAnnotation.getAnnotationID());
 			} catch(AnnotationNotFoundException e) {
-				/*expected */
+				fail("created annotation not found");
 			}
 			db1.commit();
 			db2.findAnnotationById(id.toString());			

@@ -16,7 +16,7 @@ import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.Annotation;
 
-public class MongoAnnotationDBTest {
+public class MongoAnnotationDBTest_dontuse {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {		
