@@ -190,13 +190,13 @@ public abstract class AbstractAnnotationDB {
 		throws AnnotationDatabaseException;
 	
 	/**
-	 * Retrieve the thread which contains the given annotation
+	 * Retrieve the replies for the given annotation
 	 * @param annotationId the annotation ID
-	 * @return the thread
+	 * @return the replies
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 * @throws AnnotationNotFoundException if the annotation was not found
 	 */
-	public abstract AnnotationTree findThreadForAnnotation(String annotationId)
+	public abstract AnnotationTree getReplies(String annotationId)
 		throws AnnotationDatabaseException, AnnotationNotFoundException;
 
 	/**

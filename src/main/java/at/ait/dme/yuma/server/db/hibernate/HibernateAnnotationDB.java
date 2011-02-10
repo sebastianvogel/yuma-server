@@ -1,7 +1,6 @@
 package at.ait.dme.yuma.server.db.hibernate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -273,21 +272,24 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public AnnotationTree findThreadForAnnotation(String annotationId)
+	public AnnotationTree getReplies(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 
 		try {
 			Annotation a = findAnnotationById(annotationId);
+			String rootId;
 			if (a.getRootId() == null) {
-				return new AnnotationTree(Arrays.asList(a));
+				rootId = a.getAnnotationID();
+			} else {
+				rootId = a.getRootId();
 			}
 			
 			Query query = em.createNamedQuery("annotationentity.find.thread");	
-			query.setParameter("rootId", a.getRootId());
+			query.setParameter("rootId", Long.parseLong(rootId));
 			
 			@SuppressWarnings("unchecked")
 			List<AnnotationEntity> thread = query.getResultList();		
-			return new AnnotationTree(toAnnotations(thread));
+			return new AnnotationTree(toAnnotations(filterReplies(thread, annotationId)));
 		} catch (Throwable t) {
 			throw new AnnotationDatabaseException(t);
 		}
@@ -327,6 +329,28 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 			return toAnnotations(entities);
 		} catch(Throwable t) {
 			throw new AnnotationDatabaseException(t);
+		}
+	}
+	
+	/**
+	 * Filters an entire annotation thread so that only (direct or indirect)
+	 * children of the annotation with the specified ID are returned. 
+	 * @param thread the entire annotation thread
+	 * @param parentId the ID of the parent
+	 * @return the filtered thread
+	 */
+	private List<AnnotationEntity> filterReplies(List<AnnotationEntity> thread, String parentId) {		
+		List<AnnotationEntity> replies = new ArrayList<AnnotationEntity>();
+		getChildren(thread, replies, Long.parseLong(parentId));
+		return replies;
+	}
+	
+	private void getChildren(List<AnnotationEntity> all, List<AnnotationEntity> children, Long parentId) {
+		for (AnnotationEntity a : all) {
+			if (a.getParentId().equals(parentId)) {
+				children.add(a);
+				getChildren(all, children, a.getAnnotationId());
+			}
 		}
 	}
 	

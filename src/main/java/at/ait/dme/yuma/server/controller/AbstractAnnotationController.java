@@ -142,7 +142,7 @@ public abstract class AbstractAnnotationController {
 	 * @throws AnnotationDatabaseException (500)
 	 * @throws UnsupportedEncodingException (500
 	 */
-	protected Response getThreadForAnnotation(String annotationId, FormatHandler format)
+	protected Response getReplies(String annotationId, FormatHandler format)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
 		AbstractAnnotationDB db = null;
@@ -150,7 +150,7 @@ public abstract class AbstractAnnotationController {
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			thread = format.serialize(db.findThreadForAnnotation(URLDecoder.decode(annotationId, URL_ENCODING)));
+			thread = format.serialize(db.getReplies(URLDecoder.decode(annotationId, URL_ENCODING)));
 		} finally {
 			if(db != null) db.disconnect();
 		}
@@ -253,7 +253,7 @@ public abstract class AbstractAnnotationController {
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request);
-			// annotations = format.serialize(db.findAnnotations(URLDecoder.decode(query, URL_ENCODING)));
+			annotations = format.serialize(db.findAnnotations(URLDecoder.decode(query, URL_ENCODING)));
 		} finally {
 			if(db != null) db.disconnect();
 		}

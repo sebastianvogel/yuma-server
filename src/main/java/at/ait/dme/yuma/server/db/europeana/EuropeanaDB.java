@@ -113,7 +113,7 @@ public class EuropeanaDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public AnnotationTree findThreadForAnnotation(String annotationId)
+	public AnnotationTree getReplies(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 		// TODO Auto-generated method stub
 		return null;

@@ -215,7 +215,7 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 	
 	@Override
-	public AnnotationTree findThreadForAnnotation(String annotationId)
+	public AnnotationTree getReplies(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 		
 		String rootId = findAnnotationById(annotationId).getRootId();		

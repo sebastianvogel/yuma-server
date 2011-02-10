@@ -11,26 +11,32 @@ import javax.ws.rs.core.Response;
 
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.AbstractAnnotationController;
+import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
+import at.ait.dme.yuma.server.model.Annotation;
 
 @Path("/feeds")
 public class RSSAnnotationController extends AbstractAnnotationController {
 	
 	private static final int FEED_LENGTH = 20;
-	private static final String FEED_BASEURL = Config.getInstance().getServerBaseUrl() + "feeds/";
+	private static final String SERVER_BASEURL = Config.getInstance().getServerBaseUrl();
 	
 	private static final String TIMELINE_TITLE = "YUMA Public Timeline";
 	private static final String TIMELINE_DESCRIPTION = "Most recent annotations on this YUMA annotation server.";
-	private static final String TIMELINE_URL = FEED_BASEURL + "timeline";
+	private static final String TIMELINE_URL = SERVER_BASEURL + "timeline";
 	
 	private static final String OBJECT_FEED_TITLE = "Annotations for ";
 	private static final String OBJECT_FEED_DESCRIPTION = "Annotation feed for object with ID ";
-	private static final String OBJECT_FEED_URL = FEED_BASEURL + "object/";
+	private static final String OBJECT_FEED_URL = SERVER_BASEURL + "object/";
 	
 	private static final String USER_FEED_TITLE = "'s Annotations";
 	private static final String USER_FEED_DESCRIPTION = "Annotations by ";
-	private static final String USER_FEED_URL = FEED_BASEURL + "user/";
+	private static final String USER_FEED_URL = SERVER_BASEURL + "user/";
+	
+	private static final String REPLY_FEED_TITLE = "Replies to ";
+	private static final String REPLY_FEED_DESCRIPTION = "Replies to annotation ";	
+	private static final String REPLY_FEED_URL = SERVER_BASEURL + "replies/";
 	
 	/**
 	 * Returns a feed with the most recent public annotations in the system.
@@ -100,13 +106,18 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	 */
 	@GET
 	@Produces("application/rss+xml")
-	@Path("/annotation/{id}")
+	@Path("/replies/{id}")
 	public Response getAnnotationFeed(@PathParam("id") String id) 
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
-		
-		System.out.println("Feed");
-		
-		return null;
+
+		AbstractAnnotationDB db = Config.getInstance().getAnnotationDatabase();
+		db.connect(request);
+		Annotation parent = db.findAnnotationById(URLDecoder.decode(id, URL_ENCODING));
+
+		return super.getReplies(id, new RSSFormatHandler(
+				REPLY_FEED_TITLE + "'" + parent.getTitle() + "'",
+				REPLY_FEED_DESCRIPTION + "'" + parent.getTitle() + "'",
+				REPLY_FEED_URL + id));
 	}
 	
 }
