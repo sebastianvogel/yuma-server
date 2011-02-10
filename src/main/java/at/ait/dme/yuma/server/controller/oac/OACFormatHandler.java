@@ -1,13 +1,11 @@
 package at.ait.dme.yuma.server.controller.oac;
 
-import java.util.List;
-
 import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.controller.RDFFormatHandler;
 import at.ait.dme.yuma.server.controller.SerializationLanguage;
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationTree;
 
+import com.hp.hpl.jena.rdf.model.AnonId;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.RDF;
@@ -48,16 +46,16 @@ public class OACFormatHandler extends RDFFormatHandler {
 	}
 	
 	private Resource createAnnotationBody() {
-		Resource ret = model.createResource(
-			URIBuilder.toURI(NS_ANNOTATION).toString());
+		Resource body = model.createResource(new AnonId());
+		body.addProperty(RDF.type, model.createProperty(NS_OAC, "Body"));
+		new BodyPropertiesAppender(body, model).appendProperties(annotation);
 		
-		new BodyPropertiesAppender(ret, model).appendProperties(annotation);
-		return ret;
+		return body;
 	}
 	
 	private Resource createAnnotationResource(Resource body) {
 		Resource ret = model.createResource(
-			URIBuilder.toURI(annotation.getAnnotationID()).toString());		
+			URIBuilder.toURI(annotation.getAnnotationID()).toString());
 		
 		addBasicProperties(ret, body);
 		new AnnotationPropertiesAppender(ret).appendProperties(annotation);
@@ -69,7 +67,7 @@ public class OACFormatHandler extends RDFFormatHandler {
 		annotResource.addProperty(RDF.type, model.createProperty(NS_OAC, "Annotation"));
 		annotResource.addProperty(
 			model.createProperty(NS_OAC, "hasBody"), 
-			body.getURI());
+			body);
 		annotResource.addProperty(
 			model.createProperty(NS_OAC, "hasTarget"), 
 			URIBuilder.toURI(annotation.getObjectUri()).toString());		

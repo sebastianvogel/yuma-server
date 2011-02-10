@@ -18,7 +18,8 @@ public class OACFormatHandlerTest {
 	@Test
 	public void testOASerialization() throws Exception {
 		Annotation annotation = new JSONFormatHandler().parse(Data.ANNOTATION_JSON_UPDATE);
-		new OACFormatHandler().serialize(annotation);
+		String serializedAnnotation = new OACFormatHandler().serialize(annotation);
+		System.out.println(serializedAnnotation);
 	}
 	
 }
