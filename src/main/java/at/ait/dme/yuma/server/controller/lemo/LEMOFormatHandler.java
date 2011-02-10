@@ -3,14 +3,12 @@ package at.ait.dme.yuma.server.controller.lemo;
 import java.io.StringReader;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.controller.RDFFormatHandler;
 import at.ait.dme.yuma.server.controller.SerializationLanguage;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationTree;
 import at.ait.dme.yuma.server.model.MapKeys;
 import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.model.Scope;
@@ -101,22 +99,6 @@ public class LEMOFormatHandler extends RDFFormatHandler {
 		return new Annotation(properties);
 	}
 
-	@Override
-	public String serialize(AnnotationTree tree) {
-		return serialize(tree.asFlatList());
-	}
-
-	@Override
-	public String serialize(List<Annotation> annotations) {
-		Model m = ModelFactory.createDefaultModel();
-		
-		for (Annotation a : annotations) {
-			addRDFResource(a, m);
-		}
-
-		return toString(m);
-	}
-	
 	@Override
 	protected void addRDFResource(Annotation a, Model m) {
 		m.setNsPrefix("a", NS_ANNOTATION);
