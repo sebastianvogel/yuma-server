@@ -12,6 +12,7 @@ import at.ait.dme.yuma.server.gui.documentation.API;
 import at.ait.dme.yuma.server.gui.documentation.Contact;
 import at.ait.dme.yuma.server.gui.documentation.Developer;
 import at.ait.dme.yuma.server.gui.documentation.Overview;
+import at.ait.dme.yuma.server.gui.feeds.ObjectPage;
 import at.ait.dme.yuma.server.gui.feeds.RepliesPage;
 import at.ait.dme.yuma.server.gui.feeds.TimelinePage;
 import at.ait.dme.yuma.server.gui.feeds.UserPage;
@@ -33,6 +34,13 @@ public class WicketApplication extends AuthenticatedWebApplication {
 				"user", 
 				UserPage.class,
 				new String[]{UserPage.PARAM_USERNAME}
+		));
+
+		// Object feed pages
+		this.mount(new MixedParamUrlCodingStrategy(
+				"object", 
+				ObjectPage.class,
+				new String[]{ObjectPage.PARAM_OBJECT}
 		));
 		
 		// Replies feed pages

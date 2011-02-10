@@ -91,11 +91,8 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	public Response getObjectFeed(@PathParam("objectId") String objectId) 
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		// Use only the part after the last '/' as display name
-		String screenName = objectId;
-		if (screenName.lastIndexOf('/') > -1)
-			screenName = screenName.substring(screenName.lastIndexOf('/') + 1);
-		
+		String screenName = toScreenName(objectId);
+
 		return super.getAnnotationTree(objectId, new RSSFormatHandler(
 				OBJECT_FEED_TITLE + "'" + screenName + "'",
 				OBJECT_FEED_DESCRIPTION + "'" + screenName + "'",
@@ -124,6 +121,26 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 				REPLY_FEED_TITLE + "'" + parent.getTitle() + "'",
 				REPLY_FEED_DESCRIPTION + "'" + parent.getTitle() + "'",
 				REPLY_FEED_URL + id));
+	}
+	
+	/**
+	 * Turns the URI of an object into a nicer 'screen name'. If the URI
+	 * points to a tile set (or anything with an xml), the parent path element
+	 * is used as screen name. In all other cases, the part after the last slash
+	 * is used. 
+	 * @param objectUri the URI
+	 */
+	public static String toScreenName(String objectUri) {
+		String screenName = objectUri;
+		
+		if (screenName.endsWith(".xml")) {
+			int lastSlash = screenName.lastIndexOf('/');
+			screenName = screenName.substring(screenName.lastIndexOf('/', lastSlash - 1), lastSlash);
+		}
+		
+		if (screenName.lastIndexOf('/') > -1)
+			screenName = screenName.substring(screenName.lastIndexOf('/') + 1);	
+		return screenName;
 	}
 	
 }
