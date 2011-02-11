@@ -2,7 +2,6 @@ package at.ait.dme.yuma.server.controller.rss;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -91,12 +90,12 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	public Response getObjectFeed(@PathParam("objectId") String objectId) 
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		String screenName = toScreenName(objectId);
+		String screenName = toScreenName(URLDecoder.decode(objectId, "UTF-8"));
 
 		return super.getAnnotationTree(objectId, new RSSFormatHandler(
 				OBJECT_FEED_TITLE + "'" + screenName + "'",
 				OBJECT_FEED_DESCRIPTION + "'" + screenName + "'",
-				OBJECT_FEED_URL + URLEncoder.encode(objectId, "UTF-8")));
+				OBJECT_FEED_URL + objectId));
 	}
 	
 	/**
