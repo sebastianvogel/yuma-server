@@ -108,7 +108,7 @@ td.no-border {
 	text-align:right;
 }
 
-a.btn-json, a.btn-rdf, a.btn-open-in-client {
+a.btn-json, a.btn-rdf, a.btn-open-in-client, a.btn-open-media {
 	background-color:#f5f5f5;
     border:1px solid #dedede;
     border-top:1px solid #eee;
@@ -124,7 +124,13 @@ a.btn-json, a.btn-rdf, a.btn-open-in-client {
 	border-radius: 2px;
 }
 
-a.btn-json:visited, a.btn-rdf:visited, a.btn-open-in-client:visited {
+a.btn-open-media {
+	margin:-1px 5px -4px 0px;
+	padding:1px 6px 3px 6px;
+	float:right;
+}
+
+a.btn-json:visited, a.btn-rdf:visited, a.btn-open-in-client:visited, a.btn-open-media:visited {
     color:#565656;	
 }
 
@@ -143,6 +149,13 @@ a.btn-rdf:hover {
 }
 
 a.btn-open-in-client:hover {
+    background-color:#dff4ff;
+    border:1px solid #c2e1ef;
+    color:#336699;
+    text-decoration:none;
+}
+
+a.btn-open-media:hover {
     background-color:#dff4ff;
     border:1px solid #c2e1ef;
     color:#336699;

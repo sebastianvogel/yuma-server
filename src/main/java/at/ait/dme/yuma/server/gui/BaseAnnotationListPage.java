@@ -1,5 +1,7 @@
 package at.ait.dme.yuma.server.gui;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,8 +37,9 @@ public abstract class BaseAnnotationListPage extends WebPage {
 
 	private static final String SPAN = "<span class=\"grad\"></span>";
 	private static final String ELLIPSIS = "...";
+	private static final String SERVER_BASE_URL = Config.getInstance().getServerBaseUrl();
 	private static final String SUITE_BASE_URL = Config.getInstance().getSuiteBaseUrl();
-		
+	
 	public BaseAnnotationListPage() {
 		add(new BookmarkablePageLink<String>("home", Search.class));
 	}
@@ -73,7 +76,8 @@ public abstract class BaseAnnotationListPage extends WebPage {
 		@Override
 		protected void populateItem(ListItem<Annotation> item) {
 			Annotation a = (Annotation) item.getModelObject();
-			item.add(new ExternalLink("reply-feed-url", "feeds/replies/" + a.getAnnotationID()));
+			item.add(new ExternalLink("reply-feed-url", 
+					SERVER_BASE_URL + "feeds/replies/" + a.getAnnotationID()));
 			item.add(new Label("title", a.getTitle()));
 			
 			HashMap<String, String> params = new HashMap<String, String>();
@@ -82,10 +86,21 @@ public abstract class BaseAnnotationListPage extends WebPage {
 				new BookmarkablePageLink<String>("author-href", UserPage.class, new PageParameters(params))
 					.add(new Label("author-label", a.getCreatedBy().getUsername())));
 			
+			String feedPageUri;
+			try {
+				feedPageUri = SERVER_BASE_URL + "object/" + URLEncoder
+					.encode(a.getObjectUri(), "UTF-8")
+					.replace("%", "%25");
+			} catch (UnsupportedEncodingException e) {
+				// Should never happen
+				e.printStackTrace();
+				feedPageUri = "#";
+			}
 			String screenUri = a.getObjectUri();
 			if (screenUri.length() > 55)
 				screenUri = screenUri.substring(0, 55) + ELLIPSIS;
-			item.add(new ExternalLink("objectUri", a.getObjectUri(), screenUri));
+			item.add(new ExternalLink("objectPage", feedPageUri, screenUri));
+			item.add(new ExternalLink("objectUri", a.getObjectUri()));
 
 			item.add(new Label("created", a.getCreated().toString()));
 			item.add(new Label("lastModified", a.getLastModified().toString()));
