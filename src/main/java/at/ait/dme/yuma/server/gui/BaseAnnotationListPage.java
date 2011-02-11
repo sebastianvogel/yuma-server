@@ -100,7 +100,8 @@ public abstract class BaseAnnotationListPage extends WebPage {
 			if (screenUri.length() > 55)
 				screenUri = screenUri.substring(0, 55) + ELLIPSIS;
 			item.add(new ExternalLink("objectPage", feedPageUri, screenUri));
-			item.add(new ExternalLink("objectUri", a.getObjectUri()));
+			item.add(new ExternalLink("objectUri", a.getObjectUri())
+			.add(new SimpleAttributeModifier("title", "Open Original File in New Window")));
 
 			item.add(new Label("created", a.getCreated().toString()));
 			item.add(new Label("lastModified", a.getLastModified().toString()));
