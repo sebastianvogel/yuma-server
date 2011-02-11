@@ -73,6 +73,7 @@ public abstract class BaseAnnotationListPage extends WebPage {
 		@Override
 		protected void populateItem(ListItem<Annotation> item) {
 			Annotation a = (Annotation) item.getModelObject();
+			item.add(new ExternalLink("reply-feed-url", "feeds/replies/" + a.getAnnotationID()));
 			item.add(new Label("title", a.getTitle()));
 			
 			HashMap<String, String> params = new HashMap<String, String>();
