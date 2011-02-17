@@ -18,7 +18,6 @@ import com.hp.hpl.jena.vocabulary.RDF;
  */
 public class OACFormatHandler extends RDFFormatHandler {
 	
-	private static final String NS_ANNOTATION = "http://annotations.mminf.univie.ac.at/annotation-body#";
 	private static final String NS_OAC = "http://www.openannotation.org/ns/";
 	
 	private Annotation annotation;
