@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.controller.lemo;
+package at.ait.dme.yuma.server.controller.rdf.lemo;
 
 import java.io.UnsupportedEncodingException;
 
@@ -12,7 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import at.ait.dme.yuma.server.controller.AbstractAnnotationController;
-import at.ait.dme.yuma.server.controller.SerializationLanguage;
+import at.ait.dme.yuma.server.controller.rdf.SerializationLanguage;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;

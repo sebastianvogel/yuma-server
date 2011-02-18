@@ -6,6 +6,7 @@ import org.junit.Test;
 import at.ait.dme.yuma.server.bootstrap.Data;
 import at.ait.dme.yuma.server.bootstrap.Setup;
 import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
+import at.ait.dme.yuma.server.controller.rdf.oac.OACFormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
 
 public class OACFormatHandlerTest {

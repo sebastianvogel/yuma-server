@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.controller.lemo;
+package at.ait.dme.yuma.server.controller.rdf.lemo;
 
 import java.io.StringReader;
 import java.util.Date;
@@ -14,8 +14,8 @@ import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
 import at.ait.dme.yuma.server.URIBuilder;
-import at.ait.dme.yuma.server.controller.RDFFormatHandler;
-import at.ait.dme.yuma.server.controller.SerializationLanguage;
+import at.ait.dme.yuma.server.controller.rdf.RDFFormatHandler;
+import at.ait.dme.yuma.server.controller.rdf.SerializationLanguage;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.MapKeys;

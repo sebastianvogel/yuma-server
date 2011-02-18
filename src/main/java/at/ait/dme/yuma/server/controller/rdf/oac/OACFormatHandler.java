@@ -1,8 +1,8 @@
-package at.ait.dme.yuma.server.controller.oac;
+package at.ait.dme.yuma.server.controller.rdf.oac;
 
 import at.ait.dme.yuma.server.URIBuilder;
-import at.ait.dme.yuma.server.controller.RDFFormatHandler;
-import at.ait.dme.yuma.server.controller.SerializationLanguage;
+import at.ait.dme.yuma.server.controller.rdf.RDFFormatHandler;
+import at.ait.dme.yuma.server.controller.rdf.SerializationLanguage;
 import at.ait.dme.yuma.server.model.Annotation;
 
 import com.hp.hpl.jena.rdf.model.AnonId;

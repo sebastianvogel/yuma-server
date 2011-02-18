@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.controller.oac;
+package at.ait.dme.yuma.server.controller.rdf.oac;
 
 import java.util.HashMap;
 import java.util.List;

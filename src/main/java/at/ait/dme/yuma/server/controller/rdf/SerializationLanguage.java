@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.controller;
+package at.ait.dme.yuma.server.controller.rdf;
 
 public enum SerializationLanguage {
 	

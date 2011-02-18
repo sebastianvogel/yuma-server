@@ -1,8 +1,9 @@
-package at.ait.dme.yuma.server.controller;
+package at.ait.dme.yuma.server.controller.rdf;
 
 import java.io.StringWriter;
 import java.util.List;
 
+import at.ait.dme.yuma.server.controller.FormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
 
