@@ -18,6 +18,8 @@ import at.ait.dme.yuma.server.model.Annotation;
 
 public class HibernateAnnotationDBTest {
 
+	private static final String OBJ_URI = "http://dme.ait.ac.at/object/lissabon.jpg";
+	
 	@BeforeClass
 	public static void setUp() throws Exception {		
 		Setup.buildHibernateConfiguration();
@@ -37,6 +39,7 @@ public class HibernateAnnotationDBTest {
 		
 		// Create
 		Annotation before = format.parse(Data.ANNOTATION_JSON_ORIGINAL);
+		
 		String id = db.createAnnotation(before);
 		System.out.println("Created: " + id);
 		
@@ -56,17 +59,19 @@ public class HibernateAnnotationDBTest {
 		// Try delete root annotation
 		try {
 			db.deleteAnnotation(id);
+			
 			fail("Annotation has reply - delete should fail!");
 		} catch (AnnotationHasReplyException e) {
 			// Expected
 		}
 		
-		long count = db.countAnnotationsForObject("object-lissabon");
+		long count = db.countAnnotationsForObject(OBJ_URI);
 		
 		// Delete
 		db.deleteAnnotation(replyId);
 		db.deleteAnnotation(id);
-		assertEquals(count - 2, db.countAnnotationsForObject("object-lissabon"));
+		
+		assertEquals(count - 2, db.countAnnotationsForObject(OBJ_URI));
 		
 		// Search
 		List<Annotation> annotations = db.findAnnotations("ponte");

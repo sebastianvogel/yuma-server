@@ -20,7 +20,6 @@ import org.junit.Test;
 import at.ait.dme.yuma.server.bootstrap.Data;
 import at.ait.dme.yuma.server.bootstrap.Setup;
 import at.ait.dme.yuma.server.config.Config;
-import at.ait.dme.yuma.server.controller.json.JSONAnnotationController;
 
 /**
  * Tests for the AnnoteaAnnotationController

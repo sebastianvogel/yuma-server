@@ -19,18 +19,18 @@ public class Setup {
     public static void buildHibernateConfiguration() throws AnnotationDatabaseException {
     	new Config.Builder(
     			"at.ait.dme.yuma.server.db.hibernate.HibernateAnnotationDB",				
-				"http://localhost:8081/yuma-server/",
-				"http://localhost:8081/yuma-suite/",
-				"admin",
-				"admin"
+				"http://localhost:8080/yuma-server/",
+				"http://localhost:8080/yuma-suite/",
+				"yuma",
+				"yuma"
 		)    	
-    			.dbDriver("org.postgresql.Driver")
-    			.dbDriverProtocol("jdbc:postgresql")
+    			.dbDriver("com.mysql.jdbc.Driver")
+    			.dbDriverProtocol("jdbc:mysql")
     			.dbHost("localhost")
-				.dbPort("5432")
-				.dbName("ait")
-				.dbUser("postgres")
-				.dbPass("postgres").
+				.dbPort("3306")
+				.dbName("yuma")
+				.dbUser("yuma")
+				.dbPass("yuma").
 				createInstance();
 		
 		Config.getInstance().getAnnotationDatabase().init();

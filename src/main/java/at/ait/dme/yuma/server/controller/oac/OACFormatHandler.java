@@ -1,10 +1,14 @@
 package at.ait.dme.yuma.server.controller.oac;
 
-import java.util.List;
-
-import at.ait.dme.yuma.server.controller.FormatHandler;
+import at.ait.dme.yuma.server.URIBuilder;
+import at.ait.dme.yuma.server.controller.RDFFormatHandler;
+import at.ait.dme.yuma.server.controller.SerializationLanguage;
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationTree;
+
+import com.hp.hpl.jena.rdf.model.AnonId;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.vocabulary.RDF;
 
 /**
  * Format handler for OAC RDF(in different serialization
@@ -12,7 +16,16 @@ import at.ait.dme.yuma.server.model.AnnotationTree;
  * 
  * @author Rainer Simon
  */
-public class OACFormatHandler implements FormatHandler {
+public class OACFormatHandler extends RDFFormatHandler {
+	
+	private static final String NS_OAC = "http://www.openannotation.org/ns/";
+	
+	private Annotation annotation;
+	private Model model;
+	
+	public OACFormatHandler() {
+		super(SerializationLanguage.RDF_XML);
+	}
 
 	@Override
 	public Annotation parse(String serialized) {
@@ -21,21 +34,42 @@ public class OACFormatHandler implements FormatHandler {
 	}
 
 	@Override
-	public String serialize(Annotation annotation) {
-		// TODO Auto-generated method stub
-		return null;
+	protected void addRDFResource(Annotation annotation, Model model) {
+		this.annotation = annotation;
+		this.model = model;
+		
+		model.setNsPrefix("oac", NS_OAC);
+		
+		Resource body = createAnnotationBody();
+		createAnnotationResource(body);
 	}
-
-	@Override
-	public String serialize(AnnotationTree tree) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	private Resource createAnnotationBody() {
+		Resource body = model.createResource(new AnonId());
+		body.addProperty(RDF.type, model.createProperty(NS_OAC, "Body"));
+		new BodyPropertiesAppender(body, model).appendProperties(annotation);
+		
+		return body;
 	}
-
-	@Override
-	public String serialize(List<Annotation> annotations) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	private Resource createAnnotationResource(Resource body) {
+		Resource ret = model.createResource(
+			URIBuilder.toURI(annotation.getAnnotationID()).toString());
+		
+		addBasicProperties(ret, body);
+		new AnnotationPropertiesAppender(ret).appendProperties(annotation);
+		return ret;
+	}
+	
+	private void addBasicProperties(Resource annotResource, Resource body)
+	{
+		annotResource.addProperty(RDF.type, model.createProperty(NS_OAC, "Annotation"));
+		annotResource.addProperty(
+			model.createProperty(NS_OAC, "hasBody"), 
+			body);
+		annotResource.addProperty(
+			model.createProperty(NS_OAC, "hasTarget"), 
+			URIBuilder.toURI(annotation.getObjectUri()).toString());		
 	}
 
 }

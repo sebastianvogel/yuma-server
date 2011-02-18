@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import at.ait.dme.yuma.server.controller.AbstractAnnotationController;
+import at.ait.dme.yuma.server.controller.SerializationLanguage;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
@@ -70,7 +71,7 @@ public class LEMOAnnotationController extends AbstractAnnotationController {
 	public Response getAnnotationTurtle(@PathParam("id") String id)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
-		return super.getAnnotation(id, new LEMOFormatHandler(LEMOFormatHandler.TURTLE));
+		return super.getAnnotation(id, new LEMOFormatHandler(SerializationLanguage.TURTLE));
 	}
 	
 	@GET
@@ -79,7 +80,7 @@ public class LEMOAnnotationController extends AbstractAnnotationController {
 	public Response getAnnotationTurtle_forceTurtle(@PathParam("id") String id)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
-		return super.getAnnotation(id.substring(0, id.indexOf('.')), new LEMOFormatHandler(LEMOFormatHandler.TURTLE));
+		return super.getAnnotation(id.substring(0, id.indexOf('.')), new LEMOFormatHandler(SerializationLanguage.TURTLE));
 	}
 
 	@GET
@@ -88,7 +89,7 @@ public class LEMOAnnotationController extends AbstractAnnotationController {
 	public Response getAnnotationN3(@PathParam("id") String id)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
-		return super.getAnnotation(id, new LEMOFormatHandler(LEMOFormatHandler.N3));
+		return super.getAnnotation(id, new LEMOFormatHandler(SerializationLanguage.N3));
 	}
 	
 	@GET
@@ -97,7 +98,7 @@ public class LEMOAnnotationController extends AbstractAnnotationController {
 	public Response getAnnotationN3_forceN3(@PathParam("id") String id)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
-		return super.getAnnotation(id.substring(0, id.indexOf('.')), new LEMOFormatHandler(LEMOFormatHandler.N3));
+		return super.getAnnotation(id.substring(0, id.indexOf('.')), new LEMOFormatHandler(SerializationLanguage.N3));
 	}	
 	
 	@GET
@@ -115,7 +116,7 @@ public class LEMOAnnotationController extends AbstractAnnotationController {
 	public Response getAnnotationTreeTurtle(@PathParam("objectUri") String objectUri)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
-		return super.getAnnotationTree(objectUri, new LEMOFormatHandler(LEMOFormatHandler.TURTLE));
+		return super.getAnnotationTree(objectUri, new LEMOFormatHandler(SerializationLanguage.TURTLE));
 	}
 	
 }
