@@ -63,6 +63,28 @@ public class Data {
 		  "]" +
 		"}";
 	
+	public static final String ANNOTATION_JSON_NOFRAGMENT =
+		"{ \"parent-id\" : \"\" , " +
+		  "\"root-id\" : \"\" , " +
+		  "\"title\" : \"Ponte 25 de Abril\" , "+
+		  "\"text\" : \"The 25 de Abril Bridge is a suspension bridge connecting the city of Lisbon, capital of Portugal, " + 
+		  "to the municipality of Almada on the left bank of the Tagus river. It was inaugurated on August 6, 1966 " +
+		  "and a train platform was added in 1999. It is often compared to the Golden Gate Bridge in San Francisco, USA, due to " +
+		  "their similarities and same construction company. With a total length of 2.277 m, it is the 19th largest " +
+		  "suspension bridge in the world. The upper platform carries six car lanes, the lower platform two train tracks. Until " +
+		  "1974 the bridge was named Salazar Bridge.\", " +
+		  "\"scope\" : \"public\" , "+
+		  "\"last-modified\" : 1224043200000 ,"+
+		  "\"created\" : 1224043200000 , "+
+		  "\"created-by\" :  { \"user-name\" : \"rsimon\" } , " +
+		  "\"media-type\" : \"image\" , "+
+		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\", " +
+		  "\"tags\" : [ " +
+		    "{ \"alt-labels\" : [ { \"val\" : \"Lissabon\" , \"lang\" : \"de\" } , { \"val\" : \"Lisboa\" }  ] , \"label\" : \"Lisbon\" , \"type\" : \"place\" , \"relation\" : { \"namespace\" : \"http://geonames.org/geo#\" , \"property\" : \"spatiallyContains\" } , \"alt-descriptions\" : [ ] , \"lang\" : \"en\" , \"uri\" : \"http://www.geonames.org/2267057/\"} ," +
+		    "{ \"alt-labels\" : [ ] , \"label\" : \"Portugal\" , \"type\" : \"place\" , \"relation\" : { \"namespace\" : \"http://geonames.org/geo#\" , \"property\" : \"spatiallyContains\" } , \"alt-descriptions\" : [ ] , \"lang\" : \"en\" , \"uri\" : \"http://www.geonames.org/2264397/\"} " +
+		  "]" +
+		"}";
+		
 	public static final String ROOT_JSON =
 		"{ \"parent-id\" : \"\" , " +
 		  "\"root-id\" : \"\" , " +
