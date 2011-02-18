@@ -24,13 +24,13 @@ public class Setup {
 				"yuma",
 				"yuma"
 		)    	
-    			.dbDriver("com.mysql.jdbc.Driver")
-    			.dbDriverProtocol("jdbc:mysql")
+    			.dbDriver("org.postgresql.Driver")
+    			.dbDriverProtocol("jdbc:postgresql")
     			.dbHost("localhost")
-				.dbPort("3306")
-				.dbName("yuma")
-				.dbUser("yuma")
-				.dbPass("yuma").
+				.dbPort("5432")
+				.dbName("ait")
+				.dbUser("postgres")
+				.dbPass("postgres").
 				createInstance();
 		
 		Config.getInstance().getAnnotationDatabase().init();
