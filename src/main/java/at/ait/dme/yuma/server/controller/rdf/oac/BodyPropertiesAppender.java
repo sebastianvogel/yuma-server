@@ -39,9 +39,14 @@ class BodyPropertiesAppender extends PropertiesAppender {
 			
 		for (SemanticTag semanticTag : semanticTags) {
 			SemanticRelation r = semanticTag.getRelation();
-			properties.put(
-				model.createProperty(r.getNamespace(), r.getProperty()), 
-				semanticTag.getURI().toString());
+			
+			if (r == null) {
+				properties.put(RDFS.seeAlso, semanticTag.getURI().toString());
+			} else {
+				properties.put(
+						model.createProperty(r.getNamespace(), r.getProperty()), 
+						semanticTag.getURI().toString());				
+			}
 		}
 	}
 	
