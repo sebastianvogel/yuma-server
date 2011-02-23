@@ -18,7 +18,7 @@ import com.hp.hpl.jena.vocabulary.RDF;
  */
 public class OACFormatHandler extends RDFFormatHandler {
 	
-	private static final String NS_OAC = "http://www.openannotation.org/ns/";
+	public static final String NS_OAC = "http://www.openannotation.org/ns/";
 	
 	private Annotation annotation;
 	private Model model;
@@ -40,12 +40,13 @@ public class OACFormatHandler extends RDFFormatHandler {
 		
 		model.setNsPrefix("oac", NS_OAC);
 		
-		Resource body = createAnnotationBody();
+		Resource body = createBodyResource();
 		createAnnotationResource(body);
 	}
 	
-	private Resource createAnnotationBody() {
-		Resource body = model.createResource(new AnonId());
+	private Resource createBodyResource() {
+		Resource body = model.createResource(AnonId.create());
+		
 		body.addProperty(RDF.type, model.createProperty(NS_OAC, "Body"));
 		new BodyPropertiesAppender(body, model).appendProperties(annotation);
 		
@@ -68,8 +69,27 @@ public class OACFormatHandler extends RDFFormatHandler {
 			model.createProperty(NS_OAC, "hasBody"), 
 			body);
 		annotResource.addProperty(
-			model.createProperty(NS_OAC, "hasTarget"), 
-			URIBuilder.toURI(annotation.getObjectUri()).toString());		
+			model.createProperty(NS_OAC, "hasTarget"),
+			createTarget());		
+	}
+	
+	private Resource createTarget() {
+		if (annotation.getFragment() == null) {
+			return model.createResource(annotation.getObjectUri().toString());
+		}
+		else {
+			return createConstrainedTarget();
+		}
+	}
+	
+	private Resource createConstrainedTarget() {
+		Resource target = model.createResource(AnonId.create());
+		
+		target.addProperty(RDF.type, model.createProperty(NS_OAC, "ConstrainedTarget"));
+		new TargetPropertiesAppender(target, model).appendProperties(annotation);
+		
+		return target;
+
 	}
 
 }

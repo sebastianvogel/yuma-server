@@ -1,6 +1,7 @@
 package at.ait.dme.yuma.server.controller.rdf.oac;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import at.ait.dme.yuma.server.model.Annotation;
 
@@ -16,8 +17,8 @@ class AnnotationPropertiesAppender extends PropertiesAppender {
 	}
 	
 	@Override
-	HashMap<Property, String> buildPropertiesMap(Annotation annotation) {
-		HashMap<Property, String> properties = new HashMap<Property, String>();		
+	Map<Property, Object> buildPropertiesMap(Annotation annotation) {
+		HashMap<Property, Object> properties = new HashMap<Property, Object>();		
 		
 		properties.put(DC.title, annotation.getTitle());
 		properties.put(DC.creator, annotation.getCreatedBy().getUsername());

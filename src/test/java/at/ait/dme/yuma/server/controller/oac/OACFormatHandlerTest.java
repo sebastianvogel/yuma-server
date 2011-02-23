@@ -17,10 +17,19 @@ public class OACFormatHandlerTest {
 	}
 
 	@Test
-	public void testOASerialization() throws Exception {
+	public void testOASerializationWithFragment() throws Exception {
 		Annotation annotation = new JSONFormatHandler().parse(Data.ANNOTATION_JSON_UPDATE);
+		
 		String serializedAnnotation = new OACFormatHandler().serialize(annotation);
 		System.out.println(serializedAnnotation);
 	}
 	
+	@Test
+	public void testOASerializationWithoutFragment() throws Exception {
+		Annotation annotation = new JSONFormatHandler().parse(Data.ANNOTATION_JSON_NOFRAGMENT);
+		
+		String serializedAnnotation = new OACFormatHandler().serialize(annotation);
+		System.out.println(serializedAnnotation);
+	}
+
 }
