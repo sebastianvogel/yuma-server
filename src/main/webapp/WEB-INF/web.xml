@@ -58,22 +58,22 @@
 	
 	<context-param>
 		<param-name>annotation.db.port</param-name>
-		<param-value>3306</param-value>
+		<param-value>5432</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>annotation.db.name</param-name>
-		<param-value>yuma</param-value>
+		<param-value>ait</param-value>
 	</context-param>
 
 	<context-param>
 		<param-name>annotation.db.user</param-name>
-		<param-value>yuma</param-value>
+		<param-value>postgres</param-value>
 	</context-param>
 
 	<context-param>
 		<param-name>annotation.db.pass</param-name>
-		<param-value>yuma</param-value>
+		<param-value>postgres</param-value>
 	</context-param>
 
 	<context-param>
@@ -88,12 +88,12 @@
 	
 	<context-param>
 		<param-name>annotation.db.driver</param-name>
-		<param-value>com.mysql.jdbc.Driver</param-value>
+		<param-value>org.postgresql.Driver</param-value>
 	</context-param>	
 	
 	<context-param>
 		<param-name>annotation.db.driver.protocol</param-name>
-		<param-value>jdbc:mysql</param-value>
+		<param-value>jdbc:postgresql</param-value>
 	</context-param>
 	
 	<!--  MONGODB  configuration -->
