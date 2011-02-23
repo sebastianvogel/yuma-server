@@ -32,6 +32,8 @@ class ConstraintResourceFactory {
 		switch (mediaType) {
 		case IMAGE:
 			return createSvgConstraint(annotation.getFragment(), model);
+		case MAP:
+			return createSvgConstraint(annotation.getFragment(), model);
 		}
 		throw new UnknownMediaTypeException("don't know how to handle media type '" +mediaType.toString()+ "'");
 	}
