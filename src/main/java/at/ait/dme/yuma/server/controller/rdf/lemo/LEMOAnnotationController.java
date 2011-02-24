@@ -13,7 +13,6 @@ import javax.ws.rs.core.Response;
 
 import at.ait.dme.yuma.server.controller.AbstractAnnotationController;
 import at.ait.dme.yuma.server.controller.rdf.SerializationLanguage;
-import at.ait.dme.yuma.server.controller.rdf.oac.OACFormatHandler;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
@@ -54,7 +53,7 @@ public class LEMOAnnotationController extends AbstractAnnotationController {
 	public Response getAnnotationXML(@PathParam("id") String id)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
-		return super.getAnnotation(id, new OACFormatHandler());
+		return super.getAnnotation(id, new LEMOFormatHandler());
 	}
 	
 	@GET
@@ -63,7 +62,7 @@ public class LEMOAnnotationController extends AbstractAnnotationController {
 	public Response getAnnotationXML_forceXML(@PathParam("id") String id)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
-		return super.getAnnotation(id.substring(0, id.indexOf('.')), new OACFormatHandler());
+		return super.getAnnotation(id.substring(0, id.indexOf('.')), new LEMOFormatHandler());
 	}
 
 	@GET
