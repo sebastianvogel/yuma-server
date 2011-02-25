@@ -52,9 +52,6 @@ public abstract class AbstractAnnotationController {
 			db = Config.getInstance().getAnnotationDatabase();
 			db.connect(request, response);
 			annotationId = db.createAnnotation(format.parse(annotation));
-			annotation = format.serialize(db.findAnnotationById(annotationId));
-		} catch(AnnotationNotFoundException e) {
-			throw new AnnotationDatabaseException(e);
 		} finally {
 			if (db != null) db.disconnect();
 		}
@@ -182,6 +179,7 @@ public abstract class AbstractAnnotationController {
 		} finally {
 			if(db != null) db.disconnect();
 		}
+
 		return Response.ok().entity(tree).build();
 	}
 	

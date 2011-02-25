@@ -20,7 +20,7 @@ import org.jboss.resteasy.client.core.executors.ApacheHttpClientExecutor;
 import org.jboss.resteasy.util.HttpResponseCodes;
 
 import at.ait.dme.yuma.server.config.Config;
-import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
+import at.ait.dme.yuma.server.controller.rdf.lemo.LEMOFormatHandler;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
@@ -109,7 +109,7 @@ public class EuropeanaDB extends AbstractAnnotationDB {
 		EuropeanaAnnotationAPI api = getAPI();       
         ClientResponse<String> response = null;
         try {
-        	JSONFormatHandler lemoFormat = new JSONFormatHandler();
+        	LEMOFormatHandler lemoFormat = new LEMOFormatHandler();
         	
         	if (annotation.getParentId() == null) {
         		response = api.createAnnotation(
@@ -153,12 +153,11 @@ public class EuropeanaDB extends AbstractAnnotationDB {
 	public AnnotationTree findAnnotationsForObject(String objectUri)
 			throws AnnotationDatabaseException {
 		
-		JSONFormatHandler jsonFormat = new JSONFormatHandler();
+		LEMOFormatHandler lemoFormat = new LEMOFormatHandler();
 		List<Annotation> annotations = new ArrayList<Annotation>();	
 		ClientResponse<String> response = null;
-		try {		
-			response = 
-				getAPI().listAnnotations(encode(getEuropeanaURI(objectUri)));	
+		try {	
+			response = getAPI().listAnnotations(encode(getEuropeanaURI(objectUri)));	
 			
 			if (response.getStatus() != HttpResponseCodes.SC_OK && 
 					response.getStatus() != HttpResponseCodes.SC_NOT_FOUND)				
@@ -174,7 +173,7 @@ public class EuropeanaDB extends AbstractAnnotationDB {
 					if (response.getStatus() != HttpResponseCodes.SC_OK)
 						throw new AnnotationDatabaseException("Error " + response.getStatus());
 					
-					annotations.add(jsonFormat.parse(response.getEntity()));									
+					annotations.add(lemoFormat.parse(response.getEntity()));									
 				}
 			}
 					
@@ -187,10 +186,13 @@ public class EuropeanaDB extends AbstractAnnotationDB {
 			}
 			annotations.removeAll(notNeeded);
 			*/
-		} catch (InvalidAnnotationException e) {
-			throw new AnnotationDatabaseException(e);
+		} catch (AnnotationDatabaseException e) {
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
-			if (response != null) forwardResponseHeaders(response.getHeaders());			
+			if (response != null)
+				forwardResponseHeaders(response.getHeaders());			
 		}
 		
 		return new AnnotationTree(annotations);
@@ -215,14 +217,16 @@ public class EuropeanaDB extends AbstractAnnotationDB {
 	public Annotation findAnnotationById(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 
-		EuropeanaAnnotationAPI api = getAPI();       
-		ClientResponse<String> response = api.findAnnotationById(annotationId);
+		EuropeanaAnnotationAPI api = getAPI();
+		ClientResponse<String> response = api.findAnnotationById(annotationId);		
+		System.out.println("3");
 		forwardResponseHeaders(response.getHeaders());
+		System.out.println("4");
 		
 		int status = response.getStatus();
 		if (status == HttpResponseCodes.SC_OK) {
 			try {
-				return new JSONFormatHandler().parse(response.getEntity());
+				return new LEMOFormatHandler().parse(response.getEntity());
 			} catch (InvalidAnnotationException e) {
 				throw new AnnotationDatabaseException(e);
 			}
