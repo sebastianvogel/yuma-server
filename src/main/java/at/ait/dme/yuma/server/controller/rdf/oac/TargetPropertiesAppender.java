@@ -1,8 +1,5 @@
 package at.ait.dme.yuma.server.controller.rdf.oac;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.spi.UnsupportedMediaTypeException;
 
@@ -23,20 +20,16 @@ class TargetPropertiesAppender extends PropertiesAppender {
 	}
 	
 	@Override
-	Map<Property, Object> buildPropertiesMap(Annotation annotation) {
-		HashMap<Property, Object> properties = new HashMap<Property, Object>();
-		
-		properties.put(createConstrainsProperty(), annotation.getObjectUri().toString());
+	void populatePropertiesMap(Annotation annotation) {
+		addProperty(createConstrainsProperty(), annotation.getObjectUri().toString());
 		
 		try {
-			properties.put(createConstrainedByProperty(), 
+			addProperty(createConstrainedByProperty(), 
 				ConstraintResourceFactory.getInstance().createResource(annotation, model));
 		}
 		catch (UnsupportedMediaTypeException e) {
 			logger.warn("Ignoring unknown media type", e);
 		}
-		
-		return properties;
 	}
 	
 	private Property createConstrainsProperty() {

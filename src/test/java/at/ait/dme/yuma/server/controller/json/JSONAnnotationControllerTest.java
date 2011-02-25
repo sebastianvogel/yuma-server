@@ -29,7 +29,7 @@ import at.ait.dme.yuma.server.config.Config;
  */
 public class JSONAnnotationControllerTest {
 	private static final String JSON_ANNOTATION_CONTROLLER_BASE_URL = 
-		"http://localhost:8081/yuma-server/api/annotation";
+		"http://localhost:8080/yuma-server/api/annotation";
 
 	private static final String ACCEPT_HEADER = "Accept";
 	private static final String LOCATION_HEADER = "Location";

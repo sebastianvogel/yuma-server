@@ -1,5 +1,7 @@
 package at.ait.dme.yuma.server.controller.rdf.oac;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import at.ait.dme.yuma.server.model.Annotation;
@@ -9,7 +11,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 
 abstract class PropertiesAppender {
 	
-	private Map<Property, Object> properties;
+	private Map<Property, List<Object>> properties;
 	private Resource resource;
 	
 	PropertiesAppender(Resource resource) {
@@ -17,14 +19,14 @@ abstract class PropertiesAppender {
 	}
 
 	void appendProperties(Annotation annotation) {
-		properties = buildPropertiesMap(annotation);
+		populatePropertiesMap(annotation);
 		appendPropertiesFromMap();
 	}
 	
 	private void appendPropertiesFromMap() {
 		for (Property property : properties.keySet()) {
-			Object value = properties.get(property);
-			if (value != null) {
+			List<Object> valueList = properties.get(property);
+			for (Object value : valueList) {
 				if (value instanceof String) {
 					resource.addProperty(property, (String) value);
 				}
@@ -35,5 +37,14 @@ abstract class PropertiesAppender {
 		}
 	}
 	
-	abstract Map<Property, Object> buildPropertiesMap(Annotation annotation);
+	protected void addProperty(Property property, Object value) {
+		List<Object> valueList = properties.get(property);
+		if (valueList == null) {
+			valueList = new ArrayList<Object>();
+			properties.put(property, valueList);
+		}
+		valueList.add(value);
+	}
+	
+	abstract void populatePropertiesMap(Annotation annotation);
 }

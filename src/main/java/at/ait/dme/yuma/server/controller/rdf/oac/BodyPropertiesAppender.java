@@ -1,21 +1,17 @@
 package at.ait.dme.yuma.server.controller.rdf.oac;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.tag.SemanticRelation;
 import at.ait.dme.yuma.server.model.tag.SemanticTag;
 
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
 class BodyPropertiesAppender extends PropertiesAppender {
 
-	private Map<Property, Object> properties = new HashMap<Property, Object>();
 	private Model model;
 	
 	BodyPropertiesAppender(Resource resource, Model model) {
@@ -24,11 +20,9 @@ class BodyPropertiesAppender extends PropertiesAppender {
 	}
 	
 	@Override
-	Map<Property, Object> buildPropertiesMap(Annotation annotation) {
-		properties.put(RDFS.label, annotation.getText());
+	void populatePropertiesMap(Annotation annotation) {
+		addProperty(RDFS.label, annotation.getText());
 		appendSemanticTags(annotation);
-		
-		return properties;
 	}
 
 	private void appendSemanticTags(Annotation annotation) {
@@ -41,11 +35,12 @@ class BodyPropertiesAppender extends PropertiesAppender {
 			SemanticRelation r = semanticTag.getRelation();
 			
 			if (r == null) {
-				properties.put(RDFS.seeAlso, semanticTag.getURI().toString());
-			} else {
-				properties.put(
-						model.createProperty(r.getNamespace(), r.getProperty()), 
-						semanticTag.getURI().toString());				
+				addProperty(RDFS.seeAlso, semanticTag.getURI().toString());
+			} 
+			else {
+				addProperty(
+					model.createProperty(r.getNamespace(), r.getProperty()), 
+					semanticTag.getURI().toString());				
 			}
 		}
 	}

@@ -64,11 +64,34 @@ public class OACFormatHandler extends RDFFormatHandler {
 	
 	private void addBasicProperties(Resource annotResource, Resource body)
 	{
-		annotResource.addProperty(RDF.type, model.createProperty(NS_OAC, "Annotation"));
+		if (isReplyAnnotation()) {
+			annotResource.addProperty(RDF.type, model.createProperty(NS_OAC, "Reply"));
+			addReplyTargets(annotResource);
+		}
+		else {
+			annotResource.addProperty(RDF.type, model.createProperty(NS_OAC, "Annotation"));
+			addSingleTarget(annotResource);
+		}
+		
 		annotResource.addProperty(
 			model.createProperty(NS_OAC, "hasBody"), 
 			body);
-		annotResource.addProperty(
+	}
+	
+	private void addReplyTargets(Resource annotationResource) {
+		annotationResource.addProperty(
+			model.createProperty(NS_OAC, "hasTarget"),
+			URIBuilder.toURI(annotation.getParentId()).toString());
+		
+		if (annotation.getFragment() != null) {
+			annotationResource.addProperty(
+				model.createProperty(NS_OAC, "hasTarget"),
+				createConstrainedTarget());	
+		}		
+	}
+	
+	private void addSingleTarget(Resource annotationResource) {
+		annotationResource.addProperty(
 			model.createProperty(NS_OAC, "hasTarget"),
 			createTarget());		
 	}
@@ -80,6 +103,10 @@ public class OACFormatHandler extends RDFFormatHandler {
 		else {
 			return createConstrainedTarget();
 		}
+	}
+	
+	private boolean isReplyAnnotation() {
+		return annotation.getParentId() != null;
 	}
 	
 	private Resource createConstrainedTarget() {
