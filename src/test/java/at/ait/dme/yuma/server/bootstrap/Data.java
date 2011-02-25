@@ -111,8 +111,39 @@ public class Data {
 		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\"" +
 		"}";
 	
+	private static final String REPLY_JSON_WITH_FRAGMENT =
+		"{ \"parent-id\" : \"@parent@\" , " +
+		  "\"root-id\" : \"@root@\" , " +
+		  "\"title\" : \"RE: Ponte 25 de Abril\" , "+
+		  "\"text\" : \"Interesting!\" ," +
+		  "\"scope\" : \"public\" , "+
+		  "\"last-modified\" : 1224043200000 ," +
+		  "\"created\" : 1224043200000 , " +
+		  "\"created-by\" :  { \"user-name\" : \"rsimon\" } , " +
+		  "\"fragment\" : \"" +
+			"<svg:svg xmlns:svg=\\\"http://www.w3.org/2000/svg\\\" width=\\\"640px\\\" height=\\\"480px\\\" viewbox=\\\"0px 0px 640px 480px\\\"> " +
+			  "<svg:defs xmlns:svg=\\\"http://www.w3.org/2000/svg\\\"> " +
+				"<svg:symbol xmlns:svg=\\\"http://www.w3.org/2000/svg\\\" id=\\\"Polygon\\\"> " +
+				"<svg:polygon xmlns:svg=\\\"http://www.w3.org/2000/svg\\\" " +
+				"points=\\\"0,24 45,22 45,32 49,32 49,23 190,20 285,19 193,0 119,17 48,5\\\" stroke=\\\"rgb(229,0,0)\\\" " +
+				"stroke-width=\\\"2\\\" fill=\\\"none\\\"> " +
+				"</svg:polygon> " +
+				"</svg:symbol> " +
+			  "</svg:defs>" +
+			"</svg:svg>" +
+		  "\" , "+
+		  "\"media-type\" : \"image\" , " +
+		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\"" +
+		"}";
+	
 	public static String reply(String root, String parent) {
 		return REPLY_JSON
+			.replace("@root@", root)
+			.replace("@parent@", parent);
+	}
+	
+	public static String replyWithFragment(String root, String parent) {
+		return REPLY_JSON_WITH_FRAGMENT
 			.replace("@root@", root)
 			.replace("@parent@", parent);
 	}

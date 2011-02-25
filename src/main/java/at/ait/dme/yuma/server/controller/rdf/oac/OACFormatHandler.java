@@ -1,8 +1,11 @@
 package at.ait.dme.yuma.server.controller.rdf.oac;
 
+import java.text.ParseException;
+
 import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.controller.rdf.RDFFormatHandler;
 import at.ait.dme.yuma.server.controller.rdf.SerializationLanguage;
+import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
 
 import com.hp.hpl.jena.rdf.model.AnonId;
@@ -28,9 +31,15 @@ public class OACFormatHandler extends RDFFormatHandler {
 	}
 
 	@Override
-	public Annotation parse(String serialized) {
-		// TODO Auto-generated method stub
-		return null;
+	public Annotation parse(String serialized) throws InvalidAnnotationException 
+	{
+		try {
+			return new OACParser(serialized).parse();
+		}
+		catch (ParseException e) {
+			throw new InvalidAnnotationException("Error parsing elements", e);
+		}
+		
 	}
 
 	@Override

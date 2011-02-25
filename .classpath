@@ -36,7 +36,7 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/slf4j-api-1.6.1.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/slf4j-log4j12-1.6.1.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/wicket-1.4.14.jar"/>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jena-2.6.4.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jena-2.6.4.jar" sourcepath="/home/chef/.m2/repository/com/hp/hpl/jena/jena/2.6.4/jena-2.6.4-sources.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/xercesImpl-2.7.1.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/iri-0.8.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/icu4j-3.4.4.jar"/>

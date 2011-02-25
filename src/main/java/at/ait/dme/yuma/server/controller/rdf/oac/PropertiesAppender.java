@@ -1,6 +1,7 @@
 package at.ait.dme.yuma.server.controller.rdf.oac;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 
 abstract class PropertiesAppender {
 	
-	private Map<Property, List<Object>> properties;
+	private Map<Property, List<Object>> properties = new HashMap<Property, List<Object>>();
 	private Resource resource;
 	
 	PropertiesAppender(Resource resource) {
