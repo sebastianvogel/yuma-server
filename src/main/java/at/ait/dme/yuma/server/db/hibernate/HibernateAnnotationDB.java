@@ -12,6 +12,7 @@ import javax.persistence.Persistence;
 import javax.persistence.PessimisticLockException;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
@@ -61,7 +62,7 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public void connect(HttpServletRequest request)
+	public void connect(HttpServletRequest request, HttpServletResponse response)
 			throws AnnotationDatabaseException {
 		
 		if(emf==null) 

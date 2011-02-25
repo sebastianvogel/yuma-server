@@ -113,7 +113,7 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 
 		AbstractAnnotationDB db = Config.getInstance().getAnnotationDatabase();
-		db.connect(request);
+		db.connect(request, response);
 		Annotation parent = db.findAnnotationById(URLDecoder.decode(id, URL_ENCODING));
 
 		return super.getReplies(id, new RSSFormatHandler(
