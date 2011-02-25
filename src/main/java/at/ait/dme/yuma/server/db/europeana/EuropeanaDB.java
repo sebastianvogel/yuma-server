@@ -217,24 +217,27 @@ public class EuropeanaDB extends AbstractAnnotationDB {
 	public Annotation findAnnotationById(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 
-		EuropeanaAnnotationAPI api = getAPI();
-		ClientResponse<String> response = api.findAnnotationById(annotationId);		
-		System.out.println("3");
-		forwardResponseHeaders(response.getHeaders());
-		System.out.println("4");
-		
-		int status = response.getStatus();
-		if (status == HttpResponseCodes.SC_OK) {
-			try {
-				return new LEMOFormatHandler().parse(response.getEntity());
-			} catch (InvalidAnnotationException e) {
-				throw new AnnotationDatabaseException(e);
+		ClientResponse<String> response = null;
+		try {
+			EuropeanaAnnotationAPI api = getAPI();
+			response = api.findAnnotationById(annotationId);		
+			
+			int status = response.getStatus();
+			if (status == HttpResponseCodes.SC_OK) {
+				try {
+					return new LEMOFormatHandler().parse(response.getEntity());
+				} catch (InvalidAnnotationException e) {
+					throw new AnnotationDatabaseException(e);
+				}
+			} else if (status == HttpResponseCodes.SC_NOT_FOUND) {
+				throw new AnnotationNotFoundException();
+			} else {
+				throw new AnnotationDatabaseException("Error " + response.getStatus() + "\n"
+						+ response.getEntity());
 			}
-		} else if (status == HttpResponseCodes.SC_NOT_FOUND) {
-			throw new AnnotationNotFoundException();
-		} else {
-			throw new AnnotationDatabaseException("Error " + response.getStatus() + "\n"
-					+ response.getEntity());
+		} finally {
+			if (response != null)
+				forwardResponseHeaders(response.getHeaders());
 		}
 	}
 
