@@ -1,5 +1,8 @@
 package at.ait.dme.yuma.server.db.europeana;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -9,6 +12,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
+import org.apache.log4j.Logger;
 
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ProxyFactory;
@@ -30,9 +34,20 @@ import at.ait.dme.yuma.server.model.AnnotationTree;
  * Adapter class that implements an AbstractAnnotationDB
  * front-end to the remote Europeana Annotation API.
  * 
+ * Please note that, compared to the annotation server in general,
+ * the Europeana API supports only a bare minimum of features.
+ * This implementation makes available those features that the
+ * API supports, and throws RuntimeExceptions for all others. 
+ * 
  * @author Rainer Simon
  */
 public class EuropeanaDB extends AbstractAnnotationDB {
+	
+	/**
+	 * String constants
+	 */
+	private static final String UTF8 = "UTF-8";
+	private static final String SORRY_NOT_SUPPORTED = "Sorry - not supported by the Europeana API";
 
 	/**
 	 * The URL to the Europeana Annotation API
@@ -48,6 +63,11 @@ public class EuropeanaDB extends AbstractAnnotationDB {
 	 * The response to the calling Servlet request
 	 */
 	private HttpServletResponse response = null;
+	
+	/**
+	 * Log4J logger
+	 */
+	private Logger log = Logger.getLogger(EuropeanaDB.class);
 	
 	@Override
 	public void init() throws AnnotationDatabaseException {
@@ -78,24 +98,45 @@ public class EuropeanaDB extends AbstractAnnotationDB {
 
 	@Override
 	public void rollback() {
-		throw new RuntimeException("Sorry - rollbacks not supported by Europeana API");
+		throw new RuntimeException(SORRY_NOT_SUPPORTED);
 	}
 
 	@Override
 	public String createAnnotation(Annotation annotation)
 			throws AnnotationDatabaseException, AnnotationModifiedException,
 			InvalidAnnotationException {
+		
 		EuropeanaAnnotationAPI api = getAPI();       
-        ClientResponse<String> response = api.createAnnotation("http://www.europeana.eu/resolve/record/92001/9C1BB12A62C6908E10DF37101DF222FBFFD1168C", new JSONFormatHandler().serialize(annotation));
-        System.out.println(response.getStatus());
-        System.out.println(response.getLocation().toString());
-        return response.getEntity();
+        ClientResponse<String> response = null;
+        try {
+        	JSONFormatHandler lemoFormat = new JSONFormatHandler();
+        	
+        	if (annotation.getParentId() == null) {
+        		response = api.createAnnotation(
+        				encode(getEuropeanaURI(annotation.getObjectUri())),
+        				lemoFormat.serialize(annotation));
+        	} else {
+        		response = api.createAnnotationReply(
+        				encode(getEuropeanaURI(annotation.getParentId())),
+        				lemoFormat.serialize(annotation));
+        	}
+        	
+			if (response.getStatus() != HttpResponseCodes.SC_CREATED)
+				throw new AnnotationDatabaseException("Error " + response.getStatus());
+
+			return response.getEntity();
+        } catch (Exception e) {
+        	throw new AnnotationDatabaseException(e);
+        } finally {
+        	forwardResponseHeaders(response.getHeaders());
+        }
 	}
 
 	@Override
 	public String updateAnnotation(String annotationId, Annotation annotation)
 			throws AnnotationDatabaseException, AnnotationNotFoundException,
 			AnnotationHasReplyException, InvalidAnnotationException {
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -104,29 +145,70 @@ public class EuropeanaDB extends AbstractAnnotationDB {
 	public void deleteAnnotation(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException,
 			AnnotationHasReplyException {
-		// TODO Auto-generated method stub
 		
+		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public AnnotationTree findAnnotationsForObject(String objectUri)
 			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		JSONFormatHandler jsonFormat = new JSONFormatHandler();
+		List<Annotation> annotations = new ArrayList<Annotation>();	
+		ClientResponse<String> response = null;
+		try {		
+			response = 
+				getAPI().listAnnotations(encode(getEuropeanaURI(objectUri)));	
+			
+			if (response.getStatus() != HttpResponseCodes.SC_OK && 
+					response.getStatus() != HttpResponseCodes.SC_NOT_FOUND)				
+				throw new AnnotationDatabaseException("Error " + response.getStatus());		
+				
+			
+			// Parse the IDs and fetch each annotation
+			String[] ids = response.getEntity().split("\\n");			
+			for (String id : ids) {
+				if (!id.isEmpty()) {
+					response = getAPI(response.getHeaders()).findAnnotationById(id);
+
+					if (response.getStatus() != HttpResponseCodes.SC_OK)
+						throw new AnnotationDatabaseException("Error " + response.getStatus());
+					
+					annotations.add(jsonFormat.parse(response.getEntity()));									
+				}
+			}
+					
+			/* Annotations in Europeana point to europeanaURIs! So we need
+			// to remove the annotations that address a different image
+			List<Annotation> notNeeded = new ArrayList<Annotation>();
+			for (Annotation annotation : annotations) {
+				if(!annotation.getObjectUri().equals(objectUri))
+					notNeeded.add(annotation);
+			}
+			annotations.removeAll(notNeeded);
+			*/
+		} catch (InvalidAnnotationException e) {
+			throw new AnnotationDatabaseException(e);
+		} finally {
+			if (response != null) forwardResponseHeaders(response.getHeaders());			
+		}
+		
+		return new AnnotationTree(annotations);
 	}
 
 	@Override
 	public long countAnnotationsForObject(String objectUri)
 			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return 0;
+
+		AnnotationTree tree = findAnnotationsForObject(objectUri);
+		return tree.asFlatList().size();
 	}
 
 	@Override
 	public List<Annotation> findAnnotationsForUser(String username)
 			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return null;
+
+		throw new RuntimeException(SORRY_NOT_SUPPORTED);
 	}
 
 	@Override
@@ -155,33 +237,39 @@ public class EuropeanaDB extends AbstractAnnotationDB {
 	@Override
 	public long countReplies(String annotationId)
 			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return 0;
+
+		throw new RuntimeException(SORRY_NOT_SUPPORTED);
 	}
 
 	@Override
 	public AnnotationTree getReplies(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+
+		throw new RuntimeException(SORRY_NOT_SUPPORTED);
 	}
 
 	@Override
 	public List<Annotation> getMostRecent(int n, boolean publicOnly)
 			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return null;
+
+		throw new RuntimeException(SORRY_NOT_SUPPORTED);
 	}
 
 	@Override
 	public List<Annotation> findAnnotations(String query)
 			throws AnnotationDatabaseException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		throw new RuntimeException(SORRY_NOT_SUPPORTED);
 	}
 
-	private EuropeanaAnnotationAPI getAPI() {		
+	private EuropeanaAnnotationAPI getAPI() {
+		return getAPI(null);
+	}
+	
+	private EuropeanaAnnotationAPI getAPI(MultivaluedMap<String, String> headers) {
 		HttpClient client = new HttpClient();
+		List<String> cookieHeaders = (headers != null) ? headers
+				.get("Set-Cookie") : new ArrayList<String>();
 		
 		// Forward all cookies from the calling request
 		Cookie[] cookies = request.getCookies();
@@ -189,9 +277,17 @@ public class EuropeanaDB extends AbstractAnnotationDB {
 			c.setDomain(request.getServerName());
 			c.setPath("/");
 
+			String value = c.getValue();
+			for (String cookieHeader : cookieHeaders) {
+				if (cookieHeader.startsWith(c.getName())) {
+					String cookieHeaderParts[] = cookieHeader.split("=");
+					if(cookieHeaderParts.length >= 2)
+						value = cookieHeaderParts[1];
+				}
+			}
 			org.apache.commons.httpclient.Cookie apacheCookie =
 				new org.apache.commons.httpclient.Cookie(
-						c.getDomain(), c.getName(), c.getValue(),
+						c.getDomain(), c.getName(), value,
 						c.getPath(), c.getMaxAge(), c.getSecure());
 
 			client.getState().addCookie(apacheCookie);			
@@ -209,6 +305,27 @@ public class EuropeanaDB extends AbstractAnnotationDB {
 			for (String value : headers.get(key)) {						
 				response.addHeader(key, value);
 			}
+		}
+	}
+	
+	private String getEuropeanaURI(String objectURI) {
+		/*
+		String europeanaUri
+			= objectURI.substring(objectURI.lastIndexOf("europeanaURI") + 11);
+		
+		if (europeanaUri.lastIndexOf('&') > -1)
+			europeanaUri = europeanaUri.substring(0, europeanaUri.lastIndexOf('&'));
+		
+		return europeanaUri;*/
+		return "http://www.europeana.eu/resolve/record/92001/9C1BB12A62C6908E10DF37101DF222FBFFD1168C";
+	}
+	
+	private String encode(String s) {
+		try {
+			return URLEncoder.encode(s, UTF8).replace("%", "%25");
+		} catch (UnsupportedEncodingException e) {
+			log.fatal(e);
+			return s;
 		}
 	}
 

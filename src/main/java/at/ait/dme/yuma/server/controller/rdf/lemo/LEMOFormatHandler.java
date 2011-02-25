@@ -144,7 +144,9 @@ public class LEMOFormatHandler extends RDFFormatHandler {
 			annotation.addProperty(m.createProperty(NS_LEMO_CORE, "label"), a.getText());
 		
 		annotation.addProperty(m.createProperty(NS_SCOPE, "scope"), a.getScope().name());
-		annotation.addProperty(m.createProperty(NS_LEMO_IMAGE, "svg-fragment"), m.createLiteral(a.getFragment(), true));
+		
+		if (a.getFragment() != null)
+			annotation.addProperty(m.createProperty(NS_LEMO_IMAGE, "svg-fragment"), m.createLiteral(a.getFragment(), true));
 		
 		if (a.getTags() != null) {
 			for (SemanticTag t : a.getTags()) {
