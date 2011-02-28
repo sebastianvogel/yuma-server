@@ -1,2 +1,5 @@
 /yuma-server.war
 /report
+src/test/java/at/ait/dme/yuma/server/bootstrap/Setup.java
+src/main/webapp/WEB-INF/web.xml
+src/main/webapp/WEB-INF/classes
