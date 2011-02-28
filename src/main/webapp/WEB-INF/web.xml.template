@@ -149,6 +149,24 @@
 		<param-value></param-value>
 	</context-param>	
 	-->
+	
+	<!--  EUROPEANA configuration -->
+	<!-- 
+	<context-param>
+		<param-name>annotation.db.impl</param-name>
+		<param-value>at.ait.dme.yuma.server.db.europeana.EuropeanaDB</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>annotation.db.host</param-name>
+		<param-value>localhost</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>annotation.db.port</param-name>
+		<param-value>8983</param-value>
+	</context-param>	
+	-->
 		
 	<!-- Filters, listeners, servlet mappings  -->
 			

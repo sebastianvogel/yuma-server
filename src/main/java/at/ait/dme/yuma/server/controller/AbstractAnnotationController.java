@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
@@ -29,6 +30,9 @@ public abstract class AbstractAnnotationController {
 	
 	@Context
 	protected HttpServletRequest request;
+	
+	@Context
+	protected HttpServletResponse response;
 
 	/**
 	 * Create a new annotation
@@ -46,11 +50,8 @@ public abstract class AbstractAnnotationController {
 		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
-			db.connect(request);
+			db.connect(request, response);
 			annotationId = db.createAnnotation(format.parse(annotation));
-			annotation = format.serialize(db.findAnnotationById(annotationId));
-		} catch(AnnotationNotFoundException e) {
-			throw new AnnotationDatabaseException(e);
 		} finally {
 			if (db != null) db.disconnect();
 		}
@@ -72,7 +73,7 @@ public abstract class AbstractAnnotationController {
 		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
-			db.connect(request);
+			db.connect(request, response);
 			annotation = format.serialize(db.findAnnotationById(URLDecoder.decode(annotationId, URL_ENCODING)));
 		} finally {
 			if(db != null) db.disconnect();
@@ -96,7 +97,7 @@ public abstract class AbstractAnnotationController {
 		AbstractAnnotationDB db = null;
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
-			db.connect(request);
+			db.connect(request, response);
 			annotationId = db.updateAnnotation(
 					URLDecoder.decode(annotationId, URL_ENCODING),
 					format.parse(annotation));
@@ -124,7 +125,7 @@ public abstract class AbstractAnnotationController {
 		AbstractAnnotationDB db = null;
 		try {			
 			db = Config.getInstance().getAnnotationDatabase();
-			db.connect(request);
+			db.connect(request, response);
 			db.deleteAnnotation(URLDecoder.decode(annotationId, URL_ENCODING));
 		} finally {
 			if(db != null) db.disconnect();
@@ -149,7 +150,7 @@ public abstract class AbstractAnnotationController {
 		String thread = null;
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
-			db.connect(request);
+			db.connect(request, response);
 			thread = format.serialize(db.getReplies(URLDecoder.decode(annotationId, URL_ENCODING)));
 		} finally {
 			if(db != null) db.disconnect();
@@ -173,11 +174,12 @@ public abstract class AbstractAnnotationController {
 		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
-			db.connect(request);
+			db.connect(request, response);
 			tree = format.serialize(db.findAnnotationsForObject(URLDecoder.decode(objectId, URL_ENCODING)));
 		} finally {
 			if(db != null) db.disconnect();
 		}
+
 		return Response.ok().entity(tree).build();
 	}
 	
@@ -196,7 +198,7 @@ public abstract class AbstractAnnotationController {
 		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
-			db.connect(request);
+			db.connect(request, response);
 			count = db.countAnnotationsForObject(URLDecoder.decode(objectId, URL_ENCODING));
 		} finally {
 			if(db != null) db.disconnect();
@@ -212,7 +214,7 @@ public abstract class AbstractAnnotationController {
 		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
-			db.connect(request);
+			db.connect(request, response);
 			annotations = format.serialize(db.findAnnotationsForUser(URLDecoder.decode(username, URL_ENCODING)));
 		} finally {
 			if(db != null) db.disconnect();
@@ -228,7 +230,7 @@ public abstract class AbstractAnnotationController {
 		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
-			db.connect(request);
+			db.connect(request, response);
 			mostRecent = format.serialize(db.getMostRecent(n, true));
 		} finally {
 			if(db != null) db.disconnect();
@@ -252,7 +254,7 @@ public abstract class AbstractAnnotationController {
 		
 		try {
 			db = Config.getInstance().getAnnotationDatabase();
-			db.connect(request);
+			db.connect(request, response);
 			annotations = format.serialize(db.findAnnotations(URLDecoder.decode(query, URL_ENCODING)));
 		} finally {
 			if(db != null) db.disconnect();

@@ -19,21 +19,21 @@ public class ConfigServlet extends HttpServlet {
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {		
-		ServletContext application = config.getServletContext();	    			    
-		String dbImpl=readProperty("annotation.db.impl", application);
-		String dbDriver=readProperty("annotation.db.driver", application);
-		String dbDriverProtocol=readProperty("annotation.db.driver.protocol", application);		
-		String dbHost = readProperty("annotation.db.host", application); 
-		String dbPort=readProperty("annotation.db.port", application); 
-		String dbName=readProperty("annotation.db.name", application);
-	    String dbUser=readProperty("annotation.db.user", application); 
-	    String dbPass=readProperty("annotation.db.pass", application);
-	    String dbDir=readProperty("annotation.db.dir", application); 
-	    String dbFlags=readProperty("annotation.db.flags", application);
-	    String serverBaseUrl=readProperty("server.base.url", application);
-	    String suiteBaseUrl=readProperty("suite.base.url", application);
-	    String adminUsername=readProperty("admin.username", application);
-	    String adminPassword=readProperty("admin.password", application);
+		ServletContext app = config.getServletContext();	    			    
+		String dbImpl = app.getInitParameter("annotation.db.impl");
+		String dbDriver = app.getInitParameter("annotation.db.driver");
+		String dbDriverProtocol = app.getInitParameter("annotation.db.driver.protocol");		
+		String dbHost = app.getInitParameter("annotation.db.host"); 
+		String dbPort = app.getInitParameter("annotation.db.port"); 
+		String dbName = app.getInitParameter("annotation.db.name");
+	    String dbUser = app.getInitParameter("annotation.db.user"); 
+	    String dbPass = app.getInitParameter("annotation.db.pass");
+	    String dbDir = app.getInitParameter("annotation.db.dir"); 
+	    String dbFlags = app.getInitParameter("annotation.db.flags");
+	    String serverBaseUrl = app.getInitParameter("server.base.url");
+	    String suiteBaseUrl = app.getInitParameter("suite.base.url");
+	    String adminUsername = app.getInitParameter("admin.username");
+	    String adminPassword = app.getInitParameter("admin.password");
 	   
 	    new Config.Builder(dbImpl, serverBaseUrl, suiteBaseUrl, adminUsername, adminPassword).
 	    	dbDriver(dbDriver).dbDriverProtocol(dbDriverProtocol).dbHost(dbHost).
@@ -57,12 +57,4 @@ public class ConfigServlet extends HttpServlet {
 	    }
 	}
 
-	private String readProperty(String propertyName, ServletContext application) throws ServletException {			    		    
-		String propertyValue = application.getInitParameter(propertyName);
-		if (propertyValue == null) {
-			logger.error("context parameter " + propertyName + " not set!");
-			throw new ServletException("missing context parameter");
-		}
-		return propertyValue;
-	}
 }

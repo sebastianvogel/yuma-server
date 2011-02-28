@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
@@ -92,7 +93,9 @@ public class MongoAnnotationDB extends AbstractAnnotationDB {
 	}
 
 	@Override
-	public void connect(HttpServletRequest request)	throws AnnotationDatabaseException {
+	public void connect(HttpServletRequest request, HttpServletResponse response)
+		throws AnnotationDatabaseException {
+		
 		if (MONGO == null) 
 			throw new AnnotationDatabaseException("Database not initialized");
 		

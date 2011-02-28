@@ -3,6 +3,7 @@ package at.ait.dme.yuma.server.db;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
@@ -78,7 +79,7 @@ public abstract class AbstractAnnotationDB {
 	public void connect()
 		throws AnnotationDatabaseException {
 		
-		connect(null);
+		connect(null, null);
 	}
 
 	/**
@@ -86,7 +87,7 @@ public abstract class AbstractAnnotationDB {
 	 * parameters, cookies, etc.
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract void connect(HttpServletRequest request)
+	public abstract void connect(HttpServletRequest request, HttpServletResponse response)
 		throws AnnotationDatabaseException;
 	
 	/**
