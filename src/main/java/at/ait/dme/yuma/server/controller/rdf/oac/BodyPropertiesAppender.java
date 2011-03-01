@@ -10,6 +10,11 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
+/**
+ * Used to add properties to the body of an annotation.
+ * 
+ * @author Christian Mader
+ */
 class BodyPropertiesAppender extends PropertiesAppender {
 
 	private Model model;

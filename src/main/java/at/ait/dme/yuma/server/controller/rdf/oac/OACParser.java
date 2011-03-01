@@ -18,6 +18,12 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.DC;
 import com.hp.hpl.jena.vocabulary.DCTerms;
 
+/**
+ * Used to convert a serialized annotation in OAC RDF format to an annotation 
+ * object compliant to the server's data model. 
+ * 
+ * @author Christian Mader
+ */
 class OACParser {
 
 	private HashMap<String, Object> properties = new HashMap<String, Object>();

@@ -17,7 +17,7 @@ import com.hp.hpl.jena.vocabulary.RDF;
  * Format handler for OAC RDF(in different serialization
  * languages).
  * 
- * @author Rainer Simon
+ * @author Christian Mader
  */
 public class OACFormatHandler extends RDFFormatHandler {
 	
@@ -122,7 +122,7 @@ public class OACFormatHandler extends RDFFormatHandler {
 		Resource target = model.createResource(AnonId.create());
 		
 		target.addProperty(RDF.type, model.createProperty(NS_OAC, "ConstrainedTarget"));
-		new TargetPropertiesAppender(target, model).appendProperties(annotation);
+		new ConstrainedTargetPropertiesAppender(target, model).appendProperties(annotation);
 		
 		return target;
 

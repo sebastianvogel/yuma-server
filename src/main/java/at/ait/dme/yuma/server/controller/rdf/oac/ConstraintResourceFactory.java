@@ -10,6 +10,11 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.DC;
 import com.hp.hpl.jena.vocabulary.RDF;
 
+/**
+ * Used to obtain resources that constrain an annotation.
+ * 
+ * @author chef
+ */
 class ConstraintResourceFactory {
 
 	private static final String NS_CNT = "http://www.w3.org/2008/content#";

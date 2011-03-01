@@ -9,12 +9,17 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 
-class TargetPropertiesAppender extends PropertiesAppender {
+/**
+ * Used to add constrains-related properties to the target of an annotation.
+ * 
+ * @author Christian Mader
+ */
+class ConstrainedTargetPropertiesAppender extends PropertiesAppender {
 
-	private Logger logger = Logger.getLogger(TargetPropertiesAppender.class);
+	private Logger logger = Logger.getLogger(ConstrainedTargetPropertiesAppender.class);
 	private Model model;
 	
-	TargetPropertiesAppender(Resource resource, Model model) {
+	ConstrainedTargetPropertiesAppender(Resource resource, Model model) {
 		super(resource);
 		this.model = model;
 	}

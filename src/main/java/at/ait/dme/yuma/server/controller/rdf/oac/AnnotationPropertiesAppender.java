@@ -6,6 +6,11 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.DC;
 import com.hp.hpl.jena.vocabulary.DCTerms;
 
+/**
+ * Used to add RDF properties to an annotation resource.
+ * 
+ * @author Christian Mader
+ */
 class AnnotationPropertiesAppender extends PropertiesAppender {
 	
 	AnnotationPropertiesAppender(Resource resource) {
@@ -19,7 +24,7 @@ class AnnotationPropertiesAppender extends PropertiesAppender {
 		addProperty(DCTerms.created, annotation.getCreated().toString());
 		addProperty(DCTerms.modified,  annotation.getLastModified().toString());
 		
-		//TODO: What about the scope?
+		//TODO: What about annotation.getScope()?
 	}
 	
 }

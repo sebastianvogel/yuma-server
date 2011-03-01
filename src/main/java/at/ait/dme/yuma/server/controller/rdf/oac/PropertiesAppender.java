@@ -10,6 +10,12 @@ import at.ait.dme.yuma.server.model.Annotation;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 
+/**
+ * The purpose of this abstract class is to add RDF properties to a resource. THe
+ * properties are held in a map that is populated by the subclasses of this class.
+ * 
+ * @author Christian Mader
+ */
 abstract class PropertiesAppender {
 	
 	private Map<Property, List<Object>> properties = new HashMap<Property, List<Object>>();
