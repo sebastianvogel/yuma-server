@@ -115,7 +115,7 @@ public class OACFormatHandler extends RDFFormatHandler {
 	}
 	
 	private boolean isReplyAnnotation() {
-		return annotation.getParentId() != null;
+		return annotation.getParentId() != null && !annotation.getParentId().isEmpty();
 	}
 	
 	private Resource createConstrainedTarget() {

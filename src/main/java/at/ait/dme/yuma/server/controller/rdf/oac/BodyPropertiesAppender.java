@@ -43,8 +43,9 @@ class BodyPropertiesAppender extends PropertiesAppender {
 				addProperty(RDFS.seeAlso, semanticTag.getURI().toString());
 			} 
 			else {
-				addProperty(
-					model.createProperty(r.getNamespace(), r.getProperty()), 
+				addProperty(model.createProperty(
+					r.getNamespace(), 
+					r.getProperty()), 
 					semanticTag.getURI().toString());				
 			}
 		}

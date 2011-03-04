@@ -1,6 +1,7 @@
 package at.ait.dme.yuma.server.controller.rdf.lemo;
 
 import java.io.StringReader;
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -72,8 +73,13 @@ public class LEMOFormatHandler extends RDFFormatHandler {
 		if (it.hasNext()) {
 			Resource a = it.next();
 			
-			properties.put(MapKeys.ANNOTATION_ID,
+			try {
+				properties.put(MapKeys.ANNOTATION_ID,
 					URIBuilder.toID(a.getURI()));
+			}
+			catch (URISyntaxException e) {
+				throw new InvalidAnnotationException(e);
+			}
 			
 			properties.put(MapKeys.ANNOTATION_OBJECT_URI, 
 					a.getProperty(m.createProperty(NS_LEMO_CORE, "annotates")).getString());
