@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.controller.rdf.oac;
+package at.ait.dme.yuma.server.controller.rdf.oac.parse;
 
 import java.net.URI;
 import java.net.URISyntaxException;

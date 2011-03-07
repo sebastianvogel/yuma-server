@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.controller.rdf.oac;
+package at.ait.dme.yuma.server.controller.rdf.oac.serialize;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ abstract class PropertiesAppender {
 		this.resource = resource;
 	}
 
-	void appendProperties(Annotation annotation) {
+	public void appendProperties(Annotation annotation) {
 		populatePropertiesMap(annotation);
 		appendPropertiesFromMap();
 	}

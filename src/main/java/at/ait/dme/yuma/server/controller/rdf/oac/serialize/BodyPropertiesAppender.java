@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.controller.rdf.oac;
+package at.ait.dme.yuma.server.controller.rdf.oac.serialize;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ import com.hp.hpl.jena.vocabulary.RDFS;
  * 
  * @author Christian Mader
  */
-class BodyPropertiesAppender extends PropertiesAppender {
+public class BodyPropertiesAppender extends PropertiesAppender {
 
 	private Model model;
 	
-	BodyPropertiesAppender(Resource resource, Model model) {
+	public BodyPropertiesAppender(Resource resource, Model model) {
 		super(resource);
 		this.model = model;
 	}

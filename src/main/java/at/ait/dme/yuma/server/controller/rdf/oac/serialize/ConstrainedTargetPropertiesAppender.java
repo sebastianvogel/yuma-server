@@ -1,8 +1,9 @@
-package at.ait.dme.yuma.server.controller.rdf.oac;
+package at.ait.dme.yuma.server.controller.rdf.oac.serialize;
 
 import org.apache.log4j.Logger;
-import org.jboss.resteasy.spi.UnsupportedMediaTypeException;
 
+import at.ait.dme.yuma.server.controller.rdf.oac.OACFormatHandler;
+import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -14,12 +15,12 @@ import com.hp.hpl.jena.rdf.model.Resource;
  * 
  * @author Christian Mader
  */
-class ConstrainedTargetPropertiesAppender extends PropertiesAppender {
+public class ConstrainedTargetPropertiesAppender extends PropertiesAppender {
 
 	private Logger logger = Logger.getLogger(ConstrainedTargetPropertiesAppender.class);
 	private Model model;
 	
-	ConstrainedTargetPropertiesAppender(Resource resource, Model model) {
+	public ConstrainedTargetPropertiesAppender(Resource resource, Model model) {
 		super(resource);
 		this.model = model;
 	}
@@ -32,8 +33,8 @@ class ConstrainedTargetPropertiesAppender extends PropertiesAppender {
 			addProperty(createConstrainedByProperty(), 
 				ConstraintResourceFactory.getInstance().createResource(annotation, model));
 		}
-		catch (UnsupportedMediaTypeException e) {
-			logger.warn("Ignoring unknown media type", e);
+		catch (InvalidAnnotationException e) {
+			logger.error("Could not create constrained annotation resource", e);
 		}
 	}
 	

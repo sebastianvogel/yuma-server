@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.controller.rdf.oac;
+package at.ait.dme.yuma.server.controller.rdf.oac.parse;
 
 import java.io.StringReader;
 import java.net.URISyntaxException;
@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import at.ait.dme.yuma.server.URIBuilder;
+import at.ait.dme.yuma.server.controller.rdf.oac.OACFormatHandler;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.MapKeys;
@@ -33,19 +34,19 @@ import com.hp.hpl.jena.vocabulary.RDFS;
  * 
  * @author Christian Mader
  */
-class OACParser {
+public class OACParser {
 
 	private HashMap<String, Object> properties = new HashMap<String, Object>();
 	private Model model;
 	
 	private Resource mainAnnotation;
 	
-	OACParser(String serialized) {
+	public OACParser(String serialized) {
 		model = ModelFactory.createDefaultModel();
 		model.read(new StringReader(serialized), null);		
 	}
 	
-	Annotation parse() throws InvalidAnnotationException, ParseException {
+	public Annotation parse() throws InvalidAnnotationException, ParseException {
 		getMainAnnotationResource();
 		parseBasicInfo();
 		parseObjectUri();

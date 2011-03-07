@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.controller.rdf.oac;
+package at.ait.dme.yuma.server.controller.rdf.oac.serialize;
 
 import at.ait.dme.yuma.server.model.Annotation;
 
@@ -11,9 +11,9 @@ import com.hp.hpl.jena.vocabulary.DCTerms;
  * 
  * @author Christian Mader
  */
-class AnnotationPropertiesAppender extends PropertiesAppender {
+public class AnnotationPropertiesAppender extends PropertiesAppender {
 	
-	AnnotationPropertiesAppender(Resource resource) {
+	public AnnotationPropertiesAppender(Resource resource) {
 		super(resource);
 	}
 	

@@ -5,6 +5,10 @@ import java.text.ParseException;
 import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.controller.rdf.RDFFormatHandler;
 import at.ait.dme.yuma.server.controller.rdf.SerializationLanguage;
+import at.ait.dme.yuma.server.controller.rdf.oac.parse.OACParser;
+import at.ait.dme.yuma.server.controller.rdf.oac.serialize.AnnotationPropertiesAppender;
+import at.ait.dme.yuma.server.controller.rdf.oac.serialize.BodyPropertiesAppender;
+import at.ait.dme.yuma.server.controller.rdf.oac.serialize.ConstrainedTargetPropertiesAppender;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
 

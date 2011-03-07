@@ -1,5 +1,7 @@
-package at.ait.dme.yuma.server.controller.rdf.oac;
+package at.ait.dme.yuma.server.controller.rdf.oac.serialize;
 
+import at.ait.dme.yuma.server.controller.rdf.oac.OACFormatHandler;
+import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.MediaType;
 
@@ -31,7 +33,7 @@ class ConstraintResourceFactory {
 		return instance;
 	}
 	
-	Resource createResource(Annotation annotation, Model model) {
+	Resource createResource(Annotation annotation, Model model) throws InvalidAnnotationException {
 		MediaType mediaType = annotation.getType();
 		
 		switch (mediaType) {
@@ -40,7 +42,7 @@ class ConstraintResourceFactory {
 		case MAP:
 			return createSvgConstraint(annotation.getFragment(), model);
 		}
-		throw new UnknownMediaTypeException("don't know how to handle media type '" +mediaType.toString()+ "'");
+		throw new InvalidAnnotationException("don't know how to handle media type '" +mediaType.toString()+ "'");
 	}
 	
 	private Resource createSvgConstraint(String fragment, Model model) {
