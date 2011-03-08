@@ -38,7 +38,7 @@ public class JSONAnnotationControllerTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
-		Setup.buildHibernateConfiguration();
+		Setup.buildConfiguration();
         Setup.startEmbeddedJaxrsServer(JSONAnnotationController.class);
 	}
 

@@ -18,7 +18,7 @@ public class OpenSearchFormatHandlerTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {	
-		Setup.buildHibernateConfiguration();
+		Setup.buildConfiguration();
 		FormatHandler jsonFormat = new JSONFormatHandler();
 		annotations = new ArrayList<Annotation>();
 		annotations.add(jsonFormat.parse(Data.ANNOTATION_JSON_UPDATE));

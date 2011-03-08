@@ -19,7 +19,7 @@ public class OACFormatHandlerTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
-		Setup.buildHibernateConfiguration();
+		Setup.buildConfiguration();
 	}
 
 	//@Test

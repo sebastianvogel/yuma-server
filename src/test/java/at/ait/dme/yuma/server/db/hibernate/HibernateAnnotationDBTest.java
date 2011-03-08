@@ -22,7 +22,7 @@ public class HibernateAnnotationDBTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {		
-		Setup.buildHibernateConfiguration();
+		Setup.buildConfiguration();
 	}
 
 	@AfterClass

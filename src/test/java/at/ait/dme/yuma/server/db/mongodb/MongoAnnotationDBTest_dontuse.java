@@ -20,7 +20,7 @@ public class MongoAnnotationDBTest_dontuse {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {		
-		Setup.buildMongoDBConfiguration();
+		Setup.buildConfiguration();
 	}
 
 	@AfterClass

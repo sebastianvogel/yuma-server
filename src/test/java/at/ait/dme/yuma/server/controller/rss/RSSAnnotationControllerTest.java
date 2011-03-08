@@ -25,7 +25,7 @@ public class RSSAnnotationControllerTest {
 
 	@BeforeClass
 	public static void setUp() throws Exception {
-		Setup.buildHibernateConfiguration();
+		Setup.buildConfiguration();
         Setup.startEmbeddedJaxrsServer(RSSAnnotationController.class);
 	}
 

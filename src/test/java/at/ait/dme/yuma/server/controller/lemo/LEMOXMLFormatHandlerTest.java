@@ -17,7 +17,7 @@ public class LEMOXMLFormatHandlerTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
-		Setup.buildHibernateConfiguration();
+		Setup.buildConfiguration();
 	}
 	
 	@Test
