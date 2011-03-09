@@ -1,5 +1,6 @@
 package at.ait.dme.yuma.server.controller.rdf.oac;
 
+import java.net.URI;
 import java.text.ParseException;
 
 import at.ait.dme.yuma.server.URIBuilder;
@@ -26,6 +27,7 @@ import com.hp.hpl.jena.vocabulary.RDF;
 public class OACFormatHandler extends RDFFormatHandler {
 	
 	public static final String NS_OAC = "http://www.openannotation.org/ns/";
+	private final String BODY_FRAGMENT = "#body";
 	
 	private Annotation annotation;
 	private Model model;
@@ -42,28 +44,42 @@ public class OACFormatHandler extends RDFFormatHandler {
 		}
 		catch (ParseException e) {
 			throw new InvalidAnnotationException("Error parsing elements", e);
-		}
-		
+		}	
 	}
 
 	@Override
 	protected void addRDFResource(Annotation annotation, Model model) {
-		this.annotation = annotation;
-		this.model = model;
-		
-		model.setNsPrefix("oac", NS_OAC);
+		initResourceCreation(annotation, model);
 		
 		Resource body = createBodyResource();
 		createAnnotationResource(body);
 	}
 	
+	//TODO: call this to create only the body of the annotation  
+	protected void addBodyNode(Annotation annotation, Model model) {
+		initResourceCreation(annotation, model);
+		createBodyResource();
+	}
+	
+	private void initResourceCreation(Annotation annotation, Model model) {
+		this.annotation = annotation;
+		this.model = model;
+		
+		model.setNsPrefix("oac", NS_OAC);		
+	}
+		
 	private Resource createBodyResource() {
-		Resource body = model.createResource(AnonId.create());
+		Resource body = model.createResource(createBodyUri());
 		
 		body.addProperty(RDF.type, model.createProperty(NS_OAC, "Body"));
 		new BodyPropertiesAppender(body, model).appendProperties(annotation);
 		
 		return body;
+	}
+	
+	private String createBodyUri() {
+		URI annotationUri = URIBuilder.toURI(annotation.getAnnotationID());
+		return annotationUri.toString() + BODY_FRAGMENT;
 	}
 	
 	private Resource createAnnotationResource(Resource body) {
@@ -129,7 +145,5 @@ public class OACFormatHandler extends RDFFormatHandler {
 		new ConstrainedTargetPropertiesAppender(target, model).appendProperties(annotation);
 		
 		return target;
-
 	}
-
 }

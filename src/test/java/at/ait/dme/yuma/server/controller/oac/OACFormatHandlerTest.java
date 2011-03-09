@@ -2,6 +2,8 @@ package at.ait.dme.yuma.server.controller.oac;
 
 import static org.junit.Assert.assertEquals;
 
+import org.custommonkey.xmlunit.XMLAssert;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -20,18 +22,21 @@ public class OACFormatHandlerTest {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		Setup.buildConfiguration();
+		
+		XMLUnit.setNormalizeWhitespace(true);
+		XMLUnit.setNormalize(true);
 	}
 
-	//@Test
+	@Test
 	public void testSerializationWithFragment() throws Exception {
 		Annotation before = new JSONFormatHandler().parse(Data.ANNOTATION_JSON_UPDATE);
 		OACFormatHandler oacFormat = new OACFormatHandler();
 		
 		String serializedAnnotation = oacFormat.serialize(before);
 		System.out.println(serializedAnnotation);
-		
-		Annotation after = oacFormat.parse(serializedAnnotation);
-		assertEquals(before, after);
+
+		//TODO: xpath based comparison of "important" elements
+		// title, created, modified, creator, label, #semanticTags, chars, constrains
 	}
 	
 	@Test
@@ -42,8 +47,7 @@ public class OACFormatHandlerTest {
 		String serializedAnnotation = oacFormat.serialize(before);
 		System.out.println(serializedAnnotation);
 		
-		Annotation after = oacFormat.parse(serializedAnnotation);
-		assertEquals(before, after);		
+		XMLAssert.assertXMLEqual(serializedAnnotation, Data.ANNOTATION_OAC_NOFRAGMENT);
 	}
 
 	//@Test

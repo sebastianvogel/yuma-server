@@ -15,7 +15,11 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
  * @author Rainer Simon
  */
 public class Setup {
-       
+   
+	public static void buildConfiguration() throws AnnotationDatabaseException {
+		buildHibernateConfiguration();
+	}
+	
     public static void buildHibernateConfiguration() throws AnnotationDatabaseException {
     	new Config.Builder(
     			"at.ait.dme.yuma.server.db.hibernate.HibernateAnnotationDB",				

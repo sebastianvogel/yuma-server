@@ -30,5 +30,5 @@ public class URIBuilder {
 		}
 		return uri.substring(uri.lastIndexOf("/") + 1);
 	}
-
+	
 }
