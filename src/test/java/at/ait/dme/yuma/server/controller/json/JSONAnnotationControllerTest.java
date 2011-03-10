@@ -18,7 +18,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import at.ait.dme.yuma.server.bootstrap.Data;
-import at.ait.dme.yuma.server.bootstrap.TestSetup;
+import at.ait.dme.yuma.server.bootstrap.Setup;
 import at.ait.dme.yuma.server.config.Config;
 
 /**
@@ -38,8 +38,8 @@ public class JSONAnnotationControllerTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
-		TestSetup.buildConfiguration();
-		TestSetup.startEmbeddedJaxrsServer(JSONAnnotationController.class);
+		Setup.buildConfiguration();
+		Setup.startEmbeddedJaxrsServer(JSONAnnotationController.class);
 	}
 
 	@AfterClass
