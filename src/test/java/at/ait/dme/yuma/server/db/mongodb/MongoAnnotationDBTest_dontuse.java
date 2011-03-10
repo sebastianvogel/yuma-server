@@ -9,7 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import at.ait.dme.yuma.server.bootstrap.Data;
-import at.ait.dme.yuma.server.bootstrap.Setup;
+import at.ait.dme.yuma.server.bootstrap.TestSetup;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
@@ -20,7 +20,7 @@ public class MongoAnnotationDBTest_dontuse {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {		
-		Setup.buildConfiguration();
+		TestSetup.buildConfiguration();
 	}
 
 	@AfterClass

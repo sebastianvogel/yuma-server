@@ -12,7 +12,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import at.ait.dme.yuma.server.bootstrap.Setup;
+import at.ait.dme.yuma.server.bootstrap.TestSetup;
 import at.ait.dme.yuma.server.config.Config;
 
 public class RSSAnnotationControllerTest {
@@ -25,8 +25,8 @@ public class RSSAnnotationControllerTest {
 
 	@BeforeClass
 	public static void setUp() throws Exception {
-		Setup.buildConfiguration();
-        Setup.startEmbeddedJaxrsServer(RSSAnnotationController.class);
+		TestSetup.buildConfiguration();
+		TestSetup.startEmbeddedJaxrsServer(RSSAnnotationController.class);
 	}
 
 	@AfterClass
