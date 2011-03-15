@@ -2,6 +2,7 @@ package at.ait.dme.yuma.server.db.hibernate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -326,7 +327,8 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 			query.setParameter("term", q.toLowerCase());
 			
 			@SuppressWarnings("unchecked")
-			List<AnnotationEntity> entities = query.getResultList();
+			List<AnnotationEntity> entities = 
+				new ArrayList<AnnotationEntity>(new HashSet<AnnotationEntity>(query.getResultList()));
 			return toAnnotations(entities);
 		} catch(Throwable t) {
 			throw new AnnotationDatabaseException(t);
