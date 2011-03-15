@@ -1,5 +1,6 @@
 package at.ait.dme.yuma.server.model.tag;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,9 @@ import at.ait.dme.yuma.server.model.geo.GeoLocation;
  * 
  * @author Rainer Simon
  */
-public class SemanticTag {
+public class SemanticTag implements Serializable {
+
+	private static final long serialVersionUID = 9073244308940077921L;
 
 	/**
 	 * The tag URI
