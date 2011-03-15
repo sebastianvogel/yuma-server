@@ -1,12 +1,15 @@
 package at.ait.dme.yuma.server.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 
-public class User {
+public class User implements Serializable {
 	
+	private static final long serialVersionUID = 4246122693082846836L;
+
 	private String username = null;
 	
 	private String gravatarHash = null;

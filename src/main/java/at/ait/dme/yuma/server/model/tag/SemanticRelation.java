@@ -1,5 +1,6 @@
 package at.ait.dme.yuma.server.model.tag;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,8 +14,10 @@ import at.ait.dme.yuma.server.model.MapKeys;
  * @author Rainer Simon
  *
  */
-public class SemanticRelation {
-	
+public class SemanticRelation implements Serializable {
+
+	private static final long serialVersionUID = 5426269503741863203L;
+
 	/**
 	 * Namespace URI of this relation
 	 */

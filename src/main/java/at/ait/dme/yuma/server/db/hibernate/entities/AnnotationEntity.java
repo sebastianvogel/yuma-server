@@ -34,21 +34,37 @@ import at.ait.dme.yuma.server.model.tag.SemanticTag;
 @NamedQueries({
 	@NamedQuery(name = "annotationentity.find.thread",
 			query = "from AnnotationEntity a where a.rootId = :rootId"),	
+			
 	@NamedQuery(name = "annotationentity.find.for.object",
 			query = "from AnnotationEntity a where a.objectUri = :objectUri"),
+			
 	@NamedQuery(name = "annotationentity.find.for.user",
 			query = "from AnnotationEntity a where a.createdBy.createdBy = :username"),
+			
 	@NamedQuery(name = "annotationentity.count.for.object",
 			query = "select count(*) from AnnotationEntity a where a.objectUri = :objectUri"),
+			
 	@NamedQuery(name = "annotationentity.count.replies",
 			query = "select count(*) from AnnotationEntity a where a.parentId = :id"),
+			
 	@NamedQuery(name = "annotationentity.mostrecent.public",
 			query = "from AnnotationEntity a where a.scope = 'PUBLIC' order by a.lastModified desc"),	
+			
 	@NamedQuery(name = "annotationentity.mostrecent.all",
 			query = "from AnnotationEntity a order by a.lastModified desc"),	
-	@NamedQuery(name = "annotationentity.search",
+			
+	@NamedQuery(name = "annotationentity.searchTextAndTitle",
 			query = "from AnnotationEntity a where (lower(a.title) like concat('%',:term,'%') or " +
-					"lower(a.text) like concat('%',:term,'%'))")
+					"lower(a.text) like concat('%',:term,'%'))"),
+					
+	@NamedQuery(name = "annotationentity.searchTextTitleAndTags",
+			query = "select a from AnnotationEntity a " +
+					"inner join a.tags as tag " +
+					"inner join tag.altLabels as altLabel " +
+					"where (lower(a.title) like concat('%',:term,'%') or " +
+					"lower(a.text) like concat('%',:term,'%') or " +
+					"lower(tag.primaryLabel) = lower(:term) or " + 
+					"lower(altLabel.value) = lower(:term))")				
 })
 @Table(name = "annotations")
 public class AnnotationEntity implements Serializable {

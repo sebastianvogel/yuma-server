@@ -1,12 +1,16 @@
 package at.ait.dme.yuma.server.model.tag;
 
+import java.io.Serializable;
+
 /**
  * A simple class representing a 'plain literal', 
  * i.e. a String with an optional language code.
  * 
  * @author Rainer Simon
  */
-public class PlainLiteral {
+public class PlainLiteral implements Serializable {
+
+	private static final long serialVersionUID = 1760402390634729635L;
 
 	/**
 	 * The alternative label

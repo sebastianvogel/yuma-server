@@ -1,5 +1,6 @@
 package at.ait.dme.yuma.server.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,8 +15,10 @@ import at.ait.dme.yuma.server.model.tag.SemanticTag;
  * 
  * @author Rainer Simon
  */
-public class Annotation {
-	
+public class Annotation implements Serializable {
+
+	private static final long serialVersionUID = 2827802498657195873L;
+
 	/**
 	 * The ID of this annotation
 	 *  

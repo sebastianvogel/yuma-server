@@ -322,7 +322,7 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 			throws AnnotationDatabaseException {
 
 		try {
-			Query query = em.createNamedQuery("annotationentity.search");
+			Query query = em.createNamedQuery("annotationentity.searchTextTitleAndTags");
 			query.setParameter("term", q.toLowerCase());
 			
 			@SuppressWarnings("unchecked")
