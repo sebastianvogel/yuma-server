@@ -59,12 +59,14 @@ import at.ait.dme.yuma.server.model.tag.SemanticTag;
 					
 	@NamedQuery(name = "annotationentity.searchTextTitleAndTags",
 			query = "select a from AnnotationEntity a " +
-					"join a.tags as tag " +
-					"join tag.altLabels as altLabel " +
-					"where (lower(a.title) like concat('%',:term,'%') or " +
-					"lower(a.text) like concat('%',:term,'%') or " +
-					"lower(tag.primaryLabel) like concat('%',lower(:term),'%') or " + 
-					"lower(altLabel.value) like concat('%',lower(:term),'%'))")				
+					"   left join a.tags as tag " +
+					"   left join tag.altLabels as altLabel " +
+					"where (" +
+					"   (lower(a.title) like concat('%',:term,'%')) or " +
+					"   (lower(a.text)  like concat('%',:term,'%')) or " +
+					"   (lower(tag.primaryLabel) like concat('%',lower(:term),'%')) or " + 
+					"   (lower(altLabel.value) like concat('%',lower(:term),'%')) " +
+					")") 
 })
 @Table(name = "annotations")
 public class AnnotationEntity implements Serializable {
