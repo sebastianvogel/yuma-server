@@ -9,6 +9,7 @@ import at.ait.dme.yuma.server.model.Annotation;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.vocabulary.RDF;
 
 /**
  * Used to add constrains-related properties to the target of an annotation.
@@ -27,7 +28,7 @@ public class ConstrainedTargetPropertiesAppender extends PropertiesAppender {
 	
 	@Override
 	void populatePropertiesMap(Annotation annotation) {
-		addProperty(createConstrainsProperty(), annotation.getObjectUri().toString());
+		addProperty(createConstrainsProperty(),	createConstrainedResource(annotation));
 		
 		try {
 			addProperty(createConstrainedByProperty(), 
@@ -40,6 +41,13 @@ public class ConstrainedTargetPropertiesAppender extends PropertiesAppender {
 	
 	private Property createConstrainsProperty() {
 		return model.createProperty(OACFormatHandler.NS_OAC, "constrains");
+	}
+	
+	private Resource createConstrainedResource(Annotation annotation) {
+		Resource constrainedResource = model.createResource(annotation.getObjectUri().toString());
+		constrainedResource.addProperty(RDF.type, model.createProperty(OACFormatHandler.NS_OAC, "Target"));
+
+		return constrainedResource;
 	}
 	
 	private Property createConstrainedByProperty() {

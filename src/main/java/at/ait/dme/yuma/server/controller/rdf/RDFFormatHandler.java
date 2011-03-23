@@ -1,7 +1,6 @@
 package at.ait.dme.yuma.server.controller.rdf;
 
 import java.io.StringWriter;
-import java.net.URI;
 import java.util.List;
 
 import at.ait.dme.yuma.server.URIBuilder;
@@ -14,7 +13,10 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public abstract class RDFFormatHandler implements FormatHandler {
 
-	private final String BODY_FRAGMENT = "#body";
+	private final static String BODY_FRAGMENT = "#body";
+	private final static String CONSTRAINED_TARGET_FRAGMENT = "#target";
+	private final static String SVG_CONSTRAINT_FRAGMENT = "#ct";
+	
 	private SerializationLanguage serializationLanguage;
 	
 	public RDFFormatHandler(SerializationLanguage serializationLanguage) {
@@ -51,9 +53,20 @@ public abstract class RDFFormatHandler implements FormatHandler {
 		return sw.toString();
 	}
 	
-	protected String createBodyUri(String annotationId) {
-		URI annotationUri = URIBuilder.toURI(annotationId);
-		return annotationUri.toString() + BODY_FRAGMENT;
+	protected static String createBodyUri(String annotationId) {
+		return createAnnotationUri(annotationId) + BODY_FRAGMENT;
+	}
+	
+	protected static String createConstrainedTargetUri(String annotationId) {
+		return createAnnotationUri(annotationId) + CONSTRAINED_TARGET_FRAGMENT;
+	}
+	
+	public static String createSvgConstraintUri(String annotationId) {
+		return createAnnotationUri(annotationId) + SVG_CONSTRAINT_FRAGMENT;
+	}
+	
+	private static String createAnnotationUri(String annotationId) {
+		return URIBuilder.toURI(annotationId).toString();
 	}
 
 	protected abstract void addRDFResource(Annotation annotation, Model model);

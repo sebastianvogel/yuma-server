@@ -28,6 +28,15 @@ public class OACFormatHandlerTest {
 	}
 
 	@Test
+	public void testLargeConstrainedAnnot() throws Exception {
+		Annotation before = new JSONFormatHandler().parse(Data.getJsonTestAnnot());
+		OACFormatHandler oacFormat = new OACFormatHandler();
+		
+		String serializedAnnotation = oacFormat.serialize(before);
+		System.out.println(serializedAnnotation);
+	}
+	
+	@Test
 	public void testSerializationWithFragment() throws Exception {
 		Annotation before = new JSONFormatHandler().parse(Data.ANNOTATION_JSON_UPDATE);
 		OACFormatHandler oacFormat = new OACFormatHandler();
