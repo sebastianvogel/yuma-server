@@ -40,7 +40,9 @@ public class BodyPropertiesAppender extends PropertiesAppender {
 			SemanticRelation r = semanticTag.getRelation();
 			
 			if (r == null) {
-				addProperty(RDFS.seeAlso, semanticTag.getURI().toString());
+				addProperty(
+					RDFS.seeAlso, 
+					model.createResource(semanticTag.getURI().toString()));
 			} 
 			else {
 				addProperty(model.createProperty(

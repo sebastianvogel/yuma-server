@@ -12,7 +12,6 @@ import at.ait.dme.yuma.server.controller.rdf.oac.serialize.ConstrainedTargetProp
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
 
-import com.hp.hpl.jena.rdf.model.AnonId;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.RDF;
@@ -100,6 +99,10 @@ public class OACFormatHandler extends RDFFormatHandler {
 			body);
 	}
 	
+	private boolean isReplyAnnotation() {
+		return annotation.getParentId() != null && !annotation.getParentId().isEmpty();
+	}
+	
 	private void addReplyTargets(Resource annotationResource) {
 		annotationResource.addProperty(
 			model.createProperty(NS_OAC, "hasTarget"),
@@ -120,19 +123,21 @@ public class OACFormatHandler extends RDFFormatHandler {
 	
 	private Resource createTarget() {
 		if (annotation.getFragment() == null) {
-			return model.createResource(annotation.getObjectUri().toString());
+			return createNonConstrainedTarget();
 		}
 		else {
 			return createConstrainedTarget();
 		}
 	}
 	
-	private boolean isReplyAnnotation() {
-		return annotation.getParentId() != null && !annotation.getParentId().isEmpty();
+	private Resource createNonConstrainedTarget() {
+		Resource target = model.createResource(annotation.getObjectUri().toString());
+		target.addProperty(RDF.type, model.createProperty(NS_OAC, "Target"));
+		return target;
 	}
 	
 	private Resource createConstrainedTarget() {
-		Resource target = model.createResource(AnonId.create());
+		Resource target = model.createResource(createConstrainedTargetUri(annotation.getAnnotationID()));
 		
 		target.addProperty(RDF.type, model.createProperty(NS_OAC, "ConstrainedTarget"));
 		new ConstrainedTargetPropertiesAppender(target, model).appendProperties(annotation);

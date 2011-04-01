@@ -1,5 +1,10 @@
 package at.ait.dme.yuma.server.bootstrap;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.apache.wicket.util.io.IOUtils;
+
 public class Data {
 	
 	public static final String ANNOTATION_JSON_ORIGINAL =
@@ -140,6 +145,9 @@ public class Data {
 		"<oac:hasTarget rdf:resource=\"http://dme.ait.ac.at/object/lissabon.jpg\"/> " +
 		"<rdf:type rdf:resource=\"http://www.openannotation.org/ns/Annotation\"/> " +
 		"</rdf:Description> " +
+		"<rdf:Description rdf:about=\"http://dme.ait.ac.at/object/lissabon.jpg\"> " +
+	    "<rdf:type rdf:resource=\"http://www.openannotation.org/ns/Target\"/> " +
+	    "</rdf:Description> " +
 		"<rdf:Description rdf:about=\"http://localhost:8081/yuma-server/api/annotation/null#body\"> " +
 		"<rdfs:label>The 25 de Abril Bridge is a suspension bridge connecting the city of Lisbon, capital of Portugal, to the municipality of Almada on the left bank of the Tagus river. It was inaugurated on August 6, 1966 and a train platform was added in 1999. It is often compared to the Golden Gate Bridge in San Francisco, USA, due to their similarities and same construction company. With a total length of 2.277 m, it is the 19th largest suspension bridge in the world. The upper platform carries six car lanes, the lower platform two train tracks. Until 1974 the bridge was named Salazar Bridge.</rdfs:label> " +
 		"<j.0:spatiallyContains>http://www.geonames.org/2264397/</j.0:spatiallyContains> " +
@@ -199,6 +207,11 @@ public class Data {
 		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\"" +
 		"}";
 	
+	public static String getJsonTestAnnot() throws IOException {
+		InputStream is = Data.class.getResourceAsStream("/testdata/408.json");
+		return IOUtils.toString(is);
+	}
+		
 	public static String reply(String root, String parent) {
 		return REPLY_JSON
 			.replace("@root@", root)
