@@ -64,7 +64,8 @@ import at.ait.dme.yuma.server.model.tag.SemanticTag;
 					"where (" +
 					"   (lower(a.title) like concat('%',:term,'%')) or " +
 					"   (lower(a.text)  like concat('%',:term,'%')) or " +
-					"   (lower(tag.primaryLabel) like concat('%',lower(:term),'%')) or " + 
+					"   (lower(tag.primaryLabel) like concat('%',lower(:term),'%')) or " +
+					"   (lower(tag.primaryDescription) like concat('%',lower(:term),'%')) or " +
 					"   (lower(altLabel.value) like concat('%',lower(:term),'%')) " +
 					")") 
 })
