@@ -70,5 +70,4 @@ public abstract class RDFFormatHandler implements FormatHandler {
 	}
 
 	protected abstract void addRDFResource(Annotation annotation, Model model);
-	protected abstract void addBodyNode(Annotation annotation, Model model);
 }

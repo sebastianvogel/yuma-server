@@ -26,8 +26,8 @@ public class OACFormatHandler extends RDFFormatHandler {
 	
 	public static final String NS_OAC = "http://www.openannotation.org/ns/";
 	
-	private Annotation annotation;
-	private Model model;
+	protected Annotation annotation;
+	protected Model model;
 	
 	public OACFormatHandler() {
 		super(SerializationLanguage.RDF_XML);
@@ -52,7 +52,6 @@ public class OACFormatHandler extends RDFFormatHandler {
 		createAnnotationResource(body);
 	}
 	
-	@Override
 	protected void addBodyNode(Annotation annotation, Model model) {
 		initResourceCreation(annotation, model);
 		createBodyResource();
@@ -65,7 +64,7 @@ public class OACFormatHandler extends RDFFormatHandler {
 		model.setNsPrefix("oac", NS_OAC);		
 	}
 		
-	private Resource createBodyResource() {
+	protected Resource createBodyResource() {
 		Resource body = model.createResource(createBodyUri(annotation.getAnnotationID()));
 		
 		body.addProperty(RDF.type, model.createProperty(NS_OAC, "Body"));

@@ -166,9 +166,4 @@ public class LEMOFormatHandler extends RDFFormatHandler {
 			}
 		}
 	}
-
-	@Override
-	protected void addBodyNode(Annotation annotation, Model model) {
-		// TODO Auto-generated method stub		
-	}
 }

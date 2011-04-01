@@ -207,6 +207,52 @@ public class Data {
 		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\"" +
 		"}";
 	
+	public static final String PELAGIOS_JSON =
+		"{ \"tags\":[ "+
+			"{ \"description\":\"Corsica\", "+
+				"\"relation\":null, "+
+				"\"label\":\"Corsica\", "+
+				"\"type\":\"PLACE\", "+
+				"\"lang\":\"en\", "+
+		        "\"uri\":\"http://pleiades.stoa.org/places/991339\""+
+		    "}" +
+		    "],"+
+		    "\"text\":\"\", "+
+		    "\"scope\":\"PUBLIC\", "+
+		    "\"last-modified\":1300881749638, "+
+		    "\"created-by\":{ "+
+		    	"\"user-name\":\"guest\" "+
+		    "}, "+
+		    "\"media-type\":\"MAP\", "+
+		    "\"object-uri\":\"http://dme.ait.ac.at/samples/maps/oenb/AC04248667.tif\", "+
+		    "\"id\":\"479\", "+
+		    "\"root-id\":null, "+
+		    "\"parent-id\":null, "+
+		    "\"title\":\"A Pelagios Test Annotation\", "+
+		    "\"created\":1300881749638, "+
+		    "\"fragment\":null "+
+		"}";
+	
+	public static final String PELAGIOS_RDF =
+		"<rdf:RDF "+
+			"xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" "+
+			"xmlns:j.0=\"http://purl.org/dc/terms/\" "+
+			"xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "+
+			"xmlns:oac=\"http://www.openannotation.org/ns/\"> "+
+			"<rdf:Description rdf:about=\"http://dme.ait.ac.at/samples/maps/oenb/AC04248667.tif\"> "+
+				"<rdf:type rdf:resource=\"http://www.openannotation.org/ns/Target\"/> "+
+			"</rdf:Description> "+
+			"<rdf:Description rdf:about=\"http://localhost:8081/yuma-server/api/annotation/479\"> "+
+				"<dc:title>A Pelagios Test Annotation</dc:title> "+
+			    "<j.0:created>Wed Mar 23 13:02:29 CET 2011</j.0:created> "+
+			    "<j.0:modified>Wed Mar 23 13:02:29 CET 2011</j.0:modified> "+
+				"<dc:creator>guest</dc:creator> "+
+				"<oac:hasBody rdf:resource=\"http://pleiades.stoa.org/places/991339\"/> "+
+				"<oac:hasTarget rdf:resource=\"http://dme.ait.ac.at/samples/maps/oenb/AC04248667.tif\"/> "+
+				"<rdf:type rdf:resource=\"http://www.openannotation.org/ns/Annotation\"/> "+
+			"</rdf:Description> "+
+		"</rdf:RDF>";
+	
 	public static String getJsonTestAnnot() throws IOException {
 		InputStream is = Data.class.getResourceAsStream("/testdata/408.json");
 		return IOUtils.toString(is);
