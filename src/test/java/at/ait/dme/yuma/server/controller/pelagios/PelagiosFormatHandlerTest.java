@@ -8,6 +8,7 @@ import org.junit.Test;
 import at.ait.dme.yuma.server.bootstrap.Data;
 import at.ait.dme.yuma.server.bootstrap.Setup;
 import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
+import at.ait.dme.yuma.server.controller.rdf.SerializationLanguage;
 import at.ait.dme.yuma.server.controller.rdf.pelagios.PelagiosFormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
 
@@ -24,7 +25,7 @@ public class PelagiosFormatHandlerTest {
 	@Test
 	public void pelagios2oac() throws Exception {
 		Annotation before = new JSONFormatHandler().parse(Data.PELAGIOS_JSON);
-		PelagiosFormatHandler pelagiosFormat = new PelagiosFormatHandler();
+		PelagiosFormatHandler pelagiosFormat = new PelagiosFormatHandler(SerializationLanguage.RDF_XML);
 		
 		String serializedAnnotation = pelagiosFormat.serialize(before);
 		XMLAssert.assertXMLEqual(serializedAnnotation, Data.PELAGIOS_RDF);

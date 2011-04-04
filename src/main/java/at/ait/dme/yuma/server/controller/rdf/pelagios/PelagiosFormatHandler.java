@@ -1,27 +1,32 @@
 package at.ait.dme.yuma.server.controller.rdf.pelagios;
 
-import java.util.List;
-
+import at.ait.dme.yuma.server.controller.rdf.SerializationLanguage;
 import at.ait.dme.yuma.server.controller.rdf.oac.OACFormatHandler;
 import at.ait.dme.yuma.server.model.tag.SemanticTag;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 
 public class PelagiosFormatHandler extends OACFormatHandler {
+	
+	public PelagiosFormatHandler(SerializationLanguage format) {
+		super(format);
+	}
 
 	@Override
 	protected Resource createBodyResource() {
 		return model.createResource(getBodyUri());
 	}
 	
-	private String getBodyUri() throws PelagiosDataException
-	{
-		List<SemanticTag> semanticTags = annotation.getTags();
-		if (semanticTags.isEmpty()) {
-			throw new PelagiosDataException("pelagios annotation doesn't contain semantic tags");
+	private String getBodyUri() throws NotAPelagiosAnnotationException {	
+		if (annotation.getTags() == null)
+			throw new NotAPelagiosAnnotationException();
+			
+		for (SemanticTag t : annotation.getTags()) {
+			if (t.getURI().toString().contains("pleiades"))
+				return t.getURI().toString();
 		}
 		
-		return semanticTags.get(0).getURI().toString(); 
+		throw new NotAPelagiosAnnotationException(); 
 	}
 
 }

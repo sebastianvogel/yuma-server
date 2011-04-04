@@ -16,7 +16,7 @@ import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 /**
  * An annotation controller which produces an RDF/XML
  * representations of annotations based on the 
- * LEMO RDF annotation model.
+ * OAC RDF annotation model.
  * 
  * @author Rainer Simon
  */

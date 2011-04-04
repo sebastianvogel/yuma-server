@@ -32,6 +32,10 @@ public class OACFormatHandler extends RDFFormatHandler {
 	public OACFormatHandler() {
 		super(SerializationLanguage.RDF_XML);
 	}
+	
+	public OACFormatHandler(SerializationLanguage format) {
+		super(format);
+	}
 
 	@Override
 	public Annotation parse(String serialized) throws InvalidAnnotationException 
