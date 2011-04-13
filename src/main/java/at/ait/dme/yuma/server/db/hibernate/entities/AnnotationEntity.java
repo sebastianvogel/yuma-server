@@ -67,7 +67,7 @@ import at.ait.dme.yuma.server.model.tag.SemanticTag;
 					"   (lower(tag.primaryLabel) like concat('%',lower(:term),'%')) or " +
 					"   (lower(tag.primaryDescription) like concat('%',lower(:term),'%')) or " +
 					"   (lower(altLabel.value) like concat('%',lower(:term),'%')) " +
-					")") 
+					") ") 
 })
 @Table(name = "annotations")
 public class AnnotationEntity implements Serializable {

@@ -1,6 +1,8 @@
 package at.ait.dme.yuma.server.db.hibernate;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -329,6 +331,18 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 			@SuppressWarnings("unchecked")
 			List<AnnotationEntity> entities = 
 				new ArrayList<AnnotationEntity>(new HashSet<AnnotationEntity>(query.getResultList()));
+			
+			Collections.sort(entities, new Comparator<AnnotationEntity>() {
+				@Override
+				public int compare(AnnotationEntity a, AnnotationEntity b) {
+					if (a.getLastModified().before(b.getLastModified()))
+						return 1;
+					
+					return -1;
+				}
+				
+			});
+			
 			return toAnnotations(entities);
 		} catch(Throwable t) {
 			throw new AnnotationDatabaseException(t);
