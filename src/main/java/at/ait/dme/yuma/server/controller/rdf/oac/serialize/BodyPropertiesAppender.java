@@ -37,20 +37,38 @@ public class BodyPropertiesAppender extends PropertiesAppender {
 			return;
 			
 		for (SemanticTag semanticTag : semanticTags) {
-			SemanticRelation r = semanticTag.getRelation();
-			
-			if (r == null) {
-				addProperty(
-					RDFS.seeAlso, 
-					model.createResource(semanticTag.getURI().toString()));
-			} 
+			if (hasSemanticRelation(semanticTag)) {
+				addRelationProperty(semanticTag);
+			}
 			else {
-				addProperty(model.createProperty(
-					r.getNamespace(), 
-					r.getProperty()), 
-					semanticTag.getURI().toString());				
+				addCommonTag(semanticTag);
 			}
 		}
 	}
 	
+	private boolean hasSemanticRelation(SemanticTag semanticTag) {
+		return semanticTag.getRelation() != null;
+	}
+	
+	private void addRelationProperty(SemanticTag semanticTag) {
+		SemanticRelation r = semanticTag.getRelation();
+		
+		addProperty(model.createProperty(
+			r.getNamespace(), 
+			r.getProperty()), 
+			semanticTag.getURI().toString());		
+	}
+	
+	private void addCommonTag(SemanticTag semanticTag) {
+		addProperty(
+			CTAG.tagged,
+			createTagResource(semanticTag));
+	}
+	
+	private Resource createTagResource(SemanticTag semanticTag) {
+		Resource ret = model.createResource(CTAG.Tag);
+		ret.addProperty(CTAG.means, semanticTag.getURI().toString());
+		
+		return ret;
+	}
 }
