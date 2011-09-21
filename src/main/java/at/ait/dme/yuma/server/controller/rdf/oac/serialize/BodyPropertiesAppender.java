@@ -3,6 +3,7 @@ package at.ait.dme.yuma.server.controller.rdf.oac.serialize;
 import java.util.List;
 
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.model.tag.PlainLiteral;
 import at.ait.dme.yuma.server.model.tag.SemanticRelation;
 import at.ait.dme.yuma.server.model.tag.SemanticTag;
 
@@ -69,6 +70,62 @@ public class BodyPropertiesAppender extends PropertiesAppender {
 		Resource ret = model.createResource(CTAG.Tag);
 		ret.addProperty(CTAG.means, semanticTag.getURI().toString());
 		
+		addPrimaryLabel(ret, semanticTag);
+		addAlternativeLabel(ret, semanticTag);
+		
 		return ret;
 	}
+	
+	private void addPrimaryLabel(Resource resource, SemanticTag semanticTag) {
+		String primaryLabel = semanticTag.getPrimaryLabel();
+		
+		if (primaryLabel != null && !primaryLabel.isEmpty()) {
+			resource.addProperty(CTAG.label, primaryLabel);			
+			resource.addProperty(
+				SKOSXL.prefLabel, 
+				createSkosXlLabel(resource, 
+					semanticTag.getPrimaryLabel(), 
+					semanticTag.getPrimaryDescription(),
+					semanticTag.getPrimaryLanguage()));
+		}
+	}
+	
+	private Resource createSkosXlLabel(
+		Resource resource, 
+		String label, 
+		String description,
+		String language)
+	{
+		Resource ret = model.createResource(SKOSXL.Label);
+				
+		if (label != null) {
+			ret.addProperty(SKOSXL.literalForm, model.createLiteral(label, language));
+		}
+		if (description != null) {
+			ret.addProperty(SKOS.note, model.createLiteral(description, language));
+		}
+		
+		return ret;
+	}
+	
+	private void addAlternativeLabel(Resource resource, SemanticTag semanticTag) {
+		for (PlainLiteral altLabel : semanticTag.getAlternativeLabels()) {
+			String language = altLabel.getLanguage();
+
+			if (language == null) {
+				resource.addProperty(
+					SKOSXL.altLabel, 
+					createSkosXlLabel(resource,	altLabel.getValue(), null, null));
+			}
+			else {
+				resource.addProperty(
+					SKOSXL.altLabel, 
+					createSkosXlLabel(resource, 
+						semanticTag.getAlternativeLabel(language),
+						semanticTag.getAlternativeDescription(language),
+						language));
+			}
+		}
+	}
+	
 }
