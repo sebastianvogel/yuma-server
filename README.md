@@ -38,8 +38,8 @@ to stick to an RDBMS.
 
 Build
 -----
-YUMA Server is built with Ant. Use the default 'create-war' target to 
-build the .war file.
+YUMA Server is built with Maven. To generate the webapp use target "install".
+To generate the wadl-File for the API run maven with the "com.sun.jersey.contribs:maven-wadl-plugin:generate" target 
 
 After Deployment
 ----------------
