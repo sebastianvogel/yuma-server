@@ -7,12 +7,12 @@
 
 	<context-param>
 		<param-name>server.base.url</param-name>
-		<param-value>http://localhost:8080/yuma-server/</param-value>
+		<param-value>http://service.tequnix.org/yumanji/</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>suite.base.url</param-name>
-		<param-value>http://localhost:8080/yuma-suite/</param-value>	
+		<param-value>http://service.tequnix.org/yumanji/</param-value>
 	</context-param>
 
 	<context-param>
@@ -53,27 +53,27 @@
 	
 	<context-param>
 		<param-name>annotation.db.host</param-name>
-		<param-value>localhost</param-value>
+		<param-value>localost</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>annotation.db.port</param-name>
-		<param-value>5432</param-value>
+		<param-value>3306</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>annotation.db.name</param-name>
-		<param-value>ait</param-value>
+		<param-value>yumanji</param-value>
 	</context-param>
 
 	<context-param>
 		<param-name>annotation.db.user</param-name>
-		<param-value>postgres</param-value>
+		<param-value>yumanji</param-value>
 	</context-param>
 
 	<context-param>
 		<param-name>annotation.db.pass</param-name>
-		<param-value>postgres</param-value>
+		<param-value>jumanji</param-value>
 	</context-param>
 
 	<context-param>
@@ -88,12 +88,12 @@
 	
 	<context-param>
 		<param-name>annotation.db.driver</param-name>
-		<param-value>org.postgresql.Driver</param-value>
+		<param-value>com.mysql.jdbc.Driver</param-value>
 	</context-param>	
 	
 	<context-param>
 		<param-name>annotation.db.driver.protocol</param-name>
-		<param-value>jdbc:postgresql</param-value>
+		<param-value>jdbc:mysql</param-value>
 	</context-param>
 	
 	<!--  MONGODB  configuration -->
