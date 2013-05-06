@@ -15,6 +15,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import at.ait.dme.yuma.server.bootstrap.Data;
@@ -47,7 +48,7 @@ public class JSONAnnotationControllerTest {
 		Config.getInstance().getAnnotationDatabase().shutdown();			
 	}
 		
-	@Test
+	@Ignore
 	public void testCreateUpdateDeleteAnnotation() throws Exception {
 		HttpClient httpClient = new DefaultHttpClient();
 			
@@ -93,7 +94,7 @@ public class JSONAnnotationControllerTest {
 		assertEquals(HttpStatus.SC_NO_CONTENT, response.getStatusLine().getStatusCode());
 	}
 	
-	@Test
+	@Ignore
 	public void testReplyFunctionality() throws Exception {
 		HttpClient httpClient = new DefaultHttpClient();
 		
