@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import at.ait.dme.yuma.server.model.tag.PlainLiteral;
 
 @Entity
-@Table(name = "plainliterals")
+@Table(name = "plainliteral")
 public class PlainLiteralEntity implements Serializable {
 
 	private static final long serialVersionUID = -1666936125696909441L;

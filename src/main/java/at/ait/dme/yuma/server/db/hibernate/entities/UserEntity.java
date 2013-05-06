@@ -1,11 +1,19 @@
 package at.ait.dme.yuma.server.db.hibernate.entities;
 
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import at.ait.dme.yuma.server.model.User;
 
-@Embeddable
+@Entity
+@Table(name="user")
 public class UserEntity {
+	
+	@Id
+	@GeneratedValue
+	private Long id;
 
 	private String createdBy = null;
 	

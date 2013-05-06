@@ -27,7 +27,7 @@ import at.ait.dme.yuma.server.model.tag.SemanticTag;
  * @author Rainer Simon
  */
 @Entity
-@Table(name = "tags")
+@Table(name = "tag")
 public class SemanticTagEntity implements Serializable {
 
 	private static final long serialVersionUID = -7648256413169945758L;

@@ -69,7 +69,7 @@ import at.ait.dme.yuma.server.model.tag.SemanticTag;
 					"   (lower(altLabel.value) like concat('%',lower(:term),'%')) " +
 					") ") 
 })
-@Table(name = "annotations")
+@Table(name = "annotation")
 public class AnnotationEntity implements Serializable {
 
 	private static final long serialVersionUID = 5448003870341885100L;
