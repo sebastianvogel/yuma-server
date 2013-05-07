@@ -12,6 +12,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -95,7 +97,8 @@ public class AnnotationEntity implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
 	private Date lastModified;
 	
-    @Column
+    @ManyToOne
+    @JoinColumn(nullable=false)
 	private UserEntity createdBy;
 	
     @Column(length = 128)	
