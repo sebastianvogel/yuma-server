@@ -42,21 +42,7 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 
 	@Override
 	public synchronized void init() throws AnnotationDatabaseException {
-		final Config config = Config.getInstance();
-		Map<String, String> emfProperties = new HashMap<String, String>() {
-			private static final long serialVersionUID = -1508851708183619075L;
-			{
-				put("javax.persistence.provider", "org.hibernate.ejb.HibernatePersistence");
-				put("hibernate.hbm2ddl.auto", "update");	
-				put("hibernate.show_sql","false");
-				put("hibernate.connection.driver_class", config.getDbDriver());
-				put("hibernate.connection.username", config.getDbUser());
-				put("hibernate.connection.password", config.getDbPass());
-				put("hibernate.connection.url", config.getDbDriverProtocol() + "://"
-					+ config.getDbHost() + ":" + config.getDbPort() + "/" + config.getDbName());
-			}};
-		
-		emf = Persistence.createEntityManagerFactory("annotation", emfProperties);
+		emf = Persistence.createEntityManagerFactory("annotation");
 	}
 
 	@Override
