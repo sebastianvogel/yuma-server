@@ -1,5 +1,6 @@
 /yuma-server.war
 /report
+src/main/webapp/META-INF/
 src/main/webapp/WEB-INF/web.xml
 src/main/webapp/WEB-INF/classes/
 target/
