@@ -41,7 +41,7 @@ import at.ait.dme.yuma.server.model.tag.SemanticTag;
 			query = "from AnnotationEntity a where a.objectUri = :objectUri"),
 			
 	@NamedQuery(name = "annotationentity.find.for.user",
-			query = "from AnnotationEntity a where a.createdBy.createdBy = :username"),
+			query = "from AnnotationEntity a where a.createdBy.username = :username"),
 			
 	@NamedQuery(name = "annotationentity.count.for.object",
 			query = "select count(*) from AnnotationEntity a where a.objectUri = :objectUri"),

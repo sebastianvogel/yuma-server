@@ -3,15 +3,12 @@ package at.ait.dme.yuma.server.db.hibernate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.LockModeType;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PessimisticLockException;
 import javax.persistence.Query;
@@ -20,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.db.hibernate.entities.AnnotationEntity;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
@@ -43,7 +39,7 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	@Autowired
 	private EntityManagerFactory emf;
 	@PersistenceContext
-	private EntityManager em = null;
+	private EntityManager em;
 
 	@Override
 	public synchronized void init() throws AnnotationDatabaseException {

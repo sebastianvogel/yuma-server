@@ -1,6 +1,8 @@
 package at.ait.dme.yuma.server.config;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
@@ -10,167 +12,52 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
  * 
  * @author Christian Sadilek
  */
+@Component
 public class Config {
 	private static Logger logger = Logger.getLogger(Config.class);
 
-	private static Config singletonInstance = null;
-
-	private final String dbImpl;
-	private final String dbDriver;
-	private final String dbDriverProtocol;	
-	private final String dbHost;
-	private final String dbPort;
-	private final String dbName;
-	private final String dbUser;
-	private final String dbPass;
-	private final String dbDir;
-	private final String dbFlags;	
-	private final String serverBaseUrl;
-	private final String suiteBaseUrl;
-	private final String adminUsername;
-	private final String adminPassword;
-
-	private Config(Builder builder) {
-		this.dbHost = builder.dbHost;
-		this.dbPort = builder.dbPort;
-		this.dbName = builder.dbName;
-		this.dbUser = builder.dbUser;
-		this.dbPass = builder.dbPass;
-		this.dbDir = builder.dbDir;
-		this.dbFlags = builder.dbFlags;		
-		this.serverBaseUrl = builder.serverBaseUrl;
-		this.suiteBaseUrl = builder.suiteBaseUrl;
-		this.adminUsername = builder.adminUsername;
-		this.adminPassword = builder.adminPassword;
-		this.dbImpl = builder.dbImpl;
-		this.dbDriver = builder.dbDriver;
-		this.dbDriverProtocol = builder.dbDriverProtocol;
-	}
+	private static Config singletonInstance;
 	
-	public static class Builder {
-		private String dbImpl = null;
-		private String dbDriver = null;
-		private String dbDriverProtocol = null;		
-		private String serverBaseUrl = null;
-		private String suiteBaseUrl = null;
-		
-		private String adminUsername = null;
-		private String adminPassword = null;
-		
-		private String dbHost = null;
-		private String dbPort = null;
-		private String dbName = null;
-		private String dbUser = null;
-		private String dbPass = null;
-		private String dbDir = null;
-		private String dbFlags = null;	
-		
-		public Builder(String dbImpl, String serverBaseUrl, String suiteBaseUrl, String adminUsername, String adminPassword) {
-			this.dbImpl = dbImpl;			
-			this.serverBaseUrl = serverBaseUrl;
-			this.suiteBaseUrl = suiteBaseUrl;
-			this.adminUsername = adminUsername;
-			this.adminPassword = adminPassword;
-		}
-		
-		public Builder dbDriver(String val) {
-			dbDriver = val;
-			return this;
-		}
-		
-		public Builder dbDriverProtocol(String val) {
-			dbDriverProtocol = val;
-			return this;
-		}
-		
-		public Builder dbHost(String val) {
-			dbHost = val;
-			return this;
-		}
-		
-		public Builder dbPort(String val) {
-			dbPort = val;
-			return this;
-		}
-		
-		public Builder dbName(String val) {
-			dbName = val;
-			return this;
-		}
-		
-		public Builder dbUser(String val) {
-			dbUser = val;
-			return this;
-		}
-		
-		public Builder dbPass(String val) {
-			dbPass = val;
-			return this;
-		}
-		
-		public Builder dbDir(String val) {
-			dbDir = val;
-			return this;
-		}
-		
-		public Builder dbFlags(String val) {
-			dbFlags = val;
-			return this;
-		}
-		
-		public Config createInstance() {
-			synchronized(this.getClass()) {
-				if (singletonInstance == null) {
-					singletonInstance = new Config(this);
-				} else {
-					throw new IllegalStateException("configuration already initialized");
-				}
-				return singletonInstance;
-			}
-		}
-	}
+	private String serverBaseUrl;
+	private String suiteBaseUrl;
+	private String adminUsername;
+	private String adminPassword;
+	
+	private static AbstractAnnotationDB db;
+	
+	private Config()  {}
 
 	public static Config getInstance() {
-		if (singletonInstance == null)
+		if (singletonInstance == null)  {
 			throw new IllegalStateException("configuration has not been initialized");
-
+		}
 		return singletonInstance;
 	}
-
-	public String getDbHost() {
-		return dbHost;
+	
+	@Autowired
+	private void setAnnotationDB(AbstractAnnotationDB annotationDb) {
+		db = annotationDb;
 	}
+	
+	
+	/**
+	 * create instance of config
+	 * @param serverBaseUrl
+	 * @param suiteBaseUrl
+	 * @param adminUsername
+	 * @param adminPassword
+	 */
+	public static void createInstance(String serverBaseUrl,
+			String suiteBaseUrl, String adminUsername, String adminPassword) {
 
-	public String getDbPort() {
-		return dbPort;
-	}
-
-	public String getDbName() {
-		return dbName;
-	}
-
-	public String getDbUser() {
-		return dbUser;
-	}
-
-	public String getDbPass() {
-		return dbPass;
-	}
-
-	public String getDbDir() {
-		return dbDir;
-	}
-
-	public String getDbFlags() {
-		return dbFlags;
-	}
-
-	public String getDbDriver() {
-		return dbDriver;
-	}
-
-	public String getDbDriverProtocol() {
-		return dbDriverProtocol;
+		if (singletonInstance != null) {
+			return;
+		}
+		singletonInstance = new Config();
+		singletonInstance.serverBaseUrl = serverBaseUrl;
+		singletonInstance.suiteBaseUrl = suiteBaseUrl;
+		singletonInstance.adminUsername = adminUsername;
+		singletonInstance.adminPassword = adminPassword;
 	}
 	
 	public String getServerBaseUrl() {
@@ -190,21 +77,6 @@ public class Config {
 	}
 	
 	public AbstractAnnotationDB getAnnotationDatabase() throws AnnotationDatabaseException {
-		AbstractAnnotationDB annotationDb = null;
-		try {
-			Class<?> annotationDbImplClass = Class.forName(dbImpl);
-			Object obj = annotationDbImplClass.newInstance();
-			if (obj instanceof AbstractAnnotationDB) {
-				annotationDb = (AbstractAnnotationDB) obj;
-			} else {
-				logger.fatal("annotation database implementation class is invalid. "
-						+ "check inheritance");
-				throw new InstantiationException();
-			}
-		} catch (Exception e) {
-			logger.fatal("failed to load annotation database implementation", e);
-			throw new AnnotationDatabaseException(e);
-		}
-		return annotationDb;
+		return db;
 	}
 }

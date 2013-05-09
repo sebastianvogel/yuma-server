@@ -46,6 +46,7 @@ class ConstraintResourceFactory {
 		case IMAGE:
 		case MAP:
 			return createSvgConstraint();
+		default: //ignore
 		}
 		throw new InvalidAnnotationException("don't know how to handle media type '" +mediaType.toString()+ "'");
 	}

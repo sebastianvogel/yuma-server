@@ -31,15 +31,6 @@ public class Setup {
 	private static String ADMIN_USER = "test.admin.user";
 	private static String ADMIN_PASSWORD = "test.admin.pass";
 	
-	private static String DB_CLASS = "test.db.class";
-	private static String DB_DRIVER = "test.db.driver";
-	private static String DB_DRIVER_PROTOCOL = "test.db.driver.protocol";
-	private static String DB_HOST = "test.db.host";
-	private static String DB_PORT = "test.db.port";
-	private static String DB_NAME = "test.db.name";
-	private static String DB_USER = "test.db.user";
-	private static String DB_PASSWORD = "test.db.pass";
-	
 	static {
 		try {
 			props = new Properties();
@@ -50,22 +41,12 @@ public class Setup {
 	}
        
     public static void buildConfiguration() throws AnnotationDatabaseException {
-    	new Config.Builder(
-    			getProperty(DB_CLASS),
+    	Config.createInstance(
     			getProperty(SERVER_URL),
     			getProperty(SUITE_URL),
     			getProperty(ADMIN_USER),
 				getProperty(ADMIN_PASSWORD)
-		)    	
-    			.dbDriver(getProperty(DB_DRIVER))
-    			.dbDriverProtocol(getProperty(DB_DRIVER_PROTOCOL))
-    			.dbHost(getProperty(DB_HOST))
-				.dbPort(getProperty(DB_PORT))
-				.dbName(getProperty(DB_NAME))
-				.dbUser(getProperty(DB_USER))
-				.dbPass(getProperty(DB_PASSWORD)).
-				createInstance();
-		
+		);
 		Config.getInstance().getAnnotationDatabase().init();
     }
     

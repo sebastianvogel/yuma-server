@@ -16,7 +16,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
-import org.junit.Test;
 
 import at.ait.dme.yuma.server.bootstrap.Data;
 import at.ait.dme.yuma.server.bootstrap.Setup;

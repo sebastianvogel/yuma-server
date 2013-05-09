@@ -6,6 +6,8 @@
     	<class>at.ait.dme.yuma.server.db.hibernate.entities.UserEntity</class>
     	<class>at.ait.dme.yuma.server.db.hibernate.entities.SemanticTagEntity</class>
     	<class>at.ait.dme.yuma.server.db.hibernate.entities.PlainLiteralEntity</class>
+    	<class>at.ait.dme.yuma.server.db.hibernate.entities.MediaEntity</class>
+    	<class>at.ait.dme.yuma.server.db.hibernate.entities.AppClientEntity</class>
     	<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
 		<properties>

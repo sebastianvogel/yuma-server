@@ -17,5 +17,6 @@
    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
    		<property name="database" value="MYSQL"/>
    </bean>
-
+   
+   <bean id="annotationDb" class="at.ait.dme.yuma.server.db.hibernate.HibernateAnnotationDB"/>
 </beans>
