@@ -12,10 +12,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.LockModeType;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.persistence.PessimisticLockException;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
@@ -37,12 +40,14 @@ import at.ait.dme.yuma.server.model.AnnotationTree;
  */
 public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	
-	private static EntityManagerFactory emf;		
+	@Autowired
+	private EntityManagerFactory emf;
+	@PersistenceContext
 	private EntityManager em = null;
 
 	@Override
 	public synchronized void init() throws AnnotationDatabaseException {
-		emf = Persistence.createEntityManagerFactory("annotation");
+		//emf = Persistence.createEntityManagerFactory("annotation");
 	}
 
 	@Override
@@ -57,7 +62,7 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 		if(emf==null) 
 			throw new AnnotationDatabaseException("entity manager factory not initialized");
 		
-		em=emf.createEntityManager();		
+		//em=emf.createEntityManager();		
 	}
 
 	@Override
