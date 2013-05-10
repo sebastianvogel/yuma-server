@@ -32,24 +32,25 @@
          <param-value>development</param-value>
 	</context-param>
 	
-	<!-- RESTeasy configuration -->
-	
+	<!-- RESTeasy configuration 
 	<context-param>
 		<param-name>resteasy.scan</param-name>
 		<param-value>true</param-value>
 	</context-param>
-
 	<context-param>
 		<param-name>resteasy.use.deployment.sensitive.factory</param-name>
 		<param-value>false</param-value>
 	</context-param>	
+	-->
 		
 	<!-- Filters, listeners, servlet mappings  -->
 			
 	<listener>
+		<!-- 
 		<listener-class>
 			org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
 		</listener-class>
+		-->
        <listener-class>
        		org.springframework.web.context.ContextLoaderListener
        	</listener-class>
@@ -71,9 +72,9 @@
 
 	<servlet>
 		<servlet-name>rest.api</servlet-name>
-		<servlet-class>
-			org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
-		</servlet-class>
+		<!-- <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>-->
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+    	<load-on-startup>1</load-on-startup>
 	</servlet>
 	
 	<servlet-mapping>
@@ -81,6 +82,7 @@
 		<url-pattern>/api/*</url-pattern>
 	</servlet-mapping>
 	
+	<!-- 
 	<servlet>
 		<servlet-name>feeds</servlet-name>
 		<servlet-class>
@@ -92,6 +94,7 @@
 		<servlet-name>feeds</servlet-name>
 		<url-pattern>/feeds/*</url-pattern>
 	</servlet-mapping>
+	-->
 	
 	<servlet>
 		<servlet-name>ConfigServlet</servlet-name>

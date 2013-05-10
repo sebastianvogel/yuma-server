@@ -8,6 +8,7 @@
     	<class>at.ait.dme.yuma.server.db.hibernate.entities.PlainLiteralEntity</class>
     	<class>at.ait.dme.yuma.server.db.hibernate.entities.MediaEntity</class>
     	<class>at.ait.dme.yuma.server.db.hibernate.entities.AppClientEntity</class>
+    	<class>at.ait.dme.yuma.server.db.hibernate.entities.GroupEntity</class>
     	<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
 		<properties>

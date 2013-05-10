@@ -16,7 +16,6 @@ import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.model.Annotation;
 
-@Path("/api")
 public class OpenSearchController extends AbstractAnnotationController {
 	
 	@GET

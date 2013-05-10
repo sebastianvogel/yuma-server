@@ -20,7 +20,6 @@ import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
  * 
  * @author Rainer Simon
  */
-@Path("/api")
 public class PelagiosAnnotationController extends AbstractAnnotationController {
 	
 	@GET

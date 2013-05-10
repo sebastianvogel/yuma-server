@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.controller.json;
+package at.ait.dme.yuma.server.controller;
 
 import java.io.UnsupportedEncodingException;
 
@@ -12,7 +12,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import at.ait.dme.yuma.server.controller.AbstractAnnotationController;
+import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
+import at.ait.dme.yuma.server.controller.rdf.oac.OACFormatHandler;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
@@ -26,21 +27,21 @@ import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
  *  
  * @author Rainer Simon
  */
-@Path("/api")
-public class JSONAnnotationController extends AbstractAnnotationController {
+@Path("/annotation")
+public class AnnotationController extends AbstractAnnotationController {
 
-	@POST
+	@PUT
 	@Consumes("application/json")
-	@Path("/annotation")
+	@Path("create")
 	public Response createAnnotation(String annotation)
 		throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationModifiedException {
 		
 		return super.createAnnotation(annotation, new JSONFormatHandler());
 	}
 	
-	@PUT
+	@POST
 	@Consumes("application/json")
-	@Path("/annotation/{id}")
+	@Path("{id}")
 	public Response updateAnnotation(@PathParam("id") String id, String annotation) 
 			throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationHasReplyException, UnsupportedEncodingException {
 		
@@ -48,7 +49,7 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 	}
 	
 	@DELETE
-	@Path("/annotation/{id}")
+	@Path("{id}")
 	public Response deleteAnnotation(@PathParam("id") String id) 
 			throws AnnotationDatabaseException, AnnotationHasReplyException, UnsupportedEncodingException, AnnotationNotFoundException {
 		
@@ -57,7 +58,7 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 
 	@GET
 	@Produces("application/json")
-	@Path("/annotation/{id}")
+	@Path("{id}")
 	public Response getAnnotation(@PathParam("id") String id)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
@@ -65,8 +66,17 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 	}
 	
 	@GET
+	@Produces("application/rdf+xml")
+	@Path("{id:.+\\.oac}")
+	public Response getAnnotation_forceOAC(@PathParam("id") String id)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		return super.getAnnotation(id.substring(0, id.indexOf('.')), new OACFormatHandler());
+	}
+	
+	@GET
 	@Produces("application/json")
-	@Path("/annotation/{id:.+\\.json}")
+	@Path("{id:.+\\.json}")
 	public Response getAnnotation_forceJSON(@PathParam("id") String id)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
@@ -75,7 +85,7 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 	
 	@GET
 	@Produces("application/json")
-	@Path("/tree/{objectUri}")
+	@Path("tree/{objectUri}")
 	public Response getAnnotationTree(@PathParam("objectUri") String objectUri)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
@@ -83,7 +93,7 @@ public class JSONAnnotationController extends AbstractAnnotationController {
 	}
 	
 	@GET
-	@Path("/tree/{objectUri:.+\\.json}")
+	@Path("tree/{objectUri:.+\\.json}")
 	public Response getAnnotationTree_forceJSON(@PathParam("objectUri") String objectUri)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		

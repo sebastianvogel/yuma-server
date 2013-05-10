@@ -16,7 +16,7 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.Annotation;
 
-@Path("/feeds")
+@Path("/service")
 public class RSSAnnotationController extends AbstractAnnotationController {
 	
 	private static final int FEED_LENGTH = 20;
@@ -46,7 +46,7 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	 */
 	@GET
 	@Produces("application/rss+xml")
-	@Path("/timeline")
+	@Path("timeline")
 	public Response getTimeline()
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
@@ -65,7 +65,7 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	 */
 	@GET
 	@Produces("application/rss+xml")
-	@Path("/user/{name}")	
+	@Path("user/{name}")	
 	public Response getUserFeed(@PathParam("name") String name) 
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
@@ -86,7 +86,7 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	 */
 	@GET
 	@Produces("application/rss+xml")
-	@Path("/object/{objectId}")
+	@Path("object/{objectId}")
 	public Response getObjectFeed(@PathParam("objectId") String objectId) 
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
@@ -108,7 +108,7 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	 */
 	@GET
 	@Produces("application/rss+xml")
-	@Path("/replies/{id}")
+	@Path("replies/{id}")
 	public Response getAnnotationFeed(@PathParam("id") String id) 
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 

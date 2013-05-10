@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Properties;
 
-import org.jboss.resteasy.plugins.server.tjws.TJWSEmbeddedJaxrsServer;
+//import org.jboss.resteasy.plugins.server.tjws.TJWSEmbeddedJaxrsServer;
 
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
@@ -50,6 +50,7 @@ public class Setup {
 		Config.getInstance().getAnnotationDatabase().init();
     }
     
+    /*
     public static void startEmbeddedJaxrsServer(Class <?> clazz) {
     	TJWSEmbeddedJaxrsServer tjws = new TJWSEmbeddedJaxrsServer();
 		tjws.setBindAddress("localhost");
@@ -58,6 +59,7 @@ public class Setup {
 		tjws.getDeployment().setResourceClasses(Collections.singletonList(clazz.getName()));
 		tjws.start();
     }
+    */
     
     private static String getProperty(String key) {
     	return props.getProperty(key).trim();

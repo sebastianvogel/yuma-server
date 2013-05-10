@@ -15,6 +15,7 @@ import javax.persistence.*;
 public class MediaEntity implements Serializable {
 	
 	@Id
+	@GeneratedValue
 	private Long id;
 	
 	@Column(name="uri")
@@ -27,11 +28,15 @@ public class MediaEntity implements Serializable {
 	@JoinColumn(name="created_by")
 	private UserEntity createdBy;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name="previous_version")
 	private MediaEntity previousVersion;
 	
+	@Column(name="mime_type")
 	private String mimeType;
+	
+	@Lob
+	private byte[] media;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -73,5 +78,12 @@ public class MediaEntity implements Serializable {
 	public void setMimeType(String mimeType) {
 		this.mimeType = mimeType;
 	}
-   
+	
+	public void setMedia(byte[] blob) {
+		this.media = blob;
+	}
+	
+	public byte[] getMedia() {
+		return media;
+	}
 }

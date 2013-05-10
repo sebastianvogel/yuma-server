@@ -39,7 +39,7 @@ public class JSONAnnotationControllerTest {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		Setup.buildConfiguration();
-		Setup.startEmbeddedJaxrsServer(JSONAnnotationController.class);
+		//Setup.startEmbeddedJaxrsServer(JSONAnnotationController.class);
 	}
 
 	@AfterClass

@@ -95,7 +95,7 @@ public class AnnotationEntity implements Serializable {
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
-	private Date lastModified;
+	private Date modified;
 	
     @ManyToOne
     @JoinColumn(nullable=false)
@@ -151,7 +151,7 @@ public class AnnotationEntity implements Serializable {
 			objectUri,
 			createdBy.toUser(),
 			created,
-			lastModified,
+			modified,
 			type,
 			scope
 		);
@@ -214,11 +214,11 @@ public class AnnotationEntity implements Serializable {
 	}
 
 	public void setLastModified(Date lastModified) {
-		this.lastModified = lastModified;
+		this.modified = lastModified;
 	}
 
 	public Date getLastModified() {
-		return lastModified;
+		return modified;
 	}
 
 	public void setCreatedBy(UserEntity createdBy) {

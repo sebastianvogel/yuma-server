@@ -1,5 +1,7 @@
 package at.ait.dme.yuma.server.db.hibernate.entities;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import at.ait.dme.yuma.server.model.User;
@@ -31,6 +35,14 @@ public class UserEntity {
 	@ManyToOne
 	@JoinColumn(name="app_client_id")
 	private AppClientEntity appClient;
+	
+	@Column
+    @Temporal(TemporalType.TIMESTAMP)
+	private Date created;
+
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+	private Date modified;
 	
 	public UserEntity() { }
 	
@@ -77,6 +89,22 @@ public class UserEntity {
 
 	public void setAppClient(AppClientEntity appClient) {
 		this.appClient = appClient;
+	}
+	
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getModified() {
+		return modified;
+	}
+
+	public void setModified(Date modified) {
+		this.modified = modified;
 	}
 	
 }
