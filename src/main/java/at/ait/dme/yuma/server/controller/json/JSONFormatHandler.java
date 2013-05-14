@@ -64,10 +64,8 @@ public class JSONFormatHandler implements FormatHandler {
 	 * @return the annotation
 	 * @throws InvalidAnnotationException if the map does not contain valid annotation data
 	 */
-	public Annotation toAnnotation(Map<String, Object> map) throws InvalidAnnotationException {	
-		@SuppressWarnings("unchecked")
-		Map<String, String> createdBy =
-			(Map<String, String>) map.get(MapKeys.ANNOTATION_CREATED_BY);
+	public Annotation toAnnotation(Map<String, Object> map) throws InvalidAnnotationException {
+		String createdBy = (String) map.get(MapKeys.ANNOTATION_CREATED_BY);
 		map.put(MapKeys.ANNOTATION_CREATED_BY, new User(createdBy));
 		
 		String type = (String) map.get(MapKeys.ANNOTATION_TYPE);
