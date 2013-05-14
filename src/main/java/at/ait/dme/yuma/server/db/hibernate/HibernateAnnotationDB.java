@@ -11,11 +11,13 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PessimisticLockException;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.db.hibernate.entities.AnnotationEntity;
@@ -42,8 +44,8 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	private EntityManager em;
 
 	@Override
-	public synchronized void init() throws AnnotationDatabaseException {
-		//emf = Persistence.createEntityManagerFactory("annotation");
+	public void init() throws AnnotationDatabaseException {
+		//not used
 	}
 
 	@Override
@@ -56,9 +58,7 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 			throws AnnotationDatabaseException {
 		
 		if(emf==null) 
-			throw new AnnotationDatabaseException("entity manager factory not initialized");
-		
-		//em=emf.createEntityManager();		
+			throw new AnnotationDatabaseException("entity manager factory not initialized");	
 	}
 
 	@Override
@@ -69,271 +69,194 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 
 	@Override
 	public void commit() throws AnnotationDatabaseException {
-		if(em==null||em.getTransaction()==null) 
-			throw new AnnotationDatabaseException("no transaction to commit");
-		
-		em.getTransaction().commit();	
+		//not used
 	}
-
+	
 	@Override
 	public void rollback() throws AnnotationDatabaseException {
-		if(em==null||em.getTransaction()==null) 
-			throw new AnnotationDatabaseException("no transaction to rollback");
-		
-		em.getTransaction().rollback();		
+		//not used
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor=AnnotationModifiedException.class)
 	public String createAnnotation(Annotation annotation)
 			throws AnnotationDatabaseException, AnnotationModifiedException,
 			InvalidAnnotationException {
 
-		try {			
-			if (!em.getTransaction().isActive())
-				em.getTransaction().begin();
-			
-			// in case of a reply we have to ensure that the parent is unchanged
-			AnnotationEntity entity = new AnnotationEntity(annotation);
-			if (entity.getParentId()!=null) {
-				// an annotation gets a new id on every update. therefore, checking for
-				// existence is sufficient here.			
-				AnnotationEntity parent = em.find(AnnotationEntity.class, entity.getParentId());				
-				if(parent==null) 
-					throw new AnnotationModifiedException(entity.getParentId());
-
-				// parent is unchanged, lock it and make sure it wasn't modified concurrently
-				try {
-					em.lock(parent, LockModeType.PESSIMISTIC_WRITE);
-				} catch(PessimisticLockException e) {
-					throw new AnnotationModifiedException(annotation.getParentId());
-				}				
-				em.refresh(parent);				
+		// in case of a reply we have to ensure that the parent is unchanged
+		AnnotationEntity entity = new AnnotationEntity(annotation);
+		if (entity.getParentId() != null) {
+			// an annotation gets a new id on every update. therefore, checking
+			// for
+			// existence is sufficient here.
+			AnnotationEntity parent = em.find(AnnotationEntity.class,
+					entity.getParentId());
+			if (parent == null) {
+				throw new AnnotationModifiedException(entity.getParentId());
 			}
 
-			em.persist(entity);														
-			if(isAutoCommit())
-				commit();
-			
-			return Long.toString(entity.getAnnotationId());
-		} catch(AnnotationModifiedException e) {
-			throw e;
-		} catch(Throwable t) {
-			rollback();
-			System.out.println(FAILED_TO_SAVE_ANNOTATION + ":" + t.getMessage());
-			throw new AnnotationDatabaseException(t);
+			// parent is unchanged, lock it and make sure it wasn't modified
+			// concurrently
+			try {
+				em.lock(parent, LockModeType.PESSIMISTIC_WRITE);
+			} catch (PessimisticLockException e) {
+				throw new AnnotationModifiedException(annotation.getParentId());
+			}
+			em.refresh(parent);
 		}
+
+		em.persist(entity);
+		return Long.toString(entity.getAnnotationId());
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor=AnnotationDatabaseException.class)
 	public String updateAnnotation(String annotationId, Annotation annotation)
 			throws AnnotationDatabaseException, AnnotationNotFoundException,
 			AnnotationHasReplyException, InvalidAnnotationException {
-
-		boolean autoCommit = isAutoCommit();
-		setAutoCommit(false);
-		try {
-			if (!em.getTransaction().isActive())
-				em.getTransaction().begin();
-			
-			AnnotationEntity entity = new AnnotationEntity(annotation);
-			
-			deleteAnnotation(annotationId);
-			em.persist(entity);
-			
-			if(autoCommit)
-				commit();
-			
-			return Long.toString(entity.getAnnotationId());
-		} catch(Throwable t) {
-			rollback();
-			throw new AnnotationDatabaseException(t);
-		} finally {
-			setAutoCommit(autoCommit);
-		}
+	
+		AnnotationEntity entity = new AnnotationEntity(annotation);
+		deleteAnnotation(annotationId);
+		em.persist(entity);			
+		return Long.toString(entity.getAnnotationId());
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=AnnotationHasReplyException.class)
 	public void deleteAnnotation(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException,
 			AnnotationHasReplyException {
 
-		try {
-			Long id = Long.parseLong(annotationId);		
-			if (!em.getTransaction().isActive())
-				em.getTransaction().begin();					
-			
-			AnnotationEntity entity = em.find(AnnotationEntity.class, id);						
-			em.lock(entity, LockModeType.PESSIMISTIC_WRITE);			
-			em.refresh(entity);
-			
-			if (countReplies(annotationId) > 0)
-				throw new AnnotationHasReplyException();
-			
-			em.remove(entity);			
-			if(isAutoCommit())
-				commit();
-		} catch (AnnotationHasReplyException e) {
-			throw e;
-		} catch (Throwable t) {
-			rollback();
-			throw new AnnotationDatabaseException(t);
+		Long id = Long.parseLong(annotationId);
+		AnnotationEntity entity = em.find(AnnotationEntity.class, id);						
+		em.lock(entity, LockModeType.PESSIMISTIC_WRITE);			
+		em.refresh(entity);
+		
+		if (countReplies(annotationId) > 0) {
+			throw new AnnotationHasReplyException();
 		}
+		em.remove(entity);			
 	}
 
 	@Override
-	public AnnotationTree findAnnotationsForObject(String objectUri)
-			throws AnnotationDatabaseException {
-
-		try {
-			Query query = em.createNamedQuery("annotationentity.find.for.object");
-			query.setParameter("objectUri", objectUri);
-			
-			@SuppressWarnings("unchecked")
-			List<AnnotationEntity> allAnnotations = query.getResultList();
-			
-			return new AnnotationTree(toAnnotations(allAnnotations));
-		} catch(Throwable t) {
-			throw new AnnotationDatabaseException(t);
-		}
+	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
+	public AnnotationTree findAnnotationsForObject(String objectUri) throws AnnotationDatabaseException {
+		TypedQuery<AnnotationEntity> query = 
+				em.createNamedQuery("annotationentity.find.for.object", AnnotationEntity.class);
+		query.setParameter("objectUri", objectUri);
+		List<AnnotationEntity> allAnnotations = query.getResultList();
+		return new AnnotationTree(toAnnotations(allAnnotations));
 	}
 
 	@Override
+	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
 	public long countAnnotationsForObject(String objectUri)
 			throws AnnotationDatabaseException {
-
-		int count = 0;
-		try {
-			Query query = em.createNamedQuery("annotationentity.count.for.object");
-			query.setParameter("objectUri", objectUri);
-			count = ((Long) query.getSingleResult()).intValue();
-		} catch(Throwable t) {
-			throw new AnnotationDatabaseException(t);
-		}
-		return count;
+		
+		TypedQuery<Long> query = em.createNamedQuery("annotationentity.count.for.object", Long.class);
+		query.setParameter("objectUri", objectUri);
+		return query.getSingleResult();
 	}
 
 	@Override
-	public List<Annotation> findAnnotationsForUser(String username)
-			throws AnnotationDatabaseException {
+	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
+	public List<Annotation> findAnnotationsForUser(String username) throws AnnotationDatabaseException {
 
-		try {
-			Query query = em.createNamedQuery("annotationentity.find.for.user");
-			query.setParameter("username", username);
-			
-			@SuppressWarnings("unchecked")
-			List<AnnotationEntity> allAnnotations = query.getResultList();
-			
-			return toAnnotations(allAnnotations);
-		} catch(Throwable t) {
-			throw new AnnotationDatabaseException(t);
-		}
+		TypedQuery<AnnotationEntity> query = em.createNamedQuery(
+				"annotationentity.find.for.user", AnnotationEntity.class);
+		query.setParameter("username", username);
+		List<AnnotationEntity> allAnnotations = query.getResultList();
+		return toAnnotations(allAnnotations);
 	}	
 	
 	@Override
+	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS, rollbackFor=AnnotationNotFoundException.class)
 	public Annotation findAnnotationById(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 
-		try {
-			Long id = Long.parseLong(annotationId);
-			AnnotationEntity entity = em.find(AnnotationEntity.class, id);
-			if (entity == null)
-				throw new AnnotationNotFoundException();
-			
-			return entity.toAnnotation();					
-		} catch(AnnotationNotFoundException e) {
-			throw e;
-		} catch(Throwable t) {
-			throw new AnnotationDatabaseException(t);
+		Long id = Long.parseLong(annotationId);
+		AnnotationEntity entity = em.find(AnnotationEntity.class, id);
+		if (entity == null) {
+			throw new AnnotationNotFoundException();
 		}
+			
+		return entity.toAnnotation();
 	}
 
 	@Override
+	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
 	public long countReplies(String annotationId)
 			throws AnnotationDatabaseException {
 		
-		int count = 0;
-		try {
-			Query query = em.createNamedQuery("annotationentity.count.replies");
-			query.setParameter("id", Long.parseLong(annotationId));
-			count = ((Long) query.getSingleResult()).intValue();
-		} catch (Throwable t) {
-			throw new AnnotationDatabaseException(t);
-		}
-		return count;
+		TypedQuery<Long> query = em.createNamedQuery("annotationentity.count.replies", Long.class);
+		query.setParameter("id", Long.parseLong(annotationId));
+		return query.getSingleResult();
 	}
 
 	@Override
+	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
 	public AnnotationTree getReplies(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 
-		try {
-			Annotation a = findAnnotationById(annotationId);
-			String rootId;
-			if (a.getRootId() == null) {
-				rootId = a.getAnnotationID();
-			} else {
-				rootId = a.getRootId();
-			}
-			
-			Query query = em.createNamedQuery("annotationentity.find.thread");	
-			query.setParameter("rootId", Long.parseLong(rootId));
-			
-			@SuppressWarnings("unchecked")
-			List<AnnotationEntity> thread = query.getResultList();		
-			return new AnnotationTree(toAnnotations(filterReplies(thread, annotationId)));
-		} catch (Throwable t) {
-			throw new AnnotationDatabaseException(t);
+		Annotation a = findAnnotationById(annotationId);
+		if (a==null) {
+			throw new AnnotationNotFoundException();
 		}
+		
+		String rootId;
+		if (a.getRootId() == null) {
+			rootId = a.getAnnotationID();
+		} else {
+			rootId = a.getRootId();
+		}
+		
+		TypedQuery<AnnotationEntity> query = 
+				em.createNamedQuery("annotationentity.find.thread", AnnotationEntity.class);
+		query.setParameter("rootId", Long.parseLong(rootId));
+		List<AnnotationEntity> thread = query.getResultList();		
+		return new AnnotationTree(toAnnotations(filterReplies(thread, annotationId)));
 	}
 
 	@Override
+	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
 	public List<Annotation> getMostRecent(int n, boolean publicOnly)
 			throws AnnotationDatabaseException {
 		
-		try {
-			Query query;
-			if (publicOnly) {
-				query = em.createNamedQuery("annotationentity.mostrecent.public");
-			} else {
-				query = em.createNamedQuery("annotationentity.mostrecent.all");
-			}
-			query.setMaxResults(n);
-			
-			@SuppressWarnings("unchecked")
-			List<AnnotationEntity> mostRecent = query.getResultList();
-			return toAnnotations(mostRecent);
-		} catch(Throwable t) {
-			throw new AnnotationDatabaseException(t);
+		TypedQuery<AnnotationEntity> query;
+		if (publicOnly) {
+			query = em.createNamedQuery("annotationentity.mostrecent.public", AnnotationEntity.class);
+		} else {
+			query = em.createNamedQuery("annotationentity.mostrecent.all", AnnotationEntity.class);
 		}
+		query.setMaxResults(n);
+			
+		List<AnnotationEntity> mostRecent = query.getResultList();
+		return toAnnotations(mostRecent);
 	}
 
 	@Override
+	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
 	public List<Annotation> findAnnotations(String q)
 			throws AnnotationDatabaseException {
-
-		try {
-			Query query = em.createNamedQuery("annotationentity.searchTextTitleAndTags");
-			query.setParameter("term", q.toLowerCase());
-			
-			@SuppressWarnings("unchecked")
-			List<AnnotationEntity> entities = 
+		
+		TypedQuery<AnnotationEntity> query = 
+				em.createNamedQuery("annotationentity.searchTextTitleAndTags", AnnotationEntity.class);
+		query.setParameter("term", q.toLowerCase());
+		
+		List<AnnotationEntity> entities = 
 				new ArrayList<AnnotationEntity>(new HashSet<AnnotationEntity>(query.getResultList()));
 			
-			Collections.sort(entities, new Comparator<AnnotationEntity>() {
-				@Override
-				public int compare(AnnotationEntity a, AnnotationEntity b) {
-					if (a.getLastModified().before(b.getLastModified()))
-						return 1;
-					
+		Collections.sort(entities, new Comparator<AnnotationEntity>() {
+			@Override
+			public int compare(AnnotationEntity a, AnnotationEntity b) {
+				if (a.getLastModified().before(b.getLastModified())) {
+					return 1;
+				} else {				
 					return -1;
 				}
-				
-			});
-			
-			return toAnnotations(entities);
-		} catch(Throwable t) {
-			throw new AnnotationDatabaseException(t);
-		}
+			}
+		});	
+		return toAnnotations(entities);
 	}
 	
 	/**

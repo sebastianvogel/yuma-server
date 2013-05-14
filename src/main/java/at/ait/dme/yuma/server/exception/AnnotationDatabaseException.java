@@ -5,7 +5,7 @@ package at.ait.dme.yuma.server.exception;
  * 
  * @author Christian Sadilek
  */
-public class AnnotationDatabaseException extends Exception {
+public class AnnotationDatabaseException extends RuntimeException {
 	
 	private static final long serialVersionUID = 3328621278141052963L;
 
