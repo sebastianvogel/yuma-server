@@ -27,7 +27,7 @@ import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
  *  
  * @author Rainer Simon
  */
-@Path("/annotation")
+@Path("annotation")
 public class AnnotationController extends AbstractAnnotationController {
 
 	@PUT
