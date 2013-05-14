@@ -121,8 +121,12 @@
 			<transport-guarantee>NONE</transport-guarantee>
 		</user-data-constraint>
 	</security-constraint>
+	
+	<security-role>
+		<role-name>yumanji-user</role-name>
+	</security-role>
 
 	<login-config>
-		<auth-method>DIGEST</auth-method>
+		<auth-method>BASIC</auth-method>
 	</login-config>
 </web-app>

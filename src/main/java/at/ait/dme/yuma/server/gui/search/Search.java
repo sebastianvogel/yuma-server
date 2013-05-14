@@ -1,5 +1,6 @@
 package at.ait.dme.yuma.server.gui.search;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import org.apache.wicket.PageParameters;
@@ -53,9 +54,9 @@ public class Search extends WebPage {
     /**
      * Simple wrapper for the search form model.
      */
-    class Query {
-    	
-    	private String query;
+    class Query implements Serializable {
+		private static final long serialVersionUID = -6871339252078139356L;
+		private String query;
     	
     	public String getQuery() {
     		return query;
