@@ -98,7 +98,7 @@ public class AnnotationEntity implements Serializable {
 	private Date modified;
 	
     @ManyToOne
-    @JoinColumn(nullable=false)
+    @JoinColumn(name="created_by", nullable=false)
 	private UserEntity createdBy;
 	
     @Column(length = 128)	
@@ -133,7 +133,7 @@ public class AnnotationEntity implements Serializable {
 		this.setObjectUri(a.getObjectUri());
 		this.setCreated(a.getCreated());
 		this.setLastModified(a.getLastModified());
-		this.setCreatedBy(new UserEntity(a.getCreatedBy()));
+		//this.setCreatedBy(new UserEntity(a.getCreatedBy()));
 		this.setTitle(a.getTitle());
 		this.setText(a.getText());
 		this.setType(a.getType());

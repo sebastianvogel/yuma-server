@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PessimisticLockException;
@@ -20,7 +19,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
+import at.ait.dme.yuma.server.db.IUserDAO;
 import at.ait.dme.yuma.server.db.hibernate.entities.AnnotationEntity;
+import at.ait.dme.yuma.server.db.hibernate.entities.UserEntity;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
@@ -38,10 +39,13 @@ import at.ait.dme.yuma.server.model.AnnotationTree;
  */
 public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	
-	@Autowired
-	private EntityManagerFactory emf;
+	//@Autowired
+	//private EntityManagerFactory emf;
 	@PersistenceContext
 	private EntityManager em;
+	
+	@Autowired
+	IUserDAO userDAO;
 
 	@Override
 	public void init() throws AnnotationDatabaseException {
@@ -50,14 +54,15 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 
 	@Override
 	public void shutdown() {
-		if(emf!=null) emf.close();
+		//we are container managed, to do nothing ..
+		//if(emf!=null) emf.close();
 	}
 
 	@Override
 	public void connect(HttpServletRequest request, HttpServletResponse response)
 			throws AnnotationDatabaseException {
 		
-		if(emf==null) 
+		if(em==null) 
 			throw new AnnotationDatabaseException("entity manager factory not initialized");	
 	}
 
@@ -104,6 +109,13 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 			}
 			em.refresh(parent);
 		}
+		
+		//check if user exists:
+		UserEntity user = userDAO.findUser(annotation.getCreatedBy(), null);
+		if (user==null) {
+			user = userDAO.createUser(annotation.getCreatedBy(), null);
+		}
+		entity.setCreatedBy(user);
 
 		em.persist(entity);
 		return Long.toString(entity.getAnnotationId());

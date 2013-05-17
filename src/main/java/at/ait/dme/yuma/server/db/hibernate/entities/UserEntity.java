@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -16,6 +17,9 @@ import javax.persistence.UniqueConstraint;
 import at.ait.dme.yuma.server.model.User;
 
 @Entity
+@NamedQuery(name = "user.find",
+			query = "select u from UserEntity u where u.username = :username and u.appClient=:appclient")
+
 @Table(name="user", uniqueConstraints=@UniqueConstraint(columnNames= {"username","app_client_id"}))
 public class UserEntity {
 	
@@ -46,6 +50,7 @@ public class UserEntity {
 	
 	public UserEntity() { }
 	
+
 	public UserEntity(User user) {
 		this.setUsername(user.getUsername());
 		this.setGravatarHash(user.getGravatarHash());
