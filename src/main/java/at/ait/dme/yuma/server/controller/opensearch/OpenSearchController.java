@@ -20,7 +20,7 @@ public class OpenSearchController extends AbstractAnnotationController {
 	
 	@GET
 	@Produces("application/rss+xml")
-	@Path("/search")	
+	@Path("search")	
 	public Response getResults(@QueryParam("q") String query, 
 			@QueryParam("count") int count, @QueryParam("start") int startIndex) 
 			throws AnnotationDatabaseException, UnsupportedEncodingException {

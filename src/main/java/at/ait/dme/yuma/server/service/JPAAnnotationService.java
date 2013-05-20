@@ -17,14 +17,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import at.ait.dme.yuma.server.db.IAppClientDAO;
 import at.ait.dme.yuma.server.db.IUserDAO;
 import at.ait.dme.yuma.server.db.entities.AnnotationEntity;
+import at.ait.dme.yuma.server.db.entities.AppClientEntity;
 import at.ait.dme.yuma.server.db.entities.UserEntity;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
-import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
 
@@ -38,19 +39,18 @@ import at.ait.dme.yuma.server.model.AnnotationTree;
 @Service
 public class JPAAnnotationService implements IAnnotationService {
 	
-	//@Autowired
-	//private EntityManagerFactory emf;
 	@PersistenceContext
 	private EntityManager em;
 	
 	@Autowired
 	IUserDAO userDAO;
+	
+	@Autowired
+	IAppClientDAO appClientDAO;
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor=AnnotationModifiedException.class)
-	public String createAnnotation(Annotation annotation)
-			throws AnnotationDatabaseException, AnnotationModifiedException,
-			InvalidAnnotationException {
+	public String createAnnotation(Annotation annotation, String appClientToken) throws AnnotationModifiedException {
 
 		// in case of a reply we have to ensure that the parent is unchanged
 		AnnotationEntity entity = new AnnotationEntity(annotation);
@@ -74,10 +74,13 @@ public class JPAAnnotationService implements IAnnotationService {
 			em.refresh(parent);
 		}
 		
+		//check if appClient exists:
+		AppClientEntity appClient = appClientDAO.getAppClient(appClientToken);
+		
 		//check if user exists:
-		UserEntity user = userDAO.findUser(annotation.getCreatedBy(), null);
+		UserEntity user = userDAO.findUser(annotation.getCreatedBy(), appClient);
 		if (user==null) {
-			user = userDAO.createUser(annotation.getCreatedBy(), null);
+			user = userDAO.createUser(annotation.getCreatedBy(), appClient);
 		}
 		entity.setCreatedBy(user);
 
@@ -87,24 +90,35 @@ public class JPAAnnotationService implements IAnnotationService {
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor=AnnotationDatabaseException.class)
-	public String updateAnnotation(String annotationId, Annotation annotation)
-			throws AnnotationDatabaseException, AnnotationNotFoundException,
-			AnnotationHasReplyException, InvalidAnnotationException {
+	public String updateAnnotation(String annotationId, Annotation annotation, String appClientToken)
+			throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException {
 	
 		AnnotationEntity entity = new AnnotationEntity(annotation);
-		deleteAnnotation(annotationId);
+		
+		//check appClient:
+		AppClientEntity appClient = appClientDAO.getAppClient(appClientToken);
+		
+		//find user:
+		UserEntity user = userDAO.findUser(annotation.getCreatedBy(), appClient);
+		entity.setCreatedBy(user);
+		
+		deleteAnnotation(annotationId, appClientToken);
 		em.persist(entity);			
 		return Long.toString(entity.getAnnotationId());
 	}
 
 	@Override
-	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=AnnotationHasReplyException.class)
-	public void deleteAnnotation(String annotationId)
-			throws AnnotationDatabaseException, AnnotationNotFoundException,
-			AnnotationHasReplyException {
+	@Transactional(propagation=Propagation.REQUIRED, 
+	               rollbackFor= {AnnotationHasReplyException.class, AnnotationNotFoundException.class })
+	public void deleteAnnotation(String annotationId, String appClientToken) 
+			throws AnnotationHasReplyException, AnnotationNotFoundException {
 
+		appClientDAO.getAppClient(appClientToken);
 		Long id = Long.parseLong(annotationId);
-		AnnotationEntity entity = em.find(AnnotationEntity.class, id);						
+		AnnotationEntity entity = em.find(AnnotationEntity.class, id);
+		if (entity==null) {
+			throw new AnnotationNotFoundException();
+		}
 		em.lock(entity, LockModeType.PESSIMISTIC_WRITE);			
 		em.refresh(entity);
 		

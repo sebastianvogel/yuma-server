@@ -56,8 +56,8 @@ public abstract class AbstractAnnotationController {
 	 */
 	protected Response createAnnotation(String annotation, FormatHandler format)
 		throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationModifiedException {
-				
-		String annotationId = annotationService.createAnnotation(format.parse(annotation));
+		
+		String annotationId = annotationService.createAnnotation(format.parse(annotation), request.getRemoteUser());
 		log.info("created annotation with id=".concat(annotationId));
 		return Response.created(URIBuilder.toURI(annotationId)).entity(annotationId).build();
 	}
@@ -92,7 +92,7 @@ public abstract class AbstractAnnotationController {
 		String annotationIdDec = URLDecoder.decode(annotationId, URL_ENCODING);
 		Annotation in = format.parse(annotation);
 		try {
-			annotationId = annotationService.updateAnnotation(annotationIdDec, in);
+			annotationId = annotationService.updateAnnotation(annotationIdDec, in, request.getRemoteUser());
 			annotationService.findAnnotationById(annotationId); //check if exists and throw exception otherwise
 		} catch(AnnotationNotFoundException anfe) {
 			throw new AnnotationDatabaseException(anfe);
@@ -113,7 +113,7 @@ public abstract class AbstractAnnotationController {
 	protected Response deleteAnnotation(String annotationId)
 		throws AnnotationDatabaseException, AnnotationHasReplyException, UnsupportedEncodingException, AnnotationNotFoundException {
 		
-		annotationService.deleteAnnotation(URLDecoder.decode(annotationId, URL_ENCODING));
+		annotationService.deleteAnnotation(URLDecoder.decode(annotationId, URL_ENCODING), request.getRemoteUser());
 		log.info("deleted annotation with id=".concat(annotationId));
 		return Response.noContent().build();
 	}

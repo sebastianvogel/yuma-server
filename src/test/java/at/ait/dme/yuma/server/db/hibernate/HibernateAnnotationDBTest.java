@@ -35,7 +35,7 @@ public class HibernateAnnotationDBTest {
 		// Create
 		Annotation before = format.parse(Data.ANNOTATION_JSON_ORIGINAL);
 		
-		String id = db.createAnnotation(before);
+		String id = db.createAnnotation(before, "test");
 		System.out.println("Created: " + id);
 		
 		// Read
@@ -44,16 +44,16 @@ public class HibernateAnnotationDBTest {
 		
 		// Update
 		Annotation after = format.parse(Data.ANNOTATION_JSON_UPDATE);		
-		id = db.updateAnnotation(id, after);
+		id = db.updateAnnotation(id, after, "test");
 		System.out.println("Updated to: " + id);
 		
 		// Create reply
 		Annotation reply = format.parse(Data.reply(id, id));
-		String replyId = db.createAnnotation(reply);
+		String replyId = db.createAnnotation(reply, "test");
 		
 		// Try delete root annotation
 		try {
-			db.deleteAnnotation(id);
+			db.deleteAnnotation(id, "test");
 			
 			fail("Annotation has reply - delete should fail!");
 		} catch (AnnotationHasReplyException e) {
@@ -63,8 +63,8 @@ public class HibernateAnnotationDBTest {
 		long count = db.countAnnotationsForObject(OBJ_URI);
 		
 		// Delete
-		db.deleteAnnotation(replyId);
-		db.deleteAnnotation(id);
+		db.deleteAnnotation(replyId, "test");
+		db.deleteAnnotation(id, "test");
 		
 		assertEquals(count - 2, db.countAnnotationsForObject(OBJ_URI));
 		

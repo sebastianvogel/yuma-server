@@ -8,19 +8,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mongodb.util.JSON;
-
 import at.ait.dme.yuma.server.controller.FormatHandler;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
-import at.ait.dme.yuma.server.model.AnnotationTree;
-import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.Scope;
+import at.ait.dme.yuma.server.model.AnnotationTree;
 import at.ait.dme.yuma.server.model.MapKeys;
+import at.ait.dme.yuma.server.model.MediaType;
+import at.ait.dme.yuma.server.model.Scope;
 import at.ait.dme.yuma.server.model.User;
 import at.ait.dme.yuma.server.model.tag.PlainLiteral;
 import at.ait.dme.yuma.server.model.tag.SemanticRelation;
 import at.ait.dme.yuma.server.model.tag.SemanticTag;
+
+import com.mongodb.util.JSON;
 
 /**
  * Format handler for JSON.
@@ -31,30 +31,26 @@ public class JSONFormatHandler implements FormatHandler {
 	
 	private static final String KEY_REPLIES = "replies";
 	
+	//private static Logger log = Logger.getLogger(JSONFormatHandler.class);
+	
 	@Override
-	public Annotation parse(String serialized)
-		throws InvalidAnnotationException {
+	public Annotation parse(String serialized) throws InvalidAnnotationException {
+		Object obj = JSON.parse(serialized);
 		
-		try {
-			Object obj = JSON.parse(serialized);
-			
-			if (obj instanceof List<?>) {
-				@SuppressWarnings("unchecked")
-				List<Map<String, Object>> list = (List<Map<String, Object>>) obj;
-				if (list.size() > 0) {
-					return toAnnotation(list.get(0));
-				} else {
-					throw new InvalidAnnotationException();
-				}
-			} else if (obj instanceof Map<?, ?>) {
-				@SuppressWarnings("unchecked")
-				Map<String, Object> map = (Map<String, Object>) obj;
-				return toAnnotation(map);
+		if (obj instanceof List<?>) {
+			@SuppressWarnings("unchecked")
+			List<Map<String, Object>> list = (List<Map<String, Object>>) obj;
+			if (list.size() > 0) {
+				return toAnnotation(list.get(0));
 			} else {
 				throw new InvalidAnnotationException();
 			}
-		} catch (Throwable t) {
-			throw new InvalidAnnotationException(t);
+		} else if (obj instanceof Map<?, ?>) {
+			@SuppressWarnings("unchecked")
+			Map<String, Object> map = (Map<String, Object>) obj;
+			return toAnnotation(map);
+		} else {
+			throw new InvalidAnnotationException("cannot parse " + obj);
 		}
 	}
 
@@ -65,34 +61,51 @@ public class JSONFormatHandler implements FormatHandler {
 	 * @throws InvalidAnnotationException if the map does not contain valid annotation data
 	 */
 	public Annotation toAnnotation(Map<String, Object> map) throws InvalidAnnotationException {
-		String createdBy = (String) map.get(MapKeys.ANNOTATION_CREATED_BY);
-		map.put(MapKeys.ANNOTATION_CREATED_BY, new User(createdBy));
+		
+		map.put(MapKeys.ANNOTATION_CREATED_BY, toUser(map.get(MapKeys.ANNOTATION_CREATED_BY)));
 		
 		String type = (String) map.get(MapKeys.ANNOTATION_TYPE);
 		if (type != null)
 			map.put(MapKeys.ANNOTATION_TYPE, MediaType.valueOf(type.toUpperCase()));
 		
 		String scope = (String) map.get(MapKeys.ANNOTATION_SCOPE);
-		if (scope != null)
+		if (scope != null) {
 			map.put(MapKeys.ANNOTATION_SCOPE, Scope.valueOf(scope.toUpperCase()));
+		}
 		
-		try {
+		if (map.containsKey(MapKeys.ANNOTATION_CREATED)) {
 			Date created = new Date((Long) map.get(MapKeys.ANNOTATION_CREATED));
 			map.put(MapKeys.ANNOTATION_CREATED, created);
-			
+		} else {
+			map.put(MapKeys.ANNOTATION_CREATED, new Date());
+		}
+		
+		if (map.containsKey(MapKeys.ANNOTATION_LAST_MODIFIED)) {
 			Date lastModified = new Date((Long) map.get(MapKeys.ANNOTATION_LAST_MODIFIED));
 			map.put(MapKeys.ANNOTATION_LAST_MODIFIED, lastModified);
-		} catch (Throwable t) {
-			throw new InvalidAnnotationException(t);
+		} else {
+			map.put(MapKeys.ANNOTATION_LAST_MODIFIED, new Date());
 		}
-
+		
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> tags = (List<Map<String, Object>>) map.get(MapKeys.ANNOTATION_SEMANTIC_TAGS);
 		if (tags != null)
 			map.put(MapKeys.ANNOTATION_SEMANTIC_TAGS, new JSONFormatHandler().toSemanticTags(tags));
 			
 		return new Annotation(map);
-	}	
+	}
+	
+	private User toUser(Object o) throws InvalidAnnotationException {
+		if (o==null) {
+			throw new InvalidAnnotationException("created-by (user) must not be null!");
+		}
+		if (o instanceof String) {
+			return new User((String)o);
+		} else if (o instanceof Map) {
+			return new User((Map<String,String>)o);
+		}
+		throw new InvalidAnnotationException("unknown representation of user: " + o);
+	}
 	
 	private List<SemanticTag> toSemanticTags(List<Map<String, Object>> maps) throws InvalidAnnotationException {
 		ArrayList<SemanticTag> tags = new ArrayList<SemanticTag>();
@@ -174,7 +187,6 @@ public class JSONFormatHandler implements FormatHandler {
 		map.put(MapKeys.ANNOTATION_CREATED, annotation.getCreated().getTime());
 		map.put(MapKeys.ANNOTATION_LAST_MODIFIED, annotation.getLastModified().getTime());
 		map.put(MapKeys.ANNOTATION_SEMANTIC_TAGS, tagsToJSONFormat(annotation.getTags()));
-		
 		return map;
 	}
 		
@@ -196,7 +208,6 @@ public class JSONFormatHandler implements FormatHandler {
 				maps.add(map);
 			}
 		}
-		
 		return maps;
 	}
 	

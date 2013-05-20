@@ -14,7 +14,10 @@ import javax.ws.rs.core.Response;
 
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
+import at.ait.dme.yuma.server.controller.rdf.SerializationLanguage;
 import at.ait.dme.yuma.server.controller.rdf.oac.OACFormatHandler;
+import at.ait.dme.yuma.server.controller.rdf.pelagios.NotAPelagiosAnnotationException;
+import at.ait.dme.yuma.server.controller.rdf.pelagios.PelagiosFormatHandler;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
@@ -37,7 +40,6 @@ public class AnnotationController extends AbstractAnnotationController {
 
 	@PUT
 	@Consumes("application/json")
-	@Path("create")
 	public Response createAnnotation(String annotation)
 		throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationModifiedException {
 		
@@ -86,6 +88,49 @@ public class AnnotationController extends AbstractAnnotationController {
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
 		return super.getAnnotation(id.substring(0, id.indexOf('.')), new JSONFormatHandler());
+	}
+	
+	@GET
+	@Produces("application/rdf+xml")
+	@Path("{id:.+\\.rdf}")
+	public Response getAnnotationXML(@PathParam("id") String id)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		try {
+			return super.getAnnotation(id.substring(0, id.indexOf('.')), 
+					new PelagiosFormatHandler(SerializationLanguage.RDF_XML));
+		} catch (NotAPelagiosAnnotationException e) {
+			e.printStackTrace();
+			throw new AnnotationNotFoundException();
+		}
+	}
+	
+	@GET
+	@Produces("text/rdf+n3")
+	@Path("{id:.+\\.n3}")
+	public Response getAnnotationN3(@PathParam("id") String id)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		try {
+			return super.getAnnotation(id.substring(0, id.indexOf('.')),
+					new PelagiosFormatHandler(SerializationLanguage.N3));
+		} catch (NotAPelagiosAnnotationException e) {
+			throw new AnnotationNotFoundException();
+		}
+	}
+	
+	@GET
+	@Produces("application/x-turtle")
+	@Path("{id:.+\\.turtle}")
+	public Response getAnnotationTurtle(@PathParam("id") String id)
+		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+		
+		try {
+			return super.getAnnotation(id.substring(0, id.indexOf('.')),
+					new PelagiosFormatHandler(SerializationLanguage.TURTLE));
+		} catch (NotAPelagiosAnnotationException e) {
+			throw new AnnotationNotFoundException();
+		}
 	}
 	
 	@GET

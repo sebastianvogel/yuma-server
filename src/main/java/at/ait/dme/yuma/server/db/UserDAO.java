@@ -55,6 +55,7 @@ public class UserDAO implements IUserDAO {
 	public UserEntity createUser(User user, AppClientEntity appClient) {
 		
 		UserEntity entity = new UserEntity(user);
+		entity.setAppClient(appClient);
 		entity.setUri(createURI(user, appClient));
 		em.persist(entity);
 		return entity;

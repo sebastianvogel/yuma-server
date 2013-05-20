@@ -96,7 +96,7 @@ public class OACFormatHandlerTest {
 		establishDbConnection();
 		
 		Annotation root = new JSONFormatHandler().parse(Data.ROOT_JSON);
-		return db.createAnnotation(root);
+		return db.createAnnotation(root, "test");
 	}
 	
 	private void establishDbConnection() throws AnnotationDatabaseException {
@@ -104,6 +104,6 @@ public class OACFormatHandlerTest {
 	}
 
 	private void cleanUp(String annotationId) throws Exception {
-		db.deleteAnnotation(annotationId);
+		db.deleteAnnotation(annotationId, "test");
 	}
 }

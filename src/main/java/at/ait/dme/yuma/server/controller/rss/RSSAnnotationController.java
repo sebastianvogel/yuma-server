@@ -16,7 +16,7 @@ import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.service.IAnnotationService;
 
-@Path("/service")
+@Path("service")
 public class RSSAnnotationController extends AbstractAnnotationController {
 	
 	private static final int FEED_LENGTH = 20;

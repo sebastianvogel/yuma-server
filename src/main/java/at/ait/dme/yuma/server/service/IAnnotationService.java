@@ -47,7 +47,7 @@ public interface IAnnotationService {
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 * @throws AnnotationModifiedException if the parent annotation was modified in the mean time
 	 */
-	public abstract String createAnnotation(Annotation annotation) 
+	public abstract String createAnnotation(Annotation annotation, String clientToken) 
 			throws AnnotationDatabaseException, AnnotationModifiedException, InvalidAnnotationException;
 
 	/**
@@ -59,7 +59,7 @@ public interface IAnnotationService {
 	 * @throws AnnotationNotFoundException if there is no annotation with the given ID
 	 * @throws AnnotationHasReplyException if this annotation has already been replied to
 	 */
-	public abstract String updateAnnotation(String annotationId, Annotation annotation)
+	public abstract String updateAnnotation(String annotationId, Annotation annotation, String clientToken)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException, InvalidAnnotationException;
 
 	/**
@@ -69,7 +69,7 @@ public interface IAnnotationService {
 	 * @throws AnnotationNotFoundException if the annotation does not exist in the DB
 	 * @throws AnnotationHasReplyException if this annotation has already been replied to
 	 */
-	public abstract void deleteAnnotation(String annotationId)
+	public abstract void deleteAnnotation(String annotationId, String clientToken)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException;
 
 	/**

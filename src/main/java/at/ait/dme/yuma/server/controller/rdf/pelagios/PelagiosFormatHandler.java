@@ -17,16 +17,17 @@ public class PelagiosFormatHandler extends OACFormatHandler {
 		return model.createResource(getBodyUri());
 	}
 	
-	private String getBodyUri() throws NotAPelagiosAnnotationException {	
-		if (annotation.getTags() == null)
-			throw new NotAPelagiosAnnotationException();
-			
-		for (SemanticTag t : annotation.getTags()) {
-			if (t.getURI().toString().contains("pleiades"))
-				return t.getURI().toString();
+	private String getBodyUri() {
+		if (annotation.getTags()==null) {
+			return null;
 		}
 		
-		throw new NotAPelagiosAnnotationException(); 
+		for (SemanticTag t : annotation.getTags()) {
+			if (t!=null && t.getURI()!=null) {
+				return t.getURI().toString();
+			}
+		}
+		return null;
 	}
 
 }
