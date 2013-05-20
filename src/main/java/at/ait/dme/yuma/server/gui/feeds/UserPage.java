@@ -7,10 +7,10 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
 
 import at.ait.dme.yuma.server.config.Config;
-import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.gui.BaseAnnotationListPage;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.service.IAnnotationService;
 
 /**
  * A user's public feed page.
@@ -40,19 +40,9 @@ public class UserPage extends BaseAnnotationListPage {
 	}
 	
 	private List<Annotation> getAnnotationsByUser(String username) {
-		AbstractAnnotationDB db = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
-		
-		try {
-			db = Config.getInstance().getAnnotationDatabase();
-			db.connect();
-			annotations = db.findAnnotationsForUser(username);
-		} catch (AnnotationDatabaseException e) {
-			logger.fatal(e.getMessage());
-		} finally {
-			if(db != null) db.disconnect();
-		}
-		
+		IAnnotationService annotationService = Config.getInstance().getAnnotationService();
+		annotations = annotationService.findAnnotationsForUser(username);	
 		return annotations;
 	}
 

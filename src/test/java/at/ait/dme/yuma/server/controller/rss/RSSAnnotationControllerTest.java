@@ -29,11 +29,6 @@ public class RSSAnnotationControllerTest {
 		Setup.buildConfiguration();
 		//Setup.startEmbeddedJaxrsServer(RSSAnnotationController.class);
 	}
-
-	@AfterClass
-	public static void tearDown() throws Exception {	
-		Config.getInstance().getAnnotationDatabase().shutdown();			
-	}
 		
 	@Test
 	@Ignore

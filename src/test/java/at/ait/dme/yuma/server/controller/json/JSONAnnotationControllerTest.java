@@ -41,11 +41,6 @@ public class JSONAnnotationControllerTest {
 		Setup.buildConfiguration();
 		//Setup.startEmbeddedJaxrsServer(JSONAnnotationController.class);
 	}
-
-	@AfterClass
-	public static void tearDown() throws Exception {	
-		Config.getInstance().getAnnotationDatabase().shutdown();			
-	}
 		
 	@Ignore
 	public void testCreateUpdateDeleteAnnotation() throws Exception {

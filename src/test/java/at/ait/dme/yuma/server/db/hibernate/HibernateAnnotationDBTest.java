@@ -15,6 +15,7 @@ import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.service.JPAAnnotationService;
 
 public class HibernateAnnotationDBTest {
 
@@ -24,18 +25,12 @@ public class HibernateAnnotationDBTest {
 	public static void setUp() throws Exception {		
 		Setup.buildConfiguration();
 	}
-
-	@AfterClass
-	public static void tearDown() throws Exception {
-		Config.getInstance().getAnnotationDatabase().shutdown();
-	}
 	
 	@Test
 	public void testHibernateCRUD() throws Exception {
 		JSONFormatHandler format = new JSONFormatHandler();
 		
-		HibernateAnnotationDB db = new HibernateAnnotationDB();
-		db.connect();
+		JPAAnnotationService db = new JPAAnnotationService();
 		
 		// Create
 		Annotation before = format.parse(Data.ANNOTATION_JSON_ORIGINAL);

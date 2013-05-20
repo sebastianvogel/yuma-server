@@ -12,6 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
 import at.ait.dme.yuma.server.controller.rdf.oac.OACFormatHandler;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
@@ -29,6 +30,10 @@ import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
  */
 @Path("annotation")
 public class AnnotationController extends AbstractAnnotationController {
+	
+	public AnnotationController() {
+		super.setAnnotationService(Config.getInstance().getAnnotationService());
+	}
 
 	@PUT
 	@Consumes("application/json")

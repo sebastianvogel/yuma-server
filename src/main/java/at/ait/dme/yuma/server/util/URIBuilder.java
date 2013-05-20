@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server;
+package at.ait.dme.yuma.server.util;
 
 import java.net.URI;
 import java.net.URISyntaxException;

@@ -6,10 +6,10 @@ import java.util.List;
 import org.apache.wicket.PageParameters;
 
 import at.ait.dme.yuma.server.config.Config;
-import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.gui.BaseAnnotationListPage;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.service.IAnnotationService;
 
 /**
  * The search result page.
@@ -45,18 +45,8 @@ public class Results extends BaseAnnotationListPage {
     }
     
 	private List<Annotation> findAnnotations(String query) throws AnnotationDatabaseException {
-		AbstractAnnotationDB db = null;
-		List<Annotation> searchResults = new ArrayList<Annotation>();
-		
-		try {
-			db = Config.getInstance().getAnnotationDatabase();
-			db.connect();
-			searchResults = db.findAnnotations(query);
-		} finally {
-			if(db != null) db.disconnect();
-		}
-		
-		return searchResults;
+		IAnnotationService annotationService = Config.getInstance().getAnnotationService();
+		return annotationService.findAnnotations(query);
 	}
 
 }

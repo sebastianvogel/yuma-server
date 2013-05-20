@@ -1,6 +1,5 @@
 package at.ait.dme.yuma.server.gui.feeds;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -8,11 +7,10 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.protocol.http.servlet.AbortWithHttpStatusException;
 
 import at.ait.dme.yuma.server.config.Config;
-import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
-import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.gui.BaseAnnotationListPage;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.service.IAnnotationService;
 
 public class RepliesPage extends BaseAnnotationListPage {
 	
@@ -24,7 +22,7 @@ public class RepliesPage extends BaseAnnotationListPage {
 	private static final String HEADLINE = "Replies to ";
 	private static final String FEEDS = "feeds/replies/";
 	
-	public RepliesPage(final PageParameters parameters) {
+	public RepliesPage(final PageParameters parameters) throws AnnotationNotFoundException {
 		Annotation parent = 
 			getParentAnnotation(parameters.getString(PARAM_PARENT_ID));		
 		
@@ -37,39 +35,14 @@ public class RepliesPage extends BaseAnnotationListPage {
 		setFeedURL(Config.getInstance().getServerBaseUrl() + FEEDS + parent.getAnnotationID());
 	}
 	
-	private Annotation getParentAnnotation(String id) {
-		AbstractAnnotationDB db = null;
-		try {
-			db = Config.getInstance().getAnnotationDatabase();
-			db.connect();
-			return db.findAnnotationById(id);
-		} catch (AnnotationDatabaseException e) {
-			logger.fatal(e.getMessage());
-		} catch (AnnotationNotFoundException e) {
-			logger.warn(e.getMessage());
-		} finally {
-			if (db != null)
-				db.disconnect();
-		}
-		return null;
+	private Annotation getParentAnnotation(String id) throws AnnotationNotFoundException {
+		IAnnotationService annotationService = Config.getInstance().getAnnotationService();
+		return annotationService.findAnnotationById(id);
 	}
 	
-	private List<Annotation> getReplies(String id) {
-		AbstractAnnotationDB db = null;
-		try {
-			db = Config.getInstance().getAnnotationDatabase();
-			db.connect();
-			return db.getReplies(id).asFlatList();
-		} catch (AnnotationDatabaseException e) {
-			logger.fatal(e.getMessage());
-		} catch (AnnotationNotFoundException e) {
-			// Should never happen
-			logger.fatal(e.getMessage());
-		} finally {
-			if (db != null)
-				db.disconnect();
-		}
-		return new ArrayList<Annotation>();
+	private List<Annotation> getReplies(String id) throws AnnotationNotFoundException {
+		IAnnotationService annotationService = Config.getInstance().getAnnotationService();
+		return annotationService.getReplies(id).asFlatList();
 	}
 
 }

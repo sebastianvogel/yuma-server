@@ -1,16 +1,14 @@
 package at.ait.dme.yuma.server.gui.feeds;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
 
 import at.ait.dme.yuma.server.config.Config;
-import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
-import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.gui.BaseAnnotationListPage;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.service.IAnnotationService;
 
 /**
  * The public timeline.
@@ -33,19 +31,8 @@ public class TimelinePage extends BaseAnnotationListPage {
 	}
     
 	private List<Annotation> getMostRecent(int n) {
-		AbstractAnnotationDB db = null;
-		List<Annotation> mostRecent = new ArrayList<Annotation>();
-		
-		try {
-			db = Config.getInstance().getAnnotationDatabase();
-			db.connect();
-			mostRecent = db.getMostRecent(n, true);
-		} catch (AnnotationDatabaseException e) {
-			logger.fatal(e.getMessage());
-		} finally {
-			if(db != null) db.disconnect();
-		}
-		
+		IAnnotationService annotationService = Config.getInstance().getAnnotationService();
+		List<Annotation> mostRecent = annotationService.getMostRecent(n, true);		
 		return mostRecent;
 	}
 

@@ -14,13 +14,13 @@ import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 
-import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.gizmos.LanguageGuesser;
 import at.ait.dme.yuma.server.gui.feeds.UserPage;
 import at.ait.dme.yuma.server.gui.search.Search;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.tag.SemanticTag;
+import at.ait.dme.yuma.server.util.URIBuilder;
 
 /**
  * Base class for all pages that lists of annotations (i.e. feed and
@@ -38,7 +38,7 @@ public abstract class BaseAnnotationListPage extends WebPage {
 	private static final String SPAN = "<span class=\"grad\"></span>";
 	private static final String ELLIPSIS = "...";
 	private static final String SERVER_BASE_URL = Config.getInstance().getServerBaseUrl();
-	private static final String SUITE_BASE_URL = Config.getInstance().getSuiteBaseUrl();
+	//private static final String SUITE_BASE_URL = Config.getInstance().getSuiteBaseUrl();
 	
 	public BaseAnnotationListPage() {
 		add(new BookmarkablePageLink<String>("home", Search.class));
@@ -121,11 +121,13 @@ public abstract class BaseAnnotationListPage extends WebPage {
 			item.add(new ExternalLink("dl-rdf-turtle", uri + ".turtle", "Turtle"));
 			item.add(new ExternalLink("dl-rdf-xml-oac", uri + ".oac", "OAC (Beta)"));
 			
+			/*
 			item.add(new ExternalLink("open-in-client", 
 								SUITE_BASE_URL + a.getType().name().toLowerCase() + "?objectURI=" + a.getObjectUri(),
 								"Open in " + a.getType().getScreenName() + " Tool")
 							.add(new SimpleAttributeModifier("title", "Open in " + a.getType().getScreenName() + " Annotation Tool"))
 			);
+			*/
 		}
 		
 	}

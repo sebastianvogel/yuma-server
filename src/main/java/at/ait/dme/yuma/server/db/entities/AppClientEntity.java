@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.db.hibernate.entities;
+package at.ait.dme.yuma.server.db.entities;
 
 import java.util.Date;
 
@@ -53,5 +53,10 @@ public class AppClientEntity {
 
 	public void setModified(Date modified) {
 		this.modified = modified;
+	}
+	
+	public String toString() {
+		return String.format("AppClientEntity[id=%d,clientToken=%s]", 
+				id, getClientToken());
 	}
 }

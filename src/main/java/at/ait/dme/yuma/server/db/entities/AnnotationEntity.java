@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.db.hibernate.entities;
+package at.ait.dme.yuma.server.db.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -131,9 +131,8 @@ public class AnnotationEntity implements Serializable {
 			this.setParentId(Long.parseLong(a.getParentId()));
 		
 		this.setObjectUri(a.getObjectUri());
-		this.setCreated(a.getCreated());
-		this.setLastModified(a.getLastModified());
-		//this.setCreatedBy(new UserEntity(a.getCreatedBy()));
+		this.setCreated(a.getCreated()==null ? new Date() : a.getCreated());
+		this.setLastModified(a.getLastModified()==null ? new Date() : a.getLastModified());
 		this.setTitle(a.getTitle());
 		this.setText(a.getText());
 		this.setType(a.getType());

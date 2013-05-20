@@ -49,6 +49,11 @@ public class User implements Serializable {
 		return uri;
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("User[username=%s,uri=%s]", getUsername(), getUri());
+	}
+
 	public Map<String, String> toMap() {
 		HashMap<String, String> map = new HashMap<String, String>();
 		

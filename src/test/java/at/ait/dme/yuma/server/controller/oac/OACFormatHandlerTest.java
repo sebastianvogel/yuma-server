@@ -11,13 +11,13 @@ import at.ait.dme.yuma.server.bootstrap.Data;
 import at.ait.dme.yuma.server.bootstrap.Setup;
 import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
 import at.ait.dme.yuma.server.controller.rdf.oac.OACFormatHandler;
-import at.ait.dme.yuma.server.db.hibernate.HibernateAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.service.JPAAnnotationService;
 
 public class OACFormatHandlerTest {
 
-	private HibernateAnnotationDB db;
+	private JPAAnnotationService db;
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
@@ -100,12 +100,10 @@ public class OACFormatHandlerTest {
 	}
 	
 	private void establishDbConnection() throws AnnotationDatabaseException {
-		db = new HibernateAnnotationDB();
-		db.connect();
+		db = new JPAAnnotationService();
 	}
 
 	private void cleanUp(String annotationId) throws Exception {
 		db.deleteAnnotation(annotationId);
-		db.disconnect();
 	}
 }

@@ -19,11 +19,11 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
 
-import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.FormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
+import at.ait.dme.yuma.server.util.URIBuilder;
 
 /**
  * Format handler for OpenSearch (serialization only)

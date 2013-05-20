@@ -12,9 +12,9 @@ import javax.ws.rs.core.Response;
 
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.AbstractAnnotationController;
-import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.service.IAnnotationService;
 
 public class OpenSearchController extends AbstractAnnotationController {
 	
@@ -39,14 +39,7 @@ public class OpenSearchController extends AbstractAnnotationController {
 	private List<Annotation> find(String query)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		AbstractAnnotationDB db = null;
-		try {
-			db = Config.getInstance().getAnnotationDatabase();
-			db.connect(request, response);
-			return db.findAnnotations(URLDecoder.decode(query, URL_ENCODING));
-		} finally {
-			if(db != null) db.disconnect();
-		}		
+		IAnnotationService annotationService = Config.getInstance().getAnnotationService();
+		return annotationService.findAnnotations(URLDecoder.decode(query, URL_ENCODING));
 	}
-	
 }

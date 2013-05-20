@@ -3,10 +3,10 @@ package at.ait.dme.yuma.server.controller.rdf;
 import java.io.StringWriter;
 import java.util.List;
 
-import at.ait.dme.yuma.server.URIBuilder;
 import at.ait.dme.yuma.server.controller.FormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
+import at.ait.dme.yuma.server.util.URIBuilder;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;

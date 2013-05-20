@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.db.hibernate;
+package at.ait.dme.yuma.server.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,17 +11,15 @@ import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PessimisticLockException;
 import javax.persistence.TypedQuery;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.db.IUserDAO;
-import at.ait.dme.yuma.server.db.hibernate.entities.AnnotationEntity;
-import at.ait.dme.yuma.server.db.hibernate.entities.UserEntity;
+import at.ait.dme.yuma.server.db.entities.AnnotationEntity;
+import at.ait.dme.yuma.server.db.entities.UserEntity;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
@@ -37,7 +35,8 @@ import at.ait.dme.yuma.server.model.AnnotationTree;
  * @author Christian Sadilek
  * @author Rainer Simon
  */
-public class HibernateAnnotationDB extends AbstractAnnotationDB {
+@Service
+public class JPAAnnotationService implements IAnnotationService {
 	
 	//@Autowired
 	//private EntityManagerFactory emf;
@@ -46,41 +45,6 @@ public class HibernateAnnotationDB extends AbstractAnnotationDB {
 	
 	@Autowired
 	IUserDAO userDAO;
-
-	@Override
-	public void init() throws AnnotationDatabaseException {
-		//not used
-	}
-
-	@Override
-	public void shutdown() {
-		//we are container managed, to do nothing ..
-		//if(emf!=null) emf.close();
-	}
-
-	@Override
-	public void connect(HttpServletRequest request, HttpServletResponse response)
-			throws AnnotationDatabaseException {
-		
-		if(em==null) 
-			throw new AnnotationDatabaseException("entity manager factory not initialized");	
-	}
-
-	@Override
-	public void disconnect() {
-		if ((em!=null) && (em.isOpen()))
-			em.close();	
-	}
-
-	@Override
-	public void commit() throws AnnotationDatabaseException {
-		//not used
-	}
-	
-	@Override
-	public void rollback() throws AnnotationDatabaseException {
-		//not used
-	}
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor=AnnotationModifiedException.class)

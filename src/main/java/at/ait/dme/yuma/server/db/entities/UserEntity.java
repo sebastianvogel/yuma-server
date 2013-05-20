@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.db.hibernate.entities;
+package at.ait.dme.yuma.server.db.entities;
 
 import java.util.Date;
 
@@ -55,6 +55,8 @@ public class UserEntity {
 		this.setUsername(user.getUsername());
 		this.setGravatarHash(user.getGravatarHash());
 		this.setUri(user.getUri());
+		setCreated(new Date());
+		setModified(new Date());
 	}
 	
 	public User toUser() {
@@ -112,4 +114,8 @@ public class UserEntity {
 		this.modified = modified;
 	}
 	
+	public String toString() {
+		return String.format("UserEntity[id=%d,username=%s,appClient=%s,uri=%s]",
+				id, getUsername(), getAppClient(), getUri());
+	}
 }

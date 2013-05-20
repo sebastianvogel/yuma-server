@@ -11,10 +11,10 @@ import javax.ws.rs.core.Response;
 
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.AbstractAnnotationController;
-import at.ait.dme.yuma.server.db.AbstractAnnotationDB;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.service.IAnnotationService;
 
 @Path("/service")
 public class RSSAnnotationController extends AbstractAnnotationController {
@@ -112,9 +112,8 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	public Response getAnnotationFeed(@PathParam("id") String id) 
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 
-		AbstractAnnotationDB db = Config.getInstance().getAnnotationDatabase();
-		db.connect(request, response);
-		Annotation parent = db.findAnnotationById(URLDecoder.decode(id, URL_ENCODING));
+		IAnnotationService annotationService = Config.getInstance().getAnnotationService();
+		Annotation parent = annotationService.findAnnotationById(URLDecoder.decode(id, URL_ENCODING));
 
 		return super.getReplies(id, new RSSFormatHandler(
 				REPLY_FEED_TITLE + "'" + parent.getTitle() + "'",

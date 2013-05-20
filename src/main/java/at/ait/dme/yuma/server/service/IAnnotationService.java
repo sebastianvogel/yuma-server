@@ -1,17 +1,14 @@
-package at.ait.dme.yuma.server.db;
+package at.ait.dme.yuma.server.service;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationTree;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
+import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
-import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
+import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.model.AnnotationTree;
 
 /**
  * Base class for annotation databases.
@@ -34,81 +31,14 @@ import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
  * @author Christian Sadilek
  * @author Rainer Simon
  */
-public abstract class AbstractAnnotationDB {	
+public interface IAnnotationService {	
 	
+	/*
 	protected static final String UNEXPECTED_RESPONSE = "unexpected response";		
 	protected static final String FAILED_TO_READ_ANNOTATION = "failed to read annotation";	
 	protected static final String FAILED_TO_SAVE_ANNOTATION = "failed to save annotation";
 	protected static final String FAILED_TO_DELETE_ANNOTATION = "failed to delete annotation";
-	protected static final String FAILED_TO_PARSE_ANNOTATION = "failed to parse annotation";
-
-	private boolean autoCommit = true;
-	
-	/**
-	 * Check if auto commit is on
-	 * @return true if auto commit is on
-	 */
-	public boolean isAutoCommit() {
-		return autoCommit;
-	}
-	
-	/**
-	 * Set the auto commit mode
-	 * @param autoCommit auto commit mode
-	 */
-	public void setAutoCommit(boolean autoCommit) {
-		this.autoCommit = autoCommit;
-	}
-	
-	/**
-	 * Initialize 
-	 * @throws AnnotationDabaseException if anything goes wrong
-	 */
-	public abstract void init()
-		throws AnnotationDatabaseException;
-	
-	/**
-	 * Shutdown 
-	 */
-	public abstract void shutdown();
-	
-	/**
-	 * Connect to the DB
-	 * @throws AnnotationDatabaseException if anything goes wrong
-	 */
-	public void connect()
-		throws AnnotationDatabaseException {
-		
-		connect(null, null);
-	}
-
-	/**
-	 * Connect to the DB and provide a request object to access
-	 * parameters, cookies, etc.
-	 * @throws AnnotationDatabaseException if anything goes wrong
-	 */
-	public abstract void connect(HttpServletRequest request, HttpServletResponse response)
-		throws AnnotationDatabaseException;
-	
-	/**
-	 * Disconnect the DB 
-	 * @throws AnnotationDatabaseException if anything goes wrong
-	 */
-	public abstract void disconnect();
-
-	/**
-	 * Commit all changes
-	 * @throws AnnotationDatabaseException if anything goes wrong
-	 */
-	public abstract void commit()
-		throws AnnotationDatabaseException;
-	
-	/**
-	 * Roll back all changes
-	 * @throws AnnotationDatabaseException if anything goes wrong
-	 */
-	public abstract void rollback()
-		throws AnnotationDatabaseException;
+	protected static final String FAILED_TO_PARSE_ANNOTATION = "failed to parse annotation";*/
 	
 	/**
 	 * Create a new annotation

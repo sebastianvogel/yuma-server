@@ -1,6 +1,7 @@
-package at.ait.dme.yuma.server.db.hibernate.entities;
+package at.ait.dme.yuma.server.db.entities;
 
-import at.ait.dme.yuma.server.db.hibernate.entities.UserEntity;
+import at.ait.dme.yuma.server.db.entities.UserEntity;
+
 import java.io.Serializable;
 import java.lang.String;
 import java.util.Date;

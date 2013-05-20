@@ -1,4 +1,4 @@
-package at.ait.dme.yuma.server.db.hibernate.entities;
+package at.ait.dme.yuma.server.db.entities;
 
 import java.io.Serializable;
 

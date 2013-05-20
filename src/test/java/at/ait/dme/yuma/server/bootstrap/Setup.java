@@ -41,13 +41,10 @@ public class Setup {
 	}
        
     public static void buildConfiguration() throws AnnotationDatabaseException {
-    	Config.createInstance(
-    			getProperty(SERVER_URL),
-    			getProperty(SUITE_URL),
-    			getProperty(ADMIN_USER),
-				getProperty(ADMIN_PASSWORD)
-		);
-		Config.getInstance().getAnnotationDatabase().init();
+    	Config conf = Config.getInstance();
+    	conf.setServerBaseUrl(SERVER_URL);
+    	conf.setAdminPassword(ADMIN_PASSWORD);
+    	conf.setAdminUsername(ADMIN_USER);
     }
     
     /*

@@ -2,28 +2,6 @@
 
 <web-app>
 	<display-name>YUMA Annotation Server</display-name>
-
-	<!-- General YUMA configuration -->
-
-	<context-param>
-		<param-name>server.base.url</param-name>
-		<param-value>http://service.tequnix.org/yumanji/</param-value>
-	</context-param>
-	
-	<context-param>
-		<param-name>suite.base.url</param-name>
-		<param-value>http://localhost:8080/yuma-suite/</param-value>	
-	</context-param>
-
-	<context-param>
-		<param-name>admin.username</param-name>
-		<param-value>admin</param-value>
-	</context-param>
-	
-	<context-param>
-		<param-name>admin.password</param-name>
-		<param-value>admin</param-value>
-	</context-param>
 	
 	<!-- Wicket Deployment Mode ('development' or  'deployment') -->
 
@@ -51,9 +29,7 @@
 			org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
 		</listener-class>
 		-->
-       <listener-class>
-       		org.springframework.web.context.ContextLoaderListener
-       	</listener-class>
+       <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	
 	<filter>
@@ -95,12 +71,6 @@
 		<url-pattern>/feeds/*</url-pattern>
 	</servlet-mapping>
 	-->
-	
-	<servlet>
-		<servlet-name>ConfigServlet</servlet-name>
-		<servlet-class>at.ait.dme.yuma.server.config.ConfigServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
 	
 	<security-constraint>
 		<web-resource-collection>
