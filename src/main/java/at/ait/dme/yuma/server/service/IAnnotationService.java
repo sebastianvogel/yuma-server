@@ -33,13 +33,6 @@ import at.ait.dme.yuma.server.model.AnnotationTree;
  */
 public interface IAnnotationService {	
 	
-	/*
-	protected static final String UNEXPECTED_RESPONSE = "unexpected response";		
-	protected static final String FAILED_TO_READ_ANNOTATION = "failed to read annotation";	
-	protected static final String FAILED_TO_SAVE_ANNOTATION = "failed to save annotation";
-	protected static final String FAILED_TO_DELETE_ANNOTATION = "failed to delete annotation";
-	protected static final String FAILED_TO_PARSE_ANNOTATION = "failed to parse annotation";*/
-	
 	/**
 	 * Create a new annotation
 	 * @param annotation the annotation
@@ -47,7 +40,7 @@ public interface IAnnotationService {
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 * @throws AnnotationModifiedException if the parent annotation was modified in the mean time
 	 */
-	public abstract String createAnnotation(Annotation annotation, String clientToken) 
+	 String createAnnotation(Annotation annotation, String clientToken) 
 			throws AnnotationDatabaseException, AnnotationModifiedException, InvalidAnnotationException;
 
 	/**
@@ -59,7 +52,7 @@ public interface IAnnotationService {
 	 * @throws AnnotationNotFoundException if there is no annotation with the given ID
 	 * @throws AnnotationHasReplyException if this annotation has already been replied to
 	 */
-	public abstract String updateAnnotation(String annotationId, Annotation annotation, String clientToken)
+	 String updateAnnotation(String annotationId, Annotation annotation, String clientToken)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException, InvalidAnnotationException;
 
 	/**
@@ -69,7 +62,7 @@ public interface IAnnotationService {
 	 * @throws AnnotationNotFoundException if the annotation does not exist in the DB
 	 * @throws AnnotationHasReplyException if this annotation has already been replied to
 	 */
-	public abstract void deleteAnnotation(String annotationId, String clientToken)
+	 void deleteAnnotation(String annotationId, String clientToken)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, AnnotationHasReplyException;
 
 	/**
@@ -78,8 +71,7 @@ public interface IAnnotationService {
 	 * @return the annotation tree for the object
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract AnnotationTree findAnnotationsForObject(String objectUri)
-		throws AnnotationDatabaseException;
+	 AnnotationTree findAnnotationsForObject(String objectUri) throws AnnotationDatabaseException;
 
 	/**
 	 * Retrieves the number of annotations for the given object
@@ -87,8 +79,7 @@ public interface IAnnotationService {
 	 * @return the number of annotations for this object
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract long countAnnotationsForObject(String objectUri)
-		throws AnnotationDatabaseException; 
+	 long countAnnotationsForObject(String objectUri)throws AnnotationDatabaseException; 
 		
 	/**
 	 * Retrieves the annotations for the given user
@@ -96,8 +87,7 @@ public interface IAnnotationService {
 	 * @return the annotations
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract List<Annotation> findAnnotationsForUser(String username)
-		throws AnnotationDatabaseException;
+	 List<Annotation> findAnnotationsForUser(String username)	throws AnnotationDatabaseException;
 
 	/**
 	 * Retrieve an annotation by ID
@@ -106,19 +96,7 @@ public interface IAnnotationService {
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 * @throws AnnotationNotFoundException if the annotation was not found
 	 */
-	public abstract Annotation findAnnotationById(String annotationId)
-		throws AnnotationDatabaseException, AnnotationNotFoundException;
-	
-	/**
-	 * Retrieves the number of replies that exist for
-	 * the given annotation
-	 * @param annotationId the annotation ID
-	 * @return the number of replies
-	 * @throws AnnotationDatabaseException if anything goes wrong
-	 * @throws AnnotationNotFoundException if the annotation was not found
-	 */
-	public abstract long countReplies(String annotationId)
-		throws AnnotationDatabaseException;
+	 Annotation findAnnotationById(String annotationId)	throws AnnotationDatabaseException, AnnotationNotFoundException;
 	
 	/**
 	 * Retrieve the replies for the given annotation
@@ -127,8 +105,7 @@ public interface IAnnotationService {
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 * @throws AnnotationNotFoundException if the annotation was not found
 	 */
-	public abstract AnnotationTree getReplies(String annotationId)
-		throws AnnotationDatabaseException, AnnotationNotFoundException;
+	 AnnotationTree getReplies(String annotationId)	throws AnnotationDatabaseException, AnnotationNotFoundException;
 
 	/**
 	/**
@@ -138,8 +115,7 @@ public interface IAnnotationService {
 	 * @return the annotations (as a flat list)
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract List<Annotation> getMostRecent(int n, boolean publicOnly)
-		throws AnnotationDatabaseException;
+	 List<Annotation> getMostRecent(int n, boolean publicOnly)	throws AnnotationDatabaseException;
 
 	
 	/**
@@ -148,7 +124,6 @@ public interface IAnnotationService {
 	 * @return the list of matching annotations
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	public abstract List<Annotation> findAnnotations(String query) 
-		throws AnnotationDatabaseException;
+	 List<Annotation> findAnnotations(String query) throws AnnotationDatabaseException;
 	
 }

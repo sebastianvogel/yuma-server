@@ -6,6 +6,7 @@ import java.util.List;
 import at.ait.dme.yuma.server.controller.FormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
+import at.ait.dme.yuma.server.model.URISource;
 import at.ait.dme.yuma.server.util.URIBuilder;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -66,7 +67,7 @@ public abstract class RDFFormatHandler implements FormatHandler {
 	}
 	
 	private static String createAnnotationUri(String annotationId) {
-		return URIBuilder.toURI(annotationId).toString();
+		return URIBuilder.toURI(annotationId, URISource.ANNOTATION).toString();
 	}
 
 	protected abstract void addRDFResource(Annotation annotation, Model model);

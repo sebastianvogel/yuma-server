@@ -16,6 +16,7 @@ import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.model.URISource;
 import at.ait.dme.yuma.server.service.IAnnotationService;
 import at.ait.dme.yuma.server.util.URIBuilder;
 
@@ -59,7 +60,7 @@ public abstract class AbstractAnnotationController {
 		
 		String annotationId = annotationService.createAnnotation(format.parse(annotation), request.getRemoteUser());
 		log.info("created annotation with id=".concat(annotationId));
-		return Response.created(URIBuilder.toURI(annotationId)).entity(annotationId).build();
+		return Response.created(URIBuilder.toURI(annotationId, URISource.ANNOTATION)).entity(annotationId).build();
 	}
 	
 	/**
@@ -98,7 +99,8 @@ public abstract class AbstractAnnotationController {
 			throw new AnnotationDatabaseException(anfe);
 		}
 		log.info("updated annotation with id=".concat(annotationId));
-		return Response.ok().entity(annotationId.toString()).header("Location", URIBuilder.toURI(annotationId)).build(); 
+		return Response.ok().entity(annotationId.toString()).
+				header("Location", URIBuilder.toURI(annotationId, URISource.ANNOTATION)).build(); 
 	}
 	
 	/**

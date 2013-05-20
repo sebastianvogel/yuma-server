@@ -10,6 +10,7 @@ import at.ait.dme.yuma.server.controller.rdf.oac.serialize.BodyPropertiesAppende
 import at.ait.dme.yuma.server.controller.rdf.oac.serialize.ConstrainedTargetPropertiesAppender;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.model.URISource;
 import at.ait.dme.yuma.server.util.URIBuilder;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -79,7 +80,7 @@ public class OACFormatHandler extends RDFFormatHandler {
 	
 	private Resource createAnnotationResource(Resource body) {
 		Resource ret = model.createResource(
-			URIBuilder.toURI(annotation.getAnnotationID()).toString());
+			URIBuilder.toURI(annotation.getAnnotationID(), URISource.ANNOTATION).toString());
 		
 		addBasicProperties(ret, body);
 		new AnnotationPropertiesAppender(ret).appendProperties(annotation);
@@ -109,7 +110,7 @@ public class OACFormatHandler extends RDFFormatHandler {
 	private void addReplyTargets(Resource annotationResource) {
 		annotationResource.addProperty(
 			model.createProperty(NS_OAC, "hasTarget"),
-			URIBuilder.toURI(annotation.getParentId()).toString());
+			URIBuilder.toURI(annotation.getParentId(), URISource.ANNOTATION).toString());
 		
 		if (annotation.getFragment() != null) {
 			annotationResource.addProperty(

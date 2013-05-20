@@ -19,6 +19,7 @@ import at.ait.dme.yuma.server.gizmos.LanguageGuesser;
 import at.ait.dme.yuma.server.gui.feeds.UserPage;
 import at.ait.dme.yuma.server.gui.search.Search;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.model.URISource;
 import at.ait.dme.yuma.server.model.tag.SemanticTag;
 import at.ait.dme.yuma.server.util.URIBuilder;
 
@@ -109,7 +110,7 @@ public abstract class BaseAnnotationListPage extends WebPage {
 			item.add(new Label("scope", a.getScope().name()));
 			item.add(new TagListView("tags", a.getTags()));
 			
-			String uri = URIBuilder.toURI(a.getAnnotationID()).toString();
+			String uri = URIBuilder.toURI(a.getAnnotationID(), URISource.ANNOTATION).toString();
 			item.add(new ExternalLink("uri", uri, uri));
 			
 			item.add(new Label("lang", LanguageGuesser

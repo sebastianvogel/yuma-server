@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import at.ait.dme.yuma.server.db.IAnnotationDAO;
 import at.ait.dme.yuma.server.db.IAppClientDAO;
 import at.ait.dme.yuma.server.db.IUserDAO;
 import at.ait.dme.yuma.server.db.entities.AnnotationEntity;
@@ -47,6 +48,9 @@ public class JPAAnnotationService implements IAnnotationService {
 	
 	@Autowired
 	IAppClientDAO appClientDAO;
+	
+	@Autowired
+	IAnnotationDAO annotationDAO;
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor=AnnotationModifiedException.class)
@@ -114,8 +118,7 @@ public class JPAAnnotationService implements IAnnotationService {
 			throws AnnotationHasReplyException, AnnotationNotFoundException {
 
 		appClientDAO.getAppClient(appClientToken);
-		Long id = Long.parseLong(annotationId);
-		AnnotationEntity entity = em.find(AnnotationEntity.class, id);
+		AnnotationEntity entity = annotationDAO.findAnnotationByIdentifier(annotationId);
 		if (entity==null) {
 			throw new AnnotationNotFoundException();
 		}
@@ -135,7 +138,7 @@ public class JPAAnnotationService implements IAnnotationService {
 				em.createNamedQuery("annotationentity.find.for.object", AnnotationEntity.class);
 		query.setParameter("objectUri", objectUri);
 		List<AnnotationEntity> allAnnotations = query.getResultList();
-		return new AnnotationTree(toAnnotations(allAnnotations));
+		return new AnnotationTree(annotationDAO.toAnnotations(allAnnotations));
 	}
 
 	@Override
@@ -156,7 +159,7 @@ public class JPAAnnotationService implements IAnnotationService {
 				"annotationentity.find.for.user", AnnotationEntity.class);
 		query.setParameter("username", username);
 		List<AnnotationEntity> allAnnotations = query.getResultList();
-		return toAnnotations(allAnnotations);
+		return annotationDAO.toAnnotations(allAnnotations);
 	}	
 	
 	@Override
@@ -164,18 +167,22 @@ public class JPAAnnotationService implements IAnnotationService {
 	public Annotation findAnnotationById(String annotationId)
 			throws AnnotationDatabaseException, AnnotationNotFoundException {
 
-		Long id = Long.parseLong(annotationId);
-		AnnotationEntity entity = em.find(AnnotationEntity.class, id);
+		AnnotationEntity entity = annotationDAO.findAnnotationByIdentifier(annotationId);
 		if (entity == null) {
 			throw new AnnotationNotFoundException();
 		}
-			
 		return entity.toAnnotation();
 	}
 
-	@Override
+	/**
+	 * Retrieves the number of replies that exist for
+	 * the given annotation
+	 * @param annotationId the annotation ID
+	 * @return the number of replies
+	 * @throws AnnotationNotFoundException if the annotation was not found
+	 */
 	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
-	public long countReplies(String annotationId)
+	private long countReplies(String annotationId)
 			throws AnnotationDatabaseException {
 		
 		TypedQuery<Long> query = em.createNamedQuery("annotationentity.count.replies", Long.class);
@@ -204,7 +211,7 @@ public class JPAAnnotationService implements IAnnotationService {
 				em.createNamedQuery("annotationentity.find.thread", AnnotationEntity.class);
 		query.setParameter("rootId", Long.parseLong(rootId));
 		List<AnnotationEntity> thread = query.getResultList();		
-		return new AnnotationTree(toAnnotations(filterReplies(thread, annotationId)));
+		return new AnnotationTree(annotationDAO.toAnnotations(filterReplies(thread, annotationId)));
 	}
 
 	@Override
@@ -221,7 +228,7 @@ public class JPAAnnotationService implements IAnnotationService {
 		query.setMaxResults(n);
 			
 		List<AnnotationEntity> mostRecent = query.getResultList();
-		return toAnnotations(mostRecent);
+		return annotationDAO.toAnnotations(mostRecent);
 	}
 
 	@Override
@@ -246,7 +253,7 @@ public class JPAAnnotationService implements IAnnotationService {
 				}
 			}
 		});	
-		return toAnnotations(entities);
+		return annotationDAO.toAnnotations(entities);
 	}
 	
 	/**
@@ -270,13 +277,4 @@ public class JPAAnnotationService implements IAnnotationService {
 			}
 		}
 	}
-	
-	private List<Annotation> toAnnotations(List<AnnotationEntity> entities) throws AnnotationDatabaseException {
-		List<Annotation> annotations = new ArrayList<Annotation>();
-		for (AnnotationEntity entity : entities) {
-			annotations.add(entity.toAnnotation());
-		}
-		return annotations;
-	}
-
 }

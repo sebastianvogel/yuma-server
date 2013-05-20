@@ -14,7 +14,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import at.ait.dme.yuma.server.model.URISource;
 import at.ait.dme.yuma.server.model.User;
+import at.ait.dme.yuma.server.util.URIBuilder;
 
 @Entity
 @NamedQuery(name = "user.find",
@@ -32,9 +34,6 @@ public class UserEntity {
 	
 	@Column(name="gravatar_hash")
 	private String gravatarHash;
-	
-	@Column(name="uri")
-	private String uri;
 	
 	@ManyToOne
 	@JoinColumn(name="app_client_id")
@@ -54,7 +53,6 @@ public class UserEntity {
 	public UserEntity(User user) {
 		this.setUsername(user.getUsername());
 		this.setGravatarHash(user.getGravatarHash());
-		this.setUri(user.getUri());
 		setCreated(new Date());
 		setModified(new Date());
 	}
@@ -62,7 +60,7 @@ public class UserEntity {
 	public User toUser() {
 		User user = new User(username);
 		user.setGravatarHash(gravatarHash);
-		user.setUri(uri);
+		user.setUri(getUri());
 		return user;
 	}
 
@@ -82,12 +80,8 @@ public class UserEntity {
 		return gravatarHash;
 	}
 
-	public void setUri(String uri) {
-		this.uri = uri;
-	}
-
 	public String getUri() {
-		return uri;
+		return URIBuilder.toURI(this.id==null ? getUsername() : id.toString(), URISource.USER).toString();
 	}
 
 	public AppClientEntity getAppClient() {

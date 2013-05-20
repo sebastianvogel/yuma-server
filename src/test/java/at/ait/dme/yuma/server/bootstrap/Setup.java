@@ -1,13 +1,11 @@
 package at.ait.dme.yuma.server.bootstrap;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Properties;
-
-//import org.jboss.resteasy.plugins.server.tjws.TJWSEmbeddedJaxrsServer;
 
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
+//import org.jboss.resteasy.plugins.server.tjws.TJWSEmbeddedJaxrsServer;
 
 /**
  * The code in all of the test setup methods is the same
@@ -26,8 +24,7 @@ public class Setup {
 	/**
 	 * Property keys
 	 */
-	private static String SERVER_URL = "test.server.url";
-	private static String SUITE_URL = "test.suite.url";
+	private static String SERVER_URL = "https://some.server/";
 	private static String ADMIN_USER = "test.admin.user";
 	private static String ADMIN_PASSWORD = "test.admin.pass";
 	

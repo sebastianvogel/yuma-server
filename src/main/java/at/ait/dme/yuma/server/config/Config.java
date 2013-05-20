@@ -1,6 +1,7 @@
 package at.ait.dme.yuma.server.config;
 
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
+import at.ait.dme.yuma.server.service.IACLService;
 import at.ait.dme.yuma.server.service.IAnnotationService;
 
 /**
@@ -16,6 +17,7 @@ public class Config {
 	private String adminPassword;
 	
 	private IAnnotationService annotationService;
+	private IACLService aclService;
 	
 	private Config()  {}
 
@@ -55,6 +57,14 @@ public class Config {
 		return annotationService;
 	}
 	
+	public IACLService getAclService() {
+		return aclService;
+	}
+
+	public void setAclService(IACLService aclService) {
+		this.aclService = aclService;
+	}
+
 	private static class SingletonHolder { 
         public static final Config INSTANCE = new Config();
 	}

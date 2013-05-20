@@ -159,8 +159,9 @@ public class Annotation implements Serializable {
 			this.fragment = (String) map.get(MapKeys.ANNOTATION_FRAGMENT);
 			this.scope = (Scope) map.get(MapKeys.ANNOTATION_SCOPE);
 			this.tags = (ArrayList<SemanticTag>) map.get(MapKeys.ANNOTATION_SEMANTIC_TAGS);
-			if (this.tags == null)
+			if (this.tags == null) {
 				tags = new ArrayList<SemanticTag>();
+			}
 		} catch (Throwable t) {
 			throw new InvalidAnnotationException(t);
 		}		

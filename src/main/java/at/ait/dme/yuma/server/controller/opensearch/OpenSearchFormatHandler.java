@@ -23,6 +23,7 @@ import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.FormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
+import at.ait.dme.yuma.server.model.URISource;
 import at.ait.dme.yuma.server.util.URIBuilder;
 
 /**
@@ -108,7 +109,7 @@ public class OpenSearchFormatHandler implements FormatHandler {
 			body.setValue(text);
 			entry.setDescription(body);
 			
-			entry.setLink(URIBuilder.toURI(a.getAnnotationID()).toString());
+			entry.setLink(URIBuilder.toURI(a.getAnnotationID(), URISource.ANNOTATION).toString());
 			entries.add(entry);
 		}
 		feed.setEntries(entries);

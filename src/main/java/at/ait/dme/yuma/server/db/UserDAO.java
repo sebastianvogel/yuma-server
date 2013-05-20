@@ -56,24 +56,7 @@ public class UserDAO implements IUserDAO {
 		
 		UserEntity entity = new UserEntity(user);
 		entity.setAppClient(appClient);
-		entity.setUri(createURI(user, appClient));
 		em.persist(entity);
 		return entity;
-	}
-	
-	/**
-	 * TODO: refactor! (put into user)
-	 * @param user
-	 * @param appClient
-	 * @return
-	 */
-	private String createURI(User user, AppClientEntity appClient) {
-		String appPart;
-		if (appClient==null || appClient.getClientToken()==null) {
-			appPart = "";
-		} else {
-			appPart = appClient.getClientToken().concat("/");
-		}
-		return appPart.concat(user.getUsername());
 	}
 }

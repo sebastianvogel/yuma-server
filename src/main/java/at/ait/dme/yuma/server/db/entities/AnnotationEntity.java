@@ -155,11 +155,13 @@ public class AnnotationEntity implements Serializable {
 			scope
 		);
 
-		if (rootId != null)
+		if (rootId != null) {
 			a.setRootId(Long.toString(rootId));
+		}
 		
-		if (parentId != null)
+		if (parentId != null) {
 			a.setParentId(Long.toString(parentId));
+		}
 		
 		a.setTitle(title);
 		a.setText(text);
@@ -168,7 +170,6 @@ public class AnnotationEntity implements Serializable {
 		for (SemanticTagEntity t : tags) {
 			a.addTag(t.toSemanticTag());
 		}
-		
 		return a;
 	}
 	

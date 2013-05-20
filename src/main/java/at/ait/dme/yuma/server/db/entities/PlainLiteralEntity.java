@@ -75,5 +75,4 @@ public class PlainLiteralEntity implements Serializable {
 	public String getLang() {
 		return lang;
 	}
-
 }
