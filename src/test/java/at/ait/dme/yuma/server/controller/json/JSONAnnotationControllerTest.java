@@ -13,13 +13,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 
+import at.ait.dme.yuma.server.bootstrap.BaseTest;
 import at.ait.dme.yuma.server.bootstrap.Data;
-import at.ait.dme.yuma.server.bootstrap.Setup;
-import at.ait.dme.yuma.server.config.Config;
 
 /**
  * Tests for the AnnoteaAnnotationController
@@ -27,7 +24,7 @@ import at.ait.dme.yuma.server.config.Config;
  * @author Christian Sadilek
  * @author Rainer Simon
  */
-public class JSONAnnotationControllerTest {
+public class JSONAnnotationControllerTest extends BaseTest {
 	private static final String JSON_ANNOTATION_CONTROLLER_BASE_URL = 
 		"http://localhost:8080/yuma-server/api/annotation";
 
@@ -35,12 +32,6 @@ public class JSONAnnotationControllerTest {
 	private static final String LOCATION_HEADER = "Location";
 	private static final String CONTENT_TYPE_JSON = "application/json";
 	private static final String ENCODING = "UTF-8";
-	
-	@BeforeClass
-	public static void setUp() throws Exception {
-		Setup.buildConfiguration();
-		//Setup.startEmbeddedJaxrsServer(JSONAnnotationController.class);
-	}
 		
 	@Ignore
 	public void testCreateUpdateDeleteAnnotation() throws Exception {

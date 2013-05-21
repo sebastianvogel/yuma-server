@@ -8,13 +8,8 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import at.ait.dme.yuma.server.bootstrap.Setup;
-import at.ait.dme.yuma.server.config.Config;
 
 public class RSSAnnotationControllerTest {
 	
@@ -23,12 +18,6 @@ public class RSSAnnotationControllerTest {
 	
 	private static final String ACCEPT_HEADER = "Accept";
 	private static final String CONTENT_TYPE_RSS = "application/rss+xml";
-
-	@BeforeClass
-	public static void setUp() throws Exception {
-		Setup.buildConfiguration();
-		//Setup.startEmbeddedJaxrsServer(RSSAnnotationController.class);
-	}
 		
 	@Test
 	@Ignore

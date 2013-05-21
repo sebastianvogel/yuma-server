@@ -2,13 +2,30 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>yuma-server</groupId>
-	<artifactId>yuma-server</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>yumanji</artifactId>
+	<version>0.2-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Yuma Server</name>
 		
 	<build>
+		<resources>
+         <resource>
+            <filtering>false</filtering>
+            <directory>src/main/resources</directory>
+         </resource>
+         <resource>
+            <filtering>false</filtering>
+            <directory>src/main/java</directory>
+            <includes>
+               <include>**</include>
+            </includes>
+            <excludes>
+               <exclude>**/*.java</exclude>
+            </excludes>
+         </resource>
+      </resources>
 		<plugins>
+			<!-- 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -37,30 +54,13 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> 
-				<version>${maven.plugin.javadoc.version}</version> <executions> <execution> -->
-			<!-- aggregate the javadocs -->
-			<!-- <id>aggregate</id> <goals> <goal>aggregate</goal> </goals> <phase>site</phase> 
-				</execution> </executions> <configuration> -->
-			<!-- bootclasspath required by Sun's JVM <bootclasspath>${sun.boot.class.path}</bootclasspath> -->
-			<!-- General Javadoc settings <doctitle>${project.name}(${project.version})</doctitle> 
-				<show>private</show> -->
-			<!-- Apple's JVM sometimes requires more memory -->
-			<!-- <additionalJOption>-J-Xmx1024m</additionalJOption> -->
-
-			<!-- Styling -->
-			<!-- Stylesheet -->
-			<!-- <stylesheetfile>${basedir}/src/javadoc/stylesheet.css</stylesheetfile> 
-				<javadocDirectory>${basedir}/target/javadoc</javadocDirectory> <docfilessubdirs>true</docfilessubdirs> -->
-
-			<!-- true to include styling resources into generated site <docfilessubdirs>true</docfilessubdirs> 
-				</configuration> </plugin> -->
+			-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -86,130 +86,9 @@
 					</execution>
 				</executions>
 				<configuration>
-
 					<encoding>UTF-8</encoding>
 					<verbose>false</verbose>
 					<show>public</show>
-					<subpackages>com.pgi.rest</subpackages>
-
-					<doclet>com.sun.jersey.wadl.resourcedoc.ResourceDoclet</doclet>
-					<docletArtifacts>
-						<docletArtifact>
-							<groupId>com.sun.jersey.contribs</groupId>
-							<artifactId>wadl-resourcedoc-doclet</artifactId>
-							<version>${jersey-release-version}</version>
-						</docletArtifact>
-						<!-- Also specify jersey and xerces as doclet artifacts as the ResourceDoclet 
-							uses classes provided by them to generate the resourcedoc. -->
-						<docletArtifact>
-							<groupId>com.sun.jersey</groupId>
-							<artifactId>jersey-server</artifactId>
-							<version>${jersey-release-version}</version>
-						</docletArtifact>
-						<docletArtifact>
-							<groupId>xerces</groupId>
-							<artifactId>xercesImpl</artifactId>
-							<version>2.6.1</version>
-						</docletArtifact>
-					</docletArtifacts>
-					<additionalparam>-output
-						${project.build.outputDirectory}/resourcedoc.xml</additionalparam>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.sun.jersey.contribs</groupId>
-				<artifactId>maven-wadl-plugin</artifactId>
-				<version>${jersey-release-version}</version>
-				<executions>
-					<execution>
-						<id>generate</id>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<phase>${javadoc-phase}</phase>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>javax.servlet</groupId>
-						<artifactId>javax.servlet-api</artifactId>
-						<version>3.0.1</version>
-					</dependency>
-				</dependencies>
-				<configuration>
-					<wadlFile>${project.build.outputDirectory}/application.wadl</wadlFile>
-					<formatWadlFile>true</formatWadlFile>
-					<baseUri>http://hostname:8080/yuma-server/api</baseUri>
-					<packagesResourceConfig>
-						<param>at.ait.dme.yuma.server</param>
-					</packagesResourceConfig>
-					<wadlGenerators>
-						<wadlGeneratorDescription>
-							<className>com.sun.jersey.server.wadl.generators.WadlGeneratorApplicationDoc</className>
-							<properties>
-								<property>
-									<name>applicationDocsFile</name>
-									<value>${basedir}/src/main/doc/application-doc.xml</value>
-								</property>
-							</properties>
-						</wadlGeneratorDescription>
-						<wadlGeneratorDescription>
-							<className>com.sun.jersey.server.wadl.generators.WadlGeneratorGrammarsSupport</className>
-							<properties>
-								<property>
-									<name>grammarsFile</name>
-									<value>${basedir}/src/main/doc/application-grammars.xml</value>
-								</property>
-							</properties>
-						</wadlGeneratorDescription>
-						<wadlGeneratorDescription>
-							<className>com.sun.jersey.server.wadl.generators.resourcedoc.WadlGeneratorResourceDocSupport</className>
-							<properties>
-								<property>
-									<name>resourceDocFile</name>
-									<value>${project.build.outputDirectory}/resourcedoc.xml</value>
-								</property>
-							</properties>
-						</wadlGeneratorDescription>
-					</wadlGenerators>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>xml-maven-plugin</artifactId>
-				<version>1.0</version>
-				<executions>
-					<execution>
-						<phase>${javadoc-phase}</phase>
-						<goals>
-							<goal>transform</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<transformationSets>
-						<transformationSet>
-							<dir>${project.build.directory}/classes</dir>
-							<includes>
-								<include>**/application.wadl</include>
-							</includes>
-							<outputDir>target/generated-resources</outputDir>
-							<!-- <stylesheet>src/main/doc/wadl_documentation.xsl</stylesheet> -->
-							<stylesheet>src/main/doc/wadl.xsl</stylesheet>
-							<outputProperties>
-								<outputProperty>
-									<name>standalone</name>
-									<value>yes</value>
-								</outputProperty>
-							</outputProperties>
-							<fileMappers>
-								<fileMapper
-									implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
-									<targetExtension>.html</targetExtension>
-								</fileMapper>
-							</fileMappers>
-						</transformationSet>
-					</transformationSets>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -380,12 +259,12 @@
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
-			<version>1.4.14</version>
+			<version>${wicket.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-auth-roles</artifactId>
-			<version>1.4.14</version>
+			<version>${wicket.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -442,7 +321,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.4</version>
+			<version>4.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -476,9 +355,15 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>5.0.1.Final</version>
+			<version>4.2.0.Final</version>
 		</dependency>
 	</dependencies>
 
@@ -498,6 +383,7 @@
 		<javadoc-phase>site</javadoc-phase>
 		<jersey-release-version>1.17.1</jersey-release-version>
 		<spring.version>3.2.2.RELEASE</spring.version>
+		<wicket.version>1.4.14</wicket.version>
 	</properties>
 	<scm>
 		<url>https://github.com/sebastianvogel/yuma-server</url>

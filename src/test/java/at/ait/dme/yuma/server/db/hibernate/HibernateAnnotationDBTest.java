@@ -5,32 +5,25 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
+import at.ait.dme.yuma.server.bootstrap.BaseTest;
 import at.ait.dme.yuma.server.bootstrap.Data;
-import at.ait.dme.yuma.server.bootstrap.Setup;
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.service.JPAAnnotationService;
+import at.ait.dme.yuma.server.service.IAnnotationService;
 
-public class HibernateAnnotationDBTest {
+public class HibernateAnnotationDBTest extends BaseTest {
 
 	private static final String OBJ_URI = "http://dme.ait.ac.at/object/lissabon.jpg";
-	
-	@BeforeClass
-	public static void setUp() throws Exception {		
-		Setup.buildConfiguration();
-	}
 	
 	@Test
 	public void testHibernateCRUD() throws Exception {
 		JSONFormatHandler format = new JSONFormatHandler();
 		
-		JPAAnnotationService db = new JPAAnnotationService();
+		IAnnotationService db = Config.getInstance().getAnnotationService();
 		
 		// Create
 		Annotation before = format.parse(Data.ANNOTATION_JSON_ORIGINAL);
