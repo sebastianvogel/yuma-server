@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import at.ait.dme.yuma.server.db.entities.AnnotationEntity;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
-import at.ait.dme.yuma.server.model.URISource;
+import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.util.URIBuilder;
 
 @Repository
@@ -27,8 +27,13 @@ public class AnnotationDAO implements IAnnotationDAO {
 	private EntityManager em;
 
 	@Override
-	public AnnotationTree findAnnotationsForURI(URI objectUri) {
-		return findAnnotationsForURI(objectUri.toString());
+	public List<Annotation> findAnnotationsForURI(URI objectUri, MediaType type) {
+		TypedQuery<AnnotationEntity> query = 
+				em.createNamedQuery("annotationentity.find.for.object_and_type", AnnotationEntity.class);
+		query.setParameter("objectUri", objectUri.toString());
+		query.setParameter("type", type);
+		List<AnnotationEntity> entities = query.getResultList();
+		return toAnnotations(entities);
 	}
 	
 	@Override

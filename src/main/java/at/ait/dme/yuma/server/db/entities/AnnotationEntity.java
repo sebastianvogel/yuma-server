@@ -40,6 +40,9 @@ import at.ait.dme.yuma.server.model.tag.SemanticTag;
 	@NamedQuery(name = "annotationentity.find.for.object",
 			query = "from AnnotationEntity a where a.objectUri = :objectUri"),
 			
+	@NamedQuery(name = "annotationentity.find.for.object_and_type",
+			query = "from AnnotationEntity a where a.objectUri = :objectUri and a.type= :type"),
+			
 	@NamedQuery(name = "annotationentity.find.for.user",
 			query = "from AnnotationEntity a where a.createdBy.username = :username"),
 			

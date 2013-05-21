@@ -1,8 +1,9 @@
 package at.ait.dme.yuma.server.service;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.core.UriBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import at.ait.dme.yuma.server.db.entities.UserEntity;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.ACL;
 import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationTree;
+import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.model.URISource;
 import at.ait.dme.yuma.server.util.URIBuilder;
 
@@ -60,11 +61,12 @@ public class JPAACLService implements IACLService {
 
 	@Override
 	public Annotation findACLByObjectId(String identifier, URISource source) throws AnnotationNotFoundException {
-		AnnotationTree tree = annotationDAO.findAnnotationsForURI(URIBuilder.toURI(identifier, source));
-		if (tree == null) {
+		//TODO: pass REALTIVE URI !!!
+		List<Annotation> list = annotationDAO.findAnnotationsForURI(URIBuilder.toURI(identifier, source), MediaType.ACL);
+		if (list == null || list.isEmpty()) {
 			throw new AnnotationNotFoundException();
 		}
-		return tree.asFlatList().get(0);
+		return list.get(0);
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package at.ait.dme.yuma.server.model;
 
 public enum MediaType { 
 	
-	IMAGE, MAP, VIDEO, AUDIO, PDF;
+	IMAGE, MAP, VIDEO, AUDIO, PDF, ACL;
 
 	public String getScreenName() {
 		String first = this.name().substring(0, 1);

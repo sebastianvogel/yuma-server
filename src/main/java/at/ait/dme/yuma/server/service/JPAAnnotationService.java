@@ -134,11 +134,7 @@ public class JPAAnnotationService implements IAnnotationService {
 	@Override
 	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
 	public AnnotationTree findAnnotationsForObject(String objectUri) throws AnnotationDatabaseException {
-		TypedQuery<AnnotationEntity> query = 
-				em.createNamedQuery("annotationentity.find.for.object", AnnotationEntity.class);
-		query.setParameter("objectUri", objectUri);
-		List<AnnotationEntity> allAnnotations = query.getResultList();
-		return new AnnotationTree(annotationDAO.toAnnotations(allAnnotations));
+		return annotationDAO.findAnnotationsForURI(objectUri);
 	}
 
 	@Override
