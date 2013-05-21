@@ -2,6 +2,7 @@ package at.ait.dme.yuma.server.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -174,7 +175,12 @@ public abstract class AbstractAnnotationController {
 	protected Response getMostRecent(int n, FormatHandler format) 
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		String mostRecent = format.serialize(annotationService.getMostRecent(n, true));
+		List<Annotation> list = annotationService.getMostRecent(n, true);
+		if (list==null) {
+			return Response.noContent().build();
+		}
+		
+		String mostRecent = format.serialize(list);
 		return Response.ok().entity(mostRecent).build();
 	}
 				

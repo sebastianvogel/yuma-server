@@ -35,8 +35,12 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	private static final String USER_FEED_URL = SERVER_BASEURL + "user/";
 	
 	private static final String REPLY_FEED_TITLE = "Replies to ";
-	private static final String REPLY_FEED_DESCRIPTION = "Replies to annotation ";	
+	private static final String REPLY_FEED_DESCRIPTION = "Replies to annotation ";
 	private static final String REPLY_FEED_URL = SERVER_BASEURL + "replies/";
+	
+	public RSSAnnotationController() {
+		super.setAnnotationService(Config.getInstance().getAnnotationService());
+	}
 	
 	/**
 	 * Returns a feed with the most recent public annotations in the system.
