@@ -20,9 +20,6 @@ public class MediaEntity implements Serializable {
 	@GeneratedValue
 	private Long id;
 	
-	@Column(name="uri")
-	private String URI;
-	
 	@Column(name="created_date")
 	private Date createdDate;
 	
@@ -47,14 +44,7 @@ public class MediaEntity implements Serializable {
 
 	public MediaEntity() {
 		super();
-	}   
-	public String getURI() {
-		return this.URI;
-	}
-
-	public void setURI(String URI) {
-		this.URI = URI;
-	}   
+	}  
 	public Date getCreatedDate() {
 		return this.createdDate;
 	}
