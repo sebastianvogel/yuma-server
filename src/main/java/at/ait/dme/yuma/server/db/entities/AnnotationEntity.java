@@ -26,6 +26,7 @@ import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.model.Scope;
 import at.ait.dme.yuma.server.model.tag.SemanticTag;
+import at.ait.dme.yuma.server.util.URIBuilder;
 
 /**
  * A JPA database entity wrapper for an annotation object.
@@ -201,7 +202,11 @@ public class AnnotationEntity implements Serializable {
 	}
 
 	public void setObjectUri(String objectUri) {
-		this.objectUri = objectUri;
+		if (URIBuilder.isLocal(objectUri)) {
+			this.objectUri = URIBuilder.toRelativeLocalURI(objectUri);	
+		} else {
+			this.objectUri = objectUri;
+		}
 	}
 
 	public String getObjectUri() {

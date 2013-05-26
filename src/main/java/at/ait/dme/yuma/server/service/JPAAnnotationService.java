@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import at.ait.dme.yuma.server.controller.AuthContext;
 import at.ait.dme.yuma.server.db.IAnnotationDAO;
 import at.ait.dme.yuma.server.db.IAppClientDAO;
 import at.ait.dme.yuma.server.db.IUserDAO;
@@ -30,6 +31,7 @@ import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.exception.PermissionDeniedException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
+import at.ait.dme.yuma.server.model.User;
 
 /**
  * DB implementation for relational databases using the
@@ -58,7 +60,8 @@ public class JPAAnnotationService implements IAnnotationService {
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor=AnnotationModifiedException.class)
-	public String createAnnotation(Annotation annotation, String appClientToken) throws AnnotationModifiedException {
+	public String createAnnotation(Annotation annotation,  AuthContext auth) 
+			throws AnnotationModifiedException, PermissionDeniedException {
 
 		// in case of a reply we have to ensure that the parent is unchanged
 		AnnotationEntity entity = new AnnotationEntity(annotation);
@@ -83,7 +86,7 @@ public class JPAAnnotationService implements IAnnotationService {
 		}
 		
 		//check if appClient exists:
-		AppClientEntity appClient = appClientDAO.getAppClient(appClientToken);
+		AppClientEntity appClient = appClientDAO.getAppClient(auth.getClient());
 		
 		//check if user exists:
 		UserEntity user = userDAO.findUser(annotation.getCreatedBy(), appClient);
@@ -91,6 +94,11 @@ public class JPAAnnotationService implements IAnnotationService {
 			user = userDAO.createUser(annotation.getCreatedBy(), appClient);
 		}
 		entity.setCreatedBy(user);
+		
+		//check if user has right to create annotations:
+		if (!checkService.hasRightToCreateAnnotation(auth, annotation)) {
+			throw new PermissionDeniedException();
+		}
 
 		em.persist(entity);
 		return Long.toString(entity.getAnnotationId());
@@ -99,19 +107,19 @@ public class JPAAnnotationService implements IAnnotationService {
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW, 
 		rollbackFor={AnnotationHasReplyException.class, AnnotationNotFoundException.class, PermissionDeniedException.class})
-	public String updateAnnotation(String annotationId, Annotation annotation, String client) 
+	public String updateAnnotation(String annotationId, Annotation annotation, AuthContext auth) 
 			throws AnnotationHasReplyException, AnnotationNotFoundException, PermissionDeniedException {
 	
 		AnnotationEntity entity = new AnnotationEntity(annotation);
 		
 		//check appClient:
-		AppClientEntity appClient = appClientDAO.getAppClient(client);
+		AppClientEntity appClient = appClientDAO.getAppClient(auth.getClient());
 		
 		//find user:
 		UserEntity user = userDAO.findUser(annotation.getCreatedBy(), appClient);
 		entity.setCreatedBy(user);
 		
-		deleteAnnotation(annotationId, client, user.getUsername());
+		deleteAnnotation(annotationId, auth);
 		em.persist(entity);			
 		return Long.toString(entity.getAnnotationId());
 	}
@@ -119,17 +127,26 @@ public class JPAAnnotationService implements IAnnotationService {
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, 
 		rollbackFor={AnnotationHasReplyException.class, AnnotationNotFoundException.class, PermissionDeniedException.class})
-	public void deleteAnnotation(String annotationId, String client, String username) 
+	public void deleteAnnotation(String annotationId, AuthContext auth) 
 			throws AnnotationHasReplyException, AnnotationNotFoundException, PermissionDeniedException {
+		
+		if (auth.getClient()==null || auth.getUsername()==null) {
+			throw new PermissionDeniedException();
+		}
 
-		appClientDAO.getAppClient(client);
+		AppClientEntity appClient = appClientDAO.getAppClient(auth.getClient()); //check if client exists
+		if (appClient==null) {
+			throw new PermissionDeniedException();
+		}
+		
 		AnnotationEntity entity = annotationDAO.findAnnotationByIdentifier(annotationId);
 		if (entity==null) {
 			throw new AnnotationNotFoundException();
 		}
 		
-		//check if given username is listed as owner:
-		if (!entity.getCreatedBy().getUsername().equals(username)) {
+		//check if the user given by AuthContext is listed as owner:
+		User owner = entity.getCreatedBy().toUser();
+		if (!auth.equals(owner.getAuthContext())) {
 			throw new PermissionDeniedException();
 		}
 		
@@ -144,9 +161,9 @@ public class JPAAnnotationService implements IAnnotationService {
 
 	@Override
 	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
-	public AnnotationTree findAnnotationsForObject(String objectUri, String client, String username) {
+	public AnnotationTree findAnnotationsForObject(String objectUri, AuthContext auth) {
 		List<AnnotationEntity> annotations = annotationDAO.findAnnotationsForURI(objectUri);
-		return new AnnotationTree(checkPermission(username, annotations));
+		return new AnnotationTree(checkPermission(auth, annotations));
 	}
 
 	@Override
@@ -161,13 +178,13 @@ public class JPAAnnotationService implements IAnnotationService {
 
 	@Override
 	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
-	public List<Annotation> findAnnotationsForUser(String username) throws AnnotationDatabaseException {
+	public List<Annotation> findAnnotationsForUser(String username, AuthContext auth) throws AnnotationDatabaseException {
 
 		TypedQuery<AnnotationEntity> query = em.createNamedQuery(
 				"annotationentity.find.for.user", AnnotationEntity.class);
 		query.setParameter("username", username);
 		List<AnnotationEntity> annotations = query.getResultList();
-		return checkPermission(username, annotations);
+		return checkPermission(auth, annotations);
 	}	
 	
 	@Override
@@ -175,7 +192,7 @@ public class JPAAnnotationService implements IAnnotationService {
 			readOnly=true,
 			propagation=Propagation.SUPPORTS, 
 			rollbackFor= {AnnotationNotFoundException.class, PermissionDeniedException.class})
-	public Annotation findAnnotationById(String annotationId, String client, String username)
+	public Annotation findAnnotationById(String annotationId, AuthContext auth)
 			throws AnnotationNotFoundException, PermissionDeniedException {
 
 		AnnotationEntity entity = annotationDAO.findAnnotationByIdentifier(annotationId);
@@ -184,7 +201,7 @@ public class JPAAnnotationService implements IAnnotationService {
 		}
 		
 		Annotation annotation = entity.toAnnotation();
-		if (checkService.hasReadPermission(username, annotation)) {
+		if (checkService.hasReadPermission(auth, annotation)) {
 			return annotation;
 		} else {
 			throw new PermissionDeniedException();
@@ -209,10 +226,10 @@ public class JPAAnnotationService implements IAnnotationService {
 
 	@Override
 	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
-	public AnnotationTree getReplies(String annotationId)
+	public AnnotationTree getReplies(String annotationId, AuthContext auth)
 			throws AnnotationDatabaseException, AnnotationNotFoundException, PermissionDeniedException {
 
-		Annotation a = findAnnotationById(annotationId, null, null);
+		Annotation a = findAnnotationById(annotationId, null);
 		if (a==null) {
 			throw new AnnotationNotFoundException();
 		}
@@ -229,12 +246,12 @@ public class JPAAnnotationService implements IAnnotationService {
 		query.setParameter("rootId", Long.parseLong(rootId));
 		List<AnnotationEntity> annotations = query.getResultList();
 		List<AnnotationEntity> filtered = filterReplies(annotations, annotationId);
-		return new AnnotationTree(checkPermission(null, filtered));
+		return new AnnotationTree(checkPermission(auth, filtered));
 	}
 
 	@Override
 	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
-	public List<Annotation> getMostRecent(int n, boolean publicOnly)
+	public List<Annotation> getMostRecent(int n, boolean publicOnly, AuthContext auth)
 			throws AnnotationDatabaseException {
 		
 		TypedQuery<AnnotationEntity> query;
@@ -246,12 +263,12 @@ public class JPAAnnotationService implements IAnnotationService {
 		query.setMaxResults(n);
 			
 		List<AnnotationEntity> mostRecent = query.getResultList();
-		return checkPermission(null, mostRecent);
+		return checkPermission(auth, mostRecent);
 	}
 
 	@Override
 	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
-	public List<Annotation> findAnnotations(String q)
+	public List<Annotation> findAnnotations(String q, AuthContext auth)
 			throws AnnotationDatabaseException {
 		
 		TypedQuery<AnnotationEntity> query = 
@@ -271,21 +288,22 @@ public class JPAAnnotationService implements IAnnotationService {
 				}
 			}
 		});	
-		return checkPermission(null, entities);
+		return checkPermission(auth, entities);
 	}
 	
 	/**
 	 * check permissions for each annotation in list, 
 	 * only return annotations for which the given user has read permissions
+	 * @param client
 	 * @param username
 	 * @param annotations
 	 * @return
 	 */
-	private List<Annotation> checkPermission(String username, List<AnnotationEntity> annotations) {
+	private List<Annotation> checkPermission(AuthContext auth, List<AnnotationEntity> annotations) {
 		List<Annotation> ret = new ArrayList<Annotation>();
 		for (AnnotationEntity entity : annotations) {
 			Annotation a = entity.toAnnotation();
-			if (checkService.hasReadPermission(username, a)) {
+			if (checkService.hasReadPermission(auth, a)) {
 				ret.add(a);
 			}
 		}

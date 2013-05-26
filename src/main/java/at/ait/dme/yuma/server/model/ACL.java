@@ -4,12 +4,11 @@ import java.net.URI;
 import java.util.List;
 
 import at.ait.dme.yuma.server.model.tag.SemanticTag;
-import at.ait.dme.yuma.server.util.URIBuilder;
-
 
 public class ACL {
 	public static final String TYPE_VALUE = "ACL";
-	public static final String VALUE_READ = "READ";
+	public static enum VALUES { READ, WRITE }
+	public static final String CATCHALL = "*";
 	
 	private Annotation annotation;
 	
@@ -21,21 +20,51 @@ public class ACL {
 		return annotation;
 	}
 	
-	public boolean hasWritePermission(String user) {
+	public boolean hasReadPermission(URI userURI) {
 		List<SemanticTag> tags = annotation.getTags();
-		URI userURI = URIBuilder.toURI(user, URISource.USER, true);
 		for (SemanticTag tag : tags) {
-			if (!TYPE_VALUE.equals(tag.getType())) {
+			if (!isACL(tag)) {
 				continue;
 			}
+			if (isCatchAll(tag) && isRead(tag)) {
+				return true;								
+			}
 			if (userURI.equals(tag.getURI())) {
-				return VALUE_READ.equals(tag.getPrimaryLabel());
+				return isRead(tag);
 			}
 		}
 		return false;
 	}
 	
-	public boolean hasReadPermission(String user) {
-		return true;
+	public boolean hasWritePermission(URI userURI) {
+		List<SemanticTag> tags = annotation.getTags();
+		for (SemanticTag tag : tags) {
+			if (!isACL(tag)) {
+				continue;
+			}
+			if (isCatchAll(tag) && isWrite(tag)) {
+				return true;								
+			}
+			if (userURI.equals(tag.getURI())) {
+				return isWrite(tag);
+			}
+		}
+		return false;
+	}
+	
+	public boolean isACL(SemanticTag tag) {
+		return TYPE_VALUE.equals(tag.getType());
+	}
+	
+	public boolean isCatchAll(SemanticTag tag) {
+		return CATCHALL.equals(tag.getURI());
+	}
+	
+	private boolean isWrite(SemanticTag tag) {
+		return VALUES.WRITE.toString().equals(tag.getPrimaryLabel());				
+	}
+	
+	private boolean isRead(SemanticTag tag) {
+		return VALUES.READ.toString().equals(tag.getPrimaryLabel());				
 	}
 }

@@ -9,7 +9,7 @@ import at.ait.dme.yuma.server.model.URISource;
 
 public interface IACLService {
 	
-	String createACL(URI uri, String clientToken, String username);
+	ACL createACL(String targetIdentifier, URISource targetUriSource);
 	String updateACL(String identifier, Annotation acl, String clientToken);
 	ACL findACLByObjectId(String identifier, URISource source) throws AnnotationNotFoundException;
 	ACL findACLById(String identifier) throws AnnotationNotFoundException;

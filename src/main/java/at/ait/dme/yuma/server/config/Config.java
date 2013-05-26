@@ -4,6 +4,7 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.model.Scope;
 import at.ait.dme.yuma.server.service.IACLService;
 import at.ait.dme.yuma.server.service.IAnnotationService;
+import at.ait.dme.yuma.server.service.IGroupService;
 
 /**
  * Configuration settings for the annotation server.
@@ -21,6 +22,7 @@ public class Config {
 	
 	private IAnnotationService annotationService;
 	private IACLService aclService;
+	private IGroupService groupService;
 	
 	private Scope scopePolicy;
 	
@@ -65,9 +67,17 @@ public class Config {
 	public IACLService getAclService() {
 		return aclService;
 	}
+	
+	public IGroupService getGroupService() {
+		return groupService;
+	}
 
 	public void setAclService(IACLService aclService) {
 		this.aclService = aclService;
+	}
+	
+	public void setGroupService(IGroupService groupService) {
+		this.groupService = groupService;
 	}
 
 	public Scope getScopePolicy() {

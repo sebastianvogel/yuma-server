@@ -4,23 +4,27 @@ import static org.junit.Assert.assertEquals;
 
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import at.ait.dme.yuma.server.bootstrap.BaseTest;
 import at.ait.dme.yuma.server.bootstrap.Data;
 import at.ait.dme.yuma.server.config.Config;
+import at.ait.dme.yuma.server.controller.AuthContext;
 import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
 import at.ait.dme.yuma.server.controller.rdf.oac.OACFormatHandler;
 import at.ait.dme.yuma.server.model.Annotation;
 
 public class OACFormatHandlerTest extends BaseTest {
 	
-	@BeforeClass
-	public static void setUp() throws Exception {		
+	private AuthContext auth;
+	
+	@Before
+	public void setUp() throws Exception {		
 		XMLUnit.setNormalizeWhitespace(true);
 		XMLUnit.setNormalize(true);
+		auth = new AuthContext("test", "test");
 	}
 
 	@Test
@@ -90,10 +94,10 @@ public class OACFormatHandlerTest extends BaseTest {
 	
 	private String getParentAnnotationId() throws Exception {		
 		Annotation root = new JSONFormatHandler().parse(Data.ROOT_JSON);
-		return Config.getInstance().getAnnotationService().createAnnotation(root, "test");
+		return Config.getInstance().getAnnotationService().createAnnotation(root, auth);
 	}
 
 	private void cleanUp(String annotationId) throws Exception {
-		Config.getInstance().getAnnotationService().deleteAnnotation(annotationId, "test", "test");
+		Config.getInstance().getAnnotationService().deleteAnnotation(annotationId, auth);
 	}
 }

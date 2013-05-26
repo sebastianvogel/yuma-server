@@ -37,12 +37,12 @@ public class RepliesPage extends BaseAnnotationListPage {
 	
 	private Annotation getParentAnnotation(String id) throws AnnotationNotFoundException, PermissionDeniedException {
 		IAnnotationService annotationService = Config.getInstance().getAnnotationService();
-		return annotationService.findAnnotationById(id, null, null);
+		return annotationService.findAnnotationById(id, null);
 	}
 	
 	private List<Annotation> getReplies(String id) throws AnnotationNotFoundException, PermissionDeniedException {
 		IAnnotationService annotationService = Config.getInstance().getAnnotationService();
-		return annotationService.getReplies(id).asFlatList();
+		return annotationService.getReplies(id, null).asFlatList();
 	}
 
 }

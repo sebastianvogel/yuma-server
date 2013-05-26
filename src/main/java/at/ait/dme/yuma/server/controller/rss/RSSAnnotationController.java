@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 
 import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.AbstractAnnotationController;
+import at.ait.dme.yuma.server.controller.AuthContext;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.exception.PermissionDeniedException;
@@ -120,7 +121,7 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 				UnsupportedEncodingException, PermissionDeniedException {
 
 		IAnnotationService annotationService = Config.getInstance().getAnnotationService();
-		Annotation parent = annotationService.findAnnotationById(URLDecoder.decode(id, URL_ENCODING), getClient(), getUsername());
+		Annotation parent = annotationService.findAnnotationById(URLDecoder.decode(id, URL_ENCODING), new AuthContext(request));
 
 		return super.getReplies(id, new RSSFormatHandler(
 				REPLY_FEED_TITLE + "'" + parent.getTitle() + "'",

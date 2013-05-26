@@ -42,7 +42,7 @@ public class AnnotationController extends AbstractAnnotationController {
 	@PUT
 	@Consumes("application/json")
 	public Response createAnnotation(String annotation)
-		throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationModifiedException {
+		throws InvalidAnnotationException, AnnotationModifiedException, PermissionDeniedException {
 		
 		return super.createAnnotation(annotation, new JSONFormatHandler());
 	}

@@ -10,4 +10,5 @@ public interface IAnnotationDAO {
 	AnnotationEntity findAnnotationByIdentifier(String identifier);
 	List<AnnotationEntity> findAnnotationsForURI(String URI);
 	List<AnnotationEntity> findAnnotationsForURI(URI objectUri, MediaType type);
+	void persist(AnnotationEntity ae);
 }

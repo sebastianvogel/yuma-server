@@ -68,10 +68,20 @@ public class ACLController {
 	@GET
 	@Path("annotation/{id}")
 	public Response getACLForAnnotation(@PathParam("id") String identifier) 
-			throws AnnotationNotFoundException, UnsupportedEncodingException {
+			throws UnsupportedEncodingException {
 		
-		ACL acl = aclService.findACLByObjectId(
-				URLDecoder.decode(identifier, URL_ENCODING), URISource.ANNOTATION);
+		ACL acl = null;
+		try {
+			acl = aclService.findACLByObjectId(
+					URLDecoder.decode(identifier, URL_ENCODING), URISource.ANNOTATION);
+		} catch (AnnotationNotFoundException e) {
+			acl = aclService.createACL(identifier, URISource.ANNOTATION);
+		}
+		
+		if (acl==null) {
+			return Response.serverError().build();
+		}
+		
 		String annotation = format.serialize(acl.toAnnotation());
 		return Response.ok(annotation).build();	
 	}
@@ -79,11 +89,21 @@ public class ACLController {
 	@GET
 	@Path("media/{id}")
 	public Response getACLForMedia(@PathParam("id") String identifier) 
-			throws AnnotationNotFoundException, UnsupportedEncodingException {
+			throws UnsupportedEncodingException {
 		
 		JSONFormatHandler format = new JSONFormatHandler();
-		ACL acl = aclService.findACLByObjectId(
+		ACL acl = null;
+		try {
+			aclService.findACLByObjectId(
 				URLDecoder.decode(identifier, URL_ENCODING), URISource.MEDIA);
+		} catch (AnnotationNotFoundException e) {
+			acl = aclService.createACL(identifier, URISource.ANNOTATION);
+		}
+		
+		if (acl==null) {
+			return Response.serverError().build();
+		}
+		
 		String annotation = format.serialize(acl.toAnnotation());
 		return Response.ok(annotation).build();		
 	}

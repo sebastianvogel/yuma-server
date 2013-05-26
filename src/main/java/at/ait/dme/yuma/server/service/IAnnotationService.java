@@ -2,11 +2,11 @@ package at.ait.dme.yuma.server.service;
 
 import java.util.List;
 
+import at.ait.dme.yuma.server.controller.AuthContext;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
-import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.exception.PermissionDeniedException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
@@ -37,44 +37,46 @@ public interface IAnnotationService {
 	/**
 	 * Create a new annotation
 	 * @param annotation the annotation
+	 * @param auth
 	 * @return the ID of the new annotation
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 * @throws AnnotationModifiedException if the parent annotation was modified in the mean time
 	 */
-	 String createAnnotation(Annotation annotation, String client) 
-			throws AnnotationDatabaseException, AnnotationModifiedException, InvalidAnnotationException;
+	 String createAnnotation(Annotation annotation, AuthContext auth) 
+			throws AnnotationModifiedException, PermissionDeniedException;
 
 	/**
 	 * Update an annotation
 	 * @param annotationId the ID of the annotation
 	 * @param annotation the annotation
+	 * @param auth
 	 * @return the (new) annotation ID after the update (may change depending on DB implementation!)
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 * @throws AnnotationNotFoundException if there is no annotation with the given ID
 	 * @throws AnnotationHasReplyException if this annotation has already been replied to
 	 */
-	 String updateAnnotation(String annotationId, Annotation annotation, String client)
+	 String updateAnnotation(String annotationId, Annotation annotation, AuthContext auth)
 		throws AnnotationHasReplyException, AnnotationNotFoundException, PermissionDeniedException;
 
 	/**
 	 * Delete an annotation
 	 * @param annotationId the annotation ID
+	 * @param auth
 	 * @throws AnnotationDatabaseException  if anything goes wrong
 	 * @throws AnnotationNotFoundException if the annotation does not exist in the DB
 	 * @throws AnnotationHasReplyException if this annotation has already been replied to
 	 */
-	 void deleteAnnotation(String annotationId, String client, String username)
+	 void deleteAnnotation(String annotationId, AuthContext auth)
 		throws AnnotationNotFoundException, AnnotationHasReplyException, PermissionDeniedException;
 
 	/**
 	 * Returns all annotations for a given object
 	 * @param objectUri the object URI
-	 * @param client
-	 * @param username
+	 * @param auth
 	 * @return the annotation tree for the object
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	 AnnotationTree findAnnotationsForObject(String objectUri, String client, String username) throws AnnotationDatabaseException;
+	 AnnotationTree findAnnotationsForObject(String objectUri, AuthContext auth) throws AnnotationDatabaseException;
 
 	/**
 	 * Retrieves the number of annotations for the given object
@@ -87,19 +89,21 @@ public interface IAnnotationService {
 	/**
 	 * Retrieves the annotations for the given user
 	 * @param username the user name
+	 * @param auth
 	 * @return the annotations
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	 List<Annotation> findAnnotationsForUser(String username)	throws AnnotationDatabaseException;
+	 List<Annotation> findAnnotationsForUser(String username, AuthContext auth)	throws AnnotationDatabaseException;
 
 	/**
 	 * Retrieve an annotation by ID
 	 * @param annotationId the annotation ID
+	 * @param auth
 	 * @return the annotation
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 * @throws AnnotationNotFoundException if the annotation was not found
 	 */
-	 Annotation findAnnotationById(String annotationId, String client, String username) 
+	 Annotation findAnnotationById(String annotationId, AuthContext auth) 
 			 throws AnnotationNotFoundException, PermissionDeniedException;
 	
 	/**
@@ -109,7 +113,7 @@ public interface IAnnotationService {
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 * @throws AnnotationNotFoundException if the annotation was not found
 	 */
-	 AnnotationTree getReplies(String annotationId)	throws AnnotationNotFoundException, PermissionDeniedException;
+	 AnnotationTree getReplies(String annotationId, AuthContext auth) throws AnnotationNotFoundException, PermissionDeniedException;
 
 	/**
 	/**
@@ -119,7 +123,7 @@ public interface IAnnotationService {
 	 * @return the annotations (as a flat list)
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	 List<Annotation> getMostRecent(int n, boolean publicOnly)	throws AnnotationDatabaseException;
+	 List<Annotation> getMostRecent(int n, boolean publicOnly, AuthContext auth)	throws AnnotationDatabaseException;
 
 	
 	/**
@@ -128,6 +132,6 @@ public interface IAnnotationService {
 	 * @return the list of matching annotations
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
-	 List<Annotation> findAnnotations(String query) throws AnnotationDatabaseException;
+	 List<Annotation> findAnnotations(String query, AuthContext auth) throws AnnotationDatabaseException;
 	
 }

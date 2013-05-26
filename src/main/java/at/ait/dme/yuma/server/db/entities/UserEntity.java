@@ -61,6 +61,9 @@ public class UserEntity {
 		User user = new User(username);
 		user.setGravatarHash(gravatarHash);
 		user.setUri(getUri());
+		if (appClient!=null && appClient.getClientToken()!=null) {
+			user.setClient(appClient.getClientToken());
+		}
 		return user;
 	}
 

@@ -31,7 +31,7 @@ public class TimelinePage extends BaseAnnotationListPage {
     
 	private List<Annotation> getMostRecent(int n) {
 		IAnnotationService annotationService = Config.getInstance().getAnnotationService();
-		List<Annotation> mostRecent = annotationService.getMostRecent(n, true);		
+		List<Annotation> mostRecent = annotationService.getMostRecent(n, true, null);		
 		return mostRecent;
 	}
 

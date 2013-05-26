@@ -40,7 +40,7 @@ public class UserPage extends BaseAnnotationListPage {
 	private List<Annotation> getAnnotationsByUser(String username) {
 		List<Annotation> annotations = new ArrayList<Annotation>();
 		IAnnotationService annotationService = Config.getInstance().getAnnotationService();
-		annotations = annotationService.findAnnotationsForUser(username);	
+		annotations = annotationService.findAnnotationsForUser(username, null);
 		return annotations;
 	}
 

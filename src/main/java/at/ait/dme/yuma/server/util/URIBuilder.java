@@ -47,6 +47,15 @@ public class URIBuilder {
 		return uri.substring(uri.lastIndexOf("/") + 1);
 	}
 	
+	/**
+	 * convert given absolute local uri to relative uri
+	 * @param uri
+	 * @return
+	 */
+	public static String toRelativeLocalURI(String uri) {
+		return uri.replace(Config.getInstance().getServerBaseUrl(), "/");
+	}
+	
 	/** 
 	 * check if given URI is a local (=application generated) URI
 	 * @param uri
@@ -54,5 +63,23 @@ public class URIBuilder {
 	 */
 	public static boolean isLocal(String uri) {
 		return uri.startsWith(Config.getInstance().getServerBaseUrl());
+	}
+	
+	/**
+	 * check if give uri is relative (starts with a slash)
+	 * @param uri
+	 * @return
+	 */
+	public static boolean isRelative(String uri) {
+		return uri.startsWith("/");
+	}
+	
+	/**
+	 * check is given uri is a public internet absolut uri
+	 * @param uri
+	 * @return
+	 */
+	public static boolean isPublic(String uri) {
+		return !isRelative(uri) && !isLocal(uri);
 	}
 }

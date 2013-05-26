@@ -32,6 +32,14 @@ public class AnnotationDAO implements IAnnotationDAO {
 		return query.getResultList();
 	}
 	
+	/**
+	 * persist an AnnotationEntity
+	 * @param entity
+	 */
+	public void persist(AnnotationEntity entity) {
+		em.persist(entity);
+	}
+	
 	@Override
 	public List<AnnotationEntity> findAnnotationsForURI(String objectUri) {
 		if (objectUri==null) {
