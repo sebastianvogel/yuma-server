@@ -13,6 +13,7 @@ import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.AbstractAnnotationController;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
+import at.ait.dme.yuma.server.exception.PermissionDeniedException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.service.IAnnotationService;
 
@@ -109,15 +110,17 @@ public class RSSAnnotationController extends AbstractAnnotationController {
 	 * @throws AnnotationDatabaseException if anything goes wrong with the DB
 	 * @throws AnnotationNotFoundException if the specified annotation does not exist
 	 * @throws UnsupportedEncodingException in case of encoding problem
+	 * @throws PermissionDeniedException 
 	 */
 	@GET
 	@Produces("application/rss+xml")
 	@Path("replies/{id}")
 	public Response getAnnotationFeed(@PathParam("id") String id) 
-		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+			throws AnnotationDatabaseException, AnnotationNotFoundException, 
+				UnsupportedEncodingException, PermissionDeniedException {
 
 		IAnnotationService annotationService = Config.getInstance().getAnnotationService();
-		Annotation parent = annotationService.findAnnotationById(URLDecoder.decode(id, URL_ENCODING));
+		Annotation parent = annotationService.findAnnotationById(URLDecoder.decode(id, URL_ENCODING), getClient(), getUsername());
 
 		return super.getReplies(id, new RSSFormatHandler(
 				REPLY_FEED_TITLE + "'" + parent.getTitle() + "'",

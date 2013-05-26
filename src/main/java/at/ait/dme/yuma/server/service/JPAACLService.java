@@ -1,5 +1,6 @@
 package at.ait.dme.yuma.server.service;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -12,8 +13,6 @@ import at.ait.dme.yuma.server.db.IAnnotationDAO;
 import at.ait.dme.yuma.server.db.IAppClientDAO;
 import at.ait.dme.yuma.server.db.IUserDAO;
 import at.ait.dme.yuma.server.db.entities.AnnotationEntity;
-import at.ait.dme.yuma.server.db.entities.AppClientEntity;
-import at.ait.dme.yuma.server.db.entities.UserEntity;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.ACL;
 import at.ait.dme.yuma.server.model.Annotation;
@@ -36,21 +35,11 @@ public class JPAACLService implements IACLService {
 	@Autowired
 	IAnnotationDAO annotationDAO;
 
+
 	@Override
-	public String createACL(ACL acl, String appClientToken) {
-		AnnotationEntity entity = new AnnotationEntity(acl);
-		//check if appClient exists:
-		AppClientEntity appClient = appClientDAO.getAppClient(appClientToken);
-				
-		//check if user exists:
-		UserEntity user = userDAO.findUser(acl.getCreatedBy(), appClient);
-		if (user==null) {
-			user = userDAO.createUser(acl.getCreatedBy(), appClient);
-		}
-		entity.setCreatedBy(user);
-		
-		em.persist(entity);
-		return Long.toString(entity.getAnnotationId());
+	public String createACL(URI uri, String clientToken, String username) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@Override
@@ -60,22 +49,30 @@ public class JPAACLService implements IACLService {
 	}
 
 	@Override
-	public Annotation findACLByObjectId(String identifier, URISource source) throws AnnotationNotFoundException {
-		//TODO: pass REALTIVE URI !!!
-		List<Annotation> list = annotationDAO.findAnnotationsForURI(URIBuilder.toURI(identifier, source), MediaType.ACL);
+	public ACL findACLByObjectId(String identifier, URISource source) throws AnnotationNotFoundException {
+		List<AnnotationEntity> list = annotationDAO.findAnnotationsForURI(URIBuilder.toURI(identifier, source, true), MediaType.ACL);
 		if (list == null || list.isEmpty()) {
 			throw new AnnotationNotFoundException();
 		}
-		return list.get(0);
+		return new ACL(list.get(0).toAnnotation());
+	}
+	
+	@Override
+	public ACL findACLByObjectURI(URI uri) throws AnnotationNotFoundException {
+		List<AnnotationEntity> list = annotationDAO.findAnnotationsForURI(uri, MediaType.ACL);
+		if (list == null || list.isEmpty()) {
+			throw new AnnotationNotFoundException();
+		}
+		return new ACL(list.get(0).toAnnotation());
 	}
 
 	@Override
-	public Annotation findACLById(String identifier)
+	public ACL findACLById(String identifier)
 			throws AnnotationNotFoundException {
 		AnnotationEntity entity = annotationDAO.findAnnotationByIdentifier(identifier);
 		if (entity == null) {
 			throw new AnnotationNotFoundException();
 		}
-		return entity.toAnnotation();
+		return new ACL(entity.toAnnotation());
 	}
 }

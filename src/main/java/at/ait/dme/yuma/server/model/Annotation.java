@@ -1,6 +1,7 @@
 package at.ait.dme.yuma.server.model;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,13 +10,14 @@ import java.util.Map;
 
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.model.tag.SemanticTag;
+import at.ait.dme.yuma.server.util.URIBuilder;
 
 /**
  * The annotation.
  * 
  * @author Rainer Simon
  */
-public class Annotation implements Serializable {
+public class Annotation implements Serializable, IOwnable {
 
 	private static final long serialVersionUID = 2827802498657195873L;
 
@@ -359,6 +361,11 @@ public class Annotation implements Serializable {
 			return a == null;
 		
 		return a.equals(b);
+	}
+
+	@Override
+	public URI getURI(boolean relative) {
+		return URIBuilder.toURI(getAnnotationID(), URISource.ANNOTATION, relative);
 	}
 	
 }

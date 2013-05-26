@@ -3,11 +3,9 @@ package at.ait.dme.yuma.server.gui.feeds;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
 
 import at.ait.dme.yuma.server.config.Config;
-import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.gui.BaseAnnotationListPage;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.service.IAnnotationService;
@@ -22,7 +20,7 @@ import at.ait.dme.yuma.server.service.IAnnotationService;
  */
 public class UserPage extends BaseAnnotationListPage {
 
-	private Logger logger = Logger.getLogger(UserPage.class);
+	//private Logger logger = Logger.getLogger(UserPage.class);
 	
 	public static final String PARAM_USERNAME = "username";
 	

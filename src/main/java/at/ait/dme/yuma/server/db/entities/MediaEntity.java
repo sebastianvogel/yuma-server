@@ -1,6 +1,7 @@
 package at.ait.dme.yuma.server.db.entities;
 
 import at.ait.dme.yuma.server.db.entities.UserEntity;
+import at.ait.dme.yuma.server.model.Scope;
 
 import java.io.Serializable;
 import java.lang.String;
@@ -35,6 +36,9 @@ public class MediaEntity implements Serializable {
 	
 	@Column(name="mime_type")
 	private String mimeType;
+	
+	@Enumerated(EnumType.STRING)
+	private Scope scope;
 	
 	@Lob
 	private byte[] media;

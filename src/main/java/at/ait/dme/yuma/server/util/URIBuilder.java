@@ -16,12 +16,16 @@ public class URIBuilder {
 	private static final String ERROR = "Could not build URI for ";
 	private static final String API_PATH = "api/";
 	
-	public static URI toURI(String identifier, URISource source) {
+	public static URI toURI(String identifier, URISource source, boolean relative) {
 		StringBuilder sb = new StringBuilder();
 		String base = Config.getInstance().getServerBaseUrl();
-		sb.append(base);
-		if (!base.endsWith("/")) {
+		if (relative) {
 			sb.append("/");
+		} else {
+			sb.append(base);
+			if (!base.endsWith("/")) {
+				sb.append("/");
+			}
 		}
 		sb.append(API_PATH);
 		if (source!=null) {

@@ -17,7 +17,7 @@ public class Data {
 		  "\"scope\" : \"public\" , "+
 		  "\"last-modified\" : 1224043200000 ,"+
 		  "\"created\" : 1224043200000 , "+
-		  "\"created-by\" :  { \"user-name\" : \"rsimon\" } , " +
+		  "\"created-by\" :  { \"user-name\" : \"test\" } , " +
 		  "\"fragment\" : \"" +
 			"<svg:svg xmlns:svg=\\\"http://www.w3.org/2000/svg\\\" width=\\\"640px\\\" height=\\\"480px\\\" viewbox=\\\"0px 0px 640px 480px\\\"> " +
 			  "<svg:defs xmlns:svg=\\\"http://www.w3.org/2000/svg\\\"> " +
@@ -47,7 +47,7 @@ public class Data {
 		  "\"scope\" : \"public\" , "+
 		  "\"last-modified\" : 1224043200000 ,"+
 		  "\"created\" : 1224043200000 , "+
-		  "\"created-by\" :  { \"user-name\" : \"rsimon\" } , " +
+		  "\"created-by\" :  { \"user-name\" : \"test\" } , " +
 		  "\"fragment\" : \"" +
 			"<svg:svg xmlns:svg=\\\"http://www.w3.org/2000/svg\\\" width=\\\"640px\\\" height=\\\"480px\\\" viewbox=\\\"0px 0px 640px 480px\\\"> " +
 			  "<svg:defs xmlns:svg=\\\"http://www.w3.org/2000/svg\\\"> " +
@@ -81,7 +81,7 @@ public class Data {
 		"<dc:title>Ponte 25 de Abril</dc:title> " +
 		"<j.2:created>Wed Oct 15 06:00:00 CEST 2008</j.2:created> " +
 		"<j.2:modified>Wed Oct 15 06:00:00 CEST 2008</j.2:modified> " +
-		"<dc:creator>rsimon</dc:creator> " +
+		"<dc:creator>test</dc:creator> " +
 		"<oac:hasBody rdf:nodeID=\"A0\"/> " +
 		"<oac:hasTarget rdf:nodeID=\"A1\"/> " +
 		"<rdf:type rdf:resource=\"http://www.openannotation.org/ns/Annotation\"/> " +
@@ -119,7 +119,7 @@ public class Data {
 		  "\"scope\" : \"public\" , "+
 		  "\"last-modified\" : 1224043200000 ,"+
 		  "\"created\" : 1224043200000 , "+
-		  "\"created-by\" :  { \"user-name\" : \"rsimon\" } , " +
+		  "\"created-by\" :  { \"user-name\" : \"test\" } , " +
 		  "\"media-type\" : \"image\" , "+
 		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\", " +
 		  "\"tags\" : [ " +
@@ -140,7 +140,7 @@ public class Data {
 		"<dc:title>Ponte 25 de Abril</dc:title> " +
 		"<j.1:created>Wed Oct 15 06:00:00 CEST 2008</j.1:created> " +
 		"<j.1:modified>Wed Oct 15 06:00:00 CEST 2008</j.1:modified> " +
-		"<dc:creator>rsimon</dc:creator> " +
+		"<dc:creator>test</dc:creator> " +
 		"<oac:hasBody rdf:resource=\"http://localhost:8081/yuma-server/api/annotation/null#body\"/> " +
 		"<oac:hasTarget rdf:resource=\"http://dme.ait.ac.at/object/lissabon.jpg\"/> " +
 		"<rdf:type rdf:resource=\"http://www.openannotation.org/ns/Annotation\"/> " +
@@ -164,7 +164,7 @@ public class Data {
 		  "\"scope\" : \"public\" , "+
 		  "\"last-modified\" : 1224043200000 ," +
 		  "\"created\" : 1224043200000 , " +
-		  "\"created-by\" :  { \"user-name\" : \"rsimon\" } , " +
+		  "\"created-by\" :  { \"user-name\" : \"test\" } , " +
 		  "\"media-type\" : \"image\" , " +
 		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\"" +
 		"}";
@@ -177,7 +177,7 @@ public class Data {
 		  "\"scope\" : \"public\" , "+
 		  "\"last-modified\" : 1224043200000 ," +
 		  "\"created\" : 1224043200000 , " +
-		  "\"created-by\" :  { \"user-name\" : \"rsimon\" } , " +
+		  "\"created-by\" :  { \"user-name\" : \"test\" } , " +
 		  "\"media-type\" : \"image\" , " +
 		  "\"object-uri\" : \"http://dme.ait.ac.at/object/lissabon.jpg\"" +
 		"}";
@@ -190,7 +190,7 @@ public class Data {
 		  "\"scope\" : \"public\" , "+
 		  "\"last-modified\" : 1224043200000 ," +
 		  "\"created\" : 1224043200000 , " +
-		  "\"created-by\" :  { \"user-name\" : \"rsimon\" } , " +
+		  "\"created-by\" :  { \"user-name\" : \"test\" } , " +
 		  "\"fragment\" : \"" +
 			"<svg:svg xmlns:svg=\\\"http://www.w3.org/2000/svg\\\" width=\\\"640px\\\" height=\\\"480px\\\" viewbox=\\\"0px 0px 640px 480px\\\"> " +
 			  "<svg:defs xmlns:svg=\\\"http://www.w3.org/2000/svg\\\"> " +
@@ -221,7 +221,7 @@ public class Data {
 		    "\"scope\":\"PUBLIC\", "+
 		    "\"last-modified\":1300881749638, "+
 		    "\"created-by\":{ "+
-		    	"\"user-name\":\"guest\" "+
+		    	"\"user-name\":\"test\" "+
 		    "}, "+
 		    "\"media-type\":\"MAP\", "+
 		    "\"object-uri\":\"http://dme.ait.ac.at/samples/maps/oenb/AC04248667.tif\", "+
@@ -246,7 +246,7 @@ public class Data {
 				"<dc:title>A Pelagios Test Annotation</dc:title> "+
 			    "<j.0:created>Wed Mar 23 13:02:29 CET 2011</j.0:created> "+
 			    "<j.0:modified>Wed Mar 23 13:02:29 CET 2011</j.0:modified> "+
-				"<dc:creator>guest</dc:creator> "+
+				"<dc:creator>test</dc:creator> "+
 				"<oac:hasBody rdf:resource=\"http://pleiades.stoa.org/places/991339\"/> "+
 				"<oac:hasTarget rdf:resource=\"http://dme.ait.ac.at/samples/maps/oenb/AC04248667.tif\"/> "+
 				"<rdf:type rdf:resource=\"http://www.openannotation.org/ns/Annotation\"/> "+

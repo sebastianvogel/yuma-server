@@ -20,6 +20,7 @@ import at.ait.dme.yuma.server.controller.json.JSONFormatHandler;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
+import at.ait.dme.yuma.server.model.ACL;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.URISource;
 import at.ait.dme.yuma.server.service.IACLService;
@@ -61,7 +62,7 @@ public class ACLController {
 		}
 		log.info("updated annotation with id=".concat(identifier));
 		return Response.ok().entity(identifier.toString()).
-				header("Location", URIBuilder.toURI(identifier, URISource.ANNOTATION)).build(); 	
+				header("Location", URIBuilder.toURI(identifier, URISource.ANNOTATION, false)).build(); 	
 	}
 	
 	@GET
@@ -69,8 +70,9 @@ public class ACLController {
 	public Response getACLForAnnotation(@PathParam("id") String identifier) 
 			throws AnnotationNotFoundException, UnsupportedEncodingException {
 		
-		String annotation = format.serialize(aclService.findACLByObjectId(
-				URLDecoder.decode(identifier, URL_ENCODING), URISource.ANNOTATION));
+		ACL acl = aclService.findACLByObjectId(
+				URLDecoder.decode(identifier, URL_ENCODING), URISource.ANNOTATION);
+		String annotation = format.serialize(acl.toAnnotation());
 		return Response.ok(annotation).build();	
 	}
 	
@@ -80,8 +82,9 @@ public class ACLController {
 			throws AnnotationNotFoundException, UnsupportedEncodingException {
 		
 		JSONFormatHandler format = new JSONFormatHandler();
-		String annotation = format.serialize(aclService.findACLByObjectId(
-				URLDecoder.decode(identifier, URL_ENCODING), URISource.MEDIA));
+		ACL acl = aclService.findACLByObjectId(
+				URLDecoder.decode(identifier, URL_ENCODING), URISource.MEDIA);
+		String annotation = format.serialize(acl.toAnnotation());
 		return Response.ok(annotation).build();		
 	}
 }

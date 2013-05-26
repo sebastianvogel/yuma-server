@@ -67,7 +67,7 @@ public abstract class RDFFormatHandler implements FormatHandler {
 	}
 	
 	private static String createAnnotationUri(String annotationId) {
-		return URIBuilder.toURI(annotationId, URISource.ANNOTATION).toString();
+		return URIBuilder.toURI(annotationId, URISource.ANNOTATION, false).toString();
 	}
 
 	protected abstract void addRDFResource(Annotation annotation, Model model);

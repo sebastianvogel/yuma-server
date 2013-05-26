@@ -32,7 +32,7 @@ public class HibernateAnnotationDBTest extends BaseTest {
 		System.out.println("Created: " + id);
 		
 		// Read
-		Annotation annotation = db.findAnnotationById(id);
+		Annotation annotation = db.findAnnotationById(id, "test", "test");
 		System.out.println(format.serialize(annotation));
 		
 		// Update
@@ -46,7 +46,7 @@ public class HibernateAnnotationDBTest extends BaseTest {
 		
 		// Try delete root annotation
 		try {
-			db.deleteAnnotation(id, "test");
+			db.deleteAnnotation(id, "test", "test");
 			
 			fail("Annotation has reply - delete should fail!");
 		} catch (AnnotationHasReplyException e) {
@@ -56,8 +56,8 @@ public class HibernateAnnotationDBTest extends BaseTest {
 		long count = db.countAnnotationsForObject(OBJ_URI);
 		
 		// Delete
-		db.deleteAnnotation(replyId, "test");
-		db.deleteAnnotation(id, "test");
+		db.deleteAnnotation(replyId, "test", "test");
+		db.deleteAnnotation(id, "test", "test");
 		
 		assertEquals(count - 2, db.countAnnotationsForObject(OBJ_URI));
 		

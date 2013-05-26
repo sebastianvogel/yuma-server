@@ -23,6 +23,7 @@ import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
+import at.ait.dme.yuma.server.exception.PermissionDeniedException;
 
 /**
  * The primary annotation controller which consumes and
@@ -49,16 +50,17 @@ public class AnnotationController extends AbstractAnnotationController {
 	@POST
 	@Consumes("application/json")
 	@Path("{id}")
-	public Response updateAnnotation(@PathParam("id") String id, String annotation) 
-			throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationHasReplyException, UnsupportedEncodingException {
-		
+	public Response updateAnnotation(@PathParam("id") String id, String annotation)
+			throws UnsupportedEncodingException, InvalidAnnotationException,
+			AnnotationHasReplyException, AnnotationNotFoundException, PermissionDeniedException {
 		return super.updateAnnotation(id, annotation, new JSONFormatHandler());
 	}
 	
 	@DELETE
 	@Path("{id}")
 	public Response deleteAnnotation(@PathParam("id") String id) 
-			throws AnnotationDatabaseException, AnnotationHasReplyException, UnsupportedEncodingException, AnnotationNotFoundException {
+			throws UnsupportedEncodingException, AnnotationNotFoundException, 
+				AnnotationHasReplyException, PermissionDeniedException  {
 		
 		return super.deleteAnnotation(id);
 	}

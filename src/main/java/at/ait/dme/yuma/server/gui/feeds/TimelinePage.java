@@ -2,7 +2,6 @@ package at.ait.dme.yuma.server.gui.feeds;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
 
 import at.ait.dme.yuma.server.config.Config;
@@ -17,7 +16,7 @@ import at.ait.dme.yuma.server.service.IAnnotationService;
  */
 public class TimelinePage extends BaseAnnotationListPage {
 	
-	private Logger logger = Logger.getLogger(TimelinePage.class);
+	//private Logger logger = Logger.getLogger(TimelinePage.class);
 	
 	private static final String TITLE = "YUMA Annotation Server - Public Timeline";
 	private static final String HEADLINE = "public timeline";

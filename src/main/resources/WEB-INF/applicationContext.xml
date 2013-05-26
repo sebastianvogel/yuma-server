@@ -35,5 +35,6 @@
    		<property name="serverBaseUrl" value="http://service.tequnix.org/yumanji/"/>
    		<property name="adminUsername" value="admin"/>
    		<property name="adminPassword" value="admin"/>
+   		<property name="scopePolicyPublic"  value="true"/>
    </bean>
 </beans>

@@ -81,7 +81,7 @@ public class UserEntity {
 	}
 
 	public String getUri() {
-		return URIBuilder.toURI(this.id==null ? getUsername() : id.toString(), URISource.USER).toString();
+		return URIBuilder.toURI(this.id==null ? getUsername() : id.toString(), URISource.USER, false).toString();
 	}
 
 	public AppClientEntity getAppClient() {
