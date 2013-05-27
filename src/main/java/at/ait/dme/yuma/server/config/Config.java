@@ -3,6 +3,7 @@ package at.ait.dme.yuma.server.config;
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.service.IACLService;
 import at.ait.dme.yuma.server.service.IAnnotationService;
+import at.ait.dme.yuma.server.service.IMediaObjectService;
 
 /**
  * Configuration settings for the annotation server.
@@ -18,6 +19,7 @@ public class Config {
 	
 	private IAnnotationService annotationService;
 	private IACLService aclService;
+	private IMediaObjectService mediaObjectService;
 	
 	private Config()  {}
 
@@ -64,6 +66,21 @@ public class Config {
 	public void setAclService(IACLService aclService) {
 		this.aclService = aclService;
 	}
+	
+	/**
+	 * @return the mediaObjectService
+	 */
+	public IMediaObjectService getMediaObjectService() {
+		return mediaObjectService;
+	}
+
+	/**
+	 * @param mediaObjectService the mediaObjectService to set
+	 */
+	public void setMediaObjectService(IMediaObjectService mediaObjectService) {
+		this.mediaObjectService = mediaObjectService;
+	}
+
 
 	private static class SingletonHolder { 
         public static final Config INSTANCE = new Config();

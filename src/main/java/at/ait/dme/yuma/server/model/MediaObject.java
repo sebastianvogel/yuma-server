@@ -3,52 +3,91 @@ package at.ait.dme.yuma.server.model;
 import java.io.Serializable;
 import java.util.Date;
 
-
-import at.ait.dme.yuma.server.db.entities.MediaObjectEntity;
-
 public class MediaObject implements Serializable {
 
 
 	private static final long serialVersionUID = 1375364283188282660L;
+	
+	private String URI = null;
+	
+	private Date createdDate = null;
+	
+	private User createdBy = null;
+	
+	private String previousVersionUri = null;
+	
+	private String mimeType = null;
+	
+	private byte[] content = null;
 
-	private Long id;
+	public MediaObject(String uRI) {
+		this.URI = uRI;
+	}
 	
-	private String URI;
-	
-	private Date createdDate;
-	
-	private User createdBy;
-	
-	private MediaObjectEntity previousVersion;
-	
-	private String mimeType;
-	
-	private byte[] media;
-
-	public MediaObject(Long id, String uRI, Date createdDate, User createdBy,
-			MediaObjectEntity previousVersion, String mimeType, byte[] media) {
+	public MediaObject(String uRI, User createdBy, String mimeType, byte[] content) {
 		super();
-		this.id = id;
-		URI = uRI;
-		this.createdDate = createdDate;
+		this.URI = uRI;
 		this.createdBy = createdBy;
-		this.previousVersion = previousVersion;
 		this.mimeType = mimeType;
-		this.media = media;
+		this.content = content;
+	}
+	
+	/**
+	 * @return the content
+	 */
+	public byte[] getContent() {
+		return content;
 	}
 
 	/**
-	 * @return the previousVersion
+	 * @return the uRI
 	 */
-	public MediaObjectEntity getPreviousVersion() {
-		return previousVersion;
+	public String getURI() {
+		return URI;
 	}
 
 	/**
-	 * @param previousVersion the previousVersion to set
+	 * @return the createdDate
 	 */
-	public void setPreviousVersion(MediaObjectEntity previousVersion) {
-		this.previousVersion = previousVersion;
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+	
+
+	/**
+	 * @param createdDate the createdDate to set
+	 */
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	/**
+	 * @return the createdBy
+	 */
+	public User getCreatedBy() {
+		return createdBy;
+	}
+
+
+	/**
+	 * @param createdBy the user to set
+	 */
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	/**
+	 * @return the URI of the previousVersion
+	 */
+	public String getPreviousVersionUri() {
+		return previousVersionUri;
+	}
+
+	/**
+	 * @param previousVersion the URI of the previousVersion to set
+	 */
+	public void setPreviousVersionUri(String previousVersionUri) {
+		this.previousVersionUri = previousVersionUri;
 	}
 
 	/**
@@ -57,28 +96,4 @@ public class MediaObject implements Serializable {
 	public String getMimeType() {
 		return mimeType;
 	}
-
-	/**
-	 * @param mimeType the mimeType to set
-	 */
-	public void setMimeType(String mimeType) {
-		this.mimeType = mimeType;
-	}
-
-	/**
-	 * @return the media
-	 */
-	public byte[] getMedia() {
-		return media;
-	}
-
-	/**
-	 * @param media the media to set
-	 */
-	public void setMedia(byte[] media) {
-		this.media = media;
-	}
-	
-	
-
 }

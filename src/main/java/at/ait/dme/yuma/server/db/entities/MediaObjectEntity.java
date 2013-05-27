@@ -1,23 +1,39 @@
 package at.ait.dme.yuma.server.db.entities;
 
 import at.ait.dme.yuma.server.db.entities.UserEntity;
+import at.ait.dme.yuma.server.model.MediaObject;
+
 import java.io.Serializable;
 import java.lang.String;
 import java.util.Date;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
- * Entity implementation class for Entity: Media
+ * Entity implementation class for Entity: MediaObject
  *
  */
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "media.findByUri",
+		query = "select m from MediaObjectEntity m where m.URI = :uri"),
+	@NamedQuery(name = "media.findForUser",
+		query = "select m from MediaObjectEntity m where m.createdBy = :user")
+})
 @Table(name="media", uniqueConstraints=@UniqueConstraint(columnNames={"uri"}))
 public class MediaObjectEntity implements Serializable {
 	
-	@Id
-	@GeneratedValue
-	private Long id;
-	
+	@Id	
 	@Column(name="uri")
 	private String URI;
 	
@@ -36,13 +52,17 @@ public class MediaObjectEntity implements Serializable {
 	private String mimeType;
 	
 	@Lob
-	private byte[] media;
+	private byte[] content;
 	
 	private static final long serialVersionUID = 1L;
 
-	public MediaObjectEntity() {
-		super();
-	}   
+	public MediaObjectEntity(MediaObject mediaObject) {
+		this.setURI(mediaObject.getURI());
+		this.setContent(mediaObject.getContent());
+		this.setMimeType(mediaObject.getMimeType());
+		this.setCreatedDate(new Date());
+	}
+	
 	public String getURI() {
 		return this.URI;
 	}
@@ -80,10 +100,23 @@ public class MediaObjectEntity implements Serializable {
 	}
 	
 	public void setContent(byte[] blob) {
-		this.media = blob;
+		this.content = blob;
 	}
 	
 	public byte[] getContent() {
-		return media;
+		return content;
+	}
+	
+	public MediaObject toMediaObject() {
+		MediaObject m = new MediaObject(
+				this.getURI(),
+				this.getCreatedBy().toUser(), 
+				this.getMimeType(),
+				this.getContent());
+		m.setCreatedDate(this.getCreatedDate());
+		if(this.getPreviousVersion() != null) {
+			m.setPreviousVersionUri(this.getPreviousVersion().getURI());
+		}
+		return m;
 	}
 }

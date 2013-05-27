@@ -10,7 +10,7 @@
     	<class>at.ait.dme.yuma.server.db.entities.UserEntity</class>
     	<class>at.ait.dme.yuma.server.db.entities.SemanticTagEntity</class>
     	<class>at.ait.dme.yuma.server.db.entities.PlainLiteralEntity</class>
-    	<class>at.ait.dme.yuma.server.db.entities.MediaEntity</class>
+    	<class>at.ait.dme.yuma.server.db.entities.MediaObjectEntity</class>
     	<class>at.ait.dme.yuma.server.db.entities.AppClientEntity</class>
     	<class>at.ait.dme.yuma.server.db.entities.GroupEntity</class>
     	<exclude-unlisted-classes>true</exclude-unlisted-classes>
