@@ -109,7 +109,7 @@ public class OpenSearchFormatHandler implements FormatHandler {
 			body.setValue(text);
 			entry.setDescription(body);
 			
-			entry.setLink(URIBuilder.toURI(a.getAnnotationID(), URISource.ANNOTATION).toString());
+			entry.setLink(URIBuilder.toURI(a.getAnnotationID(), URISource.ANNOTATION, false).toString());
 			entries.add(entry);
 		}
 		feed.setEntries(entries);

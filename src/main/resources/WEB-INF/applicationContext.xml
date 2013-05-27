@@ -29,6 +29,7 @@
    <bean id="annotationService" class="at.ait.dme.yuma.server.service.JPAAnnotationService"/>
    <bean id="aclService" 		class="at.ait.dme.yuma.server.service.JPAACLService" />
    <bean id="mediaObjectService" class="at.ait.dme.yuma.server.service.JPAMediaObjectService" />
+   <bean id="groupService" 		class="at.ait.dme.yuma.server.service.JPAGroupService" />
    
    <bean id="config" class="at.ait.dme.yuma.server.config.Config" factory-method="getInstance">
    		<property name="annotationService" ref="annotationService" />
@@ -37,5 +38,6 @@
    		<property name="serverBaseUrl" value="http://service.tequnix.org/yumanji/"/>
    		<property name="adminUsername" value="admin"/>
    		<property name="adminPassword" value="admin"/>
+   		<property name="scopePolicyPublic"  value="true"/>
    </bean>
 </beans>

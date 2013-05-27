@@ -45,7 +45,7 @@ public class ObjectPage extends BaseAnnotationListPage {
 	
 	private List<Annotation> getAnnotationsForObject(String objectId) {
 		IAnnotationService annotationService = Config.getInstance().getAnnotationService();
-		return annotationService.findAnnotationsForObject(objectId).asFlatList();
+		return annotationService.findAnnotationsForObject(objectId, null).asFlatList();
 	}
 
 }

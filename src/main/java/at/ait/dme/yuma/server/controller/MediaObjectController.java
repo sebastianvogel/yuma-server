@@ -53,7 +53,7 @@ public class MediaObjectController {
 		MediaObject mediaObject = new MediaObject(username + "/" + hash, user, mimeType, content);
 		String uri = mediaObjectService.createMediaObject(mediaObject, request.getRemoteUser());
 		return Response.ok().entity(uri.toString()).
-				header("Location", URIBuilder.toURI(uri, URISource.MEDIA)).build();
+				header("Location", URIBuilder.toURI(uri, URISource.MEDIA, false)).build();
 	}
 	@GET
 	@Path("{username}/{hash}")

@@ -46,7 +46,7 @@ public class Results extends BaseAnnotationListPage {
     
 	private List<Annotation> findAnnotations(String query) throws AnnotationDatabaseException {
 		IAnnotationService annotationService = Config.getInstance().getAnnotationService();
-		return annotationService.findAnnotations(query);
+		return annotationService.findAnnotations(query, null);
 	}
 
 }

@@ -1,9 +1,11 @@
 package at.ait.dme.yuma.server.config;
 
 import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
+import at.ait.dme.yuma.server.model.Scope;
 import at.ait.dme.yuma.server.service.IACLService;
 import at.ait.dme.yuma.server.service.IAnnotationService;
 import at.ait.dme.yuma.server.service.IMediaObjectService;
+import at.ait.dme.yuma.server.service.IGroupService;
 
 /**
  * Configuration settings for the annotation server.
@@ -12,6 +14,8 @@ import at.ait.dme.yuma.server.service.IMediaObjectService;
  */
 public class Config {
 	//private static Logger logger = Logger.getLogger(Config.class);
+	
+	public static final String HeaderCheckReadPermissionsFor = "CheckPermissionsFor";
 
 	private String serverBaseUrl;
 	private String adminUsername;
@@ -20,6 +24,9 @@ public class Config {
 	private IAnnotationService annotationService;
 	private IACLService aclService;
 	private IMediaObjectService mediaObjectService;
+	private IGroupService groupService;
+
+	private Scope scopePolicy;
 	
 	private Config()  {}
 
@@ -62,11 +69,16 @@ public class Config {
 	public IACLService getAclService() {
 		return aclService;
 	}
+	
+	public IGroupService getGroupService() {
+		return groupService;
+	}
 
 	public void setAclService(IACLService aclService) {
 		this.aclService = aclService;
 	}
 	
+
 	/**
 	 * @return the mediaObjectService
 	 */
@@ -81,6 +93,20 @@ public class Config {
 		this.mediaObjectService = mediaObjectService;
 	}
 
+	public void setGroupService(IGroupService groupService) {
+		this.groupService = groupService;
+	}
+
+	public Scope getScopePolicy() {
+		return scopePolicy;
+	}
+
+	public void setScopePolicyPublic(boolean bol) {
+		this.scopePolicy = bol ? Scope.PUBLIC : Scope.PRIVATE;
+	}
+	public void setScopePolicy(Scope scopePolicy) {
+		this.scopePolicy = scopePolicy;
+	}
 
 	private static class SingletonHolder { 
         public static final Config INSTANCE = new Config();

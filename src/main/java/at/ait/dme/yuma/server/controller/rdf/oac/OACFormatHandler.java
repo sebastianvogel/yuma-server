@@ -80,7 +80,7 @@ public class OACFormatHandler extends RDFFormatHandler {
 	
 	private Resource createAnnotationResource(Resource body) {
 		Resource ret = model.createResource(
-			URIBuilder.toURI(annotation.getAnnotationID(), URISource.ANNOTATION).toString());
+			URIBuilder.toURI(annotation.getAnnotationID(), URISource.ANNOTATION, false).toString());
 		
 		addBasicProperties(ret, body);
 		new AnnotationPropertiesAppender(ret).appendProperties(annotation);
@@ -110,7 +110,7 @@ public class OACFormatHandler extends RDFFormatHandler {
 	private void addReplyTargets(Resource annotationResource) {
 		annotationResource.addProperty(
 			model.createProperty(NS_OAC, "hasTarget"),
-			URIBuilder.toURI(annotation.getParentId(), URISource.ANNOTATION).toString());
+			URIBuilder.toURI(annotation.getParentId(), URISource.ANNOTATION, false).toString());
 		
 		if (annotation.getFragment() != null) {
 			annotationResource.addProperty(

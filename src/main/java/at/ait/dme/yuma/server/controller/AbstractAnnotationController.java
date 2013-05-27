@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
 
@@ -16,7 +17,9 @@ import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
+import at.ait.dme.yuma.server.exception.PermissionDeniedException;
 import at.ait.dme.yuma.server.model.Annotation;
+import at.ait.dme.yuma.server.model.AnnotationTree;
 import at.ait.dme.yuma.server.model.URISource;
 import at.ait.dme.yuma.server.service.IAnnotationService;
 import at.ait.dme.yuma.server.util.URIBuilder;
@@ -40,6 +43,8 @@ public abstract class AbstractAnnotationController {
 	
 	IAnnotationService annotationService;
 	
+	AuthContext authContext;
+	
 	/**
 	 * set annotation service
 	 * @param service
@@ -57,11 +62,11 @@ public abstract class AbstractAnnotationController {
 	 * @throws AnnotationModifiedException (409)
 	 */
 	protected Response createAnnotation(String annotation, FormatHandler format)
-		throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationModifiedException {
+		throws InvalidAnnotationException, AnnotationModifiedException, PermissionDeniedException {
 		
-		String annotationId = annotationService.createAnnotation(format.parse(annotation), request.getRemoteUser());
+		String annotationId = annotationService.createAnnotation(format.parse(annotation), new AuthContext(request));
 		log.info("created annotation with id=".concat(annotationId));
-		return Response.created(URIBuilder.toURI(annotationId, URISource.ANNOTATION)).entity(annotationId).build();
+		return Response.created(URIBuilder.toURI(annotationId, URISource.ANNOTATION, false)).entity(annotationId).build();
 	}
 	
 	/**
@@ -72,12 +77,23 @@ public abstract class AbstractAnnotationController {
 	 * @throws UnsupportedEncodingException (500
 	 */
 	protected Response getAnnotation(String annotationId, FormatHandler format)
-		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
-				
-		String annotation = format.serialize(annotationService.findAnnotationById(URLDecoder.decode(annotationId, URL_ENCODING)));
-		return Response.ok(annotation).build();
+		throws AnnotationNotFoundException, UnsupportedEncodingException {
+			
+		annotationId = URLDecoder.decode(annotationId, URL_ENCODING);
+		Annotation annotation = null;
+		try {
+			annotation = annotationService.findAnnotationById(annotationId, new AuthContext(request));
+		} catch (PermissionDeniedException e) {
+			return Response.status(Status.FORBIDDEN).build();
+		}
+		if (annotation==null) {
+			return Response.noContent().build();
+		} else {
+			return Response.ok(format.serialize(annotation)).build();
+		}
+		
 	}
-	
+
 	/**
 	 * Update an existing annotation
 	 * @param annotationId the annotation ID 
@@ -87,36 +103,43 @@ public abstract class AbstractAnnotationController {
 	 * @throws InvalidAnnotationException (415)
 	 * @throws AnnotationHasReplyException (409)
 	 * @throws UnsupportedEncodingException (500)
+	 * @throws PermissionDeniedException 
+	 * @throws AnnotationNotFoundException 
 	 */
-	protected Response updateAnnotation(String annotationId, String annotation, FormatHandler format)
-			throws AnnotationDatabaseException, InvalidAnnotationException, AnnotationHasReplyException, UnsupportedEncodingException {
+	protected Response updateAnnotation(String annotationId, String annotation, FormatHandler format) 
+			throws InvalidAnnotationException, UnsupportedEncodingException,
+				AnnotationHasReplyException, AnnotationNotFoundException, PermissionDeniedException	 {
 		
 		String annotationIdDec = URLDecoder.decode(annotationId, URL_ENCODING);
 		Annotation in = format.parse(annotation);
+		annotationId = annotationService.updateAnnotation(annotationIdDec, in, new AuthContext(request));
 		try {
-			annotationId = annotationService.updateAnnotation(annotationIdDec, in, request.getRemoteUser());
-			annotationService.findAnnotationById(annotationId); //check if exists and throw exception otherwise
-		} catch(AnnotationNotFoundException anfe) {
-			throw new AnnotationDatabaseException(anfe);
+			//check if exists and throw exception otherwise
+			annotationService.findAnnotationById(annotationId, new AuthContext(request)); 
+		} catch (PermissionDeniedException e) {
+			return Response.status(Status.FORBIDDEN).build();
 		}
 		log.info("updated annotation with id=".concat(annotationId));
 		return Response.ok().entity(annotationId.toString()).
-				header("Location", URIBuilder.toURI(annotationId, URISource.ANNOTATION)).build(); 
+				header("Location", URIBuilder.toURI(annotationId, URISource.ANNOTATION, false)).build(); 
 	}
 	
 	/**
 	 * Delete an annotation
 	 * @param annotationId the annotation ID
 	 * @return status code 204
+	 * @throws PermissionDeniedException 
 	 * @throws AnnotationDatabaseException (500)
 	 * @throws UnsupportedEncodingException (500)
 	 * @throws AnnotationHasReplyException (409)
 	 * @throws AnnotationNotFoundException (404)
 	 */
-	protected Response deleteAnnotation(String annotationId)
-		throws AnnotationDatabaseException, AnnotationHasReplyException, UnsupportedEncodingException, AnnotationNotFoundException {
+	protected Response deleteAnnotation(String annotationId) 
+			throws UnsupportedEncodingException, AnnotationNotFoundException, 
+			AnnotationHasReplyException, PermissionDeniedException {
 		
-		annotationService.deleteAnnotation(URLDecoder.decode(annotationId, URL_ENCODING), request.getRemoteUser());
+		annotationService.deleteAnnotation(
+				URLDecoder.decode(annotationId, URL_ENCODING), new AuthContext(request));
 		log.info("deleted annotation with id=".concat(annotationId));
 		return Response.noContent().build();
 	}
@@ -125,14 +148,20 @@ public abstract class AbstractAnnotationController {
 	 * Retrieve the thread which contains the given annotation
 	 * @param annotationId the annotation ID
 	 * @return status code 200 and representation of the annotation thread
+	 * @throws PermissionDeniedException 
+	 * @throws AnnotationNotFoundException 
 	 * @throws AnnotationDatabaseException (500)
 	 * @throws UnsupportedEncodingException (500
 	 */
-	protected Response getReplies(String annotationId, FormatHandler format)
-		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
+	protected Response getReplies(String annotationId, FormatHandler format) 
+			throws UnsupportedEncodingException, AnnotationNotFoundException, PermissionDeniedException {
 		
-		String thread = format.serialize(annotationService.getReplies(URLDecoder.decode(annotationId, URL_ENCODING)));
-		return Response.ok().entity(thread).build();
+		AnnotationTree replies = annotationService.getReplies(
+				URLDecoder.decode(annotationId, URL_ENCODING), new AuthContext(request));
+		if (replies==null) {
+			return Response.status(Status.NO_CONTENT).build();
+		}
+		return Response.ok().entity(format.serialize(replies)).build();
 	}
 	
 	/**
@@ -146,8 +175,10 @@ public abstract class AbstractAnnotationController {
 	protected Response getAnnotationTree(String objectId, FormatHandler format)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		String tree = format.serialize(annotationService.findAnnotationsForObject(URLDecoder.decode(objectId, URL_ENCODING)));
-		return Response.ok().entity(tree).build();
+		AnnotationTree tree = annotationService.findAnnotationsForObject(
+				URLDecoder.decode(objectId, URL_ENCODING), new AuthContext(request));
+		String ret = tree==null ? null : format.serialize(tree);
+		return Response.ok().entity(ret).build();
 	}
 	
 	/**
@@ -167,15 +198,18 @@ public abstract class AbstractAnnotationController {
 	protected Response getAnnotationsForUser(String username, FormatHandler format)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		String annotations = format.serialize(
-				annotationService.findAnnotationsForUser(URLDecoder.decode(username, URL_ENCODING)));
-		return Response.ok().entity(annotations).build();	
+		String user = URLDecoder.decode(username, URL_ENCODING);
+		List<Annotation> list = annotationService.findAnnotationsForUser(user, null);
+		if (list==null || list.isEmpty()) {
+			return Response.status(Status.NO_CONTENT).build();
+		}
+		return Response.ok().entity(format.serialize(list)).build();	
 	}
 	
 	protected Response getMostRecent(int n, FormatHandler format) 
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		List<Annotation> list = annotationService.getMostRecent(n, true);
+		List<Annotation> list = annotationService.getMostRecent(n, true, new AuthContext(request));
 		if (list==null) {
 			return Response.noContent().build();
 		}
@@ -194,8 +228,11 @@ public abstract class AbstractAnnotationController {
 	protected Response searchAnnotations(String query, FormatHandler format)
 		throws AnnotationDatabaseException, UnsupportedEncodingException {
 		
-		String annotations = format.serialize(
-				annotationService.findAnnotations(URLDecoder.decode(query, URL_ENCODING)));
-		return Response.ok(annotations).build();
+		List<Annotation> list = annotationService.findAnnotations(
+				URLDecoder.decode(query, URL_ENCODING), new AuthContext(request));
+		if (list==null || list.isEmpty()) {
+			return Response.status(Status.NO_CONTENT).build();
+		}
+		return Response.ok(format.serialize(list)).build();
 	}
 }

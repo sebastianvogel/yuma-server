@@ -110,7 +110,7 @@ public abstract class BaseAnnotationListPage extends WebPage {
 			item.add(new Label("scope", a.getScope().name()));
 			item.add(new TagListView("tags", a.getTags()));
 			
-			String uri = URIBuilder.toURI(a.getAnnotationID(), URISource.ANNOTATION).toString();
+			String uri = URIBuilder.toURI(a.getAnnotationID(), URISource.ANNOTATION, false).toString();
 			item.add(new ExternalLink("uri", uri, uri));
 			
 			item.add(new Label("lang", LanguageGuesser

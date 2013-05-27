@@ -16,12 +16,16 @@ public class URIBuilder {
 	private static final String ERROR = "Could not build URI for ";
 	private static final String API_PATH = "api/";
 	
-	public static URI toURI(String identifier, URISource source) {
+	public static URI toURI(String identifier, URISource source, boolean relative) {
 		StringBuilder sb = new StringBuilder();
 		String base = Config.getInstance().getServerBaseUrl();
-		sb.append(base);
-		if (!base.endsWith("/")) {
+		if (relative) {
 			sb.append("/");
+		} else {
+			sb.append(base);
+			if (!base.endsWith("/")) {
+				sb.append("/");
+			}
 		}
 		sb.append(API_PATH);
 		if (source!=null) {
@@ -43,6 +47,15 @@ public class URIBuilder {
 		return uri.substring(uri.lastIndexOf("/") + 1);
 	}
 	
+	/**
+	 * convert given absolute local uri to relative uri
+	 * @param uri
+	 * @return
+	 */
+	public static String toRelativeLocalURI(String uri) {
+		return uri.replace(Config.getInstance().getServerBaseUrl(), "/");
+	}
+	
 	/** 
 	 * check if given URI is a local (=application generated) URI
 	 * @param uri
@@ -50,5 +63,23 @@ public class URIBuilder {
 	 */
 	public static boolean isLocal(String uri) {
 		return uri.startsWith(Config.getInstance().getServerBaseUrl());
+	}
+	
+	/**
+	 * check if give uri is relative (starts with a slash)
+	 * @param uri
+	 * @return
+	 */
+	public static boolean isRelative(String uri) {
+		return uri.startsWith("/");
+	}
+	
+	/**
+	 * check is given uri is a public internet absolut uri
+	 * @param uri
+	 * @return
+	 */
+	public static boolean isPublic(String uri) {
+		return !isRelative(uri) && !isLocal(uri);
 	}
 }

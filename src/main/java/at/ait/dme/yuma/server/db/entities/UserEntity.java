@@ -61,6 +61,9 @@ public class UserEntity {
 		User user = new User(username);
 		user.setGravatarHash(gravatarHash);
 		user.setUri(getUri());
+		if (appClient!=null && appClient.getClientToken()!=null) {
+			user.setClient(appClient.getClientToken());
+		}
 		return user;
 	}
 
@@ -81,7 +84,7 @@ public class UserEntity {
 	}
 
 	public String getUri() {
-		return URIBuilder.toURI(this.id==null ? getUsername() : id.toString(), URISource.USER).toString();
+		return URIBuilder.toURI(this.id==null ? getUsername() : id.toString(), URISource.USER, false).toString();
 	}
 
 	public AppClientEntity getAppClient() {

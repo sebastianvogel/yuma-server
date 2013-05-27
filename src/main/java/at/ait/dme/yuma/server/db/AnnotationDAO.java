@@ -2,7 +2,6 @@ package at.ait.dme.yuma.server.db;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -13,8 +12,6 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import at.ait.dme.yuma.server.db.entities.AnnotationEntity;
-import at.ait.dme.yuma.server.model.Annotation;
-import at.ait.dme.yuma.server.model.AnnotationTree;
 import at.ait.dme.yuma.server.model.MediaType;
 import at.ait.dme.yuma.server.util.URIBuilder;
 
@@ -27,17 +24,24 @@ public class AnnotationDAO implements IAnnotationDAO {
 	private EntityManager em;
 
 	@Override
-	public List<Annotation> findAnnotationsForURI(URI objectUri, MediaType type) {
+	public List<AnnotationEntity> findAnnotationsForURI(URI objectUri, MediaType type) {
 		TypedQuery<AnnotationEntity> query = 
 				em.createNamedQuery("annotationentity.find.for.object_and_type", AnnotationEntity.class);
 		query.setParameter("objectUri", objectUri.toString());
 		query.setParameter("type", type);
-		List<AnnotationEntity> entities = query.getResultList();
-		return toAnnotations(entities);
+		return query.getResultList();
+	}
+	
+	/**
+	 * persist an AnnotationEntity
+	 * @param entity
+	 */
+	public void persist(AnnotationEntity entity) {
+		em.persist(entity);
 	}
 	
 	@Override
-	public AnnotationTree findAnnotationsForURI(String objectUri) {
+	public List<AnnotationEntity> findAnnotationsForURI(String objectUri) {
 		if (objectUri==null) {
 			return null;
 		}
@@ -45,8 +49,7 @@ public class AnnotationDAO implements IAnnotationDAO {
 		TypedQuery<AnnotationEntity> query = 
 				em.createNamedQuery("annotationentity.find.for.object", AnnotationEntity.class);
 		query.setParameter("objectUri", objectUri);
-		List<AnnotationEntity> allAnnotations = query.getResultList();
-		return new AnnotationTree(toAnnotations(allAnnotations));
+		return query.getResultList();
 	}
 
 	@Override
@@ -84,13 +87,5 @@ public class AnnotationDAO implements IAnnotationDAO {
 					annotationURI, e.getMessage()));
 			return null;
 		}
-	}
-	
-	public List<Annotation> toAnnotations(List<AnnotationEntity> entities) {
-		List<Annotation> annotations = new ArrayList<Annotation>();
-		for (AnnotationEntity entity : entities) {
-			annotations.add(entity.toAnnotation());
-		}
-		return annotations;
 	}
 }
