@@ -57,7 +57,7 @@ public class URIBuilder {
 	}
 	
 	/** 
-	 * check if given URI is a local (=application generated) URI
+	 * check if given URI is a local (=application generated) non-relative URI
 	 * @param uri
 	 * @return
 	 */
@@ -81,5 +81,9 @@ public class URIBuilder {
 	 */
 	public static boolean isPublic(String uri) {
 		return !isRelative(uri) && !isLocal(uri);
+	}
+	
+	public static boolean isPublic(URI uri) {
+		return isPublic(uri.toString());
 	}
 }

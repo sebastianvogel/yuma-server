@@ -96,6 +96,7 @@ public class JPAAnnotationService implements IAnnotationService {
 		entity.setCreatedBy(user);
 		
 		//check if user has right to create annotations:
+		//TODO: pass media instead of annotation!!
 		if (!checkService.hasRightToCreateAnnotation(auth, annotation)) {
 			throw new PermissionDeniedException();
 		}

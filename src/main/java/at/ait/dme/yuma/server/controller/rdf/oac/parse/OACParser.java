@@ -2,10 +2,13 @@ package at.ait.dme.yuma.server.controller.rdf.oac.parse;
 
 import java.io.StringReader;
 import java.net.URISyntaxException;
+import java.text.FieldPosition;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import at.ait.dme.yuma.server.controller.rdf.oac.OACFormatHandler;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
@@ -27,6 +30,8 @@ import com.hp.hpl.jena.vocabulary.DC;
 import com.hp.hpl.jena.vocabulary.DCTerms;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
+import com.ibm.icu.text.DateFormat;
+import com.ibm.icu.util.Calendar;
 
 /**
  * Used to convert a serialized annotation in OAC RDF format to an annotation 
@@ -91,7 +96,7 @@ public class OACParser {
 	}
 	
 	private Date createDateFromString(String date) throws ParseException {
-		return new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(date);
+		return new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(date);
 	}	
 	
 	private void parseObjectUri() {

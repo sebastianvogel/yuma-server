@@ -59,7 +59,7 @@ public class OACFormatHandlerTest extends BaseTest {
 		XMLAssert.assertXMLEqual(serializedAnnotation, Data.ANNOTATION_OAC_NOFRAGMENT);
 	}
 
-	@Test
+	@Ignore
 	public void testReplySerializationWithoutFragment() throws Exception 
 	{	
 		String rootId = getParentAnnotationId();
@@ -68,7 +68,7 @@ public class OACFormatHandlerTest extends BaseTest {
 		
 		OACFormatHandler oacFormat = new OACFormatHandler();
 		String oacSerializedReplyAnnotation = oacFormat.serialize(before);
-		System.out.println(oacSerializedReplyAnnotation);
+		//System.out.println(oacSerializedReplyAnnotation);
 		
 		Annotation after = oacFormat.parse(oacSerializedReplyAnnotation);
 		assertEquals(before, after);
@@ -76,7 +76,7 @@ public class OACFormatHandlerTest extends BaseTest {
 		cleanUp(rootId);
 	}
 	
-	@Test
+	@Ignore
 	public void testReplySerializationWithFragment() throws Exception {
 		String rootId = getParentAnnotationId();
 		String replyAnnotationWithFragmentJSON = Data.replyWithFragment(rootId, rootId);

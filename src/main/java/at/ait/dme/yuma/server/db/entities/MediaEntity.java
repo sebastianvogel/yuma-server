@@ -13,7 +13,7 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name="media", uniqueConstraints=@UniqueConstraint(columnNames={"uri"}))
+@Table(name="media", uniqueConstraints=@UniqueConstraint(columnNames={"name", "created_by", "version"}))
 public class MediaEntity implements Serializable {
 	
 	@Id
@@ -24,9 +24,9 @@ public class MediaEntity implements Serializable {
 	private Date createdDate;
 	
 	@ManyToOne
-	@JoinColumn(name="created_by")
+	@JoinColumn(name="created_by", nullable=false)
 	private UserEntity createdBy;
-	
+
 	@OneToOne
 	@JoinColumn(name="previous_version")
 	private MediaEntity previousVersion;
@@ -36,6 +36,12 @@ public class MediaEntity implements Serializable {
 	
 	@Enumerated(EnumType.STRING)
 	private Scope scope;
+	
+	@Column(name="name", nullable=false)
+	private String name;
+	
+	@Column(name="version", nullable=false)
+	private Integer version = 1;
 	
 	@Lob
 	private byte[] media;
@@ -80,5 +86,18 @@ public class MediaEntity implements Serializable {
 	
 	public byte[] getMedia() {
 		return media;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Integer getVersion() {
+		return version;
+	}
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 }
