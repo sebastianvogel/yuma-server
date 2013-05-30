@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import at.ait.dme.yuma.server.controller.AuthContext;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.ACL;
+import at.ait.dme.yuma.server.model.Group;
 import at.ait.dme.yuma.server.model.IOwnable;
 import at.ait.dme.yuma.server.model.Scope;
 import at.ait.dme.yuma.server.model.URISource;
@@ -19,6 +20,11 @@ public class CheckService implements ICheckService {
 	
 	@Autowired
 	IACLService aclService;
+	
+	@Autowired
+	IGroupService groupService;
+	
+	private enum PERMISSION_TYPE { READ, WRITE }
 	
 	/**
 	 * check if given user has read-permissions
@@ -58,14 +64,16 @@ public class CheckService implements ICheckService {
 			return false;
 		}
 		
-		URI userURI = URIBuilder.toURI(auth.getUsername(), URISource.USER, true);
-		return acl.hasReadPermission(userURI);
+		return hasPermission(acl, PERMISSION_TYPE.READ, auth);
 	}
 	
 	/**
-	 * check if user, passed via AuthContext has the right to create an annotation
+	 * check if user, given by auth context, has write permissions
+	 * write permissions are granted if:
+	 *  - user is owner
+	 *  - there is an acl that grants write permission
 	 */
-	public boolean hasRightToCreateAnnotation(AuthContext auth, IOwnable ownable) {
+	public boolean hasWritePermission(AuthContext auth, IOwnable ownable) {
 		if (auth==null || auth.getClient()==null || auth.getUsername()==null) {
 			return false;
 		}
@@ -94,7 +102,54 @@ public class CheckService implements ICheckService {
 			return false;
 		}
 		
+		return hasPermission(acl, PERMISSION_TYPE.WRITE, auth);
+	}
+	
+	/**
+	 * check if an acl permits read for a user within a given auth context
+	 * @param acl
+	 * @param auth
+	 * @return
+	 */
+	private boolean hasPermission(ACL acl, PERMISSION_TYPE type, AuthContext auth) {
 		URI userURI = URIBuilder.toURI(auth.getUsername(), URISource.USER, true);
-		return acl.hasWritePermission(userURI);
+		for (ACL.Entity entity : acl.entities()) {
+			
+			URI subject = entity.getSubject();
+			
+			//just check for read permissions:
+			
+			switch (type) {
+			case READ:
+				if (!entity.hasReadPermission()) {
+					continue;
+				}
+				break;
+			case WRITE:
+				if (!entity.hasWritePermission()) {
+					continue;
+				}
+				break;
+			}
+			
+			//if a catch all directive is found, grant permission:
+			if (entity.isCatchAll()) {
+				return true;
+			}
+			
+			//direct permissions:
+			if (userURI.equals(subject)) {
+				return true;
+			}
+			
+			//group permission:
+			if (entity.isGroupSubject()) {
+				Group group = groupService.findGroup(subject);
+				if (group!=null && group.hasMember(userURI.toString())) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

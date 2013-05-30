@@ -17,17 +17,7 @@ public class URIBuilder {
 	private static final String API_PATH = "api/";
 	
 	public static URI toURI(String identifier, URISource source, boolean relative) {
-		StringBuilder sb = new StringBuilder();
-		String base = Config.getInstance().getServerBaseUrl();
-		if (relative) {
-			sb.append("/");
-		} else {
-			sb.append(base);
-			if (!base.endsWith("/")) {
-				sb.append("/");
-			}
-		}
-		sb.append(API_PATH);
+		StringBuilder sb = constructBase(relative);
 		if (source!=null) {
 			sb.append(source.toURIFragment());
 		}
@@ -40,6 +30,27 @@ public class URIBuilder {
 		}
 	}
 	
+	private static StringBuilder constructBase(boolean relative) {
+		StringBuilder sb = new StringBuilder();
+		String base = Config.getInstance().getServerBaseUrl();
+		if (relative) {
+			sb.append("/");
+		} else {
+			sb.append(base);
+			if (!base.endsWith("/")) {
+				sb.append("/");
+			}
+		}
+		sb.append(API_PATH);
+		return sb;		
+	}
+	
+	/**
+	 * extract identifier from given uri
+	 * @param uri
+	 * @return
+	 * @throws URISyntaxException
+	 */
 	public static String toID(String uri) throws URISyntaxException {
 		if (!uri.contains(API_PATH)) {
 			throw new URISyntaxException(uri, "Not a valid annotation uri");
@@ -85,5 +96,33 @@ public class URIBuilder {
 	
 	public static boolean isPublic(URI uri) {
 		return isPublic(uri.toString());
+	}
+	
+	/**
+	 * extract URISource from give URI
+	 * @param uri
+	 * @return
+	 */
+	public static URISource getURISource(String uri) {
+		boolean relative = isRelative(uri.toString());
+		String base = constructBase(relative).toString();
+		for (URISource s : URISource.values()) {
+			if (uri.startsWith(base.concat(s.toURIFragment()))) {
+				return s;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * check if given uri contains given URISource
+	 * @param source
+	 * @param uri
+	 * @return
+	 */
+	public static boolean isURISource(URISource source, String uri) {
+		boolean relative = isRelative(uri.toString());
+		String base = constructBase(relative).toString();
+		return uri.startsWith(base.concat(source.toURIFragment()));
 	}
 }

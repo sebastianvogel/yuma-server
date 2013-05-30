@@ -8,5 +8,6 @@ public interface IUserDAO {
 	
 	UserEntity findUser(User user, AppClientEntity appClient);
 	UserEntity createUser(User user, AppClientEntity appClient);
+	UserEntity getUser(User user, AppClientEntity appClient);
 
 }

@@ -45,5 +45,16 @@ public class URIBuilderTest extends BaseTest {
 		String right = URIBuilder.toRelativeLocalURI(userURI.toString());
 		Assert.assertEquals(left, right);
 	}
+	
+	@Test
+	public void testGetURISource() {
+		URI uri = URIBuilder.toURI("test", URISource.USER, false);
+		Assert.assertEquals(URISource.USER,  URIBuilder.getURISource(uri.toString()));
+		
+		uri = URIBuilder.toURI("test", URISource.USER, true);
+		Assert.assertEquals(URISource.USER,  URIBuilder.getURISource(uri.toString()));
+		
+		Assert.assertTrue(URIBuilder.isURISource(URISource.USER, uri.toString()));
+	}
 
 }
