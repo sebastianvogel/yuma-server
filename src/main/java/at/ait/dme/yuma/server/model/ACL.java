@@ -1,15 +1,17 @@
 package at.ait.dme.yuma.server.model;
 
 import java.net.URI;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import at.ait.dme.yuma.server.model.tag.SemanticTag;
+import at.ait.dme.yuma.server.util.URIBuilder;
 
 public class ACL {
 	public static final String TYPE_VALUE = "ACL";
-	public static enum VALUES { READ, WRITE }
 	public static final String CATCHALL = "*";
 	
+	private enum VALUE { READ, WRITE }
 	private Annotation annotation;
 	
 	public ACL(Annotation annotation) {
@@ -20,51 +22,57 @@ public class ACL {
 		return annotation;
 	}
 	
-	public boolean hasReadPermission(URI userURI) {
-		List<SemanticTag> tags = annotation.getTags();
-		for (SemanticTag tag : tags) {
+	public class Entity {
+		private final URI subject;
+		private final boolean readPermission;
+		private final boolean writePermission;
+		
+		public Entity(URI subject, boolean readPermission, boolean writePermission) {
+			this.subject = subject;
+			this.readPermission = readPermission;
+			this.writePermission = writePermission;
+		}
+		public URI getSubject() {
+			return subject;
+		}
+		public boolean hasReadPermission() {
+			return readPermission;
+		}
+		public boolean hasWritePermission()  {
+			return writePermission;
+		}
+		public boolean isCatchAll() {
+			return subject.toString().equals(CATCHALL);
+		}
+		public boolean isGroupSubject() {
+			return URIBuilder.isURISource(URISource.GROUP, getSubject().toString());
+		}
+	}
+	
+	/**
+	 * get ACL entities
+	 * @return
+	 */
+	public Set<Entity> entities() {
+		Set<Entity> set = new HashSet<ACL.Entity>();
+		for (SemanticTag tag : annotation.getTags()) {
 			if (!isACL(tag)) {
 				continue;
 			}
-			if (isCatchAll(tag) && isRead(tag)) {
-				return true;								
-			}
-			if (userURI.equals(tag.getURI())) {
-				return isRead(tag);
-			}
+			set.add(new Entity(tag.getURI(), isRead(tag), isWrite(tag)));			
 		}
-		return false;
+		return set;
 	}
 	
-	public boolean hasWritePermission(URI userURI) {
-		List<SemanticTag> tags = annotation.getTags();
-		for (SemanticTag tag : tags) {
-			if (!isACL(tag)) {
-				continue;
-			}
-			if (isCatchAll(tag) && isWrite(tag)) {
-				return true;								
-			}
-			if (userURI.equals(tag.getURI())) {
-				return isWrite(tag);
-			}
-		}
-		return false;
-	}
-	
-	public boolean isACL(SemanticTag tag) {
+	private boolean isACL(SemanticTag tag) {
 		return TYPE_VALUE.equals(tag.getType());
 	}
 	
-	public boolean isCatchAll(SemanticTag tag) {
-		return CATCHALL.equals(tag.getURI());
-	}
-	
 	private boolean isWrite(SemanticTag tag) {
-		return VALUES.WRITE.toString().equals(tag.getPrimaryLabel());				
+		return VALUE.WRITE.toString().equals(tag.getPrimaryLabel());				
 	}
 	
 	private boolean isRead(SemanticTag tag) {
-		return VALUES.READ.toString().equals(tag.getPrimaryLabel());				
+		return VALUE.READ.toString().equals(tag.getPrimaryLabel());				
 	}
 }

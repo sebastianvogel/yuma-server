@@ -58,4 +58,9 @@ public class AuthContext {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "AuthContext [username=" + username + ", client=" + client + "]";
+	}
 }

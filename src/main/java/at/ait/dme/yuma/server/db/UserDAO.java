@@ -29,6 +29,7 @@ public class UserDAO implements IUserDAO {
 	 * @return UserEntity
 	 */
 	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
+	@Override
 	public UserEntity findUser(User user, AppClientEntity appClient) {
 		if (user==null || user.getUsername()==null) {
 			return null;
@@ -52,11 +53,28 @@ public class UserDAO implements IUserDAO {
 	 * @return
 	 */
 	@Transactional(propagation=Propagation.REQUIRED)
+	@Override
 	public UserEntity createUser(User user, AppClientEntity appClient) {
 		
 		UserEntity entity = new UserEntity(user);
 		entity.setAppClient(appClient);
 		em.persist(entity);
 		return entity;
+	}
+	
+	/**
+	 * find existing user or create and return new user
+	 * @param user
+	 * @param appClient
+	 * @return
+	 */
+	@Transactional(propagation=Propagation.REQUIRED)
+	@Override
+	public UserEntity getUser(User user, AppClientEntity appClient) {
+		UserEntity userEntity = findUser(user, appClient);
+		if (userEntity==null) {
+			userEntity = createUser(user, appClient);
+		}
+		return userEntity;
 	}
 }

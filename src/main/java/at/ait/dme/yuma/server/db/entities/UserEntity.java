@@ -84,7 +84,8 @@ public class UserEntity {
 	}
 
 	public String getUri() {
-		return URIBuilder.toURI(this.id==null ? getUsername() : id.toString(), URISource.USER, false).toString();
+		String identifier = getAppClient().getClientToken().concat("/").concat(getUsername());
+		return URIBuilder.toURI(identifier, URISource.USER, false).toString();
 	}
 
 	public AppClientEntity getAppClient() {
@@ -98,6 +99,67 @@ public class UserEntity {
 	public Date getCreated() {
 		return created;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((appClient == null) ? 0 : appClient.hashCode());
+		result = prime * result + ((created == null) ? 0 : created.hashCode());
+		result = prime * result
+				+ ((gravatarHash == null) ? 0 : gravatarHash.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((modified == null) ? 0 : modified.hashCode());
+		result = prime * result
+				+ ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserEntity other = (UserEntity) obj;
+		if (appClient == null) {
+			if (other.appClient != null)
+				return false;
+		} else if (!appClient.equals(other.appClient))
+			return false;
+		if (created == null) {
+			if (other.created != null)
+				return false;
+		} else if (!created.equals(other.created))
+			return false;
+		if (gravatarHash == null) {
+			if (other.gravatarHash != null)
+				return false;
+		} else if (!gravatarHash.equals(other.gravatarHash))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (modified == null) {
+			if (other.modified != null)
+				return false;
+		} else if (!modified.equals(other.modified))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
+
 
 	public void setCreated(Date created) {
 		this.created = created;

@@ -54,7 +54,7 @@ public class JSONFormatHandlerTest {
 		assertEquals(Scope.PUBLIC, a.getScope());
 		assertEquals(dateFormat.parse("2008-10-15T04:00:00Z"), a.getCreated());
 		assertEquals(dateFormat.parse("2008-10-15T04:00:00Z"), a.getLastModified());		
-		assertEquals("rsimon", a.getCreatedBy().getUsername());
+		assertEquals("test", a.getCreatedBy().getUsername());
 		assertEquals("fragment", "<svg:svg xmlns:svg=\"http://www.w3.org/2000/svg\" width=\"640px\" height=\"480px\" viewbox=\"0px 0px 640px 480px\"> " +
 				"<svg:defs xmlns:svg=\"http://www.w3.org/2000/svg\"> " +
 				"<svg:symbol xmlns:svg=\"http://www.w3.org/2000/svg\" id=\"Polygon\"> " +
@@ -109,7 +109,7 @@ public class JSONFormatHandlerTest {
 		assertTrue(serialized.contains("\"scope\" : \"PUBLIC\""));
 		assertTrue(serialized.contains("\"last-modified\" : 1224043200000"));
 		assertTrue(serialized.contains("\"created\" : 1224043200000"));
-		assertTrue(serialized.contains("\"created-by\" : { \"user-name\" : \"rsimon\""));
+		assertTrue(serialized.contains("\"created-by\" : { \"user-name\" : \"test\""));
 		assertTrue(serialized.contains("\"fragment\" : \"" + 
 				"<svg:svg xmlns:svg=\\\"http://www.w3.org/2000/svg\\\" width=\\\"640px\\\" height=\\\"480px\\\" viewbox=\\\"0px 0px 640px 480px\\\"> " +
 				  "<svg:defs xmlns:svg=\\\"http://www.w3.org/2000/svg\\\"> " +

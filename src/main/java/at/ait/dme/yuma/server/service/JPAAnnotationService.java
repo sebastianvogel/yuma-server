@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PessimisticLockException;
 import javax.persistence.TypedQuery;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -42,6 +43,8 @@ import at.ait.dme.yuma.server.model.User;
  */
 @Service
 public class JPAAnnotationService implements IAnnotationService {
+	
+	private static Logger log = Logger.getLogger(JPAAnnotationService.class);
 	
 	@PersistenceContext
 	private EntityManager em;
@@ -88,15 +91,12 @@ public class JPAAnnotationService implements IAnnotationService {
 		//check if appClient exists:
 		AppClientEntity appClient = appClientDAO.getAppClient(auth.getClient());
 		
-		//check if user exists:
-		UserEntity user = userDAO.findUser(annotation.getCreatedBy(), appClient);
-		if (user==null) {
-			user = userDAO.createUser(annotation.getCreatedBy(), appClient);
-		}
-		entity.setCreatedBy(user);
+		//set user
+		entity.setCreatedBy(userDAO.getUser(annotation.getCreatedBy(), appClient));
 		
 		//check if user has right to create annotations:
-		if (!checkService.hasRightToCreateAnnotation(auth, annotation)) {
+		//TODO: pass media instead of annotation!!
+		if (!checkService.hasWritePermission(auth, annotation)) {
 			throw new PermissionDeniedException();
 		}
 
@@ -117,6 +117,10 @@ public class JPAAnnotationService implements IAnnotationService {
 		
 		//find user:
 		UserEntity user = userDAO.findUser(annotation.getCreatedBy(), appClient);
+		if (user==null) {
+			log.warn("updateAnnotation: user does not exist: " + annotation.getCreatedBy());
+			throw new PermissionDeniedException();
+		}
 		entity.setCreatedBy(user);
 		
 		deleteAnnotation(annotationId, auth);
