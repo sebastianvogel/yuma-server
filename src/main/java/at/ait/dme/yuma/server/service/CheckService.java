@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import at.ait.dme.yuma.server.controller.AuthContext;
-import at.ait.dme.yuma.server.db.entities.MediaObjectEntity;
+import at.ait.dme.yuma.server.db.entities.MediaEntity;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.ACL;
 import at.ait.dme.yuma.server.model.Annotation;
@@ -79,7 +79,7 @@ public class CheckService implements ICheckService {
 		
 		//find media for annotation:
 		//TODO: implement!!
-		MediaObjectEntity media = null;
+		MediaEntity media = null;
 		User owner = media.getCreatedBy().toUser();
 		
 		//owner always may create annotations:

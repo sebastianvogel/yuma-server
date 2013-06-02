@@ -1,0 +1,34 @@
+Manifest-Version: 1.0
+Class-Path: log4j-1.2.16.jar slf4j-log4j12-1.7.5.jar slf4j-api-1.7.5.j
+ ar commons-logging-1.1.1.jar commons-codec-1.8.jar jersey-server-1.17
+ .1.jar asm-3.1.jar jersey-core-1.17.1.jar jersey-servlet-1.17.1.jar r
+ ome-1.0.jar jdom-1.0.jar hibernate-core-3.6.0.Final.jar antlr-2.7.6.j
+ ar commons-collections-3.1.jar dom4j-1.6.1.jar hibernate-commons-anno
+ tations-3.2.0.Final.jar hibernate-jpa-2.0-api-1.0.0.Final.jar jta-1.1
+ .jar hibernate-c3p0-3.6.0.Final.jar c3p0-0.9.1.jar hibernate-ehcache-
+ 3.6.0.Final.jar ehcache-1.5.0.jar backport-util-concurrent-3.1.jar js
+ r107cache-1.0.jar hibernate-envers-3.6.0.Final.jar hibernate-entityma
+ nager-3.6.0.Final.jar cglib-2.2.jar javassist-3.12.0.GA.jar hibernate
+ -tools-3.2.0.ga.jar bsh-2.0b4.jar freemarker-2.3.8.jar jtidy-r8-20060
+ 801.jar hibernate-infinispan-3.6.0.Final.jar infinispan-core-4.2.0.AL
+ PHA1.jar jgroups-2.10.0.GA.jar jboss-transaction-api-1.0.1.GA.jar riv
+ er-1.2.3.GA.jar marshalling-api-1.2.3.GA.jar jboss-common-core-2.2.14
+ .GA.jar jboss-logging-spi-2.0.5.GA.jar rhq-pluginAnnotations-1.4.0.B0
+ 1.jar i18nlog-1.0.9.jar hibernate-testing-3.6.0.Final.jar junit-4.8.1
+ .jar hibernate-jbosscache-3.6.0.Final.jar jbosscache-core-3.2.1.GA.ja
+ r jgroups-2.6.13.GA.jar hibernate-oscache-3.6.0.Final.jar oscache-2.1
+ .jar hibernate-proxool-3.6.0.Final.jar proxool-0.8.3.jar hibernate-sw
+ armcache-3.6.0.Final.jar swarmcache-1.0RC2.jar jgroups-all-2.2.8.jar 
+ wicket-1.4.14.jar wicket-auth-roles-1.4.14.jar mysql-connector-java-5
+ .1.14.jar opensearch-0.1.jar mongo-java-driver-2.3.jar jena-2.6.4.jar
+  iri-0.8.jar icu4j-3.4.4.jar xercesImpl-2.7.1.jar json-simple-1.1.jar
+  xmlunit-1.3.jar cngram-1.0-0.060327.jar spring-core-3.2.2.RELEASE.ja
+ r spring-web-3.2.2.RELEASE.jar aopalliance-1.0.jar spring-aop-3.2.2.R
+ ELEASE.jar spring-beans-3.2.2.RELEASE.jar spring-context-3.2.2.RELEAS
+ E.jar spring-expression-3.2.2.RELEASE.jar spring-orm-3.2.2.RELEASE.ja
+ r spring-jdbc-3.2.2.RELEASE.jar spring-tx-3.2.2.RELEASE.jar spring-as
+ pects-3.2.2.RELEASE.jar aspectjweaver-1.7.2.jar spring-context-suppor
+ t-3.2.2.RELEASE.jar hibernate-validator-4.2.0.Final.jar validation-ap
+ i-1.0.0.GA.jar commons-io-2.4.jar jersey-multipart-1.17.1.jar mimepul
+ l-1.6.jar
+

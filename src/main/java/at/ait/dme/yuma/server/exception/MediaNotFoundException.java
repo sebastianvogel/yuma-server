@@ -5,23 +5,23 @@ package at.ait.dme.yuma.server.exception;
  * 
  * @author Sebastian Vogel
  */
-public class MediaObjectNotFoundException extends Exception {	
+public class MediaNotFoundException extends Exception {	
 	
 	private static final long serialVersionUID = 8350411939937353045L;
 
-	public MediaObjectNotFoundException() {
+	public MediaNotFoundException() {
 		super();
 	}
 
-	public MediaObjectNotFoundException(String message, Throwable cause) {
+	public MediaNotFoundException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public MediaObjectNotFoundException(String message) {
+	public MediaNotFoundException(String message) {
 		super(message);
 	}
 
-	public MediaObjectNotFoundException(Throwable cause) {
+	public MediaNotFoundException(Throwable cause) {
 		super(cause);
 	}
 }

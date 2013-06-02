@@ -7,23 +7,23 @@ package at.ait.dme.yuma.server.exception;
  * 
  * @author Sebastian Vogel
  */
-public class InvalidMediaObjectException extends Exception {
+public class InvalidMediaException extends Exception {
 
 	private static final long serialVersionUID = 5343849139804628693L;
 
-	public InvalidMediaObjectException() {
+	public InvalidMediaException() {
 		super();
 	}
 
-	public InvalidMediaObjectException(String message, Throwable cause) {
+	public InvalidMediaException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public InvalidMediaObjectException(String message) {
+	public InvalidMediaException(String message) {
 		super(message);
 	}
 
-	public InvalidMediaObjectException(Throwable cause) {
+	public InvalidMediaException(Throwable cause) {
 		super(cause);
 	}
 }

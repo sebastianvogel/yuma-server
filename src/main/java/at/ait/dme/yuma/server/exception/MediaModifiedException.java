@@ -7,27 +7,27 @@ package at.ait.dme.yuma.server.exception;
  * 
  * @author Sebastian Vogel
  */
-public class MediaObjectModifiedException extends Exception {	
+public class MediaModifiedException extends Exception {	
 	
 	private static final long serialVersionUID = 46337603472498374L;
 
-	public MediaObjectModifiedException() {
+	public MediaModifiedException() {
 		super();
 	}
 
-	public MediaObjectModifiedException(String message, Throwable cause) {
+	public MediaModifiedException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public MediaObjectModifiedException(Long id) {
+	public MediaModifiedException(Long id) {
 		super("media object has beed modified:"+id);
 	}
 	
-	public MediaObjectModifiedException(String message) {
+	public MediaModifiedException(String message) {
 		super("media object has beed modified:"+message);
 	}
 
-	public MediaObjectModifiedException(Throwable cause) {
+	public MediaModifiedException(Throwable cause) {
 		super(cause);
 	}
 }
