@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -16,7 +15,6 @@ import at.ait.dme.yuma.server.model.MediaContentVersion;
 
 @Entity
 @Table(name="mediaversion")
-@IdClass(MediaContentVersionEntityPK.class)
 public class MediaContentVersionEntity {
 	
 	@Id
@@ -26,7 +24,6 @@ public class MediaContentVersionEntity {
 	@Column(name="filename")
 	private String filename;
 	
-	@Id
 	@ManyToOne
 	@JoinColumn(name="media_id")
 	private MediaEntity mediaEntity;

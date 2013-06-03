@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ait.dme.yuma.server.db.entities.MediaContentVersionEntity;
-import at.ait.dme.yuma.server.db.entities.MediaContentVersionEntityPK;
 import at.ait.dme.yuma.server.db.entities.MediaEntity;
 import at.ait.dme.yuma.server.db.entities.UserEntity;
 import at.ait.dme.yuma.server.exception.MediaNotFoundException;
@@ -81,8 +80,8 @@ public class MediaDAO implements IMediaDAO {
 
 	@Override
 	public MediaContentVersionEntity findMediaContentVersion(Long mediaId, Long version) {
-		MediaContentVersionEntityPK  pk = new MediaContentVersionEntityPK(mediaId, version);
-		return em.find(MediaContentVersionEntity.class, pk);
+		// TODO use named query
+		return null;
 	}
 	
 	@Override
