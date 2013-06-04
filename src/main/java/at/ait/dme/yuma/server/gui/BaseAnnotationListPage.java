@@ -113,9 +113,8 @@ public abstract class BaseAnnotationListPage extends WebPage {
 			String uri = URIBuilder.toURI(a.getAnnotationID(), URISource.ANNOTATION, false).toString();
 			item.add(new ExternalLink("uri", uri, uri));
 			
-			if (a.getText()!=null) {
-				item.add(new Label("lang", LanguageGuesser.getInstance().guess(a.getText())));
-			}
+			String lang = a.getText()==null ? "Unknown" : LanguageGuesser.getInstance().guess(a.getText());
+			item.add(new Label("lang", lang));
 	
 			item.add(new ExternalLink("dl-json", uri + ".json", "JSON"));
 			item.add(new ExternalLink("dl-rdf-xml", uri + ".rdf", "RDF/XML"));

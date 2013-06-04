@@ -5,7 +5,7 @@
 	<artifactId>yumanji</artifactId>
 	<version>0.2-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>Yuma Server</name>
+	<name>Yumanji</name>
 		
 	<build>
 		<resources>
@@ -93,6 +93,7 @@
 			</plugin>
 			<plugin>
                 <groupId>org.codehaus.mojo</groupId>
+                <!-- run "mvn hibernate3:hbm2ddl" to generate a schema -->
                 <artifactId>hibernate3-maven-plugin</artifactId>    
                 <version>2.2</version>          
                 <configuration>
@@ -390,4 +391,9 @@
 		<connection>git://github.com:sebastianvogel/yuma-server.git</connection>
 		<developerConnection>git://github.com:sebastianvogel/yuma-server.git</developerConnection>
 	</scm>
+	<ciManagement>
+		<system>Hudson</system>
+		<url>http://service.tequnix.org/hudson/job/yumanji/</url>
+	</ciManagement>
+	<url>http://service.tequnix.org/yumanji/</url>
 </project>
