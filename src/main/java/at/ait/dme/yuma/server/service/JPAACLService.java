@@ -15,11 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import at.ait.dme.yuma.server.db.IAnnotationDAO;
 import at.ait.dme.yuma.server.db.IAppClientDAO;
+import at.ait.dme.yuma.server.db.IMediaDAO;
 import at.ait.dme.yuma.server.db.IUserDAO;
 import at.ait.dme.yuma.server.db.entities.AnnotationEntity;
 import at.ait.dme.yuma.server.db.entities.MediaEntity;
 import at.ait.dme.yuma.server.db.entities.UserEntity;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
+import at.ait.dme.yuma.server.exception.MediaNotFoundException;
 import at.ait.dme.yuma.server.model.ACL;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.MediaType;
@@ -43,6 +45,9 @@ public class JPAACLService implements IACLService {
 	
 	@Autowired
 	IAnnotationDAO annotationDAO;
+	
+	@Autowired
+	IMediaDAO mediaDAO;
 
 
 	@Override
@@ -60,8 +65,13 @@ public class JPAACLService implements IACLService {
 			owner = ae.getCreatedBy();
 			break;
 		case MEDIA:
-			MediaEntity me = new MediaEntity(); //TODO: replace by service method!!
-			owner = me.getCreatedBy();
+			MediaEntity me;
+			try {
+				me = mediaDAO.findMedia(Long.getLong(targetIdentifier));
+				owner = me.getCreatedBy();
+			} catch (MediaNotFoundException e) {
+				return null;
+			}
 			break;
 		default:
 			log.info("cannot create an ACL for type " + targetUriSource);

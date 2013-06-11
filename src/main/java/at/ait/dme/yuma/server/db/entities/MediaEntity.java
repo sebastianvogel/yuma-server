@@ -1,19 +1,28 @@
 package at.ait.dme.yuma.server.db.entities;
 
-import at.ait.dme.yuma.server.db.entities.UserEntity;
-import at.ait.dme.yuma.server.model.Scope;
-
 import java.io.Serializable;
-import java.lang.String;
 import java.util.Date;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import at.ait.dme.yuma.server.config.Config;
+import at.ait.dme.yuma.server.model.Media;
+import at.ait.dme.yuma.server.model.Scope;
 
 /**
  * Entity implementation class for Entity: Media
  *
  */
 @Entity
-@Table(name="media", uniqueConstraints=@UniqueConstraint(columnNames={"name", "created_by", "version"}))
+@Table(name="media")
 public class MediaEntity implements Serializable {
 	
 	@Id
@@ -23,34 +32,25 @@ public class MediaEntity implements Serializable {
 	@Column(name="created_date")
 	private Date createdDate;
 	
-	@ManyToOne
-	@JoinColumn(name="created_by", nullable=false)
-	private UserEntity createdBy;
-
-	@OneToOne
-	@JoinColumn(name="previous_version")
-	private MediaEntity previousVersion;
+	@Column(name="updated_date")
+	private Date updatedDate;
 	
-	@Column(name="mime_type")
-	private String mimeType;
+	@ManyToOne
+	@JoinColumn(name="created_by")
+	private UserEntity createdBy;
 	
 	@Enumerated(EnumType.STRING)
 	private Scope scope;
 	
-	@Column(name="name", nullable=false)
-	private String name;
-	
-	@Column(name="version", nullable=false)
-	private Integer version = 1;
-	
-	@Lob
-	private byte[] media;
-	
 	private static final long serialVersionUID = 1L;
 
-	public MediaEntity() {
-		super();
-	}  
+	public MediaEntity(Media media) {
+		if (media.getScope() != null) {
+			this.setScope(Config.getInstance().getScopePolicy());
+		}
+		this.setCreatedDate(new Date());
+	}
+	
 	public Date getCreatedDate() {
 		return this.createdDate;
 	}
@@ -65,39 +65,56 @@ public class MediaEntity implements Serializable {
 	public void setCreatedBy(UserEntity createdBy) {
 		this.createdBy = createdBy;
 	}   
-	public MediaEntity getPreviousVersion() {
-		return this.previousVersion;
+	
+	/**
+	 * @return the scope
+	 */
+	public Scope getScope() {
+		return scope;
 	}
 
-	public void setPreviousVersion(MediaEntity previousVersion) {
-		this.previousVersion = previousVersion;
-	}   
-	public String getMimeType() {
-		return this.mimeType;
+	/**
+	 * @param scope the scope to set
+	 */
+	public void setScope(Scope scope) {
+		this.scope = scope;
+	}
+	
+
+	/**
+	 * @return the updatedDate
+	 */
+	public Date getUpdatedDate() {
+		return updatedDate;
 	}
 
-	public void setMimeType(String mimeType) {
-		this.mimeType = mimeType;
+	/**
+	 * @param updatedDate the updatedDate to set
+	 */
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
 	}
-	
-	public void setMedia(byte[] blob) {
-		this.media = blob;
+
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
 	}
-	
-	public byte[] getMedia() {
-		return media;
+
+	public Media toMedia() {
+		Media m = new Media(
+				this.getCreatedBy().toUser());
+		m.setCreatedDate(this.getCreatedDate());
+		m.setScope(getScope());
+		m.setUpdatedDate(this.getUpdatedDate());
+		return m;
 	}
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public Integer getVersion() {
-		return version;
-	}
-	public void setVersion(Integer version) {
-		this.version = version;
+
+	public void update(Media media) {
+		if (media.getScope() != null) {
+			this.setScope(media.getScope());
+		}
+		this.setUpdatedDate(updatedDate);
 	}
 }

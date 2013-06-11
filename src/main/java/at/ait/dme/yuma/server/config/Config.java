@@ -4,6 +4,7 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.model.Scope;
 import at.ait.dme.yuma.server.service.IACLService;
 import at.ait.dme.yuma.server.service.IAnnotationService;
+import at.ait.dme.yuma.server.service.IMediaService;
 import at.ait.dme.yuma.server.service.IGroupService;
 
 /**
@@ -22,8 +23,9 @@ public class Config {
 	
 	private IAnnotationService annotationService;
 	private IACLService aclService;
+	private IMediaService mediaService;
 	private IGroupService groupService;
-	
+
 	private Scope scopePolicy;
 	
 	private Config()  {}
@@ -76,6 +78,21 @@ public class Config {
 		this.aclService = aclService;
 	}
 	
+
+	/**
+	 * @return the mediaService
+	 */
+	public IMediaService getMediaService() {
+		return mediaService;
+	}
+
+	/**
+	 * @param mediaService the mediaService to set
+	 */
+	public void setMediaService(IMediaService mediaService) {
+		this.mediaService = mediaService;
+	}
+
 	public void setGroupService(IGroupService groupService) {
 		this.groupService = groupService;
 	}

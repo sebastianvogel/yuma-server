@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app>
+	<display-name>YUMA Annotation Server</display-name>
+	
+	<!-- Wicket Deployment Mode ('development' or  'deployment') -->
+
+	<context-param>
+         <param-name>configuration</param-name>
+         <param-value>development</param-value>
+	</context-param>
+	
+	<!-- RESTeasy configuration 
+	<context-param>
+		<param-name>resteasy.scan</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>resteasy.use.deployment.sensitive.factory</param-name>
+		<param-value>false</param-value>
+	</context-param>	
+	-->
+		
+	<!-- Filters, listeners, servlet mappings  -->
+			
+	<listener>
+		<!-- 
+		<listener-class>
+			org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
+		</listener-class>
+		-->
+       <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<filter>
+		<filter-name>wicket.pages</filter-name>
+ 		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+		<init-param>
+			<param-name>applicationClassName</param-name>
+			<param-value>at.ait.dme.yuma.server.gui.WicketApplication</param-value>
+ 		</init-param>
+ 	</filter>
+ 	
+	<filter-mapping>
+		<filter-name>wicket.pages</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<servlet>
+		<servlet-name>rest.api</servlet-name>
+		<!-- <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>-->
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+    	<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>rest.api</servlet-name>
+		<url-pattern>/api/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 
+	<servlet>
+		<servlet-name>feeds</servlet-name>
+		<servlet-class>
+			org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
+		</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>feeds</servlet-name>
+		<url-pattern>/feeds/*</url-pattern>
+	</servlet-mapping>
+	-->
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name></web-resource-name>
+			<url-pattern>/api/annotation/*</url-pattern>
+			<url-pattern>/api/media/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+			<http-method>PUT</http-method>
+			<http-method>DELETE</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>yumanji-user</role-name>
+		</auth-constraint>
+
+		<user-data-constraint>
+			<!-- transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	
+	<security-role>
+		<role-name>yumanji-user</role-name>
+	</security-role>
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+</web-app>
