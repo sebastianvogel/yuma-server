@@ -34,7 +34,7 @@
    <bean id="config" class="at.ait.dme.yuma.server.config.Config" factory-method="getInstance">
    		<property name="annotationService" ref="annotationService" />
    		<property name="aclService" ref="aclService" />
-   		<property name="mediaObjectService" ref="mediaObjectService" />
+   		<property name="mediaService" ref="mediaService" />
    		<property name="serverBaseUrl" value="http://service.tequnix.org/yumanji/"/>
    		<property name="adminUsername" value="admin"/>
    		<property name="adminPassword" value="admin"/>

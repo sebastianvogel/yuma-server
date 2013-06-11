@@ -20,7 +20,7 @@ public interface IMediaDAO {
 			MediaContentVersion mediaContent);
 
 	public MediaContentVersionEntity findMediaContentVersion(Long mediaId,
-			Long version);
+			Long version) throws MediaNotFoundException;
 	
 	/*
 	public List<MediaEntity> findMediaForUser(UserEntity user);

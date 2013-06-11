@@ -119,7 +119,7 @@ public class MediaContentVersionEntity {
 		this.filename = filename;
 	}
 
-	public MediaContentVersion toMediaObjectContent() {
+	public MediaContentVersion toMediaContentVersion() {
 		MediaContentVersion mc = new MediaContentVersion(
 				getVersion(), 
 				getMediaEntity().toMedia(), 

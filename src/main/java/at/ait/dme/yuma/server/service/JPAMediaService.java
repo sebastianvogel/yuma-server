@@ -80,7 +80,7 @@ public class JPAMediaService implements IMediaService {
 		if (!owner.getAuthContext().equals(auth)) {
 			throw new PermissionDeniedException();
 		}
-		return mediaDao.createMediaContentVersion(mediaEntity, mediaContent).toMediaObjectContent().getUri(true);
+		return mediaDao.createMediaContentVersion(mediaEntity, mediaContent).toMediaContentVersion().getUri(true);
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class JPAMediaService implements IMediaService {
 	@Override
 	public MediaContentVersion findMediaContentVersion(Long mediaId,
 			Long version) throws MediaNotFoundException {
-		return mediaDao.findMediaContentVersion(mediaId, version).toMediaObjectContent();
+		return mediaDao.findMediaContentVersion(mediaId, version).toMediaContentVersion();
 	}
 
 	@Override

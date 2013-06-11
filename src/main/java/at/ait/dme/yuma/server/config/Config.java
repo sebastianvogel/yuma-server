@@ -89,7 +89,7 @@ public class Config {
 	/**
 	 * @param mediaService the mediaService to set
 	 */
-	public void setMediaObjectService(IMediaService mediaService) {
+	public void setMediaService(IMediaService mediaService) {
 		this.mediaService = mediaService;
 	}
 

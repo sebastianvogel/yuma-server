@@ -79,9 +79,12 @@ public class MediaDAO implements IMediaDAO {
 	
 
 	@Override
-	public MediaContentVersionEntity findMediaContentVersion(Long mediaId, Long version) {
-		// TODO use named query
-		return null;
+	public MediaContentVersionEntity findMediaContentVersion(Long mediaId, Long version) throws MediaNotFoundException {
+		MediaContentVersionEntity mcve = em.find(MediaContentVersionEntity.class, version);
+		if(mcve == null || !mcve.getMediaEntity().getId().equals(mediaId)){
+			throw new MediaNotFoundException();
+		}
+		return mcve;
 	}
 	
 	@Override
@@ -117,7 +120,7 @@ public class MediaDAO implements IMediaDAO {
 	public List<URI> toMediaContentUris(List<MediaContentVersionEntity> mediaContentVersionEntities, boolean relative) {
 		List<URI> uris = new ArrayList<URI>();
 		for(MediaContentVersionEntity e: mediaContentVersionEntities) {
-			uris.add(e.toMediaObjectContent().getUri(relative));
+			uris.add(e.toMediaContentVersion().getUri(relative));
 		}
 		return uris;
 	}
