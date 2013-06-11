@@ -37,6 +37,10 @@ public class MediaContentVersionEntity {
 	@Lob
 	private byte[] content;
 
+	public MediaContentVersionEntity() {
+		
+	}
+	
 	public MediaContentVersionEntity(MediaContentVersion mediaContent) {
 		this.setContent(mediaContent.getContent());
 		this.setMimeType(mediaContent.getMimeType());

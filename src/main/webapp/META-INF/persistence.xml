@@ -14,6 +14,7 @@
     	<class>at.ait.dme.yuma.server.db.entities.MediaContenVersionEntity</class>
     	<class>at.ait.dme.yuma.server.db.entities.AppClientEntity</class>
     	<class>at.ait.dme.yuma.server.db.entities.GroupEntity</class>
+    	<class>at.ait.dme.yuma.server.db.entities.SemanticRelationEntity</class>
     	<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
 		<properties>

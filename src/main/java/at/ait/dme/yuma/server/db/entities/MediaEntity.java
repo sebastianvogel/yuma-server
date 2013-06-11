@@ -44,6 +44,10 @@ public class MediaEntity implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
+	public MediaEntity() {
+		
+	}
+	
 	public MediaEntity(Media media) {
 		if (media.getScope() != null) {
 			this.setScope(Config.getInstance().getScopePolicy());
