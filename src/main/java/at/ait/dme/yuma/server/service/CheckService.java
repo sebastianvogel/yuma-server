@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import at.ait.dme.yuma.server.controller.AuthContext;
+import at.ait.dme.yuma.server.db.entities.UserEntity;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.ACL;
 import at.ait.dme.yuma.server.model.Group;
@@ -112,7 +113,7 @@ public class CheckService implements ICheckService {
 	 * @return
 	 */
 	private boolean hasPermission(ACL acl, PERMISSION_TYPE type, AuthContext auth) {
-		URI userURI = URIBuilder.toURI(auth.getUsername(), URISource.USER, true);
+		URI userURI = auth.toURI(true);
 		for (ACL.Entity entity : acl.entities()) {
 			
 			URI subject = entity.getSubject();

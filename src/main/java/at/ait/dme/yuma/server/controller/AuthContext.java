@@ -1,8 +1,11 @@
 package at.ait.dme.yuma.server.controller;
 
+import java.net.URI;
+
 import javax.servlet.http.HttpServletRequest;
 
 import at.ait.dme.yuma.server.config.Config;
+import at.ait.dme.yuma.server.db.entities.UserEntity;
 
 public class AuthContext {
 	
@@ -25,6 +28,10 @@ public class AuthContext {
 
 	public String getClient() {
 		return client;
+	}
+	
+	public URI toURI(boolean relative) {
+		return UserEntity.toUri(client, username, relative);
 	}
 	
 	@Override
