@@ -29,7 +29,8 @@ public class GroupController {
 	
 	@POST
 	@Path("{groupname}/{username}")
-	public Response addUserToGroup(@PathParam("groupname") String groupName, String username) throws PermissionDeniedException {
+	public Response addUserToGroup(@PathParam("groupname") String groupName, @PathParam("username") String username) 
+			throws PermissionDeniedException {
 		groupService.addToGroup(groupName, username, new AuthContext(request));
 		return Response.ok().build();
 	}
@@ -43,7 +44,8 @@ public class GroupController {
 	
 	@DELETE
 	@Path("{groupname}/{username}")
-	public Response removeUserFromGroup(@PathParam("groupname") String groupName, String username) throws PermissionDeniedException {
+	public Response removeUserFromGroup(@PathParam("groupname") String groupName,  @PathParam("username") String username) 
+			throws PermissionDeniedException {
 		groupService.removeFromGroup(groupName, username, new AuthContext(request));
 		return Response.ok().build();
 	}
