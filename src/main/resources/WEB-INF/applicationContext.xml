@@ -35,6 +35,7 @@
    		<property name="annotationService" ref="annotationService" />
    		<property name="aclService" ref="aclService" />
    		<property name="mediaService" ref="mediaService" />
+   		<property name="groupService" ref="groupService" />
    		<property name="serverBaseUrl" value="http://service.tequnix.org/yumanji/"/>
    		<property name="adminUsername" value="admin"/>
    		<property name="adminPassword" value="admin"/>
