@@ -42,6 +42,7 @@ import com.sun.jersey.multipart.FormDataParam;
  * @author Sebastian Vogel <s.vogel@gentics.com>
  * 
  */
+
 @Path("media")
 public class MediaController {
 
@@ -58,14 +59,15 @@ public class MediaController {
 	}
 
 	/**
-	 * get all {@link Media} objects created by a specific user
+	 * get all Media objects created by a specific user
 	 * 
+	 * <p>
 	 * <h5>Example:</h5>
 	 * 
 	 * <pre>
 	 * GET /yumanji/api/media?username=exampleuser HTTP/1.1
 	 * Host: service.tequnix.org
-	 * Authorization: Basic <CREDENTIALS>
+	 * Authorization: Basic &lt;CREDENTIALS&gt;
 	 * CheckPermissionsFor: another_exampleuser
 	 * </pre>
 	 * 
@@ -88,12 +90,14 @@ public class MediaController {
 	}
 
 	/**
-	 * create a new {@link Media} object, <br>
+	 * create a new Media object, <br>
+	 * 
 	 * the username passed in the "CheckPermissionsFor"-header will be used as
 	 * creator and owner<br>
 	 * you can also PUT an empty object, currently its only possible to set the
 	 * scope property
 	 * 
+	 * <p>
 	 * <h5>Example:</h5>
 	 * 
 	 * <pre>
@@ -107,8 +111,8 @@ public class MediaController {
 	 * </pre>
 	 * 
 	 * @param media
-	 *            the {@link Media} object to create
-	 * @return the new {@link Media} object and will redirect to the URL of the Media
+	 *            the Media object to create
+	 * @return the new Media object and will redirect to the URL of the Media
 	 *         object
 	 * @throws IOException
 	 * @throws InvalidMediaException
@@ -125,19 +129,20 @@ public class MediaController {
 	}
 
 	/**
-	 * Get a {@link Media} object by ID
+	 * Get a Media object by ID
 	 * 
+	 * <p>
 	 * <h5>Example:</h5>
 	 * 
 	 * <pre>
 	 * GET /yumanji/api/media/17 HTTP/1.1
 	 * Host: service.tequnix.org
-	 * Authorization: Basic <CREDENTIALS>
+	 * Authorization: Basic &lt;CREDENTIALS&gt;
 	 * CheckPermissionsFor: another_exampleuser
 	 * </pre>
 	 * 
-	 * @param id the id of the {@link Media} object
-	 * @return the {@link Media} 
+	 * @param id the id of the Media object
+	 * @return the Media 
 	 * @throws MediaNotFoundException
 	 * @throws PermissionDeniedException
 	 */
@@ -151,15 +156,17 @@ public class MediaController {
 	}
 
 	/**
-	 * updates a {@link Media} object <br>
+	 * updates a Media object <br>
+	 * 
 	 * currently its only possible to change the scope property
 	 * 
+	 * <p>
 	 * <h5>Example:</h5>
 	 * 
 	 * <pre>
 	 * POST /yumanji/api/media/17 HTTP/1.1
 	 * Host: service.tequnix.org
-	 * Authorization: Basic <CREDENTIALS>
+	 * Authorization: Basic &lt;CREDENTIALS&gt;
 	 * CheckPermissionsFor: exampleuser
 	 * Content-Type: application/json
 	 * 
@@ -186,17 +193,18 @@ public class MediaController {
 	}
 
 	/**
-	 * create a new {@link MediaContentVersion}<br>
-	 * use this to create an actual content for your {@link Media}!<br>
+	 * create a new MediaContentVersion<br>
+	 * 
+	 * use this to create an actual content for your Media!<br>
 	 * to upload the file use the multipart/form-data content-type
 	 * 
-	 * 
+	 * <p>
 	 * <h5>Example:</h5>
 	 * 
 	 * <pre>
 	 * PUT /yumanji/api/media/ HTTP/1.1
 	 * Host: service.tequnix.org
-	 * Authorization: Basic <CREDENTIALS>
+	 * Authorization: Basic &lt;CREDENTIALS&gt;
 	 * CheckPermissionsFor: exampleuser
 	 * Content-Type: multipart/form-data; boundary=----WebKitFormBoundarysKBwBxXzKvp8rA98
 	 * 
@@ -207,11 +215,11 @@ public class MediaController {
 	 * ------WebKitFormBoundarysKBwBxXzKvp8rA98--
 	 * </pre>
 	 * 
-	 * @param mediaId the id of the {@link Media}
+	 * @param mediaId the id of the Media
 	 * @param inputStream the file to upload file-part (provided by jersey)
 	 * @param fileInfo the content-disposition file-part (provided by jersey)
 	 * @param body the body of the file-part (provided by jersey)
-	 * @return the created {@link MediaContentVersion}
+	 * @return the created MediaContentVersion
 	 * @throws IOException
 	 * @throws MediaNotFoundException
 	 * @throws PermissionDeniedException
@@ -235,13 +243,14 @@ public class MediaController {
 	}
 
 	/**
-	 * Get the URIs of all {@link MediaContentVersion}s for a {@link Media} 
+	 * Get the URIs of all MediaContentVersions for a Media 
 	 * 
+	 * <p>
 	 * <h5>Example:</h5>
 	 * <pre>
 	 * GET /yumanji/api/media/17/content HTTP/1.1
 	 * Host: service.tequnix.org
-	 * Authorization: Basic <CREDENTIALS>
+	 * Authorization: Basic &lt;CREDENTIALS&gt;
 	 * CheckPermissionsFor: another_exampleuser
 	 * </pre>
 	 * 
@@ -268,14 +277,15 @@ public class MediaController {
 		return Response.ok().entity(resultList).build();
 	}
 	/**
-	 * returns the saved Metadata for {@link MediaContentVersion}
+	 * returns the saved Metadata for MediaContentVersion
 	 * 
+	 * <p>
 	 * <h5>Example:</h5>
 	 * 
 	 * <pre>
 	 * GET /yumanji/api/media/17/content/7 HTTP/1.1
 	 * Host: service.tequnix.org
-	 * Authorization: Basic <CREDENTIALS>
+	 * Authorization: Basic &lt;CREDENTIALS&gt;
 	 * </pre>
 	 * 
 	 * @param mediaId the Media id
@@ -297,13 +307,14 @@ public class MediaController {
 	}
 
 	/**
-	 * gets the actual file content of a {@link Media} 
+	 * gets the actual file content of a Media 
 	 * 
+	 * <p>
 	 * <h5>Example:</h5>
 	 * <pre>
 	 * GET /yumanji/api/media/17/content/7/Test+File.pdf HTTP/1.1
 	 * Host: service.tequnix.org
-	 * Authorization: Basic <CREDENTIALS>
+	 * Authorization: Basic &lt;CREDENTIALS&gt;
 	 * </pre>
 	 * 
 	 * the Content-Type Header of the response will be set depending
