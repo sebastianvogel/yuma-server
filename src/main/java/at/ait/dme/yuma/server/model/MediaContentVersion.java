@@ -1,7 +1,9 @@
 package at.ait.dme.yuma.server.model;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.Date;
 
 import at.ait.dme.yuma.server.util.URIBuilder;
@@ -133,10 +135,18 @@ public class MediaContentVersion implements Serializable{
 		this.fileName = filename;
 	}
 
-	public URI getUri(boolean relative) {
-		return URIBuilder.toURI(getMedia().getId().toString() + "/content/"
-				+ getVersion().toString() + "/" + getFileName(),
-				URISource.MEDIA, relative);
+	public URI getUri(boolean relative, boolean withFilename) {
+		String base = getMedia().getId().toString() + "/content/"
+				+ getVersion().toString();
+		if(withFilename) {
+			try	{
+				base += "/" + URLEncoder.encode(getFileName(), "UTF-8");
+			} catch (UnsupportedEncodingException e)  {
+				// this should not happen!
+			}
+			
+		}
+		return URIBuilder.toURI(base, URISource.MEDIA, relative);
 	}
 	
 }

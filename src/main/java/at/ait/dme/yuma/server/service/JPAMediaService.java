@@ -37,6 +37,9 @@ public class JPAMediaService implements IMediaService {
 	
 	@Autowired
 	IMediaDAO mediaDao;
+	
+	@Autowired
+	ICheckService checkService;
 
 	@Override
 	public Media createMedia(Media media, AuthContext auth) throws InvalidMediaException {
@@ -57,7 +60,7 @@ public class JPAMediaService implements IMediaService {
 			throw new PermissionDeniedException();
 		}
 		mediaEntity.update(media);
-		em.persist(mediaEntity);
+		em.merge(mediaEntity);
 		return mediaEntity.toMedia();
 	}
 
@@ -72,7 +75,7 @@ public class JPAMediaService implements IMediaService {
 	}
 
 	@Override
-	public URI createMediaContentVersion(Long mediaId,
+	public MediaContentVersion createMediaContentVersion(Long mediaId,
 			MediaContentVersion mediaContent, AuthContext auth)
 			throws MediaNotFoundException, PermissionDeniedException {
 		MediaEntity mediaEntity = mediaDao.findMedia(mediaId);
@@ -80,30 +83,40 @@ public class JPAMediaService implements IMediaService {
 		if (!owner.getAuthContext().equals(auth)) {
 			throw new PermissionDeniedException();
 		}
-		return mediaDao.createMediaContentVersion(mediaEntity, mediaContent).toMediaContentVersion().getUri(true);
+		return mediaDao.createMediaContentVersion(mediaEntity, mediaContent).toMediaContentVersion();
 	}
 
 	@Override
-	public Media findMedia(Long id)
-			throws MediaNotFoundException {
+	public Media findMedia(Long id, AuthContext auth)
+			throws MediaNotFoundException, PermissionDeniedException {
 		MediaEntity mediaEntity = mediaDao.findMedia(id);
-		if (mediaEntity.getCreatedBy() != null) {
+		if (mediaEntity == null) {
 			throw new MediaNotFoundException();
+		}
+		if (!checkService.hasReadPermission(auth, mediaEntity.toMedia())) {
+			throw new PermissionDeniedException(); 
 		}
 		return mediaEntity.toMedia();
 	}
 
 	@Override
 	public MediaContentVersion findMediaContentVersion(Long mediaId,
-			Long version) throws MediaNotFoundException {
-		return mediaDao.findMediaContentVersion(mediaId, version).toMediaContentVersion();
+			Long version, AuthContext auth) throws MediaNotFoundException, PermissionDeniedException {
+		MediaContentVersion mediaContent = mediaDao.findMediaContentVersion(mediaId, version).toMediaContentVersion();
+		if(!checkService.hasReadPermission(auth, mediaContent.getMedia())) {
+			throw new PermissionDeniedException();
+		}
+		return mediaContent;
 	}
 
 	@Override
 	public List<URI> findMediaContentVersionsByMedia(
-			Long mediaId, boolean relative) throws MediaNotFoundException {
+			Long mediaId, boolean relative, AuthContext auth) throws MediaNotFoundException, PermissionDeniedException {
 		List<URI> results = new ArrayList<URI>();
 		MediaEntity mediaEntity = mediaDao.findMedia(mediaId);
+		if(!checkService.hasReadPermission(auth, mediaEntity.toMedia())) {
+			throw new PermissionDeniedException();
+		}
 		List<String> mediaContentList = mediaDao.getMediaContentList(mediaEntity);
 		for(String e: mediaContentList) {
 			results.add(URIBuilder.toURI(mediaEntity.getId().toString() + "/content/" + e, URISource.MEDIA, relative));

@@ -24,12 +24,12 @@ public interface IMediaService {
 	
 	public List<Media> findMediaByUsers(String username, AuthContext auth) throws PermissionDeniedException;
 
-	public URI createMediaContentVersion(Long mediaId,
+	public MediaContentVersion createMediaContentVersion(Long mediaId,
 			MediaContentVersion mediaContent, AuthContext auth) throws MediaNotFoundException, PermissionDeniedException;
 	
-	public Media findMedia(Long id) throws MediaNotFoundException;
+	public Media findMedia(Long id, AuthContext auth) throws MediaNotFoundException, PermissionDeniedException;
 	
-	public MediaContentVersion findMediaContentVersion(Long mediaId, Long version) throws MediaNotFoundException;
+	public MediaContentVersion findMediaContentVersion(Long mediaId, Long version, AuthContext auth) throws MediaNotFoundException, PermissionDeniedException;
 	
-	public List<URI> findMediaContentVersionsByMedia(Long mediaId, boolean relative) throws MediaNotFoundException;
+	public List<URI> findMediaContentVersionsByMedia(Long mediaId, boolean relative, AuthContext auth) throws MediaNotFoundException, PermissionDeniedException;
 }

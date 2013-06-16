@@ -407,9 +407,9 @@
 		<wicket.version>1.4.14</wicket.version>
 	</properties>
 	<scm>
-		<url>https://github.com/sebastianvogel/yuma-server</url>
-		<connection>git://github.com:sebastianvogel/yuma-server.git</connection>
-		<developerConnection>git://github.com:sebastianvogel/yuma-server.git</developerConnection>
+		<url>scm:https://github.com/sebastianvogel/yuma-server</url>
+		<connection>scm:git://github.com:sebastianvogel/yuma-server.git</connection>
+		<developerConnection>scm:git://github.com:sebastianvogel/yuma-server.git</developerConnection>
 	</scm>
 	<ciManagement>
 		<system>Hudson</system>

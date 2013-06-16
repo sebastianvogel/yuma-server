@@ -1,6 +1,8 @@
 package at.ait.dme.yuma.server.db;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -96,11 +98,16 @@ public class MediaDAO implements IMediaDAO {
 		cq.multiselect(root.get("version"), root.get("filename"));
 		cq.where(cb.equal(root.get("mediaEntity"), mediaEntity));
 		List<Tuple> tupleResult = em.createQuery(cq).getResultList();
-		for(Tuple e: tupleResult) {
-			Long version = (Long) e.get(0);
-			String filename = (String) e.get(1);
-			result.add(version.toString() + "/" + filename);
+		try {
+			for(Tuple e: tupleResult) {
+				Long version = (Long) e.get(0);
+				String filename = (String) e.get(1);
+				result.add(version.toString() + "/" + URLEncoder.encode(filename, "UTF-8"));
+			}
+		} catch (UnsupportedEncodingException e) {
+			// this should not happen!!
 		}
+		
 		return result;
 	}
 	
@@ -120,7 +127,7 @@ public class MediaDAO implements IMediaDAO {
 	public List<URI> toMediaContentUris(List<MediaContentVersionEntity> mediaContentVersionEntities, boolean relative) {
 		List<URI> uris = new ArrayList<URI>();
 		for(MediaContentVersionEntity e: mediaContentVersionEntities) {
-			uris.add(e.toMediaContentVersion().getUri(relative));
+			uris.add(e.toMediaContentVersion().getUri(relative, true));
 		}
 		return uris;
 	}
