@@ -67,10 +67,12 @@ public class JPAGroupService implements IGroupService {
 		UserEntity user = userDao.getUser(new User(auth.getUsername()), appClient);
 		GroupEntity group = authorize(groupName, auth);
 		if (group==null) {
-			group = groupDao.createGroup(username, user);
+			group = groupDao.createGroup(groupName, user);
 		}
-		if (!group.hasMember(user)) {
-			group.addMember(user);
+		
+		UserEntity userToAdd = userDao.getUser(new User(username), appClient);
+		if (!group.hasMember(userToAdd)) {
+			group.addMember(userToAdd);
 		}
 	}
 
@@ -78,13 +80,14 @@ public class JPAGroupService implements IGroupService {
 	@Override
 	public void removeFromGroup(String groupName, String username, AuthContext auth) throws PermissionDeniedException {
 		AppClientEntity appClient = appClientDAO.getAppClient(auth.getClient());
-		UserEntity user = userDao.getUser(new User(auth.getUsername()), appClient);
 		GroupEntity group = authorize(groupName, auth);
 		if (group==null) {
-			group = groupDao.createGroup(username, user);
+			return;
 		}
-		if (group.hasMember(user)) {
-			group.removeMember(user);
+		
+		UserEntity userToAdd = userDao.getUser(new User(username), appClient);
+		if (group.hasMember(userToAdd)) {
+			group.removeMember(userToAdd);
 		}
 	}
 
@@ -92,7 +95,9 @@ public class JPAGroupService implements IGroupService {
 	@Override
 	public void deleteGroup(String groupName, AuthContext auth) throws PermissionDeniedException {
 		GroupEntity group = authorize(groupName, auth);
-		groupDao.delete(group);
+		if (group!=null) {
+			groupDao.delete(group);
+		}
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 package at.ait.dme.yuma.server.db.entities;
 
+import java.net.URI;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -84,8 +85,12 @@ public class UserEntity {
 	}
 
 	public String getUri() {
-		String identifier = getAppClient().getClientToken().concat("/").concat(getUsername());
-		return URIBuilder.toURI(identifier, URISource.USER, false).toString();
+		return toUri(getAppClient().getClientToken(), getUsername(), false).toString();
+	}
+	
+	public static URI toUri(String clientToken, String username, boolean relative) {
+		String identifier = clientToken.concat("/").concat(username);
+		return URIBuilder.toURI(identifier, URISource.USER, relative);
 	}
 
 	public AppClientEntity getAppClient() {
