@@ -73,24 +73,7 @@
 					<wtpversion>2.0</wtpversion>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.4</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>javadoc</goal>
-						</goals>
-						<phase>${javadoc-phase}</phase>
-					</execution>
-				</executions>
-				<configuration>
-					<encoding>UTF-8</encoding>
-					<verbose>false</verbose>
-					<show>public</show>
-				</configuration>
-			</plugin>
+			
 			<plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <!-- run "mvn hibernate3:hbm2ddl" to generate a schema -->

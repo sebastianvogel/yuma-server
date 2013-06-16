@@ -60,7 +60,7 @@ public class MediaController {
 	/**
 	 * get all {@link Media} objects created by a specific user
 	 * 
-	 * <h4>Example:</h4>
+	 * <h5>Example:</h5>
 	 * 
 	 * <pre>
 	 * GET /yumanji/api/media?username=exampleuser HTTP/1.1
@@ -94,12 +94,12 @@ public class MediaController {
 	 * you can also PUT an empty object, currently its only possible to set the
 	 * scope property
 	 * 
-	 * <h4>Example:</h4>
+	 * <h5>Example:</h5>
 	 * 
 	 * <pre>
 	 * PUT /yumanji/api/media/ HTTP/1.1
 	 * Host: service.tequnix.org
-	 * Authorization: Basic <CREDENTIALS>
+	 * Authorization: Basic &lt;CREDENTIALS&gt;
 	 * CheckPermissionsFor: exampleuser
 	 * Content-Type: application/json
 	 * 
@@ -127,7 +127,7 @@ public class MediaController {
 	/**
 	 * Get a {@link Media} object by ID
 	 * 
-	 * <h4>Example</h4>
+	 * <h5>Example:</h5>
 	 * 
 	 * <pre>
 	 * GET /yumanji/api/media/17 HTTP/1.1
@@ -154,7 +154,7 @@ public class MediaController {
 	 * updates a {@link Media} object <br>
 	 * currently its only possible to change the scope property
 	 * 
-	 * <h4>Example:</h4>
+	 * <h5>Example:</h5>
 	 * 
 	 * <pre>
 	 * POST /yumanji/api/media/17 HTTP/1.1
@@ -191,7 +191,7 @@ public class MediaController {
 	 * to upload the file use the multipart/form-data content-type
 	 * 
 	 * 
-	 * <h4>Example:</h4>
+	 * <h5>Example:</h5>
 	 * 
 	 * <pre>
 	 * PUT /yumanji/api/media/ HTTP/1.1
@@ -237,7 +237,7 @@ public class MediaController {
 	/**
 	 * Get the URIs of all {@link MediaContentVersion}s for a {@link Media} 
 	 * 
-	 * <h4>Example:</h4>
+	 * <h5>Example:</h5>
 	 * <pre>
 	 * GET /yumanji/api/media/17/content HTTP/1.1
 	 * Host: service.tequnix.org
@@ -245,7 +245,7 @@ public class MediaController {
 	 * CheckPermissionsFor: another_exampleuser
 	 * </pre>
 	 * 
-	 * <h4>Example Response:</h4>
+	 * <h5>Example Response:</h5>
 	 * <pre>
 	 * [
 	 * 	"http://service.tequnix.org/yumanji/api/media/17/content/7/Test+File.pdf",
@@ -270,7 +270,7 @@ public class MediaController {
 	/**
 	 * returns the saved Metadata for {@link MediaContentVersion}
 	 * 
-	 * <h4>Example</h4>
+	 * <h5>Example:</h5>
 	 * 
 	 * <pre>
 	 * GET /yumanji/api/media/17/content/7 HTTP/1.1
@@ -299,7 +299,7 @@ public class MediaController {
 	/**
 	 * gets the actual file content of a {@link Media} 
 	 * 
-	 * <h4>Example:</h4>
+	 * <h5>Example:</h5>
 	 * <pre>
 	 * GET /yumanji/api/media/17/content/7/Test+File.pdf HTTP/1.1
 	 * Host: service.tequnix.org
