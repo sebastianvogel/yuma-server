@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import at.ait.dme.yuma.server.config.Config;
@@ -23,6 +24,8 @@ import at.ait.dme.yuma.server.model.Scope;
  */
 @Entity
 @Table(name="media")
+@NamedQuery(name = "media.findForUser",
+			query = "select m from MediaEntity m where m.createdBy = :user")
 public class MediaEntity implements Serializable {
 	
 	@Id
@@ -53,6 +56,7 @@ public class MediaEntity implements Serializable {
 			this.setScope(Config.getInstance().getScopePolicy());
 		}
 		this.setCreatedDate(new Date());
+		this.setUpdatedDate(this.getCreatedDate());
 	}
 	
 	public Date getCreatedDate() {
@@ -109,6 +113,7 @@ public class MediaEntity implements Serializable {
 	public Media toMedia() {
 		Media m = new Media(
 				this.getCreatedBy().toUser());
+		m.setId(this.getId());
 		m.setCreatedDate(this.getCreatedDate());
 		m.setScope(getScope());
 		m.setUpdatedDate(this.getUpdatedDate());

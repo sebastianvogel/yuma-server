@@ -13,6 +13,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -46,7 +48,8 @@ public class MediaController {
 	}
 	
 	@GET
-	public Response getMediaForUser(String username) throws MediaNotFoundException, PermissionDeniedException {
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getMediaForUser(@QueryParam("username") String username) throws MediaNotFoundException, PermissionDeniedException {
 		if (username == null) {
 			throw new MediaNotFoundException("No username provided");
 		}
@@ -55,12 +58,14 @@ public class MediaController {
 	}
 	
 	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createMediaObject(Media media) throws IOException, InvalidMediaException {
 		Media me = mediaService.createMedia(media, new AuthContext(request));
 		return Response.ok().entity(me).build();
 	}
 	
-	@POST
+	@POST	
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("{id}")
 	public Response updateMediaObject(Media media) throws MediaNotFoundException, PermissionDeniedException {
 		Media me = mediaService.updateMedia(media, new AuthContext(request));
@@ -84,6 +89,24 @@ public class MediaController {
 		return Response.ok().entity(uri).build();
 	}
 	
+	/*
+	 @PUT
+	@Path("{id}/content")
+	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
+	public Response createMediaContentVersion(
+			@PathParam("id") Long mediaId,
+			byte[] file) throws IOException, MediaNotFoundException, PermissionDeniedException {
+		String mimeType = request.getContentType();
+		String fileName = request.getLocalName();
+		byte[] content = file;
+		URI uri = mediaService.createMediaContentVersion(
+				mediaId, 
+				new MediaContentVersion(mimeType, fileName, content),
+				new AuthContext(request));
+		return Response.ok().entity(uri).build();
+	}
+	 
+	 * */
 
 	@GET
 	@Path("{id}/content")

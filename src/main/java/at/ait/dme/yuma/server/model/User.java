@@ -19,6 +19,10 @@ public class User implements Serializable {
 	
 	private String client;
 	
+	public User() {
+		
+	}
+	
 	public User(String username) {
 		this.username = username;
 	}

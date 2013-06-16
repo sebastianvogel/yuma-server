@@ -22,6 +22,10 @@ public class Media implements Serializable, IOwnable {
 	
 	private Scope scope = null;
 	
+	public Media() {
+		
+	}
+	
 	public Media(User createdBy) {
 		this.createdBy = createdBy;
 		this.setScope(Config.getInstance().getScopePolicy());
