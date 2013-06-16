@@ -3,6 +3,7 @@ package at.ait.dme.yuma.server.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ import at.ait.dme.yuma.server.model.MediaContentVersion;
 import at.ait.dme.yuma.server.service.IMediaService;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataParam;
 
 @Path("media")
@@ -66,6 +68,7 @@ public class MediaController {
 	
 	@POST	
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
 	public Response updateMediaObject(Media media) throws MediaNotFoundException, PermissionDeniedException {
 		Media me = mediaService.updateMedia(media, new AuthContext(request));
@@ -78,38 +81,21 @@ public class MediaController {
 	public Response createMediaContentVersion(
 			@PathParam("id") Long mediaId,
 			@FormDataParam("file") InputStream inputStream,
-			@FormDataParam("file") FormDataContentDisposition fileInfo) throws IOException, MediaNotFoundException, PermissionDeniedException {
-		String mimeType = fileInfo.getType();
+			@FormDataParam("file") FormDataContentDisposition fileInfo,
+			@FormDataParam("file") FormDataBodyPart body) throws IOException, MediaNotFoundException, PermissionDeniedException {
+		String mimeType = body.getMediaType().toString();
 		String fileName = fileInfo.getFileName();
 		byte[] content = IOUtils.toByteArray(inputStream);
 		URI uri = mediaService.createMediaContentVersion(
 				mediaId, 
 				new MediaContentVersion(mimeType, fileName, content),
 				new AuthContext(request));
-		return Response.ok().entity(uri).build();
+		return Response.ok().entity(uri.toString()).build();
 	}
 	
-	/*
-	 @PUT
-	@Path("{id}/content")
-	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
-	public Response createMediaContentVersion(
-			@PathParam("id") Long mediaId,
-			byte[] file) throws IOException, MediaNotFoundException, PermissionDeniedException {
-		String mimeType = request.getContentType();
-		String fileName = request.getLocalName();
-		byte[] content = file;
-		URI uri = mediaService.createMediaContentVersion(
-				mediaId, 
-				new MediaContentVersion(mimeType, fileName, content),
-				new AuthContext(request));
-		return Response.ok().entity(uri).build();
-	}
-	 
-	 * */
-
 	@GET
 	@Path("{id}/content")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response listMediaContentVersionUris(@PathParam("id") Long mediaId) throws MediaNotFoundException {
 		List<URI> resultList = mediaService.findMediaContentVersionsByMedia(mediaId, true);
 		return Response.ok().entity(resultList).build();

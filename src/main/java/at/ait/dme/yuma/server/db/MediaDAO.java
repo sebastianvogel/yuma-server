@@ -73,7 +73,7 @@ public class MediaDAO implements IMediaDAO {
 		mediaContentVersionEntity.setCreatedDate(new Date());
 		mediaEntity.setUpdatedDate(new Date());
 		em.persist(mediaContentVersionEntity);
-		em.persist(mediaEntity);
+		em.merge(mediaEntity);
 		return mediaContentVersionEntity;
 	}
 	

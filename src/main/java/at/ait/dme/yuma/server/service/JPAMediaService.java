@@ -108,7 +108,7 @@ public class JPAMediaService implements IMediaService {
 		for(String e: mediaContentList) {
 			results.add(URIBuilder.toURI(mediaEntity.getId().toString() + "/content/" + e, URISource.MEDIA, relative));
 		}
-		return null;
+		return results;
 	}
 
 	private UserEntity retrieveUserEntity(String username, AuthContext auth) {

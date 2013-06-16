@@ -44,6 +44,7 @@ public class MediaContentVersionEntity {
 	public MediaContentVersionEntity(MediaContentVersion mediaContent) {
 		this.setContent(mediaContent.getContent());
 		this.setMimeType(mediaContent.getMimeType());
+		this.setFilename(mediaContent.getFileName());
 	}
 
 	/**
