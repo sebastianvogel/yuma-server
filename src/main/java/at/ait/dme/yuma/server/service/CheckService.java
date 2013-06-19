@@ -88,6 +88,10 @@ public class CheckService implements ICheckService {
 		}
 		
 		User owner = ownable.getCreatedBy();
+		if (owner.getClient()==null) {
+			//if we do not have a client, set given client:
+			owner.setClient(auth.getClient());
+		}
 		
 		//owner always may create annotations:
 		if (owner.getAuthContext().equals(auth)) {
