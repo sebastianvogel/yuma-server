@@ -202,17 +202,17 @@ public class MediaController {
 	 * <h5>Example:</h5>
 	 * 
 	 * <pre>
-	 * PUT /yumanji/api/media/ HTTP/1.1
+	 * PUT /yumanji/api/media/17/content HTTP/1.1
 	 * Host: service.tequnix.org
 	 * Authorization: Basic &lt;CREDENTIALS&gt;
 	 * CheckPermissionsFor: exampleuser
-	 * Content-Type: multipart/form-data; boundary=----WebKitFormBoundarysKBwBxXzKvp8rA98
+	 * Content-Type: multipart/form-data; boundary=----ExampleBoundarysKBwBxXzKvp8rA98
 	 * 
-	 * ------WebKitFormBoundarysKBwBxXzKvp8rA98
+	 * ------ExampleBoundarysKBwBxXzKvp8rA98
 	 * Content-Disposition: form-data; name="file"; filename="Test File.pdf"
 	 * Content-Type: application/pdf
 	 * 
-	 * ------WebKitFormBoundarysKBwBxXzKvp8rA98--
+	 * ------ExampleBoundarysKBwBxXzKvp8rA98--
 	 * </pre>
 	 * 
 	 * @param mediaId the id of the Media
