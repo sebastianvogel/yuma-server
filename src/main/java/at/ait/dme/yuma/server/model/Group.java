@@ -1,11 +1,14 @@
 package at.ait.dme.yuma.server.model;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.util.List;
 
 import at.ait.dme.yuma.server.util.URIBuilder;
 
-public class Group implements IOwnable {
+public class Group implements Serializable, IOwnable {
+	
+	private static final long serialVersionUID = 3401085022089424952L;
 	
 	String name;
 	User owner;

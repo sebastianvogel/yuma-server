@@ -2,6 +2,8 @@ package at.ait.dme.yuma.server.service;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,5 +126,18 @@ public class JPAGroupService implements IGroupService {
 			throw new PermissionDeniedException();			
 		}
 		return group;
+	}
+
+	@Override
+	public List<Group> getGroups(AuthContext auth) {
+		AppClientEntity appClient = appClientDAO.getAppClient(auth.getClient());
+		List<GroupEntity> groups = groupDao.getGroups(appClient);
+		List<Group> ret = new ArrayList<Group>();
+		if (groups!=null) {
+			for (GroupEntity ge : groups) {
+				ret.add(ge.toGroup());
+			}
+		}
+		return ret;
 	}
 }

@@ -1,6 +1,7 @@
 package at.ait.dme.yuma.server.db;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -10,6 +11,7 @@ import javax.persistence.TypedQuery;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import at.ait.dme.yuma.server.db.entities.AppClientEntity;
 import at.ait.dme.yuma.server.db.entities.GroupEntity;
 import at.ait.dme.yuma.server.db.entities.UserEntity;
 
@@ -60,9 +62,16 @@ public class GroupDAO implements IGroupDAO {
 
 	@Override
 	public void delete(GroupEntity group) {
-		if (group!=null) {
+		if (group==null) {
 			return;
 		}
-		em.remove(group);		
+		em.remove(group);
+	}
+
+	@Override
+	public List<GroupEntity> getGroups(AppClientEntity appClient) {
+		TypedQuery<GroupEntity> query = em.createNamedQuery("group.get", GroupEntity.class);
+		query.setParameter("appClient", appClient);
+		return query.getResultList();
 	}
 }

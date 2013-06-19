@@ -5,14 +5,13 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import at.ait.dme.yuma.server.config.Config;
 import at.ait.dme.yuma.server.controller.AuthContext;
-import at.ait.dme.yuma.server.db.entities.UserEntity;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.model.ACL;
 import at.ait.dme.yuma.server.model.Group;
 import at.ait.dme.yuma.server.model.IOwnable;
 import at.ait.dme.yuma.server.model.Scope;
-import at.ait.dme.yuma.server.model.URISource;
 import at.ait.dme.yuma.server.model.User;
 import at.ait.dme.yuma.server.util.URIBuilder;
 
@@ -35,7 +34,11 @@ public class CheckService implements ICheckService {
 	 */
 	public boolean hasReadPermission(AuthContext auth, IOwnable ownable) {
 		Scope scope = ownable.getScope();
-		if (scope==null || scope==Scope.PUBLIC) {
+		if (scope==null) {
+			scope = Config.getInstance().getScopePolicy(); 
+		}
+		
+		if (scope==Scope.PUBLIC) {
 			return true;
 		}
 		
@@ -79,8 +82,8 @@ public class CheckService implements ICheckService {
 			return false;
 		}
 		
-		//check if annotation-target is public url:
-		if (!URIBuilder.isPublic(ownable.getURI(false))) {
+		//everybody may write to objects with an public url:
+		if (URIBuilder.isPublic(ownable.getURI(false))) {
 			return true;	
 		}
 		

@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -31,8 +32,13 @@ import at.ait.dme.yuma.server.model.User;
  */
 @Entity
 
+@NamedQueries({
 @NamedQuery(name = "group.find",
-	query = "select g from GroupEntity g where g.name = :name")
+	query = "select g from GroupEntity g where g.name = :name"), 
+
+@NamedQuery(name = "group.get",
+	query = "select g from GroupEntity g WHERE g.createdBy.appClient = :appClient")
+})
 
 @Table(name="usergroup", uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
 public class GroupEntity implements Serializable {
