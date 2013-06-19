@@ -13,6 +13,7 @@ import at.ait.dme.yuma.server.controller.AuthContext;
 import at.ait.dme.yuma.server.db.IAppClientDAO;
 import at.ait.dme.yuma.server.db.IMediaDAO;
 import at.ait.dme.yuma.server.db.IUserDAO;
+import at.ait.dme.yuma.server.db.entities.AppClientEntity;
 import at.ait.dme.yuma.server.db.entities.MediaEntity;
 import at.ait.dme.yuma.server.db.entities.UserEntity;
 import at.ait.dme.yuma.server.exception.InvalidMediaException;
@@ -40,15 +41,14 @@ public class JPAMediaService implements IMediaService {
 	
 	@Autowired
 	ICheckService checkService;
+	
 
 	@Override
 	public Media createMedia(Media media, AuthContext auth) throws InvalidMediaException {
-		UserEntity owner = retrieveUserEntity(auth.getUsername(), auth);
-		if (owner != null) {
-			return mediaDao.createMedia(media, owner).toMedia();
-		} else {
-			throw new InvalidMediaException("Cannot create media without a user");
-		}
+		//check if appClient exists:
+		AppClientEntity appClient = appClientDao.getAppClient(auth.getClient());
+		UserEntity owner = userDao.getUser(new User(auth.getUsername()), appClient);
+		return mediaDao.createMedia(media, owner).toMedia();
 	}
 
 	@Override
