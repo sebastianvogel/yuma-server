@@ -43,6 +43,14 @@ public class Group implements Serializable, IOwnable {
 	public void setMembers(List<User> members) {
 		this.members = members;
 	}
+	
+	public String getName()  {
+		return this.name;
+	}
+	
+	public List<User> getMembers() {
+		return this.members;
+	}
 
 	@Override
 	public Scope getScope() {

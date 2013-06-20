@@ -39,7 +39,13 @@ public class GroupController {
 	@GET
 	@Produces("application/json")
 	public Response getGroups() {
-		List<Group> resultList = groupService.getGroups(new AuthContext(request));		
+		List<Group> resultList = groupService.getGroups(new AuthContext(request));
+		/*
+		JSONArray array = new JSONArray();
+		for (Group g : resultList) {
+			array.add(g.getName());
+		}
+		*/
 		return Response.ok().entity(resultList).build();
 	}
 	
