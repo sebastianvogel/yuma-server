@@ -7,6 +7,7 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
+import at.ait.dme.yuma.server.exception.MediaNotFoundException;
 import at.ait.dme.yuma.server.exception.PermissionDeniedException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
@@ -77,6 +78,16 @@ public interface IAnnotationService {
 	 * @throws AnnotationDatabaseException if anything goes wrong
 	 */
 	 AnnotationTree findAnnotationsForObject(String objectUri, AuthContext auth) throws AnnotationDatabaseException;
+	 
+	 /**
+	  * Returns all annotations for given media id
+	  * @param mediaId
+	  * @param auth
+	  * @return
+	  * @throws AnnotationDatabaseException
+	  */
+	 AnnotationTree findAnnotationsForMedia(String mediaId, String version, AuthContext auth) 
+			 throws MediaNotFoundException, NumberFormatException, PermissionDeniedException;
 
 	/**
 	 * Retrieves the number of annotations for the given object

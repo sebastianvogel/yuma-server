@@ -23,6 +23,7 @@ import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
+import at.ait.dme.yuma.server.exception.MediaNotFoundException;
 import at.ait.dme.yuma.server.exception.PermissionDeniedException;
 
 /**
@@ -133,6 +134,16 @@ public class AnnotationController extends AbstractAnnotationController {
 		} catch (NotAPelagiosAnnotationException e) {
 			throw new AnnotationNotFoundException();
 		}
+	}
+	
+	@GET
+	@Produces("application/json")
+	@Path("media/{id}/{version}")
+	public Response getAnnotationsForMedia(@PathParam("id") String mediaId, @PathParam("version") String version)
+		throws AnnotationNotFoundException, UnsupportedEncodingException, 
+		NumberFormatException, MediaNotFoundException, PermissionDeniedException {
+		
+		return super.getAnnotationTreeForMedia(mediaId, version, new JSONFormatHandler());
 	}
 	
 	@GET

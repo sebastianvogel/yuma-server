@@ -1,5 +1,6 @@
 package at.ait.dme.yuma.server.service;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,9 +30,11 @@ import at.ait.dme.yuma.server.exception.AnnotationDatabaseException;
 import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
+import at.ait.dme.yuma.server.exception.MediaNotFoundException;
 import at.ait.dme.yuma.server.exception.PermissionDeniedException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
+import at.ait.dme.yuma.server.model.MediaContentVersion;
 import at.ait.dme.yuma.server.model.User;
 
 /**
@@ -57,6 +60,9 @@ public class JPAAnnotationService implements IAnnotationService {
 	
 	@Autowired
 	IAnnotationDAO annotationDAO;
+	
+	@Autowired
+	IMediaService mediaService;
 	
 	@Autowired
 	ICheckService checkService;
@@ -333,5 +339,17 @@ public class JPAAnnotationService implements IAnnotationService {
 				getChildren(all, children, a.getAnnotationId());
 			}
 		}
+	}
+
+	@Override
+	@Transactional(readOnly=true, propagation=Propagation.SUPPORTS)
+	public AnnotationTree findAnnotationsForMedia(String mediaId, String version, AuthContext auth) 
+			throws MediaNotFoundException, NumberFormatException, PermissionDeniedException {
+		
+		//find media:
+		MediaContentVersion media = 
+				mediaService.findMediaContentVersion(new Long(mediaId), new Long(version), auth);
+		URI uri = media.getUri(true, true);
+		return findAnnotationsForObject(uri.toString(), auth);
 	}
 }

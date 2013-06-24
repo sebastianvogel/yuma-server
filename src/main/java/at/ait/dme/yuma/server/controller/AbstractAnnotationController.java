@@ -17,6 +17,7 @@ import at.ait.dme.yuma.server.exception.AnnotationHasReplyException;
 import at.ait.dme.yuma.server.exception.AnnotationModifiedException;
 import at.ait.dme.yuma.server.exception.AnnotationNotFoundException;
 import at.ait.dme.yuma.server.exception.InvalidAnnotationException;
+import at.ait.dme.yuma.server.exception.MediaNotFoundException;
 import at.ait.dme.yuma.server.exception.PermissionDeniedException;
 import at.ait.dme.yuma.server.model.Annotation;
 import at.ait.dme.yuma.server.model.AnnotationTree;
@@ -179,6 +180,16 @@ public abstract class AbstractAnnotationController {
 				URLDecoder.decode(objectId, URL_ENCODING), new AuthContext(request));
 		String ret = tree==null ? null : format.serialize(tree);
 		return Response.ok().entity(ret).build();
+	}
+	
+	protected Response getAnnotationTreeForMedia(String mediaId, String version, FormatHandler format) 
+			throws NumberFormatException, UnsupportedEncodingException, 
+			       MediaNotFoundException, PermissionDeniedException {
+		
+			AnnotationTree tree = annotationService.findAnnotationsForMedia(
+					URLDecoder.decode(mediaId, URL_ENCODING), URLDecoder.decode(version, URL_ENCODING), new AuthContext(request));
+			String ret = tree==null ? null : format.serialize(tree);
+			return Response.ok().entity(ret).build();
 	}
 	
 	/**
