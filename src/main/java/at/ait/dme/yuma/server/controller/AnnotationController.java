@@ -10,6 +10,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import at.ait.dme.yuma.server.config.Config;
@@ -148,8 +149,8 @@ public class AnnotationController extends AbstractAnnotationController {
 	
 	@GET
 	@Produces("application/json")
-	@Path("tree/{objectUri}")
-	public Response getAnnotationTree(@PathParam("objectUri") String objectUri)
+	@Path("tree/")
+	public Response getAnnotationTree(@QueryParam("objectUri") String objectUri)
 		throws AnnotationDatabaseException, AnnotationNotFoundException, UnsupportedEncodingException {
 		
 		return super.getAnnotationTree(objectUri, new JSONFormatHandler());
