@@ -59,7 +59,7 @@ public class MediaController {
 	}
 
 	/**
-	 * get all Media objects created by a specific user
+	 * get all Media objects created by a specific user<br>
 	 * 
 	 * <p>
 	 * <h5>Example:</h5>
@@ -71,6 +71,13 @@ public class MediaController {
 	 * CheckPermissionsFor: another_exampleuser
 	 * </pre>
 	 * 
+ 	 * @HTTP 200 ok
+	 * @HTTP 404 MediaNotFoundException
+	 * @HTTP 403 PermissionDeniedException
+	 * @returnWrapped List&lt;Media&gt; the media objects for a given user
+	 * @inputWrapped Media
+	 * @RequestHeader CheckPermissionsFor check view permissions for the provided username
+ 	 *
 	 * @param username
 	 *            the username
 	 * @return a list of MediaObjects
@@ -110,11 +117,16 @@ public class MediaController {
 	 * {}
 	 * </pre>
 	 * 
+ 	 * @HTTP 200 ok
+	 * @HTTP 415 InvalidMediaException
+	 * @returnWrapped Media the created Media object
+	 * @inputWrapped Media
+	 * @RequestHeader CheckPermissionsFor create media for the provided username
+ 	 *
 	 * @param media
 	 *            the Media object to create
 	 * @return the new Media object and will redirect to the URL of the Media
 	 *         object
-	 * @throws IOException
 	 * @throws InvalidMediaException
 	 */
 	@PUT
@@ -129,7 +141,7 @@ public class MediaController {
 	}
 
 	/**
-	 * Get a Media object by ID
+	 * Get a Media object by ID<br>
 	 * 
 	 * <p>
 	 * <h5>Example:</h5>
@@ -141,6 +153,13 @@ public class MediaController {
 	 * CheckPermissionsFor: another_exampleuser
 	 * </pre>
 	 * 
+ 	 * @HTTP 200 ok
+	 * @HTTP 404 MediaNotFoundException
+	 * @HTTP 403 PermissionDeniedException
+	 * @returnWrapped Media the media object
+	 * @inputWrapped Media
+	 * @RequestHeader CheckPermissionsFor check view permissions for the provided username
+ 	 *
 	 * @param id the id of the Media object
 	 * @return the Media 
 	 * @throws MediaNotFoundException
@@ -174,8 +193,16 @@ public class MediaController {
 	 * 	"id": 17,
 	 * 	"scope": "PRIVATE"
 	 * }
-	 * </pre>
+	 * </pre> 
 	 * 
+ 	 * @HTTP 200 ok
+	 * @HTTP 415 InvalidMediaException
+	 * @HTTP 404 MediaNotFoundException
+	 * @HTTP 403 PermissionDeniedException
+	 * @returnWrapped Media the updated Media object
+	 * @inputWrapped Media
+	 * @RequestHeader CheckPermissionsFor create media for the provided username
+ 	 *
 	 * @param media
 	 *            the media object
 	 * @return the updated media object
@@ -215,8 +242,15 @@ public class MediaController {
 	 * ------ExampleBoundarysKBwBxXzKvp8rA98--
 	 * </pre>
 	 * 
+ 	 * @HTTP 204 created
+	 * @HTTP 404 MediaNotFoundException
+	 * @HTTP 403 PermissionDeniedException
+	 * @returnWrapped Media the created MediaContentVersion
+	 * @inputWrapped InputStream  
+	 * @RequestHeader CheckPermissionsFor upload media content version with the provided username
+ 	 * 
 	 * @param mediaId the id of the Media
-	 * @param inputStream the file to upload file-part (provided by jersey)
+	 * @param inputStream the file to upload, multipart/form-data param "file"
 	 * @param fileInfo the content-disposition file-part (provided by jersey)
 	 * @param body the body of the file-part (provided by jersey)
 	 * @return the created MediaContentVersion
@@ -243,7 +277,7 @@ public class MediaController {
 	}
 
 	/**
-	 * Get the URIs of all MediaContentVersions for a Media 
+	 * Get the URIs of all MediaContentVersions for a Media<br> 
 	 * 
 	 * <p>
 	 * <h5>Example:</h5>
@@ -262,6 +296,12 @@ public class MediaController {
 	 * ]
 	 * </pre>
 	 * 
+ 	 * @HTTP 200 ok
+	 * @HTTP 404 MediaNotFoundException
+	 * @HTTP 403 PermissionDeniedException
+	 * @returnWrapped List&lt;URI&gt; a list of uris to the MediaContentVersions
+	 * @RequestHeader CheckPermissionsFor check view permission on Media with the provided username
+ 	 * 
 	 * @param mediaId the Media id
 	 * @return a list of URIs
 	 * @throws MediaNotFoundException
@@ -277,7 +317,7 @@ public class MediaController {
 		return Response.ok().entity(resultList).build();
 	}
 	/**
-	 * returns the saved Metadata for MediaContentVersion
+	 * returns the saved Metadata for MediaContentVersion<br>
 	 * 
 	 * <p>
 	 * <h5>Example:</h5>
@@ -288,6 +328,12 @@ public class MediaController {
 	 * Authorization: Basic &lt;CREDENTIALS&gt;
 	 * </pre>
 	 * 
+ 	 * @HTTP 200 ok
+	 * @HTTP 404 MediaNotFoundException
+	 * @HTTP 403 PermissionDeniedException
+	 * @returnWrapped MediaContentVersion the MediaContentVersion
+	 * @RequestHeader CheckPermissionsFor check view permission on Media with the provided username
+ 	 * 
 	 * @param mediaId the Media id
 	 * @param version the version of the MediaContent
 	 * @return the Metadata
@@ -307,7 +353,7 @@ public class MediaController {
 	}
 
 	/**
-	 * gets the actual file content of a Media 
+	 * gets the actual file content of a Media <br>
 	 * 
 	 * <p>
 	 * <h5>Example:</h5>
@@ -319,6 +365,12 @@ public class MediaController {
 	 * 
 	 * the Content-Type Header of the response will be set depending
 	 * on the files actual content type
+	 * 
+ 	 * @HTTP 200 ok
+	 * @HTTP 404 MediaNotFoundException
+	 * @HTTP 403 PermissionDeniedException
+	 * @returnWrapped Byte[] the binary content of the MediaContentVersion
+	 * @RequestHeader CheckPermissionsFor check view permission on Media with the provided username
 	 * 
 	 * @param mediaId the Media id
 	 * @param version the version of the MediaContent

@@ -55,7 +55,8 @@ public abstract class AbstractAnnotationController {
 	}
 
 	/**
-	 * Create a new annotation
+	 * Create a new annotation<br>
+	 * 
 	 * @param annotation the JSON representation of the annotation
 	 * @return status code 201 and new annotation representation
 	 * @throws AnnotationDatabaseException (500)
@@ -75,7 +76,7 @@ public abstract class AbstractAnnotationController {
 	 * @param annotationId the annotation ID
 	 * @return status code 200 and found annotation
 	 * @throws AnnotationDatabaseException (500)
-	 * @throws UnsupportedEncodingException (500
+	 * @throws UnsupportedEncodingException (500)
 	 */
 	protected Response getAnnotation(String annotationId, FormatHandler format)
 		throws AnnotationNotFoundException, UnsupportedEncodingException {
