@@ -245,7 +245,8 @@ public class MediaController {
  	 * @HTTP 204 created
 	 * @HTTP 404 MediaNotFoundException
 	 * @HTTP 403 PermissionDeniedException
-	 * @returnWrapped Media the created MediaContentVersion
+	 * @HTTP 500 IOException
+	 * @returnWrapped MediaContentVersion the created MediaContentVersion
 	 * @inputWrapped InputStream  
 	 * @RequestHeader CheckPermissionsFor upload media content version with the provided username
  	 * 
@@ -263,9 +264,9 @@ public class MediaController {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createMediaContentVersion(@PathParam("id") Long mediaId,
-			@FormDataParam("file") InputStream inputStream,
 			@FormDataParam("file") FormDataContentDisposition fileInfo,
-			@FormDataParam("file") FormDataBodyPart body) throws IOException,
+			@FormDataParam("file") FormDataBodyPart body,
+			@FormDataParam("file") InputStream inputStream) throws IOException,
 			MediaNotFoundException, PermissionDeniedException {
 		String mimeType = body.getMediaType().toString();
 		String fileName = fileInfo.getFileName();
