@@ -45,7 +45,21 @@ public class ACLController {
 		aclService = Config.getInstance().getAclService();
 		format = new JSONFormatHandler();
 	}
-	
+	/**
+	 * update a given acl for an annotation or media
+	 * 
+	 * @HTTP 200 ok
+	 * @HTTP 500 UnsupportedEncodingException
+	 * @HTTP 415 InvalidAnnotationException
+	 * @inputWrapped Annotation
+	 * @RequestHeader CheckPermissionsFor check update permissions for the provided username
+	 * 
+	 * @param identifier the id of the acl
+	 * @param acl the acls JSON representation
+	 * @return the Id of the acl
+	 * @throws UnsupportedEncodingException
+	 * @throws InvalidAnnotationException
+	 */
 	@POST
 	@Consumes("application/json")
 	@Path("{id}")
@@ -64,7 +78,18 @@ public class ACLController {
 		return Response.ok().entity(identifier.toString()).
 				header("Location", URIBuilder.toURI(identifier, URISource.ANNOTATION, false)).build(); 	
 	}
-	
+	/**
+	 * Find the acl to an annotation and return it using the JSON-format<br>
+	 * 
+	 * @HTTP 200 ok
+	 * @HTTP 500 UnsupportedEncodingException
+	 * @returnWrapped Annotation the acl in the json format
+	 * @RequestHeader CheckPermissionsFor check view permissions for the provided username
+	 * 
+	 * @param identifier the identifier of the annotation
+	 * @return status code 200 and found acl in JSON-format
+	 * @throws UnsupportedEncodingException (500)
+	 */
 	@GET
 	@Path("annotation/{id}")
 	public Response getACLForAnnotation(@PathParam("id") String identifier) 
@@ -85,7 +110,18 @@ public class ACLController {
 		String annotation = format.serialize(acl.toAnnotation());
 		return Response.ok(annotation).build();	
 	}
-	
+	/**
+	 * Find the acl to an media object and return it using the JSON-format<br>
+	 * 
+	 * @HTTP 200 ok
+	 * @HTTP 500 UnsupportedEncodingException
+	 * @returnWrapped Annotation the acl in the json format
+	 * @RequestHeader CheckPermissionsFor check view permissions for the provided username
+	 * 
+	 * @param identifier the identifier of the media object
+	 * @return status code 200 and found acl in JSON-format
+	 * @throws UnsupportedEncodingException (500)
+	 */
 	@GET
 	@Path("media/{id}")
 	public Response getACLForMedia(@PathParam("id") String identifier) 

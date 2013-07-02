@@ -34,7 +34,11 @@ public class GroupController {
 	
 	/**
 	 * get all groups for the client
-	 * @return
+	 * 
+	 * @HTTP 200 ok
+	 * @returnWrapped List&lt;Group&gt; the list of groups
+	 * 
+	 * @return the list of groups
 	 */
 	@GET
 	@Produces("application/json")
@@ -48,22 +52,51 @@ public class GroupController {
 		*/
 		return Response.ok().entity(resultList).build();
 	}
-	
+	/**
+	 * add a user to a group
+	 * 
+	 * @HTTP 204 no content
+	 * @HTTP 403 PermissionDeniedException
+	 * 
+	 * @param groupName the name of the group
+	 * @param username the name of the user
+	 * @return no content
+	 * @throws PermissionDeniedException
+	 */
 	@POST
 	@Path("{groupname}/{username}")
 	public Response addUserToGroup(@PathParam("groupname") String groupName, @PathParam("username") String username) 
 			throws PermissionDeniedException {
 		groupService.addToGroup(groupName, username, new AuthContext(request));
-		return Response.ok().build();
+		return Response.noContent().build();
 	}
-	
+	/**
+	 * delete a group
+	 * 
+	 * @HTTP 204 no content
+	 * @HTTP 403 PermissionDeniedException
+	 * 
+	 * @param groupName the name of the group
+	 * @return no content
+	 * @throws PermissionDeniedException
+	 */
 	@DELETE
 	@Path("{groupname}")
 	public Response deleteGroup(@PathParam("groupname") String groupName) throws PermissionDeniedException {
 		groupService.deleteGroup(groupName, new AuthContext(request));
 		return Response.status(Status.NO_CONTENT).build();
 	}
-	
+	/**
+	 * remove a user from a group
+	 * 
+	 * @HTTP 204 no content
+	 * @HTTP 403 PermissionDeniedException
+	 * 
+	 * @param groupName the name of the group
+	 * @param username the name of the user
+	 * @return no content
+	 * @throws PermissionDeniedException
+	 */
 	@DELETE
 	@Path("{groupname}/{username}")
 	public Response removeUserFromGroup(@PathParam("groupname") String groupName,  @PathParam("username") String username) 
